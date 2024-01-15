@@ -129,6 +129,7 @@ export const SignUp = () => {
               width="313px"
               height="40px"
               maxWidth="100%"
+              onClick={() => navigate(-1)}
             >
               회원가입하기
             </Button>
