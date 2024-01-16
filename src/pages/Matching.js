@@ -46,7 +46,7 @@ export const Matching = () => {
           onClick={() => navigate(-1)}
         />
         <Text
-          fontFamily="SF Pro"
+          fontFamily="Pretendard Variable"
           lineHeight="0.85"
           fontWeight="bold"
           fontSize="20px"
@@ -96,7 +96,7 @@ export const Matching = () => {
                 spacing="5px"
               >
                 <Text
-                  fontFamily="Inter"
+                  fontFamily="Pretendard Variable"
                   fontWeight="bold"
                   fontSize="16px"
                   color="#000000"
@@ -106,7 +106,7 @@ export const Matching = () => {
                 </Text>
                 <Icon as={BsStarFill} color={"#F6E05E"} />
                 <Text
-                  fontFamily="Inter"
+                  fontFamily="Pretendard Variable"
                   fontWeight="medium"
                   fontSize="16px"
                   color="#000000"
@@ -115,7 +115,7 @@ export const Matching = () => {
                   5.0
                 </Text>
                 <Text
-                  fontFamily="Inter"
+                  fontFamily="Pretendard Variable"
                   fontWeight="medium"
                   fontSize="14px"
                   color="#8C8C8C"
@@ -125,7 +125,7 @@ export const Matching = () => {
                 </Text>
               </Stack>
               <Text
-                fontFamily="Inter"
+                fontFamily="Pretendard Variable"
                 fontWeight="medium"
                 fontSize="14px"
                 color="#3182CE"
@@ -135,7 +135,7 @@ export const Matching = () => {
               </Text>
             </Stack>
             <Text
-              fontFamily="Inter"
+              fontFamily="Pretendard Variable"
               lineHeight="1.42"
               fontWeight="medium"
               fontSize="12px"
@@ -164,7 +164,7 @@ export const Matching = () => {
                 alignSelf="stretch"
               >
                 <Text
-                  fontFamily="Inter"
+                  fontFamily="Pretendard Variable"
                   fontWeight="semibold"
                   fontSize="18px"
                   color="#111111"
@@ -172,7 +172,7 @@ export const Matching = () => {
                   프로필 소개말
                 </Text>
                 <Text
-                  fontFamily="Inter"
+                  fontFamily="Pretendard Variable"
                   lineHeight="1.5"
                   fontWeight="medium"
                   fontSize="16px"
@@ -186,7 +186,7 @@ export const Matching = () => {
                   말씀해주세요! 즐거운 인연이 되길 기대하고 있습니다. 😊
                 </Text>
                 <Text
-                  fontFamily="Inter"
+                  fontFamily="Pretendard Variable"
                   fontWeight="semibold"
                   fontSize="18px"
                   color="#000000"
@@ -194,7 +194,7 @@ export const Matching = () => {
                   서비스 소개 및 매칭 과정 안내
                 </Text>
                 <Text
-                  fontFamily="Inter"
+                  fontFamily="Pretendard Variable"
                   lineHeight="1.5"
                   fontWeight="medium"
                   fontSize="16px"
@@ -213,6 +213,7 @@ export const Matching = () => {
                   height="40px"
                   alignSelf="stretch"
                   color={"white"}
+                  onClick={() => navigate("/payment")}
                 >
                   매칭 신청하기
                 </Button>
@@ -243,7 +244,7 @@ export const Matching = () => {
                   >
                     <Icon as={BsStarFill} color={"#F6E05E"} />
                     <Text
-                      fontFamily="Inter"
+                      fontFamily="Pretendard Variable"
                       fontWeight="medium"
                       fontSize="16px"
                       color="#000000"
@@ -253,7 +254,7 @@ export const Matching = () => {
                     </Text>
                   </Stack>
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     lineHeight="1.43"
                     fontWeight="medium"
                     fontSize="14px"
@@ -283,7 +284,7 @@ export const Matching = () => {
                   >
                     <Icon as={BsStarFill} color={"#F6E05E"} />
                     <Text
-                      fontFamily="Inter"
+                      fontFamily="Pretendard Variable"
                       fontWeight="medium"
                       fontSize="16px"
                       color="#000000"
@@ -293,7 +294,7 @@ export const Matching = () => {
                     </Text>
                   </Stack>
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     lineHeight="1.43"
                     fontWeight="medium"
                     fontSize="14px"
@@ -322,7 +323,7 @@ export const Matching = () => {
                   >
                     <Icon as={BsStarFill} color={"#F6E05E"} />
                     <Text
-                      fontFamily="Inter"
+                      fontFamily="Pretendard Variable"
                       fontWeight="medium"
                       fontSize="16px"
                       color="#000000"
@@ -332,7 +333,7 @@ export const Matching = () => {
                     </Text>
                   </Stack>
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     lineHeight="1.43"
                     fontWeight="medium"
                     fontSize="14px"
@@ -361,7 +362,7 @@ export const Matching = () => {
                   >
                     <Icon as={BsStarFill} color={"#F6E05E"} />
                     <Text
-                      fontFamily="Inter"
+                      fontFamily="Pretendard Variable"
                       fontWeight="medium"
                       fontSize="16px"
                       color="#000000"
@@ -371,7 +372,7 @@ export const Matching = () => {
                     </Text>
                   </Stack>
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     lineHeight="1.43"
                     fontWeight="medium"
                     fontSize="14px"
@@ -388,6 +389,7 @@ export const Matching = () => {
                   height="40px"
                   alignSelf="stretch"
                   color={"white"}
+                  onClick={() => navigate("/payment")}
                 >
                   매칭 신청하기
                 </Button>
@@ -415,7 +417,7 @@ export const Matching = () => {
         >
           <Icon as={AiFillHome} color="#3182CE" boxSize={"24px"} />
           <Text
-            fontFamily="Inter"
+            fontFamily="Pretendard Variable"
             fontWeight="medium"
             fontSize="12px"
             color="#3182CE"
@@ -433,7 +435,7 @@ export const Matching = () => {
         >
           <Icon as={BsList} boxSize={"24px"} />
           <Text
-            fontFamily="Inter"
+            fontFamily="Pretendard Variable"
             fontWeight="medium"
             fontSize="12px"
             color="#000000"
@@ -451,7 +453,7 @@ export const Matching = () => {
         >
           <Icon as={BsChat} boxSize={"24px"} />
           <Text
-            fontFamily="Inter"
+            fontFamily="Pretendard Variable"
             fontWeight="medium"
             fontSize="12px"
             color="#000000"
@@ -469,7 +471,7 @@ export const Matching = () => {
         >
           <Icon as={BsPerson} boxSize={"24px"} />
           <Text
-            fontFamily="Inter"
+            fontFamily="Pretendard Variable"
             fontWeight="medium"
             fontSize="12px"
             color="#000000"

@@ -7,6 +7,7 @@ import { SignUp } from "./pages/SignUp";
 import { Home } from "./pages/Home";
 import { Notice } from "./pages/Notice";
 import { Matching } from "./pages/Matching";
+import { Payment } from "./pages/Payment";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/matching" element={<Matching />} />
+          <Route path="/payment" element={<Payment />} />
         </Routes>
       </BrowserRouter>
     </Container>

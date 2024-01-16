@@ -44,7 +44,7 @@ export const Home = () => {
         alignSelf="stretch"
       >
         <Text
-          fontFamily="Pretendard"
+          fontFamily="Pretendard Variable"
           fontWeight="black"
           fontSize="24px"
           color="#000000"
@@ -85,7 +85,7 @@ export const Home = () => {
           bgImage={require("../assets/iOS 16 Wallpaper.png")}
         >
           <Text
-            fontFamily="SF Pro"
+            fontFamily="Pretendard Variable"
             lineHeight="0.7"
             fontWeight="semibold"
             fontSize="30px"
@@ -103,7 +103,7 @@ export const Home = () => {
               background="rgba(0, 0, 0, 0.5)"
             >
               <Text
-                fontFamily="SF Pro"
+                fontFamily="Pretendard Variable"
                 lineHeight="1.31"
                 fontWeight="semibold"
                 fontSize="16px"
@@ -131,7 +131,7 @@ export const Home = () => {
           >
             <Icon as={BsPeopleFill} />
             <Text
-              fontFamily="SF Pro"
+              fontFamily="Pretendard Variable"
               lineHeight="1.31"
               fontWeight="semibold"
               fontSize="16px"
@@ -190,7 +190,7 @@ export const Home = () => {
                   spacing="5px"
                 >
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="bold"
                     fontSize="16px"
                     color="#000000"
@@ -200,7 +200,7 @@ export const Home = () => {
                   </Text>
                   <Icon as={BsStarFill} color={"#F6E05E"} />
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="medium"
                     fontSize="16px"
                     color="#000000"
@@ -209,7 +209,7 @@ export const Home = () => {
                     5.0
                   </Text>
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="medium"
                     fontSize="14px"
                     color="#8C8C8C"
@@ -219,7 +219,7 @@ export const Home = () => {
                   </Text>
                 </Stack>
                 <Text
-                  fontFamily="Inter"
+                  fontFamily="Pretendard Variable"
                   fontWeight="medium"
                   fontSize="14px"
                   color="#3182CE"
@@ -229,7 +229,7 @@ export const Home = () => {
                 </Text>
               </Stack>
               <Text
-                fontFamily="Inter"
+                fontFamily="Pretendard Variable"
                 lineHeight="1.42"
                 fontWeight="medium"
                 fontSize="12px"
@@ -281,7 +281,7 @@ export const Home = () => {
                   spacing="5px"
                 >
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="bold"
                     fontSize="16px"
                     color="#000000"
@@ -291,7 +291,7 @@ export const Home = () => {
                   </Text>
                   <Icon as={BsStarFill} color={"#F6E05E"} />
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="medium"
                     fontSize="16px"
                     color="#000000"
@@ -300,7 +300,7 @@ export const Home = () => {
                     5.0
                   </Text>
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="medium"
                     fontSize="14px"
                     color="#8C8C8C"
@@ -310,7 +310,7 @@ export const Home = () => {
                   </Text>
                 </Stack>
                 <Text
-                  fontFamily="Inter"
+                  fontFamily="Pretendard Variable"
                   fontWeight="medium"
                   fontSize="14px"
                   color="#3182CE"
@@ -320,7 +320,7 @@ export const Home = () => {
                 </Text>
               </Stack>
               <Text
-                fontFamily="Inter"
+                fontFamily="Pretendard Variable"
                 lineHeight="1.42"
                 fontWeight="medium"
                 fontSize="12px"
@@ -370,7 +370,7 @@ export const Home = () => {
                   spacing="5px"
                 >
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="bold"
                     fontSize="16px"
                     color="#000000"
@@ -380,7 +380,7 @@ export const Home = () => {
                   </Text>
                   <Icon as={BsStarFill} color={"#F6E05E"} />
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="medium"
                     fontSize="16px"
                     color="#000000"
@@ -389,7 +389,7 @@ export const Home = () => {
                     5.0
                   </Text>
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="medium"
                     fontSize="14px"
                     color="#8C8C8C"
@@ -399,7 +399,7 @@ export const Home = () => {
                   </Text>
                 </Stack>
                 <Text
-                  fontFamily="Inter"
+                  fontFamily="Pretendard Variable"
                   fontWeight="medium"
                   fontSize="14px"
                   color="#3182CE"
@@ -409,7 +409,7 @@ export const Home = () => {
                 </Text>
               </Stack>
               <Text
-                fontFamily="Inter"
+                fontFamily="Pretendard Variable"
                 lineHeight="1.42"
                 fontWeight="medium"
                 fontSize="12px"
@@ -459,7 +459,7 @@ export const Home = () => {
                   spacing="5px"
                 >
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="bold"
                     fontSize="16px"
                     color="#000000"
@@ -469,7 +469,7 @@ export const Home = () => {
                   </Text>
                   <Icon as={BsStarFill} color={"#F6E05E"} />
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="medium"
                     fontSize="16px"
                     color="#000000"
@@ -478,7 +478,7 @@ export const Home = () => {
                     5.0
                   </Text>
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="medium"
                     fontSize="14px"
                     color="#8C8C8C"
@@ -488,7 +488,7 @@ export const Home = () => {
                   </Text>
                 </Stack>
                 <Text
-                  fontFamily="Inter"
+                  fontFamily="Pretendard Variable"
                   fontWeight="medium"
                   fontSize="14px"
                   color="#3182CE"
@@ -498,7 +498,7 @@ export const Home = () => {
                 </Text>
               </Stack>
               <Text
-                fontFamily="Inter"
+                fontFamily="Pretendard Variable"
                 lineHeight="1.42"
                 fontWeight="medium"
                 fontSize="12px"
@@ -548,7 +548,7 @@ export const Home = () => {
                   spacing="5px"
                 >
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="bold"
                     fontSize="16px"
                     color="#000000"
@@ -558,7 +558,7 @@ export const Home = () => {
                   </Text>
                   <Icon as={BsStarFill} color={"#F6E05E"} />
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="medium"
                     fontSize="16px"
                     color="#000000"
@@ -567,7 +567,7 @@ export const Home = () => {
                     5.0
                   </Text>
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="medium"
                     fontSize="14px"
                     color="#8C8C8C"
@@ -577,7 +577,7 @@ export const Home = () => {
                   </Text>
                 </Stack>
                 <Text
-                  fontFamily="Inter"
+                  fontFamily="Pretendard Variable"
                   fontWeight="medium"
                   fontSize="14px"
                   color="#3182CE"
@@ -587,7 +587,7 @@ export const Home = () => {
                 </Text>
               </Stack>
               <Text
-                fontFamily="Inter"
+                fontFamily="Pretendard Variable"
                 lineHeight="1.42"
                 fontWeight="medium"
                 fontSize="12px"
@@ -637,7 +637,7 @@ export const Home = () => {
                   spacing="5px"
                 >
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="bold"
                     fontSize="16px"
                     color="#000000"
@@ -647,7 +647,7 @@ export const Home = () => {
                   </Text>
                   <Icon as={BsStarFill} color={"#F6E05E"} />
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="medium"
                     fontSize="16px"
                     color="#000000"
@@ -656,7 +656,7 @@ export const Home = () => {
                     5.0
                   </Text>
                   <Text
-                    fontFamily="Inter"
+                    fontFamily="Pretendard Variable"
                     fontWeight="medium"
                     fontSize="14px"
                     color="#8C8C8C"
@@ -666,7 +666,7 @@ export const Home = () => {
                   </Text>
                 </Stack>
                 <Text
-                  fontFamily="Inter"
+                  fontFamily="Pretendard Variable"
                   fontWeight="medium"
                   fontSize="14px"
                   color="#3182CE"
@@ -676,7 +676,7 @@ export const Home = () => {
                 </Text>
               </Stack>
               <Text
-                fontFamily="Inter"
+                fontFamily="Pretendard Variable"
                 lineHeight="1.42"
                 fontWeight="medium"
                 fontSize="12px"
@@ -741,7 +741,7 @@ export const Home = () => {
         >
           <Icon as={AiFillHome} color="#3182CE" boxSize={"24px"} />
           <Text
-            fontFamily="Inter"
+            fontFamily="Pretendard Variable"
             fontWeight="medium"
             fontSize="12px"
             color="#3182CE"
@@ -759,7 +759,7 @@ export const Home = () => {
         >
           <Icon as={BsList} boxSize={"24px"} />
           <Text
-            fontFamily="Inter"
+            fontFamily="Pretendard Variable"
             fontWeight="medium"
             fontSize="12px"
             color="#000000"
@@ -777,7 +777,7 @@ export const Home = () => {
         >
           <Icon as={BsChat} boxSize={"24px"} />
           <Text
-            fontFamily="Inter"
+            fontFamily="Pretendard Variable"
             fontWeight="medium"
             fontSize="12px"
             color="#000000"
@@ -795,7 +795,7 @@ export const Home = () => {
         >
           <Icon as={BsPerson} boxSize={"24px"} />
           <Text
-            fontFamily="Inter"
+            fontFamily="Pretendard Variable"
             fontWeight="medium"
             fontSize="12px"
             color="#000000"

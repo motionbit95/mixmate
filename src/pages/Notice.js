@@ -34,7 +34,7 @@ export const Notice = () => {
             onClick={() => navigate(-1)}
           />
           <Text
-            fontFamily="SF Pro"
+            fontFamily="Pretendard Variable"
             lineHeight="0.85"
             fontWeight="bold"
             fontSize="20px"
@@ -52,9 +52,9 @@ export const Notice = () => {
           flex="1"
           alignSelf="stretch"
         >
-          <HorizonLine />
+          {/* <HorizonLine /> */}
           <Text
-            fontFamily="Inter"
+            fontFamily="Pretendard Variable"
             fontWeight="semibold"
             fontSize="18px"
             color="#000000"
@@ -70,7 +70,7 @@ export const Notice = () => {
             alignSelf="stretch"
           >
             <Text
-              fontFamily="Inter"
+              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="16px"
               color="#000000"
@@ -79,7 +79,7 @@ export const Notice = () => {
               매칭신청이 결제되었습니다.
             </Text>
             <Text
-              fontFamily="Inter"
+              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="12px"
               color="#8C8C8C"
@@ -97,7 +97,7 @@ export const Notice = () => {
             alignSelf="stretch"
           >
             <Text
-              fontFamily="Inter"
+              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="16px"
               color="#000000"
@@ -106,7 +106,7 @@ export const Notice = () => {
               [공지] 고객센터 운영시간 안내
             </Text>
             <Text
-              fontFamily="Inter"
+              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="12px"
               color="#8C8C8C"
@@ -124,7 +124,7 @@ export const Notice = () => {
             alignSelf="stretch"
           >
             <Text
-              fontFamily="Inter"
+              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="16px"
               color="#000000"
@@ -133,7 +133,7 @@ export const Notice = () => {
               매칭신청이 거절되었습니다.
             </Text>
             <Text
-              fontFamily="Inter"
+              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="12px"
               color="#8C8C8C"
@@ -151,7 +151,7 @@ export const Notice = () => {
             alignSelf="stretch"
           >
             <Text
-              fontFamily="Inter"
+              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="16px"
               color="#000000"
@@ -160,7 +160,7 @@ export const Notice = () => {
               매칭신청이 결제되었습니다.
             </Text>
             <Text
-              fontFamily="Inter"
+              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="12px"
               color="#8C8C8C"
@@ -190,7 +190,7 @@ export const Notice = () => {
           >
             <Icon as={AiOutlineHome} />
             <Text
-              fontFamily="Inter"
+              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="12px"
               color="#000000"
@@ -208,7 +208,7 @@ export const Notice = () => {
           >
             <Icon as={BsList} />
             <Text
-              fontFamily="Inter"
+              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="12px"
               color="#000000"
@@ -226,7 +226,7 @@ export const Notice = () => {
           >
             <Icon as={BsChat} />
             <Text
-              fontFamily="Inter"
+              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="12px"
               color="#000000"
@@ -244,7 +244,7 @@ export const Notice = () => {
           >
             <Icon as={BsPerson} />
             <Text
-              fontFamily="Inter"
+              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="12px"
               color="#000000"

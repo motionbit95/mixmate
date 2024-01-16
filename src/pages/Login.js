@@ -71,7 +71,7 @@ export const Login = () => {
               alignSelf="stretch"
             >
               <Text
-                fontFamily="SF Pro"
+                fontFamily="Pretendard Variable"
                 fontWeight="regular"
                 fontSize="14px"
                 color="#8C8C8C"
@@ -80,7 +80,7 @@ export const Login = () => {
                 회원가입
               </Text>
               <Text
-                fontFamily="SF Pro"
+                fontFamily="Pretendard Variable"
                 fontWeight="regular"
                 fontSize="14px"
                 color="#8C8C8C"

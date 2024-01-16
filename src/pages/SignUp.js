@@ -55,7 +55,7 @@ export const SignUp = () => {
                 alignSelf="stretch"
               >
                 <Text
-                  fontFamily="SF Pro"
+                  fontFamily="Pretendard Variable"
                   lineHeight="1.43"
                   fontWeight="regular"
                   fontSize="14px"
@@ -113,7 +113,7 @@ export const SignUp = () => {
                   이용약관에 동의합니다.
                 </Checkbox>
                 <Text
-                  fontFamily="SF Pro"
+                  fontFamily="Pretendard Variable"
                   lineHeight="1.43"
                   fontWeight="regular"
                   fontSize="14px"
