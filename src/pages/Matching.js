@@ -61,7 +61,7 @@ export const Matching = () => {
           </Container>
         </Stack>
         <Stack
-          padding="10px"
+          // padding="10px"
           justify="center"
           align="flex-start"
           spacing="10px"
