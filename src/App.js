@@ -8,6 +8,7 @@ import { Home } from "./pages/Home";
 import { Notice } from "./pages/Notice";
 import { Matching } from "./pages/Matching";
 import { Payment } from "./pages/Payment";
+import { Information } from "./pages/Information";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/info" element={<Information />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/matching" element={<Matching />} />
           <Route path="/payment" element={<Payment />} />

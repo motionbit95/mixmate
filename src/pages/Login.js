@@ -5,21 +5,34 @@ import {
   Checkbox,
   Button,
   Container,
-  CloseButton,
-  Center,
-  Flex,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
   const navigate = useNavigate();
-
   return (
-    <Container minW={"360px"}>
-      <Center h={"100vh"} flexDirection={"column"}>
-        <Flex w="100%">
-          <CloseButton mt={4} />
-        </Flex>
+    <Container>
+      <Stack
+        justify="flex-start"
+        align="center"
+        spacing="0px"
+        overflow="hidden"
+        width="393px"
+        height="852px"
+        maxWidth="100%"
+        background="#FFFFFF"
+      >
+        <Stack
+          paddingX="10px"
+          direction="row"
+          justify="flex-start"
+          align="flex-start"
+          spacing="0px"
+          overflow="hidden"
+          alignSelf="stretch"
+        >
+          <Stack size="lg" width="40px" height="40px" />
+        </Stack>
         <Stack
           direction="row"
           justify="center"
@@ -31,14 +44,13 @@ export const Login = () => {
         >
           <Stack justify="center" align="center" spacing="40px">
             <Text
+              fontFamily="Pretendard"
               fontWeight="black"
-              fontSize="40px"
+              fontSize="50px"
               color="#000000"
               textAlign="center"
             >
-              MIX
-              <br />
-              MATE
+              식사회
             </Text>
             <Stack
               justify="center"
@@ -71,16 +83,16 @@ export const Login = () => {
               alignSelf="stretch"
             >
               <Text
-                fontFamily="Pretendard Variable"
+                fontFamily="SF Pro"
                 fontWeight="regular"
                 fontSize="14px"
                 color="#8C8C8C"
-                onClick={() => navigate("signup")}
+                onClick={() => navigate("/signup")}
               >
                 회원가입
               </Text>
               <Text
-                fontFamily="Pretendard Variable"
+                fontFamily="SF Pro"
                 fontWeight="regular"
                 fontSize="14px"
                 color="#8C8C8C"
@@ -90,7 +102,7 @@ export const Login = () => {
             </Stack>
           </Stack>
         </Stack>
-      </Center>
+      </Stack>
     </Container>
   );
 };
