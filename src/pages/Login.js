@@ -58,7 +58,7 @@ export const Login = () => {
               width="313px"
               height="40px"
               maxWidth="100%"
-              onClick={() => navigate("home")}
+              onClick={() => navigate("/home")}
             >
               로그인하기
             </Button>
