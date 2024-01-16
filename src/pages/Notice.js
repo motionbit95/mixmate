@@ -3,6 +3,7 @@ import { MdChevronLeft } from "react-icons/md";
 import { AiOutlineHome } from "react-icons/ai";
 import { BsChat, BsList, BsPerson } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import HorizonLine from "../component/HorizontalLine";
 
 export const Notice = () => {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ export const Notice = () => {
           flex="1"
           alignSelf="stretch"
         >
-          <span className="unsupported" />
+          <HorizonLine />
           <Text
             fontFamily="Inter"
             fontWeight="semibold"
@@ -87,7 +88,7 @@ export const Notice = () => {
               오후 8시 14분
             </Text>
           </Stack>
-          <span className="unsupported" />
+          <HorizonLine />
           <Stack
             direction="row"
             justify="space-between"
@@ -114,7 +115,7 @@ export const Notice = () => {
               24.01.16
             </Text>
           </Stack>
-          <span className="unsupported" />
+          <HorizonLine />
           <Stack
             direction="row"
             justify="space-between"
@@ -141,7 +142,7 @@ export const Notice = () => {
               24.01.16
             </Text>
           </Stack>
-          <span className="unsupported" />
+          <HorizonLine />
           <Stack
             direction="row"
             justify="space-between"
@@ -168,9 +169,9 @@ export const Notice = () => {
               24.01.16
             </Text>
           </Stack>
-          <span className="unsupported" />
+          <HorizonLine />
         </Stack>
-        <span className="unsupported" />
+        <HorizonLine />
         <Stack
           paddingY="10px"
           direction="row"
