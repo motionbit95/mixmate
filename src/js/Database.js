@@ -26,7 +26,7 @@ export const db_add = async (col, data) => {
 };
 
 /** collection에 이미 생성된 문서에 data field를 추가합니다.
- * @function db_add
+ * @function db_update
  * @param {string} col collection 이름
  * @param {string} doc_id 추가할 문서의 id
  * @param {object} data 추가할 데이터
