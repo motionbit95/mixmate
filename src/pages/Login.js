@@ -18,7 +18,7 @@ export const Login = () => {
   });
 
   function checkAccount() {
-    console.log(account.id, account.password);
+    // console.log(account.id, account.password);
 
     if (account.id === "admin" || account.password === "test0000") {
       navigate("/home");
