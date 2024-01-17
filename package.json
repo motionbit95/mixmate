@@ -1,4 +1,5 @@
 {
+  "homepage": "https://motionbit95.github.io/mixmate",
   "name": "mixmate",
   "version": "0.1.0",
   "private": true,
@@ -13,6 +14,7 @@
     "express": "^4.18.2",
     "firebase": "^10.7.1",
     "framer-motion": "^10.18.0",
+    "gh-pages": "^6.1.1",
     "jsdoc": "^4.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -22,6 +24,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "docs": "jsdoc src README.md -r -t ./node_modules/jsdoc/node_modules/docdash",
+    "predeploy": "npm run docs",
+    "deploy": "gh-pages -d out",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
