@@ -112,7 +112,7 @@ export function add_place_tag(array, city, district, town) {
 }
 
 /** 기존 음식 배열에 tag 항목이 있는지 검색하고 없으면 추가합니다.
- * @function add_place_tag
+ * @function add_food_tag
  * @param {array} array 기존 배열
  * @param {string} food 추가할 태그(음식)
  * @returns {array} 태그 항목이 추가 된 배열 반환
