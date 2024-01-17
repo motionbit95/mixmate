@@ -83,7 +83,7 @@ export const SignUp = () => {
     //# 여기에 휴대폰 인증(API) 추가
 
     // 페이지 이동
-    navigate("/info");
+    navigate("/info", { state: { user_id: docId } });
   };
 
   return (
@@ -185,6 +185,11 @@ export const SignUp = () => {
                 alignSelf="stretch"
                 onChange={(e) => {
                   let ret = check_password_valid(e.target.value);
+
+                  if (ret == "") {
+                    setFormData({ ...formData, user_password: e.target.value });
+                  }
+
                   setValid({
                     state: ret === "",
                     message: ret,
