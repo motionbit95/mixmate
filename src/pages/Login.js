@@ -6,10 +6,27 @@ import {
   Button,
   Container,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
   const navigate = useNavigate();
+
+  const [account, setAccount] = useState({
+    id: "",
+    password: "",
+  });
+
+  function checkAccount() {
+    console.log(account.id, account.password);
+
+    if (account.id === "admin" || account.password === "test0000") {
+      navigate("/home");
+    } else {
+      alert("로그인실패! 계정을 확인하세요");
+      setAccount({ id: "", password: "" });
+    }
+  }
   return (
     <Container>
       <Stack
@@ -59,8 +76,26 @@ export const Login = () => {
               width="313px"
               maxWidth="100%"
             >
-              <Input placeholder="이메일" height="40px" alignSelf="stretch" />
-              <Input placeholder="패스워드" height="40px" alignSelf="stretch" />
+              <Input
+                value={account.id}
+                type="text"
+                placeholder="아이디"
+                height="40px"
+                alignSelf="stretch"
+                onChange={(e) =>
+                  setAccount({ id: e.target.value, password: account.password })
+                }
+              />
+              <Input
+                value={account.password}
+                type="password"
+                placeholder="패스워드"
+                height="40px"
+                alignSelf="stretch"
+                onChange={(e) =>
+                  setAccount({ id: account.id, password: e.target.value })
+                }
+              />
               <Checkbox defaultChecked variant="blue">
                 자동로그인
               </Checkbox>
@@ -70,7 +105,7 @@ export const Login = () => {
               width="313px"
               height="40px"
               maxWidth="100%"
-              onClick={() => navigate("/home")}
+              onClick={() => checkAccount()}
             >
               로그인하기
             </Button>
