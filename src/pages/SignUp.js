@@ -15,9 +15,14 @@ import {
   AlertDescription,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { uploadImage } from "../db/useStorage";
+import { upload_image } from "../js/Storage";
 import { useRef, useState } from "react";
-import { addDatabase } from "../db/useDatabase";
+import { db_add } from "../js/Database";
+import {
+  check_password_valid,
+  compare_password,
+  step1_confirm_blank,
+} from "../js/UserAPI";
 
 export const SignUp = () => {
   const navigate = useNavigate();
@@ -36,109 +41,18 @@ export const SignUp = () => {
 
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  // 모든 데이터가 입력되었는지 확인
-  function checkBlank() {
-    if (formData.user_profile === "") {
-      setValid({
-        state: false,
-        message: "프로필 사진을 등록해주세요.",
-      });
-      return false;
-    }
-
-    if (formData.user_name === "") {
-      setValid({
-        state: false,
-        message: "이름을 입력해주세요",
-      });
-      return false;
-    }
-
-    if (formData.user_email === "") {
-      setValid({
-        state: false,
-        message: "이메일(아이디)를 입력해주세요",
-      });
-      return false;
-    }
-
-    if (confirmPassword === "" || confirmPassword === formData.password) {
-      setValid({
-        state: false,
-        message: "패스워드를 확인해주세요.",
-      });
-      return false;
-    }
-
-    return true;
-  }
-
-  // 비밀번호 확인
-  function comparePassword(password) {
-    if (password === formData.password) {
-      setValid({
-        state: true,
-        message: "",
-      });
-      return true;
-    } else {
-      setValid({
-        state: false,
-        message: "비밀번호가 일치하지 않습니다.",
-      });
-      return false;
-    }
-  }
-
-  // 비밀번호 유효성 체크
-  function checkPasswordValid(password) {
-    var pw = password;
-    var num = pw.search(/[0-9]/g);
-    var eng = pw.search(/[a-z]/gi);
-    var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
-
-    if (pw.length < 8 || pw.length > 20) {
-      setValid({
-        state: false,
-        message: "8자리 ~ 20자리 이내로 입력해주세요.",
-      });
-      return false;
-    } else if (pw.search(/\s/) != -1) {
-      setValid({
-        state: false,
-        message: "비밀번호는 공백 없이 입력해주세요.",
-      });
-      return false;
-    } else if (num < 0 || eng < 0 || spe < 0) {
-      setValid({
-        state: false,
-        message: "영문,숫자, 특수문자를 혼합하여 입력해주세요.",
-      });
-      return false;
-    } else {
-      // 패스워드 정보 업데이트
-      setFormData({ ...formData, user_password: pw });
-      setValid({
-        state: true,
-        message: "",
-      });
-      // console.log("통과");
-      return true;
-    }
-  }
-
   // 프로필 업로드 버튼 클릭 시 ref 클릭 이벤트 발생
   const onClickProfileButton = () => {
     profileRef.current.click();
   };
 
   // 이미지 업로드 함수
-  const uploadProfile = async (e) => {
+  const upload_profile = async (e) => {
     // 이미지 로딩 중에는 프로그레스바를 띄운다
     setLoading(true);
 
     // firestore에 이미지 업로드
-    let url = await uploadImage(e);
+    let url = await upload_image(e);
 
     if (url && url !== "") {
       setValid({
@@ -163,7 +77,7 @@ export const SignUp = () => {
   const onClickApprove = async () => {
     if (!isValid.state) return;
     // 입력 정보로 파이어베이스에 저장
-    let docId = await addDatabase("user", formData);
+    let docId = await db_add("user", formData);
     console.log(docId);
 
     //# 여기에 휴대폰 인증(API) 추가
@@ -236,7 +150,7 @@ export const SignUp = () => {
                 ref={profileRef}
                 type="file"
                 onChange={(e) => {
-                  uploadProfile(e);
+                  upload_profile(e);
                 }}
               />
             </VStack>
@@ -269,7 +183,13 @@ export const SignUp = () => {
                 placeholder="패스워드"
                 height="40px"
                 alignSelf="stretch"
-                onChange={(e) => checkPasswordValid(e.target.value)}
+                onChange={(e) => {
+                  let ret = check_password_valid(e.target.value);
+                  setValid({
+                    state: ret === "",
+                    message: ret,
+                  });
+                }}
               />
               <Input
                 type="password"
@@ -278,7 +198,19 @@ export const SignUp = () => {
                 alignSelf="stretch"
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);
-                  comparePassword(e.target.value);
+                  if (
+                    compare_password(formData.user_password, e.target.value)
+                  ) {
+                    setValid({
+                      state: true,
+                      message: "",
+                    });
+                  } else {
+                    setValid({
+                      state: false,
+                      message: "비밀번호가 일치하지 않습니다.",
+                    });
+                  }
                 }}
               />
               {isValid.state ? null : (
@@ -294,7 +226,17 @@ export const SignUp = () => {
               height="40px"
               maxWidth="100%"
               onClick={() => {
-                if (checkBlank()) {
+                let ret = step1_confirm_blank(
+                  formData.user_profile,
+                  formData.user_name,
+                  formData.user_email,
+                  formData.user_password,
+                  confirmPassword
+                );
+
+                setValid({ isValid: ret === "", message: ret });
+
+                if (ret === "") {
                   onClickApprove();
                 }
               }}

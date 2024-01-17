@@ -1,7 +1,12 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../db/firebase_config";
 
-export const uploadImage = async (e) => {
+/** firestore profile 폴더 내에 이미지를 업로드랍니다.
+ * @function upload_image
+ * @param {React.ChangeEvent<HTMLInputElement>} e input 이벤트
+ * @returns {string} 이미지 호스팅 완료 된 링크
+ */
+export const upload_image = async (e) => {
   console.log(e.target.files[0]);
   const uploaded_file = await uploadBytes(
     ref(

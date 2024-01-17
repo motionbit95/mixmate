@@ -16,11 +16,14 @@ import {
   HStack,
   Flex,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { MdAdd } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 export const Information = () => {
   const navigate = useNavigate();
+
+  const [formData, setFormData] = useState();
   return (
     <Container>
       <Stack
