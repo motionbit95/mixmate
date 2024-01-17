@@ -29,7 +29,7 @@
 <nav >
     
     
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#add_place_tag">add_place_tag</a></li><li><a href="global.html#check_password_valid">check_password_valid</a></li><li><a href="global.html#compare_password">compare_password</a></li><li><a href="global.html#db_add">db_add</a></li><li><a href="global.html#del_tag">del_tag</a></li><li><a href="global.html#step1_confirm_blank">step1_confirm_blank</a></li><li><a href="global.html#step2_confirm_blank">step2_confirm_blank</a></li><li><a href="global.html#upload_image">upload_image</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#add_food_tag">add_food_tag</a></li><li><a href="global.html#add_place_tag">add_place_tag</a></li><li><a href="global.html#check_password_valid">check_password_valid</a></li><li><a href="global.html#compare_password">compare_password</a></li><li><a href="global.html#db_add">db_add</a></li><li><a href="global.html#del_tag">del_tag</a></li><li><a href="global.html#step1_confirm_blank">step1_confirm_blank</a></li><li><a href="global.html#step2_confirm_blank">step2_confirm_blank</a></li><li><a href="global.html#upload_image">upload_image</a></li></ul>
     
 </nav>
 
@@ -124,6 +124,188 @@
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="add_food_tag"><span class="type-signature"></span>add_food_tag<span class="signature">(array, food)</span><span class="type-signature"> &rarr; {array}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>기존 음식 배열에 tag 항목이 있는지 검색하고 없으면 추가합니다.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line114">line 114</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>array</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">기존 배열</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>food</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">추가할 태그(음식)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    태그 항목이 추가 된 배열 반환
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">array</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
 
         
             
@@ -308,188 +490,6 @@
             
 
             <td class="description last">추가할 태그의 읍,면,동</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5 class="h5-returns">Returns:</h5>
-
-        
-<div class="param-desc">
-    태그 항목이 추가 된 배열 반환
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">array</span>
-
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="add_place_tag"><span class="type-signature"></span>add_place_tag<span class="signature">(array, food)</span><span class="type-signature"> &rarr; {array}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-    
-    <dt class="tag-description">Description:</dt>
-    <dd class="tag-description"><ul class="dummy"><li>기존 음식 배열에 tag 항목이 있는지 검색하고 없으면 추가합니다.</li></ul></dd>
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line114">line 114</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5 class="h5-parameters">Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>array</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">array</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">기존 배열</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>food</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">추가할 태그(음식)</td>
         </tr>
 
     
@@ -2110,7 +2110,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Thu Jan 18 2024 01:24:21 GMT+0900 (GMT+09:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Thu Jan 18 2024 01:27:47 GMT+0900 (GMT+09:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
