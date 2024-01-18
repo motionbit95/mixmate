@@ -5,9 +5,11 @@ import {
   setPersistence,
   browserLocalPersistence,
   browserSessionPersistence,
+  onAuthStateChanged,
 } from "firebase/auth";
+import { auth } from "../db/firebase_config";
+import { on } from "events";
 
-const auth = getAuth();
 /** 비밀번호 기반 계정 만들기
  * @function auth_signup_password
  * @param {string} email 유저 이메일

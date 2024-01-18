@@ -29,6 +29,7 @@ import { AiFillHome } from "react-icons/ai";
 import { MdChatBubbleOutline } from "react-icons/md";
 import HorizonLine from "../component/HorizontalLine";
 import { useNavigate } from "react-router-dom";
+import { Navbar } from "../component/Navbar";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -543,94 +544,6 @@ export const Home = () => {
             safeboundary@naver.com
           </Text>
         </Stack>
-
-        <Box w="100%" className="nav">
-          <Container>
-            <HorizonLine />
-            <Stack
-              paddingY="10px"
-              direction="row"
-              justify="space-between"
-              align="flex-start"
-              spacing="10px"
-              overflow="hidden"
-              alignSelf="stretch"
-            >
-              <Stack
-                justify="center"
-                align="center"
-                spacing="0px"
-                overflow="hidden"
-                flex="1"
-              >
-                <Icon as={AiFillHome} color={"#3182CE"} />
-                <Text
-                  fontFamily="Inter"
-                  fontWeight="medium"
-                  fontSize="12px"
-                  color="#3182CE"
-                  textAlign="center"
-                >
-                  홈
-                </Text>
-              </Stack>
-              <Stack
-                justify="center"
-                align="center"
-                spacing="0px"
-                overflow="hidden"
-                flex="1"
-              >
-                <Icon as={BsList} />
-                <Text
-                  fontFamily="Inter"
-                  fontWeight="medium"
-                  fontSize="12px"
-                  color="#000000"
-                  textAlign="center"
-                >
-                  신청내역
-                </Text>
-              </Stack>
-              <Stack
-                justify="center"
-                align="center"
-                spacing="0px"
-                overflow="hidden"
-                flex="1"
-              >
-                <Icon as={MdChatBubbleOutline} />
-                <Text
-                  fontFamily="Inter"
-                  fontWeight="medium"
-                  fontSize="12px"
-                  color="#000000"
-                  textAlign="center"
-                >
-                  채팅
-                </Text>
-              </Stack>
-              <Stack
-                justify="center"
-                align="center"
-                spacing="0px"
-                overflow="hidden"
-                flex="1"
-              >
-                <Icon as={BsPerson} />
-                <Text
-                  fontFamily="Inter"
-                  fontWeight="medium"
-                  fontSize="12px"
-                  color="#000000"
-                  textAlign="center"
-                >
-                  마이페이지
-                </Text>
-              </Stack>
-            </Stack>
-          </Container>
-        </Box>
       </Stack>
     </Container>
   );

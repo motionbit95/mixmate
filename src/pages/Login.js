@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { auth_login_password, auth_set_local, useAuth } from "../js/Auth";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -17,10 +18,18 @@ export const Login = () => {
     password: "",
   });
 
-  function checkAccount() {
+  function login() {
     // console.log(account.id, account.password);
+    // if (account.id === "admin" || account.password === "test0000") {
+    //   navigate("/home");
+    // } else {
+    //   alert("로그인실패! 계정을 확인하세요");
+    //   setAccount({ id: "", password: "" });
+    // }
 
-    if (account.id === "admin" || account.password === "test0000") {
+    if (auth_login_password(account.id, account.password)) {
+      console.log("로그인 성공!");
+      auth_set_local();
       navigate("/home");
     } else {
       alert("로그인실패! 계정을 확인하세요");
@@ -105,7 +114,7 @@ export const Login = () => {
               width="313px"
               height="40px"
               maxWidth="100%"
-              onClick={() => checkAccount()}
+              onClick={() => login()}
             >
               로그인하기
             </Button>

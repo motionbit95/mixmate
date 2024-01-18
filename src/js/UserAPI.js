@@ -1,3 +1,12 @@
+/** 선택된 페이지 번호를 반환합니다.
+ * @function get_page_num
+ * @returns {number} 페이지 번호
+ */
+export function get_page_num() {
+  if (window.location.pathname.includes("home")) return 0;
+  if (window.location.pathname.includes("mypage")) return 3;
+}
+
 /** 패스워드 정책에 부합하는지 확인합니다.
  * @function check_password_valid
  * @param {string} user_password 유저 패스워드
