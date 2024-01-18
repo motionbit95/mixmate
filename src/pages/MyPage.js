@@ -9,6 +9,14 @@ import {
   SkeletonText,
   IconButton,
   Textarea,
+  Modal,
+  ModalOverlay,
+  ModalHeader,
+  ModalCloseButton,
+  ModalFooter,
+  useDisclosure,
+  ModalContent,
+  ModalBody,
 } from "@chakra-ui/react";
 import { BsStarFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
@@ -19,9 +27,11 @@ import { useNavigate } from "react-router-dom";
 import { display_age_range } from "../js/UserAPI";
 import { SettingsIcon } from "@chakra-ui/icons";
 import HorizonLine from "../component/HorizontalLine";
+import { terms } from "../assets/terms";
 
 export const MyPage = () => {
   const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [user, setUser] = useState();
   const [info_text, setInfoText] = useState();
   const [info_edit_mode, setInfoEditMode] = useState(false);
@@ -216,10 +226,11 @@ export const MyPage = () => {
           fontSize="18px"
           color="#000000"
           textAlign="center"
+          onClick={() => onOpen()}
         >
           이용약관
         </Text>
-        <span className="unsupported" />
+        <HorizonLine />
         <Text
           fontFamily="Inter"
           fontWeight="semibold"
@@ -229,7 +240,7 @@ export const MyPage = () => {
         >
           공지사항
         </Text>
-        <span className="unsupported" />
+        <HorizonLine />
         <Text
           fontFamily="Inter"
           fontWeight="semibold"
@@ -239,7 +250,7 @@ export const MyPage = () => {
         >
           문의하기
         </Text>
-        <span className="unsupported" />
+        <HorizonLine />
         <Text
           fontFamily="Inter"
           fontWeight="semibold"
@@ -249,7 +260,23 @@ export const MyPage = () => {
         >
           로그아웃
         </Text>
-        <span className="unsupported" />
+        <HorizonLine />
+
+        <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>이용약관</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text fontSize={"small"} whiteSpace={"pre-wrap"}>
+                {terms}
+              </Text>
+            </ModalBody>
+            <ModalFooter>
+              <Button onClick={onClose}>닫기</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Stack>
     </Stack>
   );
