@@ -6,17 +6,27 @@ import {
   Button,
   Box,
   Skeleton,
+  SkeletonText,
+  IconButton,
+  Textarea,
 } from "@chakra-ui/react";
-import { BsStarFill } from "react-icons/bs";
+import { MdChevronLeft, MdChatBubbleOutline } from "react-icons/md";
+import { BsStarFill, BsList, BsPerson } from "react-icons/bs";
+import { AiFillHome } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { auth } from "../db/firebase_config";
-import { get_doc_info } from "../js/Database";
+import { db_update, get_doc_info } from "../js/Database";
 import { TopHeader } from "../component/TopHeader";
 import { useNavigate } from "react-router-dom";
+import { display_age_range } from "../js/UserAPI";
+import { SettingsIcon } from "@chakra-ui/icons";
+import HorizonLine from "../component/HorizontalLine";
 
 export const MyPage = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState();
+  const [info_text, setInfoText] = useState();
+  const [info_edit_mode, setInfoEditMode] = useState(false);
   useEffect(() => {
     // 고객의 계정을 가지고 옵니다.
     auth.onAuthStateChanged(async function (user) {
@@ -62,16 +72,17 @@ export const MyPage = () => {
         alignSelf="stretch"
       >
         <Stack
-          paddingY="10px"
+          //   paddingY="10px"
+          mt={"20px"}
           direction="row"
           justify="flex-start"
-          align="center"
+          align="flex-start"
           spacing="10px"
           overflow="hidden"
           alignSelf="stretch"
         >
-          <Skeleton isLoaded={user}>
-            <Avatar name="" src=" " size="lg" />
+          <Skeleton borderRadius={"100px"} isLoaded={user}>
+            <Avatar src={user?.user_profile} size="lg" />
           </Skeleton>
           <Stack
             justify="flex-start"
@@ -90,58 +101,63 @@ export const MyPage = () => {
               height="19px"
               alignSelf="stretch"
             >
-              <Stack
-                direction="row"
-                justify="flex-start"
-                align="center"
-                spacing="5px"
-              >
-                <Text
-                  fontFamily="Inter"
-                  fontWeight="bold"
-                  fontSize="16px"
-                  color="#000000"
-                  textAlign="center"
+              <SkeletonText isLoaded={user}>
+                <Stack
+                  direction="row"
+                  justify="flex-start"
+                  align="center"
+                  spacing="5px"
                 >
-                  송*혁
-                </Text>
-                <Icon as={BsStarFill} />
-                <Text
-                  fontFamily="Inter"
-                  fontWeight="medium"
-                  fontSize="16px"
-                  color="#000000"
-                  textAlign="center"
-                >
-                  5.0
-                </Text>
-                <Text
-                  fontFamily="Inter"
-                  fontWeight="medium"
-                  fontSize="14px"
-                  color="#8C8C8C"
-                  textAlign="center"
-                >
-                  (169)
-                </Text>
-              </Stack>
+                  <Text
+                    fontFamily="Inter"
+                    fontWeight="bold"
+                    fontSize="16px"
+                    color="#000000"
+                    textAlign="center"
+                  >
+                    {user?.user_name.slice(0, -1) + "*"}
+                  </Text>
+                  <Icon as={BsStarFill} />
+                  <Text
+                    fontFamily="Inter"
+                    fontWeight="medium"
+                    fontSize="16px"
+                    color="#000000"
+                    textAlign="center"
+                  >
+                    5.0
+                  </Text>
+                  <Text
+                    fontFamily="Inter"
+                    fontWeight="medium"
+                    fontSize="14px"
+                    color="#8C8C8C"
+                    textAlign="center"
+                  >
+                    (169)
+                  </Text>
+                </Stack>
+              </SkeletonText>
               <Box />
             </Stack>
-            <Text
-              fontFamily="Inter"
-              lineHeight="1.42"
-              fontWeight="medium"
-              fontSize="12px"
-              color="#000000"
-              alignSelf="stretch"
-            >
-              나이 : 30~35세, 매칭 금액 : 2만원, 매칭 가능 동네 : 서울 성북구,
-              역삼동 좋아하는 취미: 테니스, 골프
-            </Text>
+            <SkeletonText isLoaded={user}>
+              <Text
+                fontFamily="Inter"
+                lineHeight="1.42"
+                fontWeight="medium"
+                fontSize="12px"
+                color="#000000"
+                alignSelf="stretch"
+              >
+                {`나이 : ${display_age_range(33)}, 매칭 금액 : ${
+                  user?.user_price
+                }만원, 매칭 가능 동네 : ${user?.user_place}`}
+              </Text>
+            </SkeletonText>
           </Stack>
-          <Button size="sm">수정하기</Button>
+          <IconButton variant={"unstyled"} icon={<SettingsIcon />} size="sm" />
         </Stack>
-        <span className="unsupported" />
+        <HorizonLine />
         <Stack
           direction="row"
           justify="space-between"
@@ -157,23 +173,45 @@ export const MyPage = () => {
           >
             프로필 소개말
           </Text>
-          <Button size="sm">수정하기</Button>
+          <Button
+            size="sm"
+            onClick={async () => {
+              setInfoEditMode(!info_edit_mode);
+              if (info_edit_mode) {
+                // 문서 업데이트
+                console.log(user.user_id);
+                await db_update("user", user.user_id, { user_info: info_text });
+              }
+            }}
+          >
+            수정하기
+          </Button>
         </Stack>
-        <Text
-          fontFamily="Inter"
-          lineHeight="1.5"
-          fontWeight="medium"
-          fontSize="16px"
-          color="#4E4E4E"
-          alignSelf="stretch"
-        >
-          안녕하세요! 저는 성북구 역삼동에 거주하는 30~35세의 남성입니다.
-          테니스와 골프를 즐기며, 스포츠를 통해 삶의 균형을 찾고 있습니다.
-          사람들과의 소통을 즐기며 새로운 친구들을 만나고 싶어하는 성격이에요.
-          함께 즐길 취미나 이야기가 있다면 언제든지 말씀해주세요! 즐거운 인연이
-          되길 기대하고 있습니다. 😊
-        </Text>
-        <span className="unsupported" />
+        {info_edit_mode ? (
+          <Textarea
+            defaultValue={user?.user_info}
+            placeholder="소개글을 작성해주세요."
+            onChange={(e) => setInfoText(e.target.value)}
+          />
+        ) : (
+          <SkeletonText isLoaded={user}>
+            <Text
+              fontFamily="Inter"
+              lineHeight="1.5"
+              fontWeight="medium"
+              fontSize="16px"
+              color={user?.user_info ? "#4E4E4E" : "#8c8c8c"}
+              alignSelf="stretch"
+            >
+              {info_text
+                ? info_text
+                : user?.user_info
+                ? user?.user_info
+                : "소개글을 작성해주세요."}
+            </Text>
+          </SkeletonText>
+        )}
+        <HorizonLine />
         <Text
           fontFamily="Inter"
           fontWeight="semibold"

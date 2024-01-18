@@ -149,3 +149,21 @@ export function del_tag(array, tag) {
   const tag_list = array.filter((item) => item !== tag);
   return tag_list;
 }
+
+/** 다음은 나이를 5살 단위의 범위로 표시
+ * @function display_age_range
+ * @param {int} age 실제 나이
+ * @returns {string} 나이에 대해 5살 단위의 범위를 계산하고 해당 범위를 리턴합니다.
+ */
+export function display_age_range(age) {
+  // 나이를 5로 나누어 몫을 구하고 다시 5를 곱해 5의 배수로 만듭니다.
+  var ageRangeStart = Math.floor(age / 5) * 5;
+  var ageRangeEnd = ageRangeStart + 4;
+
+  // 나이 범위 출력
+  console.log(
+    "나이 범위: " + ageRangeStart + "세부터 " + ageRangeEnd + "세까지"
+  );
+
+  return ageRangeStart + " ~ " + ageRangeEnd + "세";
+}

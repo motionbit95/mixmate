@@ -50,6 +50,10 @@ export const get_doc_info = async (col, property, value) => {
   const q = query(collection(db, col), where(property, "==", value));
   const querySnapshot = await getDocs(q);
 
-  if (querySnapshot.docs.length > 0) return querySnapshot.docs[0].data();
+  if (querySnapshot.docs.length > 0)
+    return {
+      ...querySnapshot.docs[0].data(),
+      user_id: querySnapshot.docs[0].id,
+    };
   else return null;
 };

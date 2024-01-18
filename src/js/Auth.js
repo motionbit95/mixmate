@@ -8,7 +8,6 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../db/firebase_config";
-import { on } from "events";
 
 /** 비밀번호 기반 계정 만들기
  * @function auth_signup_password
