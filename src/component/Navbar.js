@@ -54,7 +54,7 @@ export const Navbar = () => {
             overflow="hidden"
             flex="1"
             onClick={() => {
-              window.location.replace("/home");
+              window.location.replace("/details");
             }}
           >
             <Icon as={BsList} color={page === 1 ? "#3182CE" : "black"} />

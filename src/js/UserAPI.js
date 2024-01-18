@@ -7,6 +7,7 @@ import { db_update } from "./Database";
  */
 export function get_page_num() {
   if (window.location.pathname.includes("home")) return 0;
+  if (window.location.pathname.includes("details")) return 1;
   if (window.location.pathname.includes("mypage")) return 3;
 }
 
@@ -189,10 +190,6 @@ export function get_current_location(user_info, doc_id) {
         await db_update("user", doc_id, {
           user_location: { latitude: latitude, longitude: longitude },
         });
-
-        console.log(user_info);
-
-        console.log("현재 위치의 좌표: " + latitude + ", " + longitude);
       },
       // 실패 시 호출되는 콜백 함수
       function (error) {

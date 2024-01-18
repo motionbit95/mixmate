@@ -11,6 +11,7 @@ import { Payment } from "./pages/Payment";
 import { Information } from "./pages/Information";
 import { MyPage } from "./pages/MyPage";
 import { Navbar } from "./component/Navbar";
+import { Details } from "./pages/Details";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/info" element={<Information />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/matching" element={<Matching />} />
+          <Route path="/details" element={<Details />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/mypage" element={<MyPage />} />
         </Routes>
