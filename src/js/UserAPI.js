@@ -1,3 +1,6 @@
+import { auth } from "../db/firebase_config";
+import { db_update } from "./Database";
+
 /** 선택된 페이지 번호를 반환합니다.
  * @function get_page_num
  * @returns {number} 페이지 번호
@@ -82,13 +85,13 @@ export function step2_confirm_blank(
   user_bank,
   user_gender
 ) {
-  console.log(
-    user_price,
-    user_place.length,
-    user_food.length,
-    user_bank.bank_name,
-    user_gender
-  );
+  // console.log(
+  //   user_price,
+  //   user_place.length,
+  //   user_food.length,
+  //   user_bank.bank_name,
+  //   user_gender
+  // );
   if (user_price === "") return "식사권 금액을 설정해주세요.";
   if (user_place.length === 0) return "식사 가능 동네를 1개 이상 선택해주세요.";
   if (user_food.length === 0) return "좋아하는 음식을 1개 이상 선택해주세요.";
@@ -116,7 +119,7 @@ export function add_place_tag(array, city, district, town) {
     tag_list.push(str_place);
   }
 
-  console.log(tag_list);
+  // console.log(tag_list);
   return tag_list;
 }
 
@@ -133,7 +136,7 @@ export function add_food_tag(array, food) {
     tag_list.push(food);
   }
 
-  console.log(tag_list);
+  // console.log(tag_list);
   return tag_list;
 }
 
@@ -144,7 +147,7 @@ export function add_food_tag(array, food) {
  * @returns {array} 태그 항목이 삭제 된 배열 반환
  */
 export function del_tag(array, tag) {
-  console.log(array, tag);
+  // console.log(array, tag);
   // 배열에서 특정 항목을 제외한 새로운 배열을 생성
   const tag_list = array.filter((item) => item !== tag);
   return tag_list;
@@ -160,10 +163,45 @@ export function display_age_range(age) {
   var ageRangeStart = Math.floor(age / 5) * 5;
   var ageRangeEnd = ageRangeStart + 4;
 
-  // 나이 범위 출력
-  console.log(
-    "나이 범위: " + ageRangeStart + "세부터 " + ageRangeEnd + "세까지"
-  );
-
   return ageRangeStart + " ~ " + ageRangeEnd + "세";
+}
+
+/** 위치 좌표를 가져오는 함수
+ * @function get_current_location
+ * @returns {object} 위치 좌표를 반환합니다. latitude(위도), longitude(경도)
+ */
+export function get_current_location() {
+  // 위치 정보를 지원하는지 확인
+  if (navigator.geolocation) {
+    // 위치 정보 요청 옵션 설정 (maximumAge: 캐시된 위치 정보의 유효 기간, 여기서는 5분)
+    var options = {
+      maximumAge: 7 * 24 * 60 * 60 * 1000, // 일주일 밀리초로 변환
+    };
+
+    // 위치 정보를 요청
+    navigator.geolocation.getCurrentPosition(
+      // 성공 시 호출되는 콜백 함수
+      async function (position) {
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+
+        console.log(
+          auth.currentUser,
+          "현재 위치의 좌표: " + latitude + ", " + longitude
+        );
+      },
+      // 실패 시 호출되는 콜백 함수
+      function (error) {
+        console.error(
+          "위치 정보를 가져오는 데 실패했습니다. 오류 코드: " +
+            error.code +
+            ", 메시지: " +
+            error.message
+        );
+      },
+      options // 위치 정보 요청 옵션 전달
+    );
+  } else {
+    console.error("현재 브라우저에서 위치 정보를 지원하지 않습니다.");
+  }
 }

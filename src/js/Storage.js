@@ -7,7 +7,6 @@ import { storage } from "../db/firebase_config";
  * @returns {string} 이미지 호스팅 완료 된 링크
  */
 export const upload_image = async (e) => {
-  console.log(e.target.files[0]);
   const uploaded_file = await uploadBytes(
     ref(
       storage,

@@ -19,16 +19,8 @@ export const Login = () => {
   });
 
   function login() {
-    // console.log(account.id, account.password);
-    // if (account.id === "admin" || account.password === "test0000") {
-    //   navigate("/home");
-    // } else {
-    //   alert("로그인실패! 계정을 확인하세요");
-    //   setAccount({ id: "", password: "" });
-    // }
-
     if (auth_login_password(account.id, account.password)) {
-      console.log("로그인 성공!");
+      // console.log("로그인 성공!");
       auth_set_local();
       navigate("/home");
     } else {

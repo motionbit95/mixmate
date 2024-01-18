@@ -74,25 +74,30 @@ export const SignUp = () => {
 
   // 본인인증 버튼 눌렀을 때 수행
   const onClickApprove = async () => {
-    if (!isValid.state) return;
-    // 입력 정보로 파이어베이스에 저장
-    let docId = await db_add("user", formData);
-    console.log(docId);
-
+    if (isValid.state) return;
     // 파이어베이스 Authentication에 계정 추가
     let ret = await auth_signup_password(
       formData.user_email,
       formData.user_password
     );
-    if (!ret) {
-      alert("문제가 발생했습니다. 다시 시도해주세요.");
-      return;
+
+    console.log(ret);
+
+    setValid({
+      state: ret === "",
+      message: ret,
+    });
+
+    if (ret === "") {
+      // 입력 정보로 파이어베이스에 저장
+      let docId = await db_add("user", formData);
+      console.log(docId);
+
+      //# 여기에 휴대폰 인증(API) 추가
+
+      // 페이지 이동
+      navigate("/info", { state: { user_id: docId } });
     }
-
-    //# 여기에 휴대폰 인증(API) 추가
-
-    // 페이지 이동
-    navigate("/info", { state: { user_id: docId } });
   };
 
   return (
@@ -183,9 +188,9 @@ export const SignUp = () => {
                 placeholder="아이디"
                 height="40px"
                 alignSelf="stretch"
-                onChange={(e) =>
-                  setFormData({ ...formData, user_email: e.target.value })
-                }
+                onChange={(e) => {
+                  setFormData({ ...formData, user_email: e.target.value });
+                }}
               />
               <Input
                 type="password"
@@ -227,7 +232,7 @@ export const SignUp = () => {
                   }
                 }}
               />
-              {isValid.state ? null : (
+              {isValid.message === "" ? null : (
                 <Alert fontSize={"small"} status="error">
                   <AlertIcon />
                   <AlertDescription>{isValid.message}</AlertDescription>
