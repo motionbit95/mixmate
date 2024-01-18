@@ -1,19 +1,27 @@
-# Database
+# Javascript API
+
+## Auth
+
+| 구분      | 상세                                                                                           |
+| --------- | ---------------------------------------------------------------------------------------------- |
+| 계정 생성 | [auth_signup_password](https://motionbit95.github.io/mixmate/global.html#auth_signup_password) |
+
+## Database
 
 | 구분      | 상세                                                                     |
 | --------- | ------------------------------------------------------------------------ |
 | 정보 생성 | [db_add](https://motionbit95.github.io/mixmate/global.html#db_add)       |
 | 정보 수정 | [db_update](https://motionbit95.github.io/mixmate/global.html#db_update) |
 
-# Storage
+## Storage
 
 | 구분          | 상세                                                                           |
 | ------------- | ------------------------------------------------------------------------------ |
 | 이미지 업로드 | [upload_image](https://motionbit95.github.io/mixmate/global.html#upload_image) |
 
-# UserAPI(회원관련 API)
+## UserAPI(회원관련 API)
 
-## 회원가입
+### 회원가입
 
 | 구분                       | 상세                                                                                           |
 | -------------------------- | ---------------------------------------------------------------------------------------------- |

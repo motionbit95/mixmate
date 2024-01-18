@@ -17,9 +17,8 @@ export const Login = () => {
     password: "",
   });
 
-  function checkAccount() {
-    // console.log(account.id, account.password);
-
+  function login() {
+    console.log(account.id, account.password);
     if (account.id === "admin" || account.password === "test0000") {
       navigate("/home");
     } else {
@@ -105,7 +104,7 @@ export const Login = () => {
               width="313px"
               height="40px"
               maxWidth="100%"
-              onClick={() => checkAccount()}
+              onClick={() => login()}
             >
               로그인하기
             </Button>

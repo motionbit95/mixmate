@@ -23,6 +23,7 @@ import {
   compare_password,
   step1_confirm_blank,
 } from "../js/UserAPI";
+import { auth_signup_password } from "../js/Auth";
 
 export const SignUp = () => {
   const navigate = useNavigate();
@@ -79,6 +80,16 @@ export const SignUp = () => {
     // 입력 정보로 파이어베이스에 저장
     let docId = await db_add("user", formData);
     console.log(docId);
+
+    // 파이어베이스 Authentication에 계정 추가
+    let ret = await auth_signup_password(
+      formData.user_email,
+      formData.user_password
+    );
+    if (!ret) {
+      alert("문제가 발생했습니다. 다시 시도해주세요.");
+      return;
+    }
 
     //# 여기에 휴대폰 인증(API) 추가
 
