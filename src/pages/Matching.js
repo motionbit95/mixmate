@@ -166,7 +166,9 @@ export const Matching = () => {
                 </Tab>
               </TabList>
               <TabPanels>
-                <TabPanel>
+                <TabPanel
+                px={0}
+                >
                   <Stack
                     // padding="10px"
                     justify="flex-start"
@@ -240,7 +242,9 @@ export const Matching = () => {
                     </Button>
                   </Stack>
                 </TabPanel>
-                <TabPanel>
+                <TabPanel
+                px={0}
+                >
                   <Stack
                     // padding="10px"
                     justify="flex-start"

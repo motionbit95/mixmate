@@ -137,7 +137,8 @@ export const Home = () => {
           </Container>
         </Stack>
         <Stack
-          padding="10px"
+          // padding="10px"
+          pt={'10px'}
           justify="flex-start"
           align="flex-start"
           spacing="20px"

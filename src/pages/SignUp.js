@@ -126,8 +126,8 @@ export const SignUp = () => {
         align="center"
         spacing="0px"
         overflow="hidden"
-        width="393px"
-        height="852px"
+        // width="393px"
+        height="100vh"
         maxWidth="100%"
         background="#FFFFFF"
       >
