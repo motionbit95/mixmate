@@ -7,17 +7,13 @@ import {
   Container,
   Center,
   Image,
-  Wrap,
-  Flex,
   HStack,
 } from "@chakra-ui/react";
 import { MdChevronLeft, MdChatBubbleOutline } from "react-icons/md";
-import { AiOutlineCalendar, AiFillHome } from "react-icons/ai";
+import { AiOutlineCalendar } from "react-icons/ai";
 import { HiOutlineTicket } from "react-icons/hi";
-import { BsList, BsPerson } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import HorizonLine from "../component/HorizontalLine";
-import { Navbar } from "../component/Navbar";
 
 export const Payment = () => {
   const navigate = useNavigate();

@@ -12,12 +12,10 @@ import {
   TabList,
   TabPanel,
 } from "@chakra-ui/react";
-import { MdChevronLeft, MdChatBubbleOutline } from "react-icons/md";
-import { BsStarFill, BsList, BsPerson } from "react-icons/bs";
-import { AiFillHome } from "react-icons/ai";
+import { MdChevronLeft } from "react-icons/md";
+import { BsStarFill } from "react-icons/bs";
 import HorizonLine from "../component/HorizontalLine";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Navbar } from "../component/Navbar";
 
 export const Matching = () => {
   const navigate = useNavigate();

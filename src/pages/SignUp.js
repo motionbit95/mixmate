@@ -8,10 +8,8 @@ import {
   Box,
   CircularProgress,
   Center,
-  Text,
   Alert,
   AlertIcon,
-  AlertTitle,
   AlertDescription,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
@@ -197,7 +195,7 @@ export const SignUp = () => {
                 onChange={(e) => {
                   let ret = check_password_valid(e.target.value);
 
-                  if (ret == "") {
+                  if (ret === "") {
                     setFormData({ ...formData, user_password: e.target.value });
                   }
 

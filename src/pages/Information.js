@@ -6,7 +6,6 @@ import {
   TagLabel,
   TagCloseButton,
   Input,
-  Box,
   Button,
   Checkbox,
   IconButton,
@@ -26,7 +25,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   add_food_tag,
   add_place_tag,
-  add_tag,
   del_tag,
   step2_confirm_blank,
 } from "../js/UserAPI";

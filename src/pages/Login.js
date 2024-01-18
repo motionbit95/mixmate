@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth_login_password, auth_set_local, useAuth } from "../js/Auth";
+import { auth_login_password, auth_set_local } from "../js/Auth";
 
 export const Login = () => {
   const navigate = useNavigate();

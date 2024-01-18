@@ -8,8 +8,6 @@ import {
   Avatar,
   Center,
   Container,
-  Flex,
-  calc,
   Tabs,
   TabList,
   Tab,
@@ -21,15 +19,9 @@ import {
   BsBell,
   BsPeopleFill,
   BsStarFill,
-  BsList,
-  BsPerson,
   BsPersonFill,
 } from "react-icons/bs";
-import { AiFillHome } from "react-icons/ai";
-import { MdChatBubbleOutline } from "react-icons/md";
-import HorizonLine from "../component/HorizontalLine";
 import { useNavigate } from "react-router-dom";
-import { Navbar } from "../component/Navbar";
 
 export const Home = () => {
   const navigate = useNavigate();

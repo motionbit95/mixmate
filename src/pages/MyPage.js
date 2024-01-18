@@ -7,10 +7,7 @@ import {
   Box,
   Skeleton,
 } from "@chakra-ui/react";
-import { MdChevronLeft, MdChatBubbleOutline } from "react-icons/md";
-import { BsStarFill, BsList, BsPerson } from "react-icons/bs";
-import { AiFillHome } from "react-icons/ai";
-import { Navbar } from "../component/Navbar";
+import { BsStarFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { auth } from "../db/firebase_config";
 import { get_doc_info } from "../js/Database";

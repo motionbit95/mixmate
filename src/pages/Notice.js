@@ -1,15 +1,8 @@
-import { Stack, Icon, Text, Container, Box } from "@chakra-ui/react";
-import { MdChat, MdChevronLeft } from "react-icons/md";
-import { AiFillHome } from "react-icons/ai";
-import { MdChatBubbleOutline } from "react-icons/md";
-import { BsList, BsPerson } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { Stack, Text, Container } from "@chakra-ui/react";
 import HorizonLine from "../component/HorizontalLine";
-import { Navbar } from "../component/Navbar";
 import { TopHeader } from "../component/TopHeader";
 
 export const Notice = () => {
-  const navigate = useNavigate();
   return (
     <Container py="50px">
       <Stack
