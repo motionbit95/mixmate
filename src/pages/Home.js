@@ -15,15 +15,49 @@ import {
   TabPanels,
   TabPanel,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BsBell, BsPeopleFill, BsStarFill, BsPersonFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { get_current_location } from "../js/UserAPI";
 import { auth } from "../db/firebase_config";
 import { get_doc_info } from "../js/Database";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
 
 export const Home = () => {
   const navigate = useNavigate();
+
+  const imageData = [
+    {
+      label: "Image 1",
+      alt: "image1",
+      url: require("../assets/iOS 16 Wallpaper.png"),
+    },
+
+    {
+      label: "Image 2",
+      alt: "image2",
+      url: require("../assets/iOS 16 Wallpaper.png"),
+    },
+
+    {
+      label: "Image 3",
+      alt: "image3",
+      url: require("../assets/iOS 16 Wallpaper.png"),
+    },
+
+    {
+      label: "Image 4",
+      alt: "image4",
+      url: require("../assets/iOS 16 Wallpaper.png"),
+    },
+
+    {
+      label: "Image 5",
+      alt: "image5",
+      url: require("../assets/iOS 16 Wallpaper.png"),
+    },
+  ];
 
   const test_data_b = [
     {
@@ -83,6 +117,22 @@ export const Home = () => {
       get_current_location(user_info, user_info.doc_id);
     });
   });
+
+  const [currentIndex, setCurrentIndex] = useState();
+
+  function handleChange(index) {
+    setCurrentIndex(index);
+  }
+
+  const renderSlides = imageData.map((image) => (
+    <div key={image.alt}>
+      <img
+        src={image.url}
+        alt={image.alt}
+        style={{ height: "250px", borderRadius: "10px", objectFit: "cover" }}
+      />
+    </div>
+  ));
 
   return (
     <Container py={"50px"} px={0}>
@@ -147,7 +197,7 @@ export const Home = () => {
           overflow="hidden"
           alignSelf="stretch"
         >
-          <Stack
+          {/* <Stack
             padding="20px"
             borderRadius="10px"
             justify="space-between"
@@ -186,7 +236,17 @@ export const Home = () => {
                 1 / 3
               </Text>
             </Center>
-          </Stack>
+          </Stack> */}
+          <Carousel
+            showArrows={false}
+            autoPlay={true}
+            infiniteLoop={true}
+            showThumbs={false}
+            selectedItem={imageData[currentIndex]}
+            onChange={handleChange}
+          >
+            {renderSlides}
+          </Carousel>
           <Stack
             direction="row"
             justify="space-between"
