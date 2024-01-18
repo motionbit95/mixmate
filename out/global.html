@@ -29,7 +29,7 @@
 <nav >
     
     
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#add_food_tag">add_food_tag</a></li><li><a href="global.html#add_place_tag">add_place_tag</a></li><li><a href="global.html#check_password_valid">check_password_valid</a></li><li><a href="global.html#compare_password">compare_password</a></li><li><a href="global.html#db_add">db_add</a></li><li><a href="global.html#db_update">db_update</a></li><li><a href="global.html#del_tag">del_tag</a></li><li><a href="global.html#step1_confirm_blank">step1_confirm_blank</a></li><li><a href="global.html#step2_confirm_blank">step2_confirm_blank</a></li><li><a href="global.html#upload_image">upload_image</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#add_food_tag">add_food_tag</a></li><li><a href="global.html#add_place_tag">add_place_tag</a></li><li><a href="global.html#auth_login_password">auth_login_password</a></li><li><a href="global.html#auth_set_local">auth_set_local</a></li><li><a href="global.html#auth_set_session">auth_set_session</a></li><li><a href="global.html#auth_signup_password">auth_signup_password</a></li><li><a href="global.html#check_password_valid">check_password_valid</a></li><li><a href="global.html#compare_password">compare_password</a></li><li><a href="global.html#db_add">db_add</a></li><li><a href="global.html#db_update">db_update</a></li><li><a href="global.html#del_tag">del_tag</a></li><li><a href="global.html#display_age_range">display_age_range</a></li><li><a href="global.html#get_doc_info">get_doc_info</a></li><li><a href="global.html#get_page_num">get_page_num</a></li><li><a href="global.html#step1_confirm_blank">step1_confirm_blank</a></li><li><a href="global.html#step2_confirm_blank">step2_confirm_blank</a></li><li><a href="global.html#upload_image">upload_image</a></li></ul>
     
 </nav>
 
@@ -146,7 +146,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line114">line 114</a>
+        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line123">line 123</a>
     </li></ul></dd>
     
 
@@ -328,7 +328,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line94">line 94</a>
+        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line103">line 103</a>
     </li></ul></dd>
     
 
@@ -542,6 +542,540 @@
 
     
 
+    <h4 class="name" id="auth_login_password"><span class="type-signature"></span>auth_login_password<span class="signature">(email, password)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>이메일 주소와 비밀번호로 사용자 로그인</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Auth.js.html">Auth.js</a>, <a href="Auth.js.html#line34">line 34</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>email</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">유저 이메일</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>password</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">유저 패스워드</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    유저 uid
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="auth_set_local"><span class="type-signature"></span>auth_set_local<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>인증 상태 지속성 수정</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Auth.js.html">Auth.js</a>, <a href="Auth.js.html#line57">line 57</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="auth_set_session"><span class="type-signature"></span>auth_set_session<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>인증 상태 지속성 수정</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Auth.js.html">Auth.js</a>, <a href="Auth.js.html#line65">line 65</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="auth_signup_password"><span class="type-signature"></span>auth_signup_password<span class="signature">(email, password)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>비밀번호 기반 계정 만들기</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Auth.js.html">Auth.js</a>, <a href="Auth.js.html#line12">line 12</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>email</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">유저 이메일</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>password</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">유저 패스워드</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    계정 생성 성공 여부
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id="check_password_valid"><span class="type-signature"></span>check_password_valid<span class="signature">(user_password)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
@@ -558,7 +1092,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line1">line 1</a>
+        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -716,7 +1250,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line23">line 23</a>
+        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line32">line 32</a>
     </li></ul></dd>
     
 
@@ -898,7 +1432,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Database.js.html">Database.js</a>, <a href="Database.js.html#line11">line 11</a>
+        <a href="Database.js.html">Database.js</a>, <a href="Database.js.html#line13">line 13</a>
     </li></ul></dd>
     
 
@@ -1080,7 +1614,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Database.js.html">Database.js</a>, <a href="Database.js.html#line28">line 28</a>
+        <a href="Database.js.html">Database.js</a>, <a href="Database.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -1263,7 +1797,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line131">line 131</a>
+        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line140">line 140</a>
     </li></ul></dd>
     
 
@@ -1429,6 +1963,478 @@
 
     
 
+    <h4 class="name" id="display_age_range"><span class="type-signature"></span>display_age_range<span class="signature">(age)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>다음은 나이를 5살 단위의 범위로 표시</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line153">line 153</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>age</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">실제 나이</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    나이에 대해 5살 단위의 범위를 계산하고 해당 범위를 리턴합니다.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="get_doc_info"><span class="type-signature"></span>get_doc_info<span class="signature">(col, property, value)</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>컬렉션에서 여러 문서 가져오기</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Database.js.html">Database.js</a>, <a href="Database.js.html#line41">line 41</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>col</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">collection 이름</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>property</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">검색 속성</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">검색 값</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    property 값이 value 와 일치하는 데이터 반환
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="get_page_num"><span class="type-signature"></span>get_page_num<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>선택된 페이지 번호를 반환합니다.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    페이지 번호
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id="step1_confirm_blank"><span class="type-signature"></span>step1_confirm_blank<span class="signature">(user_profile, user_name, user_email, user_password, confirm_password)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
@@ -1445,7 +2451,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line34">line 34</a>
+        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line43">line 43</a>
     </li></ul></dd>
     
 
@@ -1699,7 +2705,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line60">line 60</a>
+        <a href="UserAPI.js.html">UserAPI.js</a>, <a href="UserAPI.js.html#line69">line 69</a>
     </li></ul></dd>
     
 
@@ -2110,7 +3116,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Thu Jan 18 2024 01:34:21 GMT+0900 (GMT+09:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Thu Jan 18 2024 18:26:43 GMT+0900 (GMT+09:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
