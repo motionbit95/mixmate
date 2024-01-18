@@ -22,7 +22,7 @@ export const db_add = async (col, data) => {
     ...data,
     timestamp: serverTimestamp(),
   });
-  console.log("doc add! ", docRef.id);
+  // console.log("doc add! ", docRef.id);
 
   return docRef.id;
 };
@@ -46,7 +46,6 @@ export const db_update = async (col, doc_id, data) => {
  * @return {object} property 값이 value 와 일치하는 데이터 반환
  */
 export const get_doc_info = async (col, property, value) => {
-  console.log(col, property, value);
   const q = query(collection(db, col), where(property, "==", value));
   const querySnapshot = await getDocs(q);
 

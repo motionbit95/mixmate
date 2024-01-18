@@ -13,22 +13,26 @@ import { auth } from "../db/firebase_config";
  * @function auth_signup_password
  * @param {string} email 유저 이메일
  * @param {string} password 유저 패스워드
- * @returns {boolean} 계정 생성 성공 여부
+ * @returns {string} 에러 메세지
  */
 export const auth_signup_password = async (email, password) => {
-  createUserWithEmailAndPassword(auth, email, password)
+  let err_msg = "";
+  await createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
-      return true;
       // ...
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      return false;
+
+      if (errorMessage.includes("already-in-use"))
+        err_msg = "이미 존재하는 이메일입니다.";
       // ..
     });
+
+  return err_msg;
 };
 
 /** 이메일 주소와 비밀번호로 사용자 로그인

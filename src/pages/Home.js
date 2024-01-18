@@ -15,13 +15,10 @@ import {
   TabPanels,
   TabPanel,
 } from "@chakra-ui/react";
-import {
-  BsBell,
-  BsPeopleFill,
-  BsStarFill,
-  BsPersonFill,
-} from "react-icons/bs";
+import { useEffect } from "react";
+import { BsBell, BsPeopleFill, BsStarFill, BsPersonFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { get_current_location } from "../js/UserAPI";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -75,6 +72,16 @@ export const Home = () => {
       info: "심리학 공부하고 있는데 심리학 관련 밥 친구 구합니다! 심리마케팅 및 인문학, 심리학 관심 있으신 분들 식사권 신청 부탁드려요 식사시간은 조율 가능해요!",
     },
   ];
+
+  useEffect(() => {
+    console.log("홈");
+
+    // 여기서 위치 서비스 동의 확인
+
+    // 위치 가지고 와서 사용자 정보에 업데이트
+    get_current_location();
+  });
+
   return (
     <Container py={"50px"} px={0}>
       <Stack
@@ -131,7 +138,7 @@ export const Home = () => {
         </Stack>
         <Stack
           // padding="10px"
-          pt={'10px'}
+          pt={"10px"}
           justify="flex-start"
           align="flex-start"
           spacing="20px"
