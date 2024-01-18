@@ -273,7 +273,7 @@ export const MyPage = () => {
               </Text>
             </ModalBody>
             <ModalFooter>
-              <Button onClick={onClose}>닫기</Button>
+              <Button onClick={onClose}></Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
