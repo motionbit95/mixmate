@@ -168,9 +168,10 @@ export function display_age_range(age) {
 
 /** 위치 좌표를 가져오는 함수
  * @function get_current_location
- * @returns {object} 위치 좌표를 반환합니다. latitude(위도), longitude(경도)
+ * @param {object} user_info 유저 정보
+ * @param {string} doc_id 문서 id
  */
-export function get_current_location() {
+export function get_current_location(user_info, doc_id) {
   // 위치 정보를 지원하는지 확인
   if (navigator.geolocation) {
     // 위치 정보 요청 옵션 설정 (maximumAge: 캐시된 위치 정보의 유효 기간, 여기서는 5분)
@@ -185,10 +186,13 @@ export function get_current_location() {
         var latitude = position.coords.latitude;
         var longitude = position.coords.longitude;
 
-        console.log(
-          auth.currentUser,
-          "현재 위치의 좌표: " + latitude + ", " + longitude
-        );
+        await db_update("user", doc_id, {
+          user_location: { latitude: latitude, longitude: longitude },
+        });
+
+        console.log(user_info);
+
+        console.log("현재 위치의 좌표: " + latitude + ", " + longitude);
       },
       // 실패 시 호출되는 콜백 함수
       function (error) {

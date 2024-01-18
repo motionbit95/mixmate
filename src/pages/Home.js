@@ -19,6 +19,8 @@ import { useEffect } from "react";
 import { BsBell, BsPeopleFill, BsStarFill, BsPersonFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { get_current_location } from "../js/UserAPI";
+import { auth } from "../db/firebase_config";
+import { get_doc_info } from "../js/Database";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -74,12 +76,12 @@ export const Home = () => {
   ];
 
   useEffect(() => {
-    console.log("홈");
-
-    // 여기서 위치 서비스 동의 확인
-
-    // 위치 가지고 와서 사용자 정보에 업데이트
-    get_current_location();
+    // 고객의 계정을 가지고 옵니다.
+    auth.onAuthStateChanged(async function (user) {
+      let user_info = await get_doc_info("user", "user_id", user.uid);
+      // 위치 가지고 와서 사용자 정보에 업데이트
+      get_current_location(user_info, user_info.doc_id);
+    });
   });
 
   return (

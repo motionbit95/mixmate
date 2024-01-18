@@ -15,13 +15,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import { upload_image } from "../js/Storage";
 import { useRef, useState } from "react";
-import { db_add } from "../js/Database";
+import { db_add, db_update } from "../js/Database";
 import {
   check_password_valid,
   compare_password,
   step1_confirm_blank,
 } from "../js/UserAPI";
-import { auth_signup_password } from "../js/Auth";
+import { auth_login_password, auth_signup_password } from "../js/Auth";
 
 export const SignUp = () => {
   const navigate = useNavigate();
@@ -74,7 +74,8 @@ export const SignUp = () => {
 
   // 본인인증 버튼 눌렀을 때 수행
   const onClickApprove = async () => {
-    if (isValid.state) return;
+    if (!isValid.state) return;
+    setLoading(true);
     // 파이어베이스 Authentication에 계정 추가
     let ret = await auth_signup_password(
       formData.user_email,
@@ -91,7 +92,19 @@ export const SignUp = () => {
     if (ret === "") {
       // 입력 정보로 파이어베이스에 저장
       let docId = await db_add("user", formData);
-      console.log(docId);
+      // console.log("doc", docId);
+
+      //# 로그인 처리
+      let uid = await auth_login_password(
+        formData.user_email,
+        formData.user_password
+      );
+
+      // 사용자의 uid 정보를 user_id로 저장
+      // console.log("uid", uid);
+      await db_update("user", docId, { user_id: uid });
+
+      setLoading(false);
 
       //# 여기에 휴대폰 인증(API) 추가
 

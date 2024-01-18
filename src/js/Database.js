@@ -34,7 +34,7 @@ export const db_add = async (col, data) => {
  * @param {object} data 추가할 데이터
  */
 export const db_update = async (col, doc_id, data) => {
-  // Add a new document in collection "cities"
+  // Add a new document in collection
   await updateDoc(doc(db, col, doc_id), data);
 };
 
@@ -52,7 +52,7 @@ export const get_doc_info = async (col, property, value) => {
   if (querySnapshot.docs.length > 0)
     return {
       ...querySnapshot.docs[0].data(),
-      user_id: querySnapshot.docs[0].id,
+      doc_id: querySnapshot.docs[0].id,
     };
   else return null;
 };
