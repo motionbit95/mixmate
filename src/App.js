@@ -18,8 +18,8 @@ function App() {
     <Container maxW={"container-sm"}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/info" element={<Information />} />
           <Route path="/notice" element={<Notice />} />

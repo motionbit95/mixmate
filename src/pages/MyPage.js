@@ -47,7 +47,7 @@ export const MyPage = () => {
       } else {
         // No user is signed in.
         // 로그인 페이지로 이동
-        navigate("/");
+        navigate("/login");
       }
     });
   });

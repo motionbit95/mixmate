@@ -868,7 +868,7 @@ export const Information = () => {
                   await db_update("user", user_id, formData);
 
                   // 로그인 화면으로 이동
-                  navigate("/");
+                  navigate("/login");
                 }
               }}
             >

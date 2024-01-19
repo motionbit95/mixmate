@@ -30,7 +30,7 @@ export const Navbar = () => {
             overflow="hidden"
             flex="1"
             onClick={() => {
-              window.location.replace("/home");
+              window.location.replace("/");
             }}
           >
             <Icon
@@ -75,7 +75,7 @@ export const Navbar = () => {
             overflow="hidden"
             flex="1"
             onClick={() => {
-              window.location.replace("/home");
+              window.location.replace("/");
             }}
           >
             <Icon
