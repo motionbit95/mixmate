@@ -19,9 +19,11 @@ export const Login = () => {
     password: "",
   });
 
-  function login() {
-    if (auth_login_password(account.id, account.password)) {
-      console.log("로그인 성공! : ", auth.currentUser);
+  async function login() {
+    let login_uid = await auth_login_password(account.id, account.password);
+    // console.log(login_uid);
+    if (login_uid) {
+      // console.log("로그인 성공! : ", auth.currentUser);
       // auth_set_local();
       navigate("/home");
     } else {

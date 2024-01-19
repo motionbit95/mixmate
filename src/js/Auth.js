@@ -43,22 +43,21 @@ export const auth_signup_password = async (email, password) => {
  * @param {string} password 유저 패스워드
  * @returns {string} 유저 uid
  */
-export const auth_login_password = async (doc_id, email, password) => {
+export const auth_login_password = async (email, password) => {
   let uid = "";
   await signInWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
       // Signed in
       const user = userCredential.user;
       uid = user.uid;
-      console.log("login : ", uid);
-
-      // 사용자 계정 상태 변경
-      await db_update("user", doc_id, { user_id: uid });
+      // console.log("login : ", uid);
       // ...
     })
     .catch(async (error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
+
+      console.log(errorMessage);
     });
 
   return uid;
