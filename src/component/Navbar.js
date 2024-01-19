@@ -75,7 +75,7 @@ export const Navbar = () => {
             overflow="hidden"
             flex="1"
             onClick={() => {
-              window.location.replace("/");
+              window.location.replace("/chat");
             }}
           >
             <Icon
