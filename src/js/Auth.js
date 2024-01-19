@@ -8,6 +8,7 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../db/firebase_config";
+import { db_update } from "./Database";
 
 /** 비밀번호 기반 계정 만들기
  * @function auth_signup_password
@@ -37,17 +38,22 @@ export const auth_signup_password = async (email, password) => {
 
 /** 이메일 주소와 비밀번호로 사용자 로그인
  * @function auth_login_password
+ * @param {string} doc_id 문서 번호
  * @param {string} email 유저 이메일
  * @param {string} password 유저 패스워드
  * @returns {string} 유저 uid
  */
-export const auth_login_password = async (email, password) => {
+export const auth_login_password = async (doc_id, email, password) => {
   let uid = "";
   await signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
+    .then(async (userCredential) => {
       // Signed in
       const user = userCredential.user;
       uid = user.uid;
+      console.log("login : ", uid);
+
+      // 사용자 계정 상태 변경
+      await db_update("user", doc_id, { user_id: uid });
       // ...
     })
     .catch((error) => {

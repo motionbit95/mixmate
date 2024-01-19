@@ -25,12 +25,59 @@ import {
   ModalBody,
 } from "@chakra-ui/react";
 import { MdChevronLeft } from "react-icons/md";
-import { BsStarFill } from "react-icons/bs";
+import { BsFillStarFill, BsStarFill } from "react-icons/bs";
 import { TopHeader } from "../component/TopHeader";
 import HorizonLine from "../component/HorizontalLine";
 
 export const Details = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  function ReviewContent() {
+    return (
+      <Stack
+        paddingX="30px"
+        justify="flex-start"
+        align="center"
+        spacing="40px"
+        width="393px"
+        maxWidth="100%"
+      >
+        <Text
+          fontFamily="Apple SD Gothic Neo"
+          lineHeight="1.31"
+          fontWeight="semibold"
+          fontSize="16px"
+          letterSpacing="-0.32px"
+          color="#000000"
+          textAlign="center"
+        >
+          후기 평점을 남겨주세요!
+        </Text>
+        <Box>
+          <Icon as={BsFillStarFill} />
+          <Icon as={BsFillStarFill} />
+          <Icon as={BsFillStarFill} />
+          <Icon as={BsFillStarFill} />
+          <Icon as={BsFillStarFill} />
+        </Box>
+        <Stack
+          borderRadius="6px"
+          borderColor="gray.200"
+          borderStartWidth="1px"
+          borderEndWidth="1px"
+          borderTopWidth="1px"
+          borderBottomWidth="1px"
+          width="320px"
+          height="219px"
+          maxWidth="100%"
+          background="white"
+        />
+        <Button size="sm" colorScheme="blue" height="32px" alignSelf="stretch">
+          후기작성하기
+        </Button>
+      </Stack>
+    );
+  }
   return (
     <Container py={"50px"}>
       <Stack

@@ -112,6 +112,7 @@ export const Home = () => {
   useEffect(() => {
     // 고객의 계정을 가지고 옵니다.
     auth.onAuthStateChanged(async function (user) {
+      console.log(user.uid);
       let user_info = await get_doc_info("user", "user_id", user.uid);
       // 위치 가지고 와서 사용자 정보에 업데이트
       get_current_location(user_info, user_info.doc_id);
