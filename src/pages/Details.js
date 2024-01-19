@@ -46,7 +46,6 @@ export const Details = () => {
         maxWidth="100%"
       >
         <Text
-          fontFamily="Apple SD Gothic Neo"
           lineHeight="1.31"
           fontWeight="semibold"
           fontSize="16px"
@@ -95,7 +94,6 @@ export const Details = () => {
           maxWidth="100%"
         >
           <Text
-            fontFamily="Apple SD Gothic Neo"
             lineHeight="1.31"
             fontWeight="semibold"
             fontSize="16px"
@@ -229,7 +227,6 @@ export const Details = () => {
                   background={white}
                 >
                   <Text
-                    fontFamily="Inter"
                     lineHeight="1.56"
                     fontWeight="bold"
                     fontSize="18px"
@@ -272,7 +269,6 @@ export const Details = () => {
                           spacing="5px"
                         >
                           <Text
-                            fontFamily="Inter"
                             fontWeight="bold"
                             fontSize="16px"
                             color={black}
@@ -282,7 +278,6 @@ export const Details = () => {
                           </Text>
                           <Icon as={BsStarFill} />
                           <Text
-                            fontFamily="Inter"
                             fontWeight="medium"
                             fontSize="16px"
                             color={black}
@@ -291,7 +286,6 @@ export const Details = () => {
                             5.0
                           </Text>
                           <Text
-                            fontFamily="Inter"
                             fontWeight="medium"
                             fontSize="14px"
                             color={gray_600}
@@ -301,7 +295,6 @@ export const Details = () => {
                           </Text>
                         </Stack>
                         <Text
-                          fontFamily="Inter"
                           fontWeight="medium"
                           fontSize="14px"
                           textAlign="center"
@@ -310,7 +303,6 @@ export const Details = () => {
                         </Text>
                       </Stack>
                       <Text
-                        fontFamily="Inter"
                         lineHeight="1.42"
                         fontWeight="medium"
                         fontSize="12px"
@@ -350,7 +342,6 @@ export const Details = () => {
                   background={white}
                 >
                   <Text
-                    fontFamily="Inter"
                     lineHeight="1.56"
                     fontWeight="bold"
                     fontSize="18px"
@@ -393,7 +384,6 @@ export const Details = () => {
                           spacing="5px"
                         >
                           <Text
-                            fontFamily="Inter"
                             fontWeight="bold"
                             fontSize="16px"
                             color={black}
@@ -403,7 +393,6 @@ export const Details = () => {
                           </Text>
                           <Icon as={BsStarFill} />
                           <Text
-                            fontFamily="Inter"
                             fontWeight="medium"
                             fontSize="16px"
                             color={black}
@@ -412,7 +401,6 @@ export const Details = () => {
                             5.0
                           </Text>
                           <Text
-                            fontFamily="Inter"
                             fontWeight="medium"
                             fontSize="14px"
                             color={gray_600}
@@ -422,7 +410,6 @@ export const Details = () => {
                           </Text>
                         </Stack>
                         <Text
-                          fontFamily="Inter"
                           fontWeight="medium"
                           fontSize="14px"
                           textAlign="center"
@@ -431,7 +418,6 @@ export const Details = () => {
                         </Text>
                       </Stack>
                       <Text
-                        fontFamily="Inter"
                         lineHeight="1.42"
                         fontWeight="medium"
                         fontSize="12px"
@@ -490,7 +476,6 @@ export const Details = () => {
                     background={white}
                   >
                     <Text
-                      fontFamily="Inter"
                       lineHeight="1.56"
                       fontWeight="bold"
                       fontSize="18px"
@@ -533,7 +518,6 @@ export const Details = () => {
                             spacing="5px"
                           >
                             <Text
-                              fontFamily="Inter"
                               fontWeight="bold"
                               fontSize="16px"
                               color={black}
@@ -543,7 +527,6 @@ export const Details = () => {
                             </Text>
                             <Icon as={BsStarFill} />
                             <Text
-                              fontFamily="Inter"
                               fontWeight="medium"
                               fontSize="16px"
                               color={black}
@@ -552,7 +535,6 @@ export const Details = () => {
                               5.0
                             </Text>
                             <Text
-                              fontFamily="Inter"
                               fontWeight="medium"
                               fontSize="14px"
                               color={gray_600}
@@ -562,7 +544,6 @@ export const Details = () => {
                             </Text>
                           </Stack>
                           <Text
-                            fontFamily="Inter"
                             fontWeight="medium"
                             fontSize="14px"
                             textAlign="center"
@@ -571,7 +552,6 @@ export const Details = () => {
                           </Text>
                         </Stack>
                         <Text
-                          fontFamily="Inter"
                           lineHeight="1.42"
                           fontWeight="medium"
                           fontSize="12px"
@@ -620,7 +600,6 @@ export const Details = () => {
                     background={white}
                   >
                     <Text
-                      fontFamily="Inter"
                       lineHeight="1.56"
                       fontWeight="bold"
                       fontSize="18px"
@@ -663,7 +642,6 @@ export const Details = () => {
                             spacing="5px"
                           >
                             <Text
-                              fontFamily="Inter"
                               fontWeight="bold"
                               fontSize="16px"
                               color={black}
@@ -673,7 +651,6 @@ export const Details = () => {
                             </Text>
                             <Icon as={BsStarFill} />
                             <Text
-                              fontFamily="Inter"
                               fontWeight="medium"
                               fontSize="16px"
                               color={black}
@@ -682,7 +659,6 @@ export const Details = () => {
                               5.0
                             </Text>
                             <Text
-                              fontFamily="Inter"
                               fontWeight="medium"
                               fontSize="14px"
                               color={gray_600}
@@ -692,7 +668,6 @@ export const Details = () => {
                             </Text>
                           </Stack>
                           <Text
-                            fontFamily="Inter"
                             fontWeight="medium"
                             fontSize="14px"
                             textAlign="center"
@@ -701,7 +676,6 @@ export const Details = () => {
                           </Text>
                         </Stack>
                         <Text
-                          fontFamily="Inter"
                           lineHeight="1.42"
                           fontWeight="medium"
                           fontSize="12px"
@@ -714,7 +688,6 @@ export const Details = () => {
                       </Stack>
                     </Stack>
                     <Text
-                      fontFamily="Inter"
                       lineHeight="1.43"
                       fontWeight="semibold"
                       fontSize="14px"
@@ -737,7 +710,6 @@ export const Details = () => {
                       <AccordionItem width="100%">
                         <AccordionButton width="100%" height="44px" alignSelf="stretch">
                           <Text
-                            fontFamily="Inter"
                             lineHeight="1.71"
                             fontWeight="regular"
                             fontSize="14px"
@@ -750,7 +722,6 @@ export const Details = () => {
                         </AccordionButton>
                         <AccordionPanel>
                           <Text
-                            fontFamily="Inter"
                             lineHeight="1.67"
                             fontWeight="regular"
                             fontSize="12px"
@@ -790,7 +761,6 @@ export const Details = () => {
                     background={white}
                   >
                     <Text
-                      fontFamily="Inter"
                       lineHeight="1.56"
                       fontWeight="bold"
                       fontSize="18px"
@@ -833,7 +803,6 @@ export const Details = () => {
                             spacing="5px"
                           >
                             <Text
-                              fontFamily="Inter"
                               fontWeight="bold"
                               fontSize="16px"
                               color={black}
@@ -843,7 +812,6 @@ export const Details = () => {
                             </Text>
                             <Icon as={BsStarFill} />
                             <Text
-                              fontFamily="Inter"
                               fontWeight="medium"
                               fontSize="16px"
                               color={black}
@@ -852,7 +820,6 @@ export const Details = () => {
                               5.0
                             </Text>
                             <Text
-                              fontFamily="Inter"
                               fontWeight="medium"
                               fontSize="14px"
                               color={gray_600}
@@ -862,7 +829,6 @@ export const Details = () => {
                             </Text>
                           </Stack>
                           <Text
-                            fontFamily="Inter"
                             fontWeight="medium"
                             fontSize="14px"
                             textAlign="center"
@@ -871,7 +837,6 @@ export const Details = () => {
                           </Text>
                         </Stack>
                         <Text
-                          fontFamily="Inter"
                           lineHeight="1.42"
                           fontWeight="medium"
                           fontSize="12px"
@@ -884,7 +849,6 @@ export const Details = () => {
                       </Stack>
                     </Stack>
                     <Text
-                      fontFamily="Inter"
                       lineHeight="1.43"
                       fontWeight="semibold"
                       fontSize="14px"
@@ -913,7 +877,6 @@ export const Details = () => {
                     background={white}
                   >
                     <Text
-                      fontFamily="Inter"
                       lineHeight="1.56"
                       fontWeight="bold"
                       fontSize="18px"
@@ -956,7 +919,6 @@ export const Details = () => {
                             spacing="5px"
                           >
                             <Text
-                              fontFamily="Inter"
                               fontWeight="bold"
                               fontSize="16px"
                               color={black}
@@ -966,7 +928,6 @@ export const Details = () => {
                             </Text>
                             <Icon as={BsStarFill} />
                             <Text
-                              fontFamily="Inter"
                               fontWeight="medium"
                               fontSize="16px"
                               color={black}
@@ -975,7 +936,6 @@ export const Details = () => {
                               5.0
                             </Text>
                             <Text
-                              fontFamily="Inter"
                               fontWeight="medium"
                               fontSize="14px"
                               color={gray_600}
@@ -985,7 +945,6 @@ export const Details = () => {
                             </Text>
                           </Stack>
                           <Text
-                            fontFamily="Inter"
                             fontWeight="medium"
                             fontSize="14px"
                             textAlign="center"
@@ -994,7 +953,6 @@ export const Details = () => {
                           </Text>
                         </Stack>
                         <Text
-                          fontFamily="Inter"
                           lineHeight="1.42"
                           fontWeight="medium"
                           fontSize="12px"
@@ -1014,7 +972,6 @@ export const Details = () => {
                       alignSelf="stretch"
                     >
                       <Text
-                        fontFamily="Inter"
                         lineHeight="1.43"
                         fontWeight="semibold"
                         fontSize="14px"
@@ -1030,7 +987,6 @@ export const Details = () => {
                       >
                         <Icon as={BsStarFill} />
                         <Text
-                          fontFamily="Inter"
                           fontWeight="medium"
                           fontSize="16px"
                           color={black}
@@ -1041,7 +997,6 @@ export const Details = () => {
                       </Stack>
                     </Stack>
                     <Text
-                      fontFamily="Inter"
                       lineHeight="1.67"
                       fontWeight="regular"
                       fontSize="12px"
@@ -1071,7 +1026,6 @@ export const Details = () => {
           background={gray_300}
         >
           <Text
-            fontFamily="Inter"
             lineHeight="1.56"
             fontWeight="bold"
             fontSize="18px"
@@ -1119,7 +1073,6 @@ export const Details = () => {
                     spacing="5px"
                   >
                     <Text
-                      fontFamily="Inter"
                       fontWeight="bold"
                       fontSize="16px"
                       color={black}
@@ -1129,7 +1082,6 @@ export const Details = () => {
                     </Text>
                     <Icon as={BsStarFill} />
                     <Text
-                      fontFamily="Inter"
                       fontWeight="medium"
                       fontSize="16px"
                       color={black}
@@ -1138,7 +1090,6 @@ export const Details = () => {
                       5.0
                     </Text>
                     <Text
-                      fontFamily="Inter"
                       fontWeight="medium"
                       fontSize="14px"
                       color={gray_600}
@@ -1149,7 +1100,6 @@ export const Details = () => {
                   </Stack>
                 </Stack>
                 <Text
-                  fontFamily="Inter"
                   lineHeight="1.42"
                   fontWeight="medium"
                   fontSize="12px"
@@ -1192,7 +1142,6 @@ export const Details = () => {
                     spacing="5px"
                   >
                     <Text
-                      fontFamily="Inter"
                       fontWeight="bold"
                       fontSize="16px"
                       color={black}
@@ -1202,7 +1151,6 @@ export const Details = () => {
                     </Text>
                     <Icon as={BsStarFill} />
                     <Text
-                      fontFamily="Inter"
                       fontWeight="medium"
                       fontSize="16px"
                       color={black}
@@ -1211,7 +1159,6 @@ export const Details = () => {
                       5.0
                     </Text>
                     <Text
-                      fontFamily="Inter"
                       fontWeight="medium"
                       fontSize="14px"
                       color={gray_600}
@@ -1222,7 +1169,6 @@ export const Details = () => {
                   </Stack>
                 </Stack>
                 <Text
-                  fontFamily="Inter"
                   lineHeight="1.42"
                   fontWeight="medium"
                   fontSize="12px"
@@ -1265,7 +1211,6 @@ export const Details = () => {
                     spacing="5px"
                   >
                     <Text
-                      fontFamily="Inter"
                       fontWeight="bold"
                       fontSize="16px"
                       color={black}
@@ -1275,7 +1220,6 @@ export const Details = () => {
                     </Text>
                     <Icon as={BsStarFill} />
                     <Text
-                      fontFamily="Inter"
                       fontWeight="medium"
                       fontSize="16px"
                       color={black}
@@ -1284,7 +1228,6 @@ export const Details = () => {
                       5.0
                     </Text>
                     <Text
-                      fontFamily="Inter"
                       fontWeight="medium"
                       fontSize="14px"
                       color={gray_600}
@@ -1295,7 +1238,6 @@ export const Details = () => {
                   </Stack>
                 </Stack>
                 <Text
-                  fontFamily="Inter"
                   lineHeight="1.42"
                   fontWeight="medium"
                   fontSize="12px"

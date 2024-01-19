@@ -66,7 +66,6 @@ export const Login = () => {
         >
           <Stack justify="center" align="center" spacing="40px">
             <Text
-              fontFamily="Pretendard"
               fontWeight="black"
               fontSize="50px"
               color={black}
@@ -123,7 +122,6 @@ export const Login = () => {
               alignSelf="stretch"
             >
               <Text
-                fontFamily="SF Pro"
                 fontWeight="regular"
                 fontSize="14px"
                 color={gray_600}
@@ -132,7 +130,6 @@ export const Login = () => {
                 회원가입
               </Text>
               <Text
-                fontFamily="SF Pro"
                 fontWeight="regular"
                 fontSize="14px"
                 color={gray_600}

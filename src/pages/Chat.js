@@ -43,7 +43,6 @@ export const Chat = () => {
           alignSelf="stretch"
         >
           <Text
-            fontFamily="SF Pro"
             lineHeight="2"
             fontWeight="regular"
             fontSize="10px"
@@ -64,7 +63,6 @@ export const Chat = () => {
             background="#3182CE"
           >
             <Text
-              fontFamily="SF Pro"
               fontWeight="regular"
               fontSize="16px"
               color="#FFFFFF"
@@ -95,7 +93,6 @@ export const Chat = () => {
             background="#D9D9D9"
           >
             <Text
-              fontFamily="SF Pro"
               fontWeight="regular"
               fontSize="16px"
               color="#000000"
@@ -105,7 +102,6 @@ export const Chat = () => {
             </Text>
           </Stack>
           <Text
-            fontFamily="SF Pro"
             lineHeight="2"
             fontWeight="regular"
             fontSize="10px"

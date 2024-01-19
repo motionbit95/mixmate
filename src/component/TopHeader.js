@@ -23,7 +23,6 @@ export const TopHeader = ({ title }) => {
             boxSize={"24px"}
           />
           <Text
-            fontFamily="Pretendard"
             fontWeight="Bold"
             fontSize="18px"
             color={black}

@@ -39,7 +39,6 @@ export const Navbar = () => {
               color={page === 0 ? theme_primary_color : "black"}
             />
             <Text
-              fontFamily="Inter"
               fontWeight="medium"
               fontSize="12px"
               color={page === 0 ? theme_primary_color : "black"}
@@ -60,7 +59,6 @@ export const Navbar = () => {
           >
             <Icon as={BsList} color={page === 1 ? theme_primary_color : "black"} />
             <Text
-              fontFamily="Inter"
               fontWeight="medium"
               fontSize="12px"
               color={page === 1 ? theme_primary_color : "black"}
@@ -84,7 +82,6 @@ export const Navbar = () => {
               color={page === 2 ? theme_primary_color : "black"}
             />
             <Text
-              fontFamily="Inter"
               fontWeight="medium"
               fontSize="12px"
               color={page === 2 ? theme_primary_color : "black"}
@@ -108,7 +105,6 @@ export const Navbar = () => {
               color={page === 3 ? theme_primary_color : "black"}
             />
             <Text
-              fontFamily="Inter"
               fontWeight="medium"
               fontSize="12px"
               color={page === 3 ? theme_primary_color : "black"}

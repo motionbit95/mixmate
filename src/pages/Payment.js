@@ -46,7 +46,6 @@ export const Payment = () => {
                 boxSize={"24px"}
               />
               <Text
-                fontFamily="Pretendard"
                 fontWeight="Bold"
                 fontSize="18px"
                 color={black}
@@ -75,7 +74,6 @@ export const Payment = () => {
             alignSelf="stretch"
           >
             <Text
-              fontFamily="Inter"
               fontWeight="semibold"
               fontSize="18px"
               color={gray_900}
@@ -83,7 +81,6 @@ export const Payment = () => {
               신청 전 유의사항
             </Text>
             <Text
-              fontFamily="Inter"
               lineHeight="1.5"
               fontWeight="medium"
               fontSize="16px"
@@ -98,7 +95,6 @@ export const Payment = () => {
               <Box as="span">해주세요.</Box>
             </Text>
             <Text
-              fontFamily="Inter"
               fontWeight="semibold"
               fontSize="18px"
               color={black}
@@ -123,7 +119,6 @@ export const Payment = () => {
               >
                 <Icon as={MdChatBubbleOutline} />
                 <Text
-                  fontFamily="Inter"
                   lineHeight="1.71"
                   fontWeight="medium"
                   fontSize="14px"
@@ -142,7 +137,6 @@ export const Payment = () => {
               >
                 <Icon as={AiOutlineCalendar} />
                 <Text
-                  fontFamily="Inter"
                   lineHeight="1.71"
                   fontWeight="medium"
                   fontSize="14px"
@@ -161,7 +155,6 @@ export const Payment = () => {
               >
                 <Icon as={HiOutlineTicket} />
                 <Text
-                  fontFamily="Inter"
                   lineHeight="1.71"
                   fontWeight="medium"
                   fontSize="14px"
@@ -173,7 +166,6 @@ export const Payment = () => {
               </Stack>
             </Stack>
             <Text
-              fontFamily="Inter"
               fontWeight="semibold"
               fontSize="18px"
               color={black}
@@ -197,7 +189,6 @@ export const Payment = () => {
                 alignSelf="stretch"
               >
                 <Text
-                  fontFamily="Inter"
                   lineHeight="1.71"
                   fontWeight="medium"
                   fontSize="14px"
@@ -207,7 +198,6 @@ export const Payment = () => {
                   정상가
                 </Text>
                 <Text
-                  fontFamily="Inter"
                   lineHeight="1.71"
                   fontWeight="medium"
                   fontSize="14px"
@@ -227,7 +217,6 @@ export const Payment = () => {
                 alignSelf="stretch"
               >
                 <Text
-                  fontFamily="Inter"
                   lineHeight="1.71"
                   fontWeight="medium"
                   fontSize="14px"
@@ -237,7 +226,6 @@ export const Payment = () => {
                   쿠폰 할인
                 </Text>
                 <Text
-                  fontFamily="Inter"
                   lineHeight="1.71"
                   fontWeight="medium"
                   fontSize="14px"
@@ -257,7 +245,6 @@ export const Payment = () => {
                 alignSelf="stretch"
               >
                 <Text
-                  fontFamily="Inter"
                   lineHeight="1.71"
                   fontWeight="bold"
                   fontSize="14px"
@@ -267,7 +254,6 @@ export const Payment = () => {
                   결제 예정 금액
                 </Text>
                 <Text
-                  fontFamily="Inter"
                   lineHeight="1.71"
                   fontWeight="bold"
                   fontSize="14px"
@@ -280,7 +266,6 @@ export const Payment = () => {
               </Stack>
             </Stack>
             <Text
-              fontFamily="Inter"
               fontWeight="semibold"
               fontSize="18px"
               color={black}
@@ -383,7 +368,6 @@ export const Payment = () => {
                   }}
                 >
                   <Text
-                    fontFamily="SF Pro"
                     lineHeight="1.5"
                     fontWeight="semibold"
                     fontSize="16px"
@@ -407,7 +391,6 @@ export const Payment = () => {
                   }}
                 >
                   <Text
-                    fontFamily="SF Pro"
                     lineHeight="1.5"
                     fontWeight="semibold"
                     fontSize="16px"
@@ -433,7 +416,6 @@ export const Payment = () => {
                 }}
               >
                 <Text
-                  fontFamily="SF Pro"
                   lineHeight="1.25"
                   fontWeight="semibold"
                   fontSize="16px"

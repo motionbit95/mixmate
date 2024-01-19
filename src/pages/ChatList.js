@@ -65,7 +65,6 @@ export const ChatList = () => {
                   flex="1"
                 >
                   <Text
-                    fontFamily="Inter"
                     fontWeight="bold"
                     fontSize="16px"
                     color="#000000"
@@ -74,7 +73,6 @@ export const ChatList = () => {
                     송*혁
                   </Text>
                   <Text
-                    fontFamily="Inter"
                     fontWeight="regular"
                     fontSize="14px"
                     color="#8C8C8C"
@@ -85,7 +83,6 @@ export const ChatList = () => {
                 </Stack>
               </Stack>
               <Text
-                fontFamily="Inter"
                 fontWeight="regular"
                 fontSize="14px"
                 color="#000000"
@@ -131,7 +128,6 @@ export const ChatList = () => {
                   flex="1"
                 >
                   <Text
-                    fontFamily="Inter"
                     fontWeight="bold"
                     fontSize="16px"
                     color="#000000"
@@ -140,7 +136,6 @@ export const ChatList = () => {
                     송*혁
                   </Text>
                   <Text
-                    fontFamily="Inter"
                     fontWeight="regular"
                     fontSize="14px"
                     color="#8C8C8C"
@@ -151,7 +146,6 @@ export const ChatList = () => {
                 </Stack>
               </Stack>
               <Text
-                fontFamily="Inter"
                 fontWeight="regular"
                 fontSize="14px"
                 color="#000000"
@@ -197,7 +191,6 @@ export const ChatList = () => {
                   flex="1"
                 >
                   <Text
-                    fontFamily="Inter"
                     fontWeight="bold"
                     fontSize="16px"
                     color="#000000"
@@ -206,7 +199,6 @@ export const ChatList = () => {
                     송*혁
                   </Text>
                   <Text
-                    fontFamily="Inter"
                     fontWeight="regular"
                     fontSize="14px"
                     color="#8C8C8C"
@@ -217,7 +209,6 @@ export const ChatList = () => {
                 </Stack>
               </Stack>
               <Text
-                fontFamily="Inter"
                 fontWeight="regular"
                 fontSize="14px"
                 color="#000000"
@@ -263,7 +254,6 @@ export const ChatList = () => {
                   flex="1"
                 >
                   <Text
-                    fontFamily="Inter"
                     fontWeight="bold"
                     fontSize="16px"
                     color="#000000"
@@ -272,7 +262,6 @@ export const ChatList = () => {
                     송*혁
                   </Text>
                   <Text
-                    fontFamily="Inter"
                     fontWeight="regular"
                     fontSize="14px"
                     color="#8C8C8C"
@@ -283,7 +272,6 @@ export const ChatList = () => {
                 </Stack>
               </Stack>
               <Text
-                fontFamily="Inter"
                 fontWeight="regular"
                 fontSize="14px"
                 color="#000000"

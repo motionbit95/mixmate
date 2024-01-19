@@ -164,7 +164,6 @@ export const Home = () => {
               alignSelf="stretch"
             >
               <Text
-                fontFamily="Pretendard"
                 fontWeight="black"
                 fontSize="24px"
                 color={black}
@@ -214,7 +213,6 @@ export const Home = () => {
             bgImage={require("../assets/iOS 16 Wallpaper.png")}
           >
             <Text
-              fontFamily="SF Pro"
               lineHeight="0.7"
               fontWeight="semibold"
               fontSize="30px"
@@ -231,7 +229,6 @@ export const Home = () => {
               background="rgba(0, 0, 0, 0.5)"
             >
               <Text
-                fontFamily="SF Pro"
                 lineHeight="1.31"
                 fontWeight="semibold"
                 fontSize="16px"
@@ -273,7 +270,6 @@ export const Home = () => {
                     <HStack>
                       <Icon as={BsPersonFill} />
                       <Text
-                        fontFamily="SF Pro"
                         lineHeight="1.31"
                         fontWeight="semibold"
                         fontSize="16px"
@@ -289,7 +285,6 @@ export const Home = () => {
                     <HStack>
                       <Icon as={BsPeopleFill} />
                       <Text
-                        fontFamily="SF Pro"
                         lineHeight="1.31"
                         fontWeight="semibold"
                         fontSize="16px"
@@ -370,7 +365,6 @@ export const Home = () => {
                                 spacing="5px"
                               >
                                 <Text
-                                  fontFamily="Inter"
                                   fontWeight="bold"
                                   fontSize="16px"
                                   color={black}
@@ -380,7 +374,6 @@ export const Home = () => {
                                 </Text>
                                 <Icon as={BsStarFill} />
                                 <Text
-                                  fontFamily="Inter"
                                   fontWeight="medium"
                                   fontSize="16px"
                                   color={black}
@@ -389,7 +382,6 @@ export const Home = () => {
                                   5.0
                                 </Text>
                                 <Text
-                                  fontFamily="Inter"
                                   fontWeight="medium"
                                   fontSize="14px"
                                   color={gray_600}
@@ -399,7 +391,6 @@ export const Home = () => {
                                 </Text>
                               </Stack>
                               <Text
-                                fontFamily="Inter"
                                 fontWeight="medium"
                                 fontSize="14px"
                                 color={theme_primary_color}
@@ -409,7 +400,6 @@ export const Home = () => {
                               </Text>
                             </Stack>
                             <Text
-                              fontFamily="Inter"
                               lineHeight="1.42"
                               fontWeight="medium"
                               fontSize="12px"
@@ -504,7 +494,6 @@ export const Home = () => {
                                 spacing="5px"
                               >
                                 <Text
-                                  fontFamily="Inter"
                                   fontWeight="bold"
                                   fontSize="16px"
                                   color={black}
@@ -514,7 +503,6 @@ export const Home = () => {
                                 </Text>
                                 <Icon as={BsStarFill} />
                                 <Text
-                                  fontFamily="Inter"
                                   fontWeight="medium"
                                   fontSize="16px"
                                   color={black}
@@ -523,7 +511,6 @@ export const Home = () => {
                                   5.0
                                 </Text>
                                 <Text
-                                  fontFamily="Inter"
                                   fontWeight="medium"
                                   fontSize="14px"
                                   color={gray_600}
@@ -533,7 +520,6 @@ export const Home = () => {
                                 </Text>
                               </Stack>
                               <Text
-                                fontFamily="Inter"
                                 fontWeight="medium"
                                 fontSize="14px"
                                 color={theme_primary_color}
@@ -543,7 +529,6 @@ export const Home = () => {
                               </Text>
                             </Stack>
                             <Text
-                              fontFamily="Inter"
                               lineHeight="1.42"
                               fontWeight="medium"
                               fontSize="12px"
@@ -587,7 +572,6 @@ export const Home = () => {
           background={gray_300}
         >
           <Text
-            fontFamily="Apple SD Gothic Neo"
             lineHeight="1.4"
             fontWeight="semibold"
             fontSize="15px"
@@ -598,7 +582,6 @@ export const Home = () => {
             (주) 세이프바운더리
           </Text>
           <Text
-            fontFamily="Apple SD Gothic Neo"
             lineHeight="1.5"
             fontWeight="regular"
             fontSize="14px"

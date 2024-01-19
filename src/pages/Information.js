@@ -546,7 +546,6 @@ export const Information = () => {
                 alignSelf="stretch"
               >
                 <Text
-                  fontFamily="SF Pro"
                   lineHeight="1.43"
                   fontWeight="regular"
                   fontSize="16px"
@@ -583,7 +582,6 @@ export const Information = () => {
                   alignSelf="stretch"
                 >
                   <Text
-                    fontFamily="SF Pro"
                     lineHeight="1.43"
                     fontWeight="regular"
                     fontSize="16px"
@@ -631,7 +629,6 @@ export const Information = () => {
                   alignSelf="stretch"
                 >
                   <Text
-                    fontFamily="SF Pro"
                     lineHeight="1.43"
                     fontWeight="regular"
                     fontSize="16px"
@@ -705,7 +702,6 @@ export const Information = () => {
                 alignSelf="stretch"
               >
                 <Text
-                  fontFamily="SF Pro"
                   lineHeight="1.43"
                   fontWeight="regular"
                   fontSize="16px"
@@ -771,7 +767,6 @@ export const Information = () => {
                   alignSelf="stretch"
                 >
                   <Text
-                    fontFamily="SF Pro"
                     lineHeight="1.43"
                     fontWeight="regular"
                     fontSize="16px"
@@ -811,7 +806,6 @@ export const Information = () => {
                 이용약관에 동의합니다.
               </Checkbox>
               <Text
-                fontFamily="SF Pro"
                 lineHeight="1.43"
                 fontWeight="regular"
                 fontSize="14px"

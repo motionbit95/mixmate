@@ -7,6 +7,7 @@ export const Notice = () => {
   return (
     <Container py="50px">
       <Stack
+        
         justify="flex-start"
         align="flex-start"
         spacing="0px"
@@ -18,7 +19,7 @@ export const Notice = () => {
       >
         <TopHeader title={"알림"} />
         <Stack
-          paddingX="20px"
+          // paddingX="20px"
           justify="flex-start"
           align="flex-start"
           spacing="16px"
@@ -28,7 +29,6 @@ export const Notice = () => {
         >
           {/* <HorizonLine /> */}
           <Text
-            fontFamily="Pretendard Variable"
             fontWeight="semibold"
             fontSize="18px"
             color={black}
@@ -44,7 +44,6 @@ export const Notice = () => {
             alignSelf="stretch"
           >
             <Text
-              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="16px"
               color={black}
@@ -53,7 +52,6 @@ export const Notice = () => {
               매칭신청이 결제되었습니다.
             </Text>
             <Text
-              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="12px"
               color={gray_600}
@@ -71,7 +69,6 @@ export const Notice = () => {
             alignSelf="stretch"
           >
             <Text
-              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="16px"
               color={black}
@@ -80,7 +77,6 @@ export const Notice = () => {
               [공지] 고객센터 운영시간 안내
             </Text>
             <Text
-              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="12px"
               color={gray_600}
@@ -98,7 +94,6 @@ export const Notice = () => {
             alignSelf="stretch"
           >
             <Text
-              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="16px"
               color={black}
@@ -107,7 +102,6 @@ export const Notice = () => {
               매칭신청이 거절되었습니다.
             </Text>
             <Text
-              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="12px"
               color={gray_600}
@@ -125,7 +119,6 @@ export const Notice = () => {
             alignSelf="stretch"
           >
             <Text
-              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="16px"
               color={black}
@@ -134,7 +127,6 @@ export const Notice = () => {
               매칭신청이 결제되었습니다.
             </Text>
             <Text
-              fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="12px"
               color={gray_600}

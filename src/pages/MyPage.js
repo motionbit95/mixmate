@@ -118,7 +118,6 @@ export const MyPage = () => {
                   spacing="5px"
                 >
                   <Text
-                    fontFamily="Inter"
                     fontWeight="bold"
                     fontSize="16px"
                     color={black}
@@ -128,7 +127,6 @@ export const MyPage = () => {
                   </Text>
                   <Icon as={BsStarFill} />
                   <Text
-                    fontFamily="Inter"
                     fontWeight="medium"
                     fontSize="16px"
                     color={black}
@@ -137,7 +135,6 @@ export const MyPage = () => {
                     5.0
                   </Text>
                   <Text
-                    fontFamily="Inter"
                     fontWeight="medium"
                     fontSize="14px"
                     color={gray_600}
@@ -151,7 +148,6 @@ export const MyPage = () => {
             </Stack>
             <SkeletonText isLoaded={user}>
               <Text
-                fontFamily="Inter"
                 lineHeight="1.42"
                 fontWeight="medium"
                 fontSize="12px"
@@ -175,7 +171,6 @@ export const MyPage = () => {
           alignSelf="stretch"
         >
           <Text
-            fontFamily="Inter"
             fontWeight="semibold"
             fontSize="18px"
             color={gray_900}
@@ -205,7 +200,6 @@ export const MyPage = () => {
         ) : (
           <SkeletonText isLoaded={user}>
             <Text
-              fontFamily="Inter"
               lineHeight="1.5"
               fontWeight="medium"
               fontSize="16px"
@@ -222,7 +216,6 @@ export const MyPage = () => {
         )}
         <HorizonLine />
         <Text
-          fontFamily="Inter"
           fontWeight="semibold"
           fontSize="18px"
           color={black}
@@ -233,7 +226,6 @@ export const MyPage = () => {
         </Text>
         <HorizonLine />
         <Text
-          fontFamily="Inter"
           fontWeight="semibold"
           fontSize="18px"
           color={black}
@@ -243,7 +235,6 @@ export const MyPage = () => {
         </Text>
         <HorizonLine />
         <Text
-          fontFamily="Inter"
           fontWeight="semibold"
           fontSize="18px"
           color={black}
@@ -253,7 +244,6 @@ export const MyPage = () => {
         </Text>
         <HorizonLine />
         <Text
-          fontFamily="Inter"
           fontWeight="semibold"
           fontSize="18px"
           color={black}

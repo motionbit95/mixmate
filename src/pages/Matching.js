@@ -52,7 +52,6 @@ export const Matching = () => {
                   boxSize={"24px"}
                 />
                 <Text
-                  fontFamily="Pretendard"
                   fontWeight="Bold"
                   fontSize="18px"
                   color={black}
@@ -105,7 +104,6 @@ export const Matching = () => {
                     spacing="5px"
                   >
                     <Text
-                      fontFamily="Inter"
                       fontWeight="bold"
                       fontSize="16px"
                       color={black}
@@ -115,7 +113,6 @@ export const Matching = () => {
                     </Text>
                     <Icon as={BsStarFill} />
                     <Text
-                      fontFamily="Inter"
                       fontWeight="medium"
                       fontSize="16px"
                       color={black}
@@ -124,7 +121,6 @@ export const Matching = () => {
                       5.0
                     </Text>
                     <Text
-                      fontFamily="Inter"
                       fontWeight="medium"
                       fontSize="14px"
                       color={gray_600}
@@ -134,7 +130,6 @@ export const Matching = () => {
                     </Text>
                   </Stack>
                   <Text
-                    fontFamily="Inter"
                     fontWeight="medium"
                     fontSize="14px"
                     color={theme_primary_color}
@@ -144,7 +139,6 @@ export const Matching = () => {
                   </Text>
                 </Stack>
                 <Text
-                  fontFamily="Inter"
                   lineHeight="1.42"
                   fontWeight="medium"
                   fontSize="12px"
@@ -178,7 +172,6 @@ export const Matching = () => {
                     alignSelf="stretch"
                   >
                     <Text
-                      fontFamily="Inter"
                       fontWeight="semibold"
                       fontSize="18px"
                       color={gray_900}
@@ -186,7 +179,6 @@ export const Matching = () => {
                       프로필 소개말
                     </Text>
                     <Text
-                      fontFamily="Inter"
                       lineHeight="1.71"
                       fontWeight="medium"
                       fontSize="14px"
@@ -205,7 +197,6 @@ export const Matching = () => {
                       background={gray_300}
                     >
                       <Text
-                        fontFamily="Inter"
                         fontWeight="semibold"
                         fontSize="18px"
                         color={black}
@@ -213,7 +204,6 @@ export const Matching = () => {
                         식사권이란?
                       </Text>
                       <Text
-                        fontFamily="Inter"
                         lineHeight="1.5"
                         fontWeight="medium"
                         fontSize="16px"
@@ -269,7 +259,6 @@ export const Matching = () => {
                       >
                         <Icon as={BsStarFill} />
                         <Text
-                          fontFamily="Inter"
                           fontWeight="medium"
                           fontSize="16px"
                           color={black}
@@ -279,7 +268,6 @@ export const Matching = () => {
                         </Text>
                       </Stack>
                       <Text
-                        fontFamily="Inter"
                         lineHeight="1.43"
                         fontWeight="medium"
                         fontSize="14px"
@@ -309,7 +297,6 @@ export const Matching = () => {
                       >
                         <Icon as={BsStarFill} />
                         <Text
-                          fontFamily="Inter"
                           fontWeight="medium"
                           fontSize="16px"
                           color={black}
@@ -319,7 +306,6 @@ export const Matching = () => {
                         </Text>
                       </Stack>
                       <Text
-                        fontFamily="Inter"
                         lineHeight="1.43"
                         fontWeight="medium"
                         fontSize="14px"
@@ -349,7 +335,6 @@ export const Matching = () => {
                       >
                         <Icon as={BsStarFill} />
                         <Text
-                          fontFamily="Inter"
                           fontWeight="medium"
                           fontSize="16px"
                           color={black}
@@ -359,7 +344,6 @@ export const Matching = () => {
                         </Text>
                       </Stack>
                       <Text
-                        fontFamily="Inter"
                         lineHeight="1.43"
                         fontWeight="medium"
                         fontSize="14px"
@@ -389,7 +373,6 @@ export const Matching = () => {
                       >
                         <Icon as={BsStarFill} />
                         <Text
-                          fontFamily="Inter"
                           fontWeight="medium"
                           fontSize="16px"
                           color={black}
@@ -399,7 +382,6 @@ export const Matching = () => {
                         </Text>
                       </Stack>
                       <Text
-                        fontFamily="Inter"
                         lineHeight="1.43"
                         fontWeight="medium"
                         fontSize="14px"
