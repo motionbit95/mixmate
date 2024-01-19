@@ -105,7 +105,7 @@ export const Details = () => {
               <Tab w={"100%"}>종료</Tab>
             </TabList>
             <TabPanels>
-              <TabPanel>
+              <TabPanel px="0">
                 <Stack
                   padding="10px"
                   justify="flex-start"
@@ -614,9 +614,9 @@ export const Details = () => {
                         나은 조건에서 만남을 찾기를 기원합니다.
                       </Box>
                     </Text>
-                    <Accordion background="#F1F1F1">
-                      <AccordionItem>
-                        <AccordionButton height="44px" alignSelf="stretch">
+                    <Accordion width="100%" background="#F1F1F1">
+                      <AccordionItem width="100%">
+                        <AccordionButton width="100%" height="44px" alignSelf="stretch">
                           <Text
                             fontFamily="Inter"
                             lineHeight="1.71"
@@ -629,32 +629,32 @@ export const Details = () => {
                           </Text>
                           <Icon />
                         </AccordionButton>
-                        <AccordionPanel>
+                        <AccordionPanel width="100%">
                           <Text
                             fontFamily="Inter"
                             lineHeight="1.67"
                             fontWeight="regular"
                             fontSize="12px"
+                            whiteSpace="pre-wrap"
                             color="#4E4E4E"
-                            width="328px"
+                            
                             maxWidth="100%"
                           >
-                            <span>
                               안녕하세요,식사회입니다. 고객님의 결제 취소에 관한
                               안내드립니다. 결제 취소 요청이 정상적으로
                               접수되었습니다. 아래는 취소에 관한 상세
                               정보입니다.
-                            </span>
-                            <Box as="span">
-                              주문번호: 192930 취소 금액: 20,000원 취소 일시:
-                              2024.01.16
-                            </Box>
-                            <Box as="span">
+                            <br/>
+                              주문번호: 192930 
+                            <br/>
+                              취소 금액: 20,000원 
+                            <br/>
+                              취소 일시:2024.01.16
+                            <br/>
                               취소된 금액은 최대 3 영업일 이내에 원래 결제
                               수단으로 환불될 예정입니다. 추가적인 궁금한
                               사항이나 도움이 필요하신 경우, 언제든지 고객센터로
                               문의해 주세요. 감사합니다. 식사회 드림
-                            </Box>
                           </Text>
                         </AccordionPanel>
                       </AccordionItem>
