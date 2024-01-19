@@ -20,7 +20,7 @@ export const Chat = () => {
       <TopHeader title={chat_id} />
 
       <Stack
-        paddingX="20px"
+        // paddingX="10px"
         justify="flex-start"
         align="center"
         spacing="10px"

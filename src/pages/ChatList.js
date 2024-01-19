@@ -9,7 +9,7 @@ import HorizonLine from "../component/HorizontalLine";
 export const ChatList = () => {
   const navigate = useNavigate();
   return (
-    <Container py={"50px"}>
+    <Container px={"0px"} py={"50px"}>
       <TopHeader title={"채팅"} />
 
       <Stack
@@ -25,7 +25,7 @@ export const ChatList = () => {
           padding="10px"
           justify="flex-start"
           align="flex-start"
-          spacing="10px"
+          spacing="0px"
           overflow="hidden"
           alignSelf="stretch"
           background="#FFFFFF"
