@@ -24,6 +24,7 @@ import { get_doc_info } from "../js/Database";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import { black, gray_300, gray_600, theme_primary_color, white } from "../App";
+import { Navbar } from "../component/Navbar";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -595,6 +596,7 @@ export const Home = () => {
           </Text>
         </Stack>
       </Stack>
+      <Navbar />
     </Container>
   );
 };

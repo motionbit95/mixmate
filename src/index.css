@@ -96,3 +96,8 @@ button {
   height: 60px;
   width: 100%;
 }
+
+.content_body {
+  height: calc(var(--vh, 1vh) * 100);
+  background-color: red;
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import { white } from "../App";
+import { gray_600, white } from "../App";
 
 const HorizonLine = ({ text }) => {
   return (
@@ -13,7 +13,9 @@ const HorizonLine = ({ text }) => {
       }}
     >
       {text && (
-        <span style={{ background: white, padding: "0 10px" }}>{text}</span>
+        <span style={{ color: gray_600, background: white, padding: "0 10px" }}>
+          {text}
+        </span>
       )}
     </div>
   );

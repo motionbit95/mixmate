@@ -1,6 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { Container } from "@chakra-ui/react";
+import { Container, Flex } from "@chakra-ui/react";
 import { Login } from "./pages/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SignUp } from "./pages/SignUp";
@@ -19,9 +19,11 @@ import { Chat } from "./pages/Chat";
 import "./index.css";
 import "./styleguide.css";
 
-export const theme_primary_color = "#3182CE";
+export const theme_primary_color = "orange.500";
+export const theme_secondary_color = "yellow.500";
 export const white = "#ffffff";
 export const black = "#000000";
+export const bg = white;
 export const gray_50 = "#f7fafc";
 export const gray_100 = "#edf2f7";
 export const gray_200 = "#e2e8f0";
@@ -35,7 +37,8 @@ export const gray_900 = "#111111";
 
 function App() {
   return (
-    <Container maxW={"container-sm"}>
+    // 모바일 뷰 호환 문제로 패딩을 없애줌
+    <Container p={0} border={"1px solid #d9d9d9"} bgColor={bg}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -51,7 +54,6 @@ function App() {
           <Route path="/mypage" element={<MyPage />} />
         </Routes>
       </BrowserRouter>
-      <Navbar />
     </Container>
   );
 }

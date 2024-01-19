@@ -38,7 +38,7 @@ import {
 } from "../js/UserAPI";
 import { db_update } from "../js/Database";
 import { terms } from "../assets/terms";
-import { black, gray_600, white } from "../App";
+import { black, gray_600, theme_primary_color, white } from "../App";
 
 export const Information = () => {
   const navigate = useNavigate();
@@ -799,7 +799,7 @@ export const Information = () => {
             >
               <Checkbox
                 defaultChecked={check_terms}
-                variant="blue"
+                color={theme_primary_color}
                 // width="256.42px"
                 maxWidth="100%"
                 onChange={(e) => setCheckTerms(e.target.checked)}

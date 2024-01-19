@@ -5,12 +5,24 @@ import {
   Checkbox,
   Button,
   Container,
+  Image,
+  Flex,
+  Box,
+  Center,
+  HStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth_login_password, auth_set_local } from "../js/Auth";
 import { auth } from "../db/firebase_config";
-import { black, gray_600, white } from "../App";
+import {
+  bg,
+  black,
+  gray_50,
+  gray_600,
+  theme_primary_color,
+  white,
+} from "../App";
 
 // Firebase deps
 // v9에서 v8 호환 API
@@ -19,6 +31,11 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 // Hooks
 import { useAuthState } from "../js/chatHooks";
+
+import HorizonLine from "../component/HorizontalLine";
+import { Logo } from "../component/Logo";
+import { FullButton, TextButton } from "../component/Buttons";
+import EmailLoginForm from "../component/EmailLoginForm";
 
 firebase.initializeApp({
   apiKey: "AIzaSyBwCYJaEn1Ey5rU8Le5Adu_JvdJodQAOe8",
@@ -69,121 +86,79 @@ export const Login = () => {
   };
 
   return (
-    <Container>
-      <Stack
-        justify="flex-start"
-        align="center"
-        spacing="0px"
-        overflow="hidden"
-        // width="393px"
-        height="100vh"
-        maxWidth="100%"
-        background={white}
-      >
+    <Container p={0} h={"100vh"} bgColor={white}>
+      <Center w="100%">
         <Stack
-          paddingX="10px"
-          direction="row"
           justify="flex-start"
-          align="flex-start"
+          align="center"
           spacing="0px"
           overflow="hidden"
-          alignSelf="stretch"
+          width="100%"
+          height="100%"
+          maxWidth="360px"
+          background={white}
+          p={"4vw"}
         >
-          <Stack size="lg" width="40px" height="40px" />
-        </Stack>
-        <Stack
-          direction="row"
-          justify="center"
-          align="center"
-          spacing="10px"
-          overflow="hidden"
-          flex="1"
-          alignSelf="stretch"
-        >
-          <Stack justify="center" align="center" spacing="40px">
-            <Text
-              fontWeight="black"
-              fontSize="50px"
-              color={black}
-              textAlign="center"
-            >
-              식사회
-            </Text>
+          <Stack
+            paddingX="10px"
+            direction="row"
+            justify="flex-start"
+            align="flex-start"
+            spacing="0px"
+            overflow="hidden"
+            alignSelf="stretch"
+          ></Stack>
+          <Stack
+            direction="row"
+            justify="center"
+            align="center"
+            spacing="10px"
+            overflow="hidden"
+            flex="1"
+            alignSelf="stretch"
+          >
             <Stack
+              mt="5vh"
+              w="100%"
               justify="center"
-              align="flex-start"
-              spacing="10px"
-              width="313px"
-              maxWidth="100%"
-            >
-              <Input
-                value={account.id}
-                type="text"
-                placeholder="아이디"
-                height="40px"
-                alignSelf="stretch"
-                onChange={(e) =>
-                  setAccount({ id: e.target.value, password: account.password })
-                }
-              />
-              <Input
-                value={account.password}
-                type="password"
-                placeholder="패스워드"
-                height="40px"
-                alignSelf="stretch"
-                onChange={(e) =>
-                  setAccount({ id: account.id, password: e.target.value })
-                }
-              />
-              <Checkbox defaultChecked variant="blue">
-                자동로그인
-              </Checkbox>
-            </Stack>
-            <Stack>
-              <Button
-                colorScheme="blue"
-                width="313px"
-                height="40px"
-                maxWidth="100%"
-                onClick={() => login()}
-              >
-                로그인하기
-              </Button>
-              <Button
-                variant={"outline"}
-                colorScheme="gray"
-                width="313px"
-                height="40px"
-                maxWidth="100%"
-                onClick={signInWithGoogle}
-              >
-                구글 로그인하기
-              </Button>
-            </Stack>
-            <Stack
-              direction="row"
-              justify="space-between"
               align="center"
-              spacing="10px"
-              overflow="hidden"
-              alignSelf="stretch"
+              spacing="4vh"
             >
-              <Text
-                fontWeight="regular"
-                fontSize="14px"
-                color={gray_600}
-                onClick={() => navigate("/signup")}
-              >
-                회원가입
-              </Text>
-              <Text fontWeight="regular" fontSize="14px" color={gray_600}>
-                비밀번호찾기
-              </Text>
+              <Logo w={"16vh"} h={"16vh"} spacing={"4vh"} />
+
+              <Stack w="100%" spacing={"4vh"}>
+                <Stack w="100%">
+                  <FullButton
+                    onClick={() => alert("준비중입니다.")}
+                    text={"카카오로 로그인하기"}
+                    code={"yellow.200"}
+                  />
+                  <FullButton
+                    onClick={signInWithGoogle}
+                    text="구글로 로그인하기"
+                    code={"white.100"}
+                  />
+                </Stack>
+
+                <HorizonLine text={"회원정보로 로그인하기"} />
+
+                <EmailLoginForm />
+              </Stack>
+
+              <HStack w="100%" justifyContent={"space-between"}>
+                <TextButton
+                  text={"회원가입"}
+                  onClick={() => navigate("/signup")}
+                />
+                <TextButton
+                  text={"아이디 / 비밀번호 찾기"}
+                  onClick={() => alert("준비중입니다.")}
+                />
+              </HStack>
             </Stack>
           </Stack>
         </Stack>
-      </Stack>
+      </Center>
     </Container>
   );
 };
