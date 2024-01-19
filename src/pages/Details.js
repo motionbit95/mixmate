@@ -41,6 +41,7 @@ import {
   matching_get_list,
   matching_set,
 } from "../js/MatchingAPI";
+import { HorizontalScrollBox } from "../component/HorizontalScrollBox";
 
 export const Details = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -756,22 +757,21 @@ export const Details = () => {
                             whiteSpace="pre-wrap"
                             color={gray_800}
                             maxWidth="100%"
-                          >                          
-                              안녕하세요,식사회입니다. 고객님의 결제 취소에 관한
-                              안내드립니다. 결제 취소 요청이 정상적으로
-                              접수되었습니다. 아래는 취소에 관한 상세
-                              정보입니다.
-                            <br/>                            
-                              주문번호: 192930 
-                            <br/>  
-                              취소 금액: 20,000원 
-                            <br/>
-                              취소 일시: 2024.01.16
-                            <br/>
-                              취소된 금액은 최대 3 영업일 이내에 원래 결제
-                              수단으로 환불될 예정입니다. 추가적인 궁금한
-                              사항이나 도움이 필요하신 경우, 언제든지 고객센터로
-                              문의해 주세요. 감사합니다. 식사회 드림
+                          >
+                            안녕하세요,식사회입니다. 고객님의 결제 취소에 관한
+                            안내드립니다. 결제 취소 요청이 정상적으로
+                            접수되었습니다. 아래는 취소에 관한 상세 정보입니다.
+                            <br />
+                            주문번호: 192930
+                            <br />
+                            취소 금액: 20,000원
+                            <br />
+                            취소 일시: 2024.01.16
+                            <br />
+                            취소된 금액은 최대 3 영업일 이내에 원래 결제
+                            수단으로 환불될 예정입니다. 추가적인 궁금한 사항이나
+                            도움이 필요하신 경우, 언제든지 고객센터로 문의해
+                            주세요. 감사합니다. 식사회 드림
                           </Text>
                         </AccordionPanel>
                       </AccordionItem>
@@ -1043,7 +1043,8 @@ export const Details = () => {
           <HorizonLine />
         </Stack>
         <HorizonLine />
-        <Stack
+        <HorizontalScrollBox title={"추천친구"} />
+        {/* <Stack
           padding="20px"
           justify="flex-start"
           align="flex-start"
@@ -1275,7 +1276,7 @@ export const Details = () => {
               </Stack>
             </Stack>
           </Stack>
-        </Stack>
+        </Stack> */}
       </Stack>
 
       <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
