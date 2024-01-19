@@ -12,6 +12,8 @@ import { Information } from "./pages/Information";
 import { MyPage } from "./pages/MyPage";
 import { Navbar } from "./component/Navbar";
 import { Details } from "./pages/Details";
+import { ChatList } from "./pages/ChatList";
+import { Chat } from "./pages/Chat";
 
 export const theme_primary_color = "#3182CE";
 export const white = "#ffffff";
@@ -40,6 +42,8 @@ function App() {
           <Route path="/matching" element={<Matching />} />
           <Route path="/details" element={<Details />} />
           <Route path="/payment" element={<Payment />} />
+          <Route path="/chat" element={<ChatList />} />
+          <Route path="/chat/*" element={<Chat />} />
           <Route path="/mypage" element={<MyPage />} />
         </Routes>
       </BrowserRouter>
