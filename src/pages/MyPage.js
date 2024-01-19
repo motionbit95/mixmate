@@ -17,6 +17,7 @@ import {
   useDisclosure,
   ModalContent,
   ModalBody,
+  Container,
 } from "@chakra-ui/react";
 import { BsStarFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
@@ -59,216 +60,219 @@ export const MyPage = () => {
   }
 
   return (
-    <Stack
-      justify="flex-start"
-      align="center"
-      spacing="0px"
-      overflow="hidden"
-      width="393px"
-      height="852px"
-      maxWidth="100%"
-      background={white}
-    >
-      <TopHeader title={"마이페이지"} />
+    <Container px={0}>
       <Stack
-        pt={"50px"}
-        paddingX="20px"
+        px={0}
         justify="flex-start"
-        align="flex-start"
-        spacing="16px"
+        align="center"
+        spacing="0px"
         overflow="hidden"
-        flex="1"
-        alignSelf="stretch"
+        maxWidth="100%"
+        background={white}
       >
+        <TopHeader title={"마이페이지"} />
         <Stack
-          //   paddingY="10px"
-          mt={"20px"}
-          direction="row"
+          px={"10px"}
+          pt={"50px"}
           justify="flex-start"
           align="flex-start"
-          spacing="10px"
+          spacing="16px"
           overflow="hidden"
+          flex="1"
           alignSelf="stretch"
         >
-          <Skeleton borderRadius={"100px"} isLoaded={user}>
-            <Avatar src={user?.user_profile} size="lg" />
-          </Skeleton>
           <Stack
+            //   paddingY="10px"
+            mt={"20px"}
+            direction="row"
             justify="flex-start"
             align="flex-start"
             spacing="10px"
             overflow="hidden"
-            height="78px"
-            flex="1"
+            alignSelf="stretch"
           >
+            <Skeleton borderRadius={"100px"} isLoaded={user}>
+              <Avatar src={user?.user_profile} size="lg" />
+            </Skeleton>
             <Stack
-              direction="row"
-              justify="space-between"
-              align="center"
-              spacing="5px"
+              justify="flex-start"
+              align="flex-start"
+              spacing="10px"
               overflow="hidden"
-              height="19px"
-              alignSelf="stretch"
+              height="78px"
+              flex="1"
             >
-              <SkeletonText isLoaded={user}>
-                <Stack
-                  direction="row"
-                  justify="flex-start"
-                  align="center"
-                  spacing="5px"
-                >
-                  <Text
-                    fontWeight="bold"
-                    fontSize="16px"
-                    color={black}
-                    textAlign="center"
-                  >
-                    {user?.user_name.slice(0, -1) + "*"}
-                  </Text>
-                  <Icon as={BsStarFill} />
-                  <Text
-                    fontWeight="medium"
-                    fontSize="16px"
-                    color={black}
-                    textAlign="center"
-                  >
-                    5.0
-                  </Text>
-                  <Text
-                    fontWeight="medium"
-                    fontSize="14px"
-                    color={gray_600}
-                    textAlign="center"
-                  >
-                    (169)
-                  </Text>
-                </Stack>
-              </SkeletonText>
-              <Box />
-            </Stack>
-            <SkeletonText isLoaded={user}>
-              <Text
-                lineHeight="1.42"
-                fontWeight="medium"
-                fontSize="12px"
-                color={black}
+              <Stack
+                direction="row"
+                justify="space-between"
+                align="center"
+                spacing="5px"
+                overflow="hidden"
+                height="19px"
                 alignSelf="stretch"
               >
-                {`나이 : ${display_age_range(33)}, 매칭 금액 : ${
-                  user?.user_price
-                }만원, 매칭 가능 동네 : ${user?.user_place}`}
+                <SkeletonText isLoaded={user}>
+                  <Stack
+                    direction="row"
+                    justify="flex-start"
+                    align="center"
+                    spacing="5px"
+                  >
+                    <Text
+                      fontWeight="bold"
+                      fontSize="18px"
+                      color={black}
+                      textAlign="center"
+                    >
+                      {user?.user_name.slice(0, -1) + "*"}
+                    </Text>
+                    <Icon as={BsStarFill} />
+                    <Text
+                      fontWeight="medium"
+                      fontSize="18px"
+                      color={black}
+                      textAlign="center"
+                    >
+                      5.0
+                    </Text>
+                    <Text
+                      fontWeight="medium"
+                      fontSize="16px"
+                      color={gray_600}
+                      textAlign="center"
+                    >
+                      (169)
+                    </Text>
+                  </Stack>
+                </SkeletonText>
+                <Box />
+              </Stack>
+              <SkeletonText isLoaded={user}>
+                <Text
+                  lineHeight="1.42"
+                  fontWeight="medium"
+                  fontSize="12px"
+                  color={black}
+                  alignSelf="stretch"
+                >
+                  {`나이 : ${display_age_range(33)}, 매칭 금액 : ${
+                    user?.user_price
+                  }만원, 매칭 가능 동네 : ${user?.user_place}`}
+                </Text>
+              </SkeletonText>
+            </Stack>
+            <IconButton
+              variant={"unstyled"}
+              icon={<SettingsIcon />}
+              size="sm"
+            />
+          </Stack>
+          <HorizonLine />
+          <Stack
+            direction="row"
+            justify="space-between"
+            align="center"
+            spacing="10px"
+            alignSelf="stretch"
+          >
+            <Text fontWeight="semibold" fontSize="18px" color={gray_900}>
+              프로필 소개말
+            </Text>
+            <Button
+              size="sm"
+              onClick={async () => {
+                setInfoEditMode(!info_edit_mode);
+                if (info_edit_mode) {
+                  // 문서 업데이트
+                  console.log(user.user_id);
+                  await db_update("user", user.user_id, {
+                    user_info: info_text,
+                  });
+                }
+              }}
+            >
+              수정하기
+            </Button>
+          </Stack>
+          {info_edit_mode ? (
+            <Textarea
+              defaultValue={user?.user_info}
+              placeholder="소개글을 작성해주세요."
+              onChange={(e) => setInfoText(e.target.value)}
+            />
+          ) : (
+            <SkeletonText isLoaded={user}>
+              <Text
+                lineHeight="1.5"
+                fontWeight="medium"
+                fontSize="16px"
+                color={user?.user_info ? gray_800 : gray_600}
+                alignSelf="stretch"
+              >
+                {info_text
+                  ? info_text
+                  : user?.user_info
+                  ? user?.user_info
+                  : "소개글을 작성해주세요."}
               </Text>
             </SkeletonText>
-          </Stack>
-          <IconButton variant={"unstyled"} icon={<SettingsIcon />} size="sm" />
-        </Stack>
-        <HorizonLine />
-        <Stack
-          direction="row"
-          justify="space-between"
-          align="center"
-          spacing="10px"
-          alignSelf="stretch"
-        >
+          )}
+          <HorizonLine />
           <Text
             fontWeight="semibold"
             fontSize="18px"
-            color={gray_900}
+            color={black}
+            textAlign="center"
+            onClick={() => onOpen()}
           >
-            프로필 소개말
+            이용약관
           </Text>
-          <Button
-            size="sm"
-            onClick={async () => {
-              setInfoEditMode(!info_edit_mode);
-              if (info_edit_mode) {
-                // 문서 업데이트
-                console.log(user.user_id);
-                await db_update("user", user.user_id, { user_info: info_text });
-              }
-            }}
+          <HorizonLine />
+          <Text
+            fontWeight="semibold"
+            fontSize="18px"
+            color={black}
+            textAlign="center"
           >
-            수정하기
-          </Button>
-        </Stack>
-        {info_edit_mode ? (
-          <Textarea
-            defaultValue={user?.user_info}
-            placeholder="소개글을 작성해주세요."
-            onChange={(e) => setInfoText(e.target.value)}
-          />
-        ) : (
-          <SkeletonText isLoaded={user}>
-            <Text
-              lineHeight="1.5"
-              fontWeight="medium"
-              fontSize="16px"
-              color={user?.user_info ? gray_800 : gray_600}
-              alignSelf="stretch"
-            >
-              {info_text
-                ? info_text
-                : user?.user_info
-                ? user?.user_info
-                : "소개글을 작성해주세요."}
-            </Text>
-          </SkeletonText>
-        )}
-        <HorizonLine />
-        <Text
-          fontWeight="semibold"
-          fontSize="18px"
-          color={black}
-          textAlign="center"
-          onClick={() => onOpen()}
-        >
-          이용약관
-        </Text>
-        <HorizonLine />
-        <Text
-          fontWeight="semibold"
-          fontSize="18px"
-          color={black}
-          textAlign="center"
-        >
-          공지사항
-        </Text>
-        <HorizonLine />
-        <Text
-          fontWeight="semibold"
-          fontSize="18px"
-          color={black}
-          textAlign="center"
-        >
-          문의하기
-        </Text>
-        <HorizonLine />
-        <Text
-          fontWeight="semibold"
-          fontSize="18px"
-          color={black}
-          textAlign="center"
-        >
-          로그아웃
-        </Text>
-        <HorizonLine />
+            공지사항
+          </Text>
+          <HorizonLine />
+          <Text
+            fontWeight="semibold"
+            fontSize="18px"
+            color={black}
+            textAlign="center"
+          >
+            문의하기
+          </Text>
+          <HorizonLine />
+          <Text
+            fontWeight="semibold"
+            fontSize="18px"
+            color={black}
+            textAlign="center"
+          >
+            로그아웃
+          </Text>
+          <HorizonLine />
 
-        <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>이용약관</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Text fontSize={"small"} whiteSpace={"pre-wrap"}>
-                {terms}
-              </Text>
-            </ModalBody>
-            <ModalFooter>
-              <Button onClick={onClose}></Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+          <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>이용약관</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Text fontSize={"small"} whiteSpace={"pre-wrap"}>
+                  {terms}
+                </Text>
+              </ModalBody>
+              <ModalFooter>
+                <Button onClick={onClose}></Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </Stack>
       </Stack>
-    </Stack>
+    </Container>
   );
 };

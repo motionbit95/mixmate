@@ -6,7 +6,7 @@ import { black } from "../App";
 export const TopHeader = ({ title }) => {
   const navigate = useNavigate();
   return (
-    <Stack className="header">
+    <Stack className="header" zIndex={9999}>
       <Container>
         <Stack
           padding="10px"

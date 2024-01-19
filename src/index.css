@@ -62,7 +62,7 @@ button {
   border: none;
   background-color: var(--light-gray);
   padding: var(--padding-medium);
-  border-radius: var(--border-radius);
+  /* border-radius: var(--border-radius); */
   font-size: medium;
   white-space: nowrap;
 }

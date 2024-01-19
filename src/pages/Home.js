@@ -418,7 +418,7 @@ export const Home = () => {
                               })
                             }
                           >
-                            신청하기
+                            식사매칭
                           </Button>
                         </Stack>
                       ))}
@@ -547,7 +547,7 @@ export const Home = () => {
                               })
                             }
                           >
-                            신청하기
+                            식사매칭
                           </Button>
                         </Stack>
                       ))}

@@ -552,7 +552,8 @@ export const Information = () => {
                   color={black}
                   // width="90px"
                 >
-                  부수입으로 받고 싶은 식사권 금액
+                  나와 식사하려면 상대방이 지불해야하는 금액은? (본인의
+                  부수입으로 입금됩니다)
                 </Text>
                 <Select
                   height="40px"

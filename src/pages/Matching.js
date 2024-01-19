@@ -26,6 +26,7 @@ import {
   theme_primary_color,
   white,
 } from "../App";
+import { TopHeader } from "../component/TopHeader";
 
 export const Matching = () => {
   const navigate = useNavigate();
@@ -44,34 +45,7 @@ export const Matching = () => {
           maxWidth="100%"
           background={white}
         >
-          <Stack className="header">
-            <Container>
-              <Stack
-                padding="10px"
-                direction="row"
-                justify="space-between"
-                align="flex-start"
-                spacing="10px"
-                overflow="hidden"
-                alignSelf="stretch"
-              >
-                <Icon
-                  as={MdChevronLeft}
-                  onClick={() => navigate(-1)}
-                  boxSize={"24px"}
-                />
-                <Text
-                  fontWeight="Bold"
-                  fontSize="18px"
-                  color={black}
-                  textAlign="center"
-                >
-                  밥친구 프로필
-                </Text>
-                <Box height="26px"></Box>
-              </Stack>
-            </Container>
-          </Stack>
+          <TopHeader title={"밥친구 프로필"} />
           <Stack
             // padding="10px"
             justify="center"
@@ -203,12 +177,8 @@ export const Matching = () => {
                       alignSelf="stretch"
                       background={gray_300}
                     >
-                      <Text
-                        fontWeight="semibold"
-                        fontSize="18px"
-                        color={black}
-                      >
-                        식사권이란?
+                      <Text fontWeight="semibold" fontSize="18px" color={black}>
+                        식사 매칭 시스템 🍜
                       </Text>
                       <Text
                         lineHeight="1.5"
@@ -217,16 +187,17 @@ export const Matching = () => {
                         color={gray_800}
                         alignSelf="stretch"
                       >
-                        기재해주신 식사권 금액을 상대 신청자가 플랫폼에 결제를
-                        하면 식사권 신청을 할 수 있어요!
-                        <br />
-                        <br />
-                        신청 받으신 유저는 식사권 수령 후 앱 채팅으로 약속을
-                        잡으시면 끝!
-                        <br />
-                        <br />
-                        식사 후 2영업일 내로 매칭 수수료 제외된 금액이 식사권
-                        신청 받으신 유저에게 입금됩니다.
+                        ● 식사 매칭 신청하기 <br />
+                        식사하고 싶은 상대방에게 식사 매칭 신청 → 결제(금액은
+                        상대방에 따라 상이함) → 상대방과 채팅으로 식사약속 체결
+                        → 즐거운 식사 <br />
+                        ※ 결제된 식사권 사용기한은 2주. <br />※ 상대방이 거절
+                        또는 미응답 시 결제된 금액은 전액 환불. <br />
+                        <br />● 식사 매칭 수락/거절하기 신청받은 식사 매칭을
+                        수락 또는 거절 → 수락 시 상대방과 채팅으로 식사약속 체결
+                        → 식사 → 식사 매칭 대금 정산 <br />※ 정산은 식사 완료 후
+                        2영업일 이내. <br />※ 식사 매칭 대금은 본인이 설정한
+                        식사권 금액에서 매칭 수수료를 제외한 금액이 정산됨.
                       </Text>
                     </Stack>
                     <Button

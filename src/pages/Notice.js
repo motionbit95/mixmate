@@ -7,7 +7,6 @@ export const Notice = () => {
   return (
     <Container py="50px">
       <Stack
-        
         justify="flex-start"
         align="flex-start"
         spacing="0px"

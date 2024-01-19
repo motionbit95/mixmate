@@ -15,7 +15,7 @@ import { Details } from "./pages/Details";
 import { ChatList } from "./pages/ChatList";
 import { Chat } from "./pages/Chat";
 
-import "./reset.css";
+// import "./reset.css";
 import "./index.css";
 import "./styleguide.css";
 
