@@ -25,12 +25,14 @@ import {
   ModalBody,
 } from "@chakra-ui/react";
 import { MdChevronLeft } from "react-icons/md";
-import { BsFillStarFill, BsStarFill } from "react-icons/bs";
+import { BsStarFill, BsFillStarFill } from "react-icons/bs";
 import { TopHeader } from "../component/TopHeader";
 import HorizonLine from "../component/HorizontalLine";
+import { useState } from "react";
 
 export const Details = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [modal_type, setModalType] = useState();
 
   function ReviewContent() {
     return (
@@ -78,6 +80,116 @@ export const Details = () => {
       </Stack>
     );
   }
+
+  function RefundContent() {
+    return (
+      <Stack width="393px" height="852px" maxWidth="100%" background="#FFFFFF">
+        <Stack size="lg" width="40px" height="40px" />
+        <Stack
+          paddingX="30px"
+          justify="flex-start"
+          align="center"
+          spacing="40px"
+          width="393px"
+          maxWidth="100%"
+        >
+          <Text
+            fontFamily="Apple SD Gothic Neo"
+            lineHeight="1.31"
+            fontWeight="semibold"
+            fontSize="16px"
+            letterSpacing="-0.32px"
+            color="#000000"
+            textAlign="center"
+          >
+            거절 사유를 입력하세요.
+          </Text>
+          <Stack
+            justify="flex-start"
+            align="flex-start"
+            spacing="16px"
+            alignSelf="stretch"
+          >
+            <Stack
+              size="md"
+              isDisabled={false}
+              defaultChecked
+              colorScheme="blue"
+              direction="row"
+              justify="flex-start"
+              align="center"
+            >
+              매칭 신청 폭주
+            </Stack>
+            <Stack
+              size="md"
+              isDisabled={false}
+              defaultChecked={false}
+              colorScheme="blue"
+              direction="row"
+              justify="flex-start"
+              align="center"
+            >
+              신청자 사정의 취소
+            </Stack>
+            <Stack
+              size="md"
+              isDisabled={false}
+              defaultChecked={false}
+              colorScheme="blue"
+              direction="row"
+              justify="flex-start"
+              align="center"
+            >
+              부적절한 언행
+            </Stack>
+            <Stack
+              size="md"
+              isDisabled={false}
+              defaultChecked={false}
+              colorScheme="blue"
+              direction="row"
+              justify="flex-start"
+              align="center"
+            >
+              일정 합의 불가
+            </Stack>
+            <Stack
+              size="md"
+              isDisabled={false}
+              defaultChecked={false}
+              colorScheme="blue"
+              direction="row"
+              justify="flex-start"
+              align="center"
+            >
+              직접입력
+            </Stack>
+            <Stack
+              borderRadius="6px"
+              borderColor="gray.200"
+              borderStartWidth="1px"
+              borderEndWidth="1px"
+              borderTopWidth="1px"
+              borderBottomWidth="1px"
+              height="219px"
+              alignSelf="stretch"
+              background="white"
+            />
+          </Stack>
+          <Button
+            size="sm"
+            colorScheme="blue"
+            height="32px"
+            alignSelf="stretch"
+          >
+            신청 거절하기
+          </Button>
+        </Stack>
+      </Stack>
+    );
+  }
+
   return (
     <Container py={"50px"}>
       <Stack
@@ -105,7 +217,7 @@ export const Details = () => {
               <Tab w={"100%"}>종료</Tab>
             </TabList>
             <TabPanels>
-              <TabPanel px="0">
+              <TabPanel>
                 <Stack
                   padding="10px"
                   justify="flex-start"
@@ -347,7 +459,10 @@ export const Details = () => {
                       colorScheme="blue"
                       height="32px"
                       flex="1"
-                      onClick={() => onOpen()}
+                      onClick={() => {
+                        setModalType("refund");
+                        onOpen();
+                      }}
                     >
                       거절하기
                     </Button>
@@ -484,7 +599,10 @@ export const Details = () => {
                         colorScheme="blue"
                         height="32px"
                         flex="1"
-                        onClick={() => onOpen()}
+                        onClick={() => {
+                          setModalType("review");
+                          onOpen();
+                        }}
                       >
                         후기작성하기
                       </Button>
@@ -614,9 +732,9 @@ export const Details = () => {
                         나은 조건에서 만남을 찾기를 기원합니다.
                       </Box>
                     </Text>
-                    <Accordion width="100%" background="#F1F1F1">
-                      <AccordionItem width="100%">
-                        <AccordionButton width="100%" height="44px" alignSelf="stretch">
+                    <Accordion background="#F1F1F1">
+                      <AccordionItem>
+                        <AccordionButton height="44px" alignSelf="stretch">
                           <Text
                             fontFamily="Inter"
                             lineHeight="1.71"
@@ -629,32 +747,32 @@ export const Details = () => {
                           </Text>
                           <Icon />
                         </AccordionButton>
-                        <AccordionPanel width="100%">
+                        <AccordionPanel>
                           <Text
                             fontFamily="Inter"
                             lineHeight="1.67"
                             fontWeight="regular"
                             fontSize="12px"
-                            whiteSpace="pre-wrap"
                             color="#4E4E4E"
-                            
+                            width="328px"
                             maxWidth="100%"
                           >
+                            <span>
                               안녕하세요,식사회입니다. 고객님의 결제 취소에 관한
                               안내드립니다. 결제 취소 요청이 정상적으로
                               접수되었습니다. 아래는 취소에 관한 상세
                               정보입니다.
-                            <br/>
-                              주문번호: 192930 
-                            <br/>
-                              취소 금액: 20,000원 
-                            <br/>
-                              취소 일시:2024.01.16
-                            <br/>
+                            </span>
+                            <Box as="span">
+                              주문번호: 192930 취소 금액: 20,000원 취소 일시:
+                              2024.01.16
+                            </Box>
+                            <Box as="span">
                               취소된 금액은 최대 3 영업일 이내에 원래 결제
                               수단으로 환불될 예정입니다. 추가적인 궁금한
                               사항이나 도움이 필요하신 경우, 언제든지 고객센터로
                               문의해 주세요. 감사합니다. 식사회 드림
+                            </Box>
                           </Text>
                         </AccordionPanel>
                       </AccordionItem>
@@ -1195,7 +1313,13 @@ export const Details = () => {
         <ModalContent>
           <ModalHeader></ModalHeader>
           <ModalCloseButton />
-          <ModalBody></ModalBody>
+          <ModalBody>
+            {modal_type && modal_type === "review" ? (
+              <ReviewContent />
+            ) : (
+              <RefundContent />
+            )}
+          </ModalBody>
           <ModalFooter>
             <Button onClick={onClose}></Button>
           </ModalFooter>
