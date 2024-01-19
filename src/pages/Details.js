@@ -155,7 +155,7 @@ export const Details = () => {
   function RefundContent() {
     const [message, setMessage] = useState("매칭 신청 폭주");
     return (
-      <Stack width="393px" height="852px" maxWidth="100%" background="#FFFFFF">
+      <Stack maxWidth="100%" background="#FFFFFF">
         <Stack size="lg" width="40px" height="40px" />
         <Stack
           paddingX="30px"

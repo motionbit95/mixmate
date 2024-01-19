@@ -15,6 +15,10 @@ import { Details } from "./pages/Details";
 import { ChatList } from "./pages/ChatList";
 import { Chat } from "./pages/Chat";
 
+import "./reset.css";
+import "./index.css";
+import "./styleguide.css";
+
 export const theme_primary_color = "#3182CE";
 export const white = "#ffffff";
 export const black = "#000000";
