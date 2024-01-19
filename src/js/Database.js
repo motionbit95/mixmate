@@ -2,6 +2,7 @@ import {
   addDoc,
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
   serverTimestamp,
@@ -38,7 +39,7 @@ export const db_update = async (col, doc_id, data) => {
   await updateDoc(doc(db, col, doc_id), data);
 };
 
-/** 컬렉션에서 여러 문서 가져오기
+/** 컬렉션에서 여러 문서 가져오기(특정 속성으로 검색해서 리스트를 가지고 올 때 사용)
  * @function get_doc_info
  * @param {string} col collection 이름
  * @param {string} property 검색 속성
@@ -55,4 +56,38 @@ export const get_doc_info = async (col, property, value) => {
       doc_id: querySnapshot.docs[0].id,
     };
   else return null;
+};
+
+/** 문서 id로 데이터 가지고 오기
+ * @function get_doc_data
+ * @param {string} collection collection 이름
+ * @param {string} doc_id 문서 id
+ * @return {object} 단일 문서의 내용
+ */
+export const get_doc_data = async (collection, doc_id) => {
+  const docRef = doc(db, collection, doc_id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    console.log("Document data:", docSnap.data());
+  } else {
+    // docSnap.data() will be undefined in this case
+    console.log("No such document!");
+  }
+
+  return docSnap.data();
+};
+
+/** 조건에 일치하는 모든 문서를 가지고 오기
+ * @function get_doc_list
+ * @param {string} collection collection 이름
+ * @param {string} property 검색 속성
+ * @param {string} value 검색 값
+ * @return {object} property 값이 value 와 일치하는 데이터 반환
+ */
+export const get_doc_list = async (collection, property, value) => {
+  const q = query(collection(db, collection), where(property, "==", value));
+  const querySnapshot = await getDocs(q);
+
+  return querySnapshot;
 };
