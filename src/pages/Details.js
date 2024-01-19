@@ -23,17 +23,87 @@ import {
   useDisclosure,
   ModalContent,
   ModalBody,
+  Flex,
+  Textarea,
+  RadioGroup,
+  Radio,
 } from "@chakra-ui/react";
 import { MdChevronLeft } from "react-icons/md";
 import { BsStarFill, BsFillStarFill } from "react-icons/bs";
 import { TopHeader } from "../component/TopHeader";
 import HorizonLine from "../component/HorizontalLine";
 import { black, gray_300, gray_600, gray_800, gray_900, white } from "../App";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { auth } from "../db/firebase_config";
+import { get_doc_info } from "../js/Database";
+import {
+  matching_add,
+  matching_get_list,
+  matching_set,
+} from "../js/MatchingAPI";
 
 export const Details = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modal_type, setModalType] = useState();
+  const [matching_refund_message, setRefundMessage] = useState();
+
+  // 매칭 받을 테스트 계정 => motionbit.dev@gmail.com
+  //# local state 로 받아오도록 수정 예정
+  const test_uid = "6ANvpNStOsUj7kfehPPETnUhBHy2";
+  const [my_uid, setUID] = useState();
+
+  // 테스트용 매칭 id 저장 변수
+  const [test_matching_id, setMatchingId] = useState();
+
+  useEffect(() => {
+    get_matching_list();
+  });
+
+  async function get_matching_list() {
+    // 현재 로그인 한 고객의 계정을 가지고 옵니다.
+    auth.onAuthStateChanged(async function (user) {
+      if (user) {
+        console.log(user.uid);
+        let user_info = await get_doc_info("user", "user_id", user.uid);
+        console.log(user_info);
+
+        // uid를 저장합니다.
+        if (!my_uid) {
+          setUID(user.uid);
+        }
+
+        // 매칭 리스트에서 내가 받은 신청인지 보낸 신청인지 구분해서 저장해둡니다.
+        let send_list = await matching_get_list(0);
+        let receive_list = await matching_get_list(1);
+        console.log("send_list", send_list, "recieve_list", receive_list);
+      }
+    });
+  }
+
+  async function onClickRefundMatching() {
+    // 거절 모달 띄우기
+    setModalType("refund");
+    onOpen();
+  }
+
+  async function onClickRefundMessage(message) {
+    if (window.confirm("매칭을 거절하시겠습니까?")) {
+      await matching_set(test_matching_id, {
+        matching_state: 400, // 매칭 거절 코드
+        matching_refund_message: message,
+      });
+      onClose();
+    }
+  }
+
+  async function onClickCompleteMatching() {
+    if (window.confirm("매칭을 확정지으시겠습니까?")) {
+      await matching_set(test_matching_id, {
+        matching_state: 2, // 매칭 완료 코드
+      });
+    }
+    window.location.reload();
+  }
 
   function ReviewContent() {
     return (
@@ -82,6 +152,7 @@ export const Details = () => {
   }
 
   function RefundContent() {
+    const [message, setMessage] = useState("매칭 신청 폭주");
     return (
       <Stack width="393px" height="852px" maxWidth="100%" background="#FFFFFF">
         <Stack size="lg" width="40px" height="40px" />
@@ -103,84 +174,29 @@ export const Details = () => {
           >
             거절 사유를 입력하세요.
           </Text>
-          <Stack
-            justify="flex-start"
-            align="flex-start"
-            spacing="16px"
-            alignSelf="stretch"
+          <RadioGroup
+            w="100%"
+            defaultValue={message}
+            onChange={(value) => setMessage(value)}
           >
-            <Stack
-              size="md"
-              isDisabled={false}
-              defaultChecked
-              colorScheme="blue"
-              direction="row"
-              justify="flex-start"
-              align="center"
-            >
-              매칭 신청 폭주
+            <Stack>
+              <Radio value="매칭 신청 폭주">매칭 신청 폭주</Radio>
+              <Radio value="신청자 사정의 취소">신청자 사정의 취소</Radio>
+              <Radio value="부적절한 언행">부적절한 언행</Radio>
+              <Radio value="일정합의 불가">일정합의 불가</Radio>
+              <Radio value="">직접입력</Radio>
+              <Textarea
+                placeholder="거절 사유룰 입력해주세요."
+                onChange={(e) => setMessage(e.target.value)}
+              />
             </Stack>
-            <Stack
-              size="md"
-              isDisabled={false}
-              defaultChecked={false}
-              colorScheme="blue"
-              direction="row"
-              justify="flex-start"
-              align="center"
-            >
-              신청자 사정의 취소
-            </Stack>
-            <Stack
-              size="md"
-              isDisabled={false}
-              defaultChecked={false}
-              colorScheme="blue"
-              direction="row"
-              justify="flex-start"
-              align="center"
-            >
-              부적절한 언행
-            </Stack>
-            <Stack
-              size="md"
-              isDisabled={false}
-              defaultChecked={false}
-              colorScheme="blue"
-              direction="row"
-              justify="flex-start"
-              align="center"
-            >
-              일정 합의 불가
-            </Stack>
-            <Stack
-              size="md"
-              isDisabled={false}
-              defaultChecked={false}
-              colorScheme="blue"
-              direction="row"
-              justify="flex-start"
-              align="center"
-            >
-              직접입력
-            </Stack>
-            <Stack
-              borderRadius="6px"
-              borderColor="gray.200"
-              borderStartWidth="1px"
-              borderEndWidth="1px"
-              borderTopWidth="1px"
-              borderBottomWidth="1px"
-              height="219px"
-              alignSelf="stretch"
-              background="white"
-            />
-          </Stack>
+          </RadioGroup>
           <Button
             size="sm"
             colorScheme="blue"
             height="32px"
             alignSelf="stretch"
+            onClick={() => onClickRefundMessage(message)}
           >
             신청 거절하기
           </Button>
@@ -191,6 +207,11 @@ export const Details = () => {
 
   return (
     <Container py={"50px"}>
+      <Box>
+        <Button>후기작성</Button>
+        <Button>채팅하기</Button>
+        <Button>다시신청하기</Button>
+      </Box>
       <Stack
         justify="flex-start"
         align="center"
@@ -326,7 +347,13 @@ export const Details = () => {
                     <Button size="sm" height="32px" flex="1">
                       채팅하기
                     </Button>
-                    <Button size="sm" colorScheme="blue" height="32px" flex="1">
+                    <Button
+                      onClick={onClickCompleteMatching}
+                      size="sm"
+                      colorScheme="blue"
+                      height="32px"
+                      flex="1"
+                    >
                       구매확정하기
                     </Button>
                   </Stack>
@@ -446,10 +473,7 @@ export const Details = () => {
                       colorScheme="blue"
                       height="32px"
                       flex="1"
-                      onClick={() => {
-                        setModalType("refund");
-                        onOpen();
-                      }}
+                      onClick={onClickRefundMatching}
                     >
                       거절하기
                     </Button>
@@ -708,7 +732,11 @@ export const Details = () => {
                     </Text>
                     <Accordion width="100%" background={gray_300}>
                       <AccordionItem width="100%">
-                        <AccordionButton width="100%" height="44px" alignSelf="stretch">
+                        <AccordionButton
+                          width="100%"
+                          height="44px"
+                          alignSelf="stretch"
+                        >
                           <Text
                             lineHeight="1.71"
                             fontWeight="regular"
@@ -727,7 +755,6 @@ export const Details = () => {
                             fontSize="12px"
                             whiteSpace="pre-wrap"
                             color={gray_800}
-                          
                             maxWidth="100%"
                           >                          
                               안녕하세요,식사회입니다. 고객님의 결제 취소에 관한

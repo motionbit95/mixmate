@@ -14,10 +14,48 @@ import { AiOutlineCalendar } from "react-icons/ai";
 import { HiOutlineTicket } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import HorizonLine from "../component/HorizontalLine";
-import { black, gray_300, gray_400, gray_500, gray_700, gray_800, gray_900, theme_primary_color, white } from "../App";
+import {
+  black,
+  gray_300,
+  gray_400,
+  gray_500,
+  gray_700,
+  gray_800,
+  gray_900,
+  theme_primary_color,
+  white,
+} from "../App";
+import { matching_add } from "../js/MatchingAPI";
+import { useState } from "react";
+import { auth } from "../db/firebase_config";
 
 export const Payment = () => {
   const navigate = useNavigate();
+
+  // 매칭 받을 테스트 계정 => motionbit.dev@gmail.com
+  //# local state 로 받아오도록 수정 예정
+  const test_uid = "6ANvpNStOsUj7kfehPPETnUhBHy2";
+
+  async function onClickPayment() {
+    // 현재 회원 uid 가지고 오기
+    auth.onAuthStateChanged(async function (user) {
+      if (user) {
+        //# 여기에 결제 API 추가
+        // 결제 정보 추가
+
+        // 매칭 정보 추가
+        let matching_id = await matching_add({
+          matching_sender: user.uid, // 매칭 신청자 (본인)
+          matching_reciever: test_uid, // 현재 보고있는 페이지 유저(매칭 수신자)
+          matching_state: 0, // default 신청 상태
+          matching_payment: "", // 결제 정보 id
+        });
+      }
+    });
+
+    // 신청 내역 페이지로 이동
+    navigate("/details");
+  }
   return (
     <Container py="50px">
       <Stack
@@ -310,7 +348,7 @@ export const Payment = () => {
                   height="50px"
                   _hover={{
                     backgroundColor: gray_400,
-                    borderColor: {theme_primary_color},
+                    borderColor: { theme_primary_color },
                   }}
                 >
                   <Image src={require("../assets/toss.png")} h="50px"></Image>
@@ -345,7 +383,7 @@ export const Payment = () => {
                   height="50px"
                   _hover={{
                     backgroundColor: gray_400,
-                    borderColor: {theme_primary_color},
+                    borderColor: { theme_primary_color },
                   }}
                 >
                   <Image
@@ -387,7 +425,7 @@ export const Payment = () => {
                   height="50px"
                   _hover={{
                     backgroundColor: gray_400,
-                    borderColor: {theme_primary_color},
+                    borderColor: { theme_primary_color },
                   }}
                 >
                   <Text
@@ -426,7 +464,12 @@ export const Payment = () => {
                 </Text>
               </Center>
             </Stack>
-            <Button colorScheme="blue" height="40px" alignSelf="stretch">
+            <Button
+              onClick={onClickPayment}
+              colorScheme="blue"
+              height="40px"
+              alignSelf="stretch"
+            >
               결제하기
             </Button>
           </Stack>

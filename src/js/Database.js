@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -37,6 +38,16 @@ export const db_add = async (col, data) => {
 export const db_update = async (col, doc_id, data) => {
   // Add a new document in collection
   await updateDoc(doc(db, col, doc_id), data);
+};
+
+/** collection 내 특정 문서 삭제
+ * @function db_delete
+ * @param {string} collection collection 이름
+ * @param {string} doc_id 문서 id
+ */
+
+export const db_delete = async (collection, doc_id) => {
+  await deleteDoc(doc(db, collection, doc_id));
 };
 
 /** 컬렉션에서 여러 문서 가져오기(특정 속성으로 검색해서 리스트를 가지고 올 때 사용)
@@ -80,14 +91,20 @@ export const get_doc_data = async (collection, doc_id) => {
 
 /** 조건에 일치하는 모든 문서를 가지고 오기
  * @function get_doc_list
- * @param {string} collection collection 이름
+ * @param {string} col collection 이름
  * @param {string} property 검색 속성
  * @param {string} value 검색 값
  * @return {object} property 값이 value 와 일치하는 데이터 반환
  */
-export const get_doc_list = async (collection, property, value) => {
-  const q = query(collection(db, collection), where(property, "==", value));
+export const get_doc_list = async (col, property, value) => {
+  const q = query(collection(db, col), where(property, "==", value));
   const querySnapshot = await getDocs(q);
 
-  return querySnapshot;
+  const doc_list = [];
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    doc_list.push(doc.data());
+  });
+
+  return doc_list;
 };

@@ -16,7 +16,16 @@ import { MdChevronLeft } from "react-icons/md";
 import { BsStarFill } from "react-icons/bs";
 import HorizonLine from "../component/HorizontalLine";
 import { useLocation, useNavigate } from "react-router-dom";
-import { black, gray_300, gray_600, gray_700, gray_800, gray_900, theme_primary_color, white } from "../App";
+import {
+  black,
+  gray_300,
+  gray_600,
+  gray_700,
+  gray_800,
+  gray_900,
+  theme_primary_color,
+  white,
+} from "../App";
 
 export const Matching = () => {
   const navigate = useNavigate();
@@ -160,9 +169,7 @@ export const Matching = () => {
                 </Tab>
               </TabList>
               <TabPanels>
-                <TabPanel
-                px={0}
-                >
+                <TabPanel px={0}>
                   <Stack
                     // padding="10px"
                     justify="flex-start"
@@ -232,9 +239,7 @@ export const Matching = () => {
                     </Button>
                   </Stack>
                 </TabPanel>
-                <TabPanel
-                px={0}
-                >
+                <TabPanel px={0}>
                   <Stack
                     // padding="10px"
                     justify="flex-start"

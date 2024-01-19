@@ -1,25 +1,27 @@
 import { serverTimestamp } from "firebase/firestore";
 import {
   db_add,
+  db_delete,
   db_update,
   get_doc_data,
-  get_doc_info,
   get_doc_list,
 } from "./Database";
 import { auth } from "../db/firebase_config";
 
 // matching data example
 export const demo_matching = {
-  matching_sender: {}, // 매칭 신청자
-  matching_receiver: {}, // 매칭 수락자
+  matching_sender: "", // 매칭 신청자 uid
+  matching_receiver: "", //매칭 수락자 uid
   matching_state: 0, // 매칭 상태
-  matching_payment: {}, // 매칭 결제 정보
+  matching_payment: "", // 매칭 결제 정보
   timestamp: serverTimestamp(), // 현재 시각
 };
 
-/** 신규 매칭을 생성합니다.
+/** 신규 매칭을 생성합니다.(매칭 결제 완료 시 호출)
  * @function matching_add
  * @param {object} data 추가할 데이터
+ * @returns {string} doc id
+ * @description doc 생성 확인 완료
  */
 export const matching_add = async (data) => {
   // matching collection에 data를 추가합니다
@@ -28,12 +30,15 @@ export const matching_add = async (data) => {
 
   // matching id를 필드에 업데이트합니다.
   await db_update("matching", doc_id, { matching_id: doc_id });
+
+  return doc_id;
 };
 
 /** 기존 매칭의 data 정보를 수정합니다.
  * @function matching_set
  * @param {string} doc_id 문서 번호
  * @param {object} data 추가할 데이터
+ * @description doc 수정 확인 완료
  */
 export const matching_set = async (doc_id, data) => {
   await db_update("matching", doc_id, data);
@@ -51,25 +56,34 @@ export const matching_get_item = async (doc_id) => {
 /** 본인의 모든 매칭을 조회합니다.
  * @function matching_get_list
  * @param {int} type 본인이 매칭 신청자인지, 수신자인지 구분
+ * @returns {array} 조회 된 메칭 리스트 반환
+ * @description list 조회 동작 확인 완료
  */
 export const matching_get_list = async (type) => {
-  console.log(auth?.currentUser?.uid); // 현재 로그인 된 사용자의 정보를 가지고 온다(현재 로그인 된 싱태의 경우)
+  // 현재 로그인 된 사용자의 정보를 가지고 온다(현재 로그인 된 싱태의 경우)
   let user_uid = auth?.currentUser?.uid;
   if (!user_uid) return []; // 로그인 된 사용자가 없을 경우 값을 리턴하지 않는다.
+
+  let matching_list = []; // 매칭 리스트
   if (type === 0) {
-    // 본인이 매칭 신청자라면
+    // 본인이 매칭 신청자라면 -> 매칭 보낸 사람의 uid로 매칭 검색
+    matching_list = await get_doc_list("matching", "matching_sender", user_uid);
   } else {
-    // 본인이 매칭 수신자라면
+    // 본인이 매칭 수신자라면 -> 매칭 받은 사람의 uid로 매칭 검색
+    matching_list = await get_doc_list(
+      "matching",
+      "matching_reciever",
+      user_uid
+    );
   }
-  await get_doc_list("matching");
+
+  return matching_list;
 };
 
 /** 매칭을 삭제합니다. (Danger)
  * @function matching_get_item
+ * @param {string} doc_id 문서 번호
  */
-export const matching_del = () => {};
-
-/** 매칭을 거절합니다. (Danger)
- * @function matching_get_item
- */
-export const matching_refund = () => {};
+export const matching_del = async (doc_id) => {
+  await db_delete("matching", doc_id);
+};
