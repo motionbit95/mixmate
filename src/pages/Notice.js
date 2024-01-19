@@ -1,6 +1,7 @@
 import { Stack, Text, Container } from "@chakra-ui/react";
 import HorizonLine from "../component/HorizontalLine";
 import { TopHeader } from "../component/TopHeader";
+import { black, gray_600, white } from "../App";
 
 export const Notice = () => {
   return (
@@ -13,7 +14,7 @@ export const Notice = () => {
         // width="393px"
         // height="852px"
         maxWidth="100%"
-        background="#FFFFFF"
+        background={white}
       >
         <TopHeader title={"알림"} />
         <Stack
@@ -30,7 +31,7 @@ export const Notice = () => {
             fontFamily="Pretendard Variable"
             fontWeight="semibold"
             fontSize="18px"
-            color="#000000"
+            color={black}
             textAlign="center"
           >
             01.15(월)
@@ -46,7 +47,7 @@ export const Notice = () => {
               fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="16px"
-              color="#000000"
+              color={black}
               textAlign="center"
             >
               매칭신청이 결제되었습니다.
@@ -55,7 +56,7 @@ export const Notice = () => {
               fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="12px"
-              color="#8C8C8C"
+              color={gray_600}
               textAlign="center"
             >
               오후 8시 14분
@@ -73,7 +74,7 @@ export const Notice = () => {
               fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="16px"
-              color="#000000"
+              color={black}
               textAlign="center"
             >
               [공지] 고객센터 운영시간 안내
@@ -82,7 +83,7 @@ export const Notice = () => {
               fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="12px"
-              color="#8C8C8C"
+              color={gray_600}
               textAlign="center"
             >
               24.01.16
@@ -100,7 +101,7 @@ export const Notice = () => {
               fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="16px"
-              color="#000000"
+              color={black}
               textAlign="center"
             >
               매칭신청이 거절되었습니다.
@@ -109,7 +110,7 @@ export const Notice = () => {
               fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="12px"
-              color="#8C8C8C"
+              color={gray_600}
               textAlign="center"
             >
               24.01.16
@@ -127,7 +128,7 @@ export const Notice = () => {
               fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="16px"
-              color="#000000"
+              color={black}
               textAlign="center"
             >
               매칭신청이 결제되었습니다.
@@ -136,7 +137,7 @@ export const Notice = () => {
               fontFamily="Pretendard Variable"
               fontWeight="medium"
               fontSize="12px"
-              color="#8C8C8C"
+              color={gray_600}
               textAlign="center"
             >
               24.01.16

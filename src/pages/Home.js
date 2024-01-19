@@ -23,6 +23,7 @@ import { auth } from "../db/firebase_config";
 import { get_doc_info } from "../js/Database";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
+import { black, gray_300, gray_600, theme_primary_color, white } from "../App";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -146,7 +147,7 @@ export const Home = () => {
         overflow="hidden"
         // width="393px"
         maxWidth="100%"
-        background="#FFFFFF"
+        background={white}
         minH={"90vh"}
       >
         <Stack className="header">
@@ -164,7 +165,7 @@ export const Home = () => {
                 fontFamily="Pretendard"
                 fontWeight="black"
                 fontSize="24px"
-                color="#000000"
+                color={black}
                 textAlign="center"
               >
                 식사회
@@ -216,7 +217,7 @@ export const Home = () => {
               fontWeight="semibold"
               fontSize="30px"
               letterSpacing="-0.32px"
-              color="#FFFFFF"
+              color={white}
               textAlign="center"
             >
               Event
@@ -233,7 +234,7 @@ export const Home = () => {
                 fontWeight="semibold"
                 fontSize="16px"
                 letterSpacing="-0.32px"
-                color="#FFFFFF"
+                color={white}
                 textAlign="center"
               >
                 1 / 3
@@ -275,7 +276,7 @@ export const Home = () => {
                         fontWeight="semibold"
                         fontSize="16px"
                         letterSpacing="-0.32px"
-                        // color="#000000"
+                        // color={black}
                         textAlign="center"
                       >
                         사업 전문가
@@ -291,7 +292,7 @@ export const Home = () => {
                         fontWeight="semibold"
                         fontSize="16px"
                         letterSpacing="-0.32px"
-                        // color="#000000"
+                        // color={black}
                         textAlign="center"
                       >
                         내 주변 밥친구
@@ -370,7 +371,7 @@ export const Home = () => {
                                   fontFamily="Inter"
                                   fontWeight="bold"
                                   fontSize="16px"
-                                  color="#000000"
+                                  color={black}
                                   textAlign="center"
                                 >
                                   {value.name.slice(0, -1) + "*"}
@@ -380,7 +381,7 @@ export const Home = () => {
                                   fontFamily="Inter"
                                   fontWeight="medium"
                                   fontSize="16px"
-                                  color="#000000"
+                                  color={black}
                                   textAlign="center"
                                 >
                                   5.0
@@ -389,7 +390,7 @@ export const Home = () => {
                                   fontFamily="Inter"
                                   fontWeight="medium"
                                   fontSize="14px"
-                                  color="#8C8C8C"
+                                  color={gray_600}
                                   textAlign="center"
                                 >
                                   (169)
@@ -399,7 +400,7 @@ export const Home = () => {
                                 fontFamily="Inter"
                                 fontWeight="medium"
                                 fontSize="14px"
-                                color="#3182CE"
+                                color={theme_primary_color}
                                 textAlign="center"
                               >
                                 140m
@@ -410,7 +411,7 @@ export const Home = () => {
                               lineHeight="1.42"
                               fontWeight="medium"
                               fontSize="12px"
-                              color="#000000"
+                              color={black}
                               alignSelf="stretch"
                             >
                               {`나이 : ${value.age}, 사업분야 : ${value.business}, 매칭 금액 : ${value.price}, 매칭 가능 동네 :
@@ -504,7 +505,7 @@ export const Home = () => {
                                   fontFamily="Inter"
                                   fontWeight="bold"
                                   fontSize="16px"
-                                  color="#000000"
+                                  color={black}
                                   textAlign="center"
                                 >
                                   {value.name.slice(0, -1) + "*"}
@@ -514,7 +515,7 @@ export const Home = () => {
                                   fontFamily="Inter"
                                   fontWeight="medium"
                                   fontSize="16px"
-                                  color="#000000"
+                                  color={black}
                                   textAlign="center"
                                 >
                                   5.0
@@ -523,7 +524,7 @@ export const Home = () => {
                                   fontFamily="Inter"
                                   fontWeight="medium"
                                   fontSize="14px"
-                                  color="#8C8C8C"
+                                  color={gray_600}
                                   textAlign="center"
                                 >
                                   (169)
@@ -533,7 +534,7 @@ export const Home = () => {
                                 fontFamily="Inter"
                                 fontWeight="medium"
                                 fontSize="14px"
-                                color="#3182CE"
+                                color={theme_primary_color}
                                 textAlign="center"
                               >
                                 140m
@@ -544,7 +545,7 @@ export const Home = () => {
                               lineHeight="1.42"
                               fontWeight="medium"
                               fontSize="12px"
-                              color="#000000"
+                              color={black}
                               alignSelf="stretch"
                             >
                               {`나이 : ${value.age}, 사업분야 : ${value.business}, 매칭 금액 : ${value.price}, 매칭 가능 동네 :
@@ -581,7 +582,7 @@ export const Home = () => {
           align="flex-start"
           spacing="5px"
           alignSelf="stretch"
-          background="#F1F1F1"
+          background={gray_300}
         >
           <Text
             fontFamily="Apple SD Gothic Neo"
@@ -589,7 +590,7 @@ export const Home = () => {
             fontWeight="semibold"
             fontSize="15px"
             letterSpacing="-0.32px"
-            color="#000000"
+            color={black}
             textAlign="center"
           >
             (주) 세이프바운더리
@@ -600,7 +601,7 @@ export const Home = () => {
             fontWeight="regular"
             fontSize="14px"
             letterSpacing="-0.32px"
-            color="#000000"
+            color={black}
           >
             대표자명 : 김지훈 | 사업자 등록번호 : 817 88 02796 주소 : 강남
             서초구 강남대로 51길10 강남효성해링턴 103 통신판매 신고번호 :

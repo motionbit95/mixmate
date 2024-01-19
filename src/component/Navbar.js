@@ -7,6 +7,7 @@ import { MdChatBubble, MdChatBubbleOutline } from "react-icons/md";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import { get_page_num } from "../js/UserAPI";
+import { theme_primary_color } from "../App";
 
 export const Navbar = () => {
   const page = get_page_num();
@@ -35,13 +36,13 @@ export const Navbar = () => {
           >
             <Icon
               as={page === 0 ? AiFillHome : AiOutlineHome}
-              color={page === 0 ? "#3182CE" : "black"}
+              color={page === 0 ? theme_primary_color : "black"}
             />
             <Text
               fontFamily="Inter"
               fontWeight="medium"
               fontSize="12px"
-              color={page === 0 ? "#3182CE" : "black"}
+              color={page === 0 ? theme_primary_color : "black"}
               textAlign="center"
             >
               홈
@@ -57,12 +58,12 @@ export const Navbar = () => {
               window.location.replace("/details");
             }}
           >
-            <Icon as={BsList} color={page === 1 ? "#3182CE" : "black"} />
+            <Icon as={BsList} color={page === 1 ? theme_primary_color : "black"} />
             <Text
               fontFamily="Inter"
               fontWeight="medium"
               fontSize="12px"
-              color={page === 1 ? "#3182CE" : "black"}
+              color={page === 1 ? theme_primary_color : "black"}
               textAlign="center"
             >
               신청내역
@@ -80,13 +81,13 @@ export const Navbar = () => {
           >
             <Icon
               as={page === 2 ? MdChatBubble : MdChatBubbleOutline}
-              color={page === 2 ? "#3182CE" : "black"}
+              color={page === 2 ? theme_primary_color : "black"}
             />
             <Text
               fontFamily="Inter"
               fontWeight="medium"
               fontSize="12px"
-              color={page === 2 ? "#3182CE" : "black"}
+              color={page === 2 ? theme_primary_color : "black"}
               textAlign="center"
             >
               채팅
@@ -104,13 +105,13 @@ export const Navbar = () => {
           >
             <Icon
               as={page === 3 ? BsPersonFill : BsPerson}
-              color={page === 3 ? "#3182CE" : "black"}
+              color={page === 3 ? theme_primary_color : "black"}
             />
             <Text
               fontFamily="Inter"
               fontWeight="medium"
               fontSize="12px"
-              color={page === 3 ? "#3182CE" : "black"}
+              color={page === 3 ? theme_primary_color : "black"}
               textAlign="center"
             >
               마이페이지

@@ -14,6 +14,7 @@ import { AiOutlineCalendar } from "react-icons/ai";
 import { HiOutlineTicket } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import HorizonLine from "../component/HorizontalLine";
+import { black, gray_300, gray_400, gray_500, gray_700, gray_800, gray_900, theme_primary_color, white } from "../App";
 
 export const Payment = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export const Payment = () => {
         overflow="hidden"
         // width="393px"
         maxWidth="100%"
-        background="#FFFFFF"
+        background={white}
       >
         <Stack className="header">
           <Container>
@@ -48,7 +49,7 @@ export const Payment = () => {
                 fontFamily="Pretendard"
                 fontWeight="Bold"
                 fontSize="18px"
-                color="#000000"
+                color={black}
                 textAlign="center"
               >
                 밥친구 프로필
@@ -77,7 +78,7 @@ export const Payment = () => {
               fontFamily="Inter"
               fontWeight="semibold"
               fontSize="18px"
-              color="#111111"
+              color={gray_900}
             >
               신청 전 유의사항
             </Text>
@@ -86,12 +87,12 @@ export const Payment = () => {
               lineHeight="1.5"
               fontWeight="medium"
               fontSize="16px"
-              color="#4E4E4E"
+              color={gray_800}
               alignSelf="stretch"
             >
               <span>본 신청권의 유효기간은 구매일로부터 2주입니다.</span>
               <br />
-              <Box as="span" fontWeight="bold" color="#3182CE">
+              <Box as="span" fontWeight="bold" color={theme_primary_color}>
                 유효기간 내에 신청권 사용을 완료
               </Box>
               <Box as="span">해주세요.</Box>
@@ -100,7 +101,7 @@ export const Payment = () => {
               fontFamily="Inter"
               fontWeight="semibold"
               fontSize="18px"
-              color="#000000"
+              color={black}
             >
               진행과정
             </Text>
@@ -111,7 +112,7 @@ export const Payment = () => {
               align="flex-start"
               spacing="15px"
               alignSelf="stretch"
-              background="#F1F1F1"
+              background={gray_300}
             >
               <Stack
                 direction="row"
@@ -126,7 +127,7 @@ export const Payment = () => {
                   lineHeight="1.71"
                   fontWeight="medium"
                   fontSize="14px"
-                  color="#4E4E4E"
+                  color={gray_800}
                   flex="1"
                 >
                   결제 후 생성된 방에서 밥친구와 메시지
@@ -145,7 +146,7 @@ export const Payment = () => {
                   lineHeight="1.71"
                   fontWeight="medium"
                   fontSize="14px"
-                  color="#4E4E4E"
+                  color={gray_800}
                   flex="1"
                 >
                   밥친구와 일정 조율 및 약속 장소 확정
@@ -164,7 +165,7 @@ export const Payment = () => {
                   lineHeight="1.71"
                   fontWeight="medium"
                   fontSize="14px"
-                  color="#4E4E4E"
+                  color={gray_800}
                   flex="1"
                 >
                   새로운 인연과 즐거운 식사
@@ -175,7 +176,7 @@ export const Payment = () => {
               fontFamily="Inter"
               fontWeight="semibold"
               fontSize="18px"
-              color="#000000"
+              color={black}
             >
               최종 결제 금액
             </Text>
@@ -186,7 +187,7 @@ export const Payment = () => {
               align="flex-start"
               spacing="6px"
               alignSelf="stretch"
-              background="#F1F1F1"
+              background={gray_300}
             >
               <Stack
                 direction="row"
@@ -200,7 +201,7 @@ export const Payment = () => {
                   lineHeight="1.71"
                   fontWeight="medium"
                   fontSize="14px"
-                  color="#4E4E4E"
+                  color={gray_800}
                   flex="1"
                 >
                   정상가
@@ -210,7 +211,7 @@ export const Payment = () => {
                   lineHeight="1.71"
                   fontWeight="medium"
                   fontSize="14px"
-                  color="#4E4E4E"
+                  color={gray_800}
                   flex="1"
                   textAlign="end"
                 >
@@ -230,7 +231,7 @@ export const Payment = () => {
                   lineHeight="1.71"
                   fontWeight="medium"
                   fontSize="14px"
-                  color="#4E4E4E"
+                  color={gray_800}
                   flex="1"
                 >
                   쿠폰 할인
@@ -240,7 +241,7 @@ export const Payment = () => {
                   lineHeight="1.71"
                   fontWeight="medium"
                   fontSize="14px"
-                  color="#4E4E4E"
+                  color={gray_800}
                   flex="1"
                   textAlign="end"
                 >
@@ -260,7 +261,7 @@ export const Payment = () => {
                   lineHeight="1.71"
                   fontWeight="bold"
                   fontSize="14px"
-                  color="#4E4E4E"
+                  color={gray_800}
                   flex="1"
                 >
                   결제 예정 금액
@@ -270,7 +271,7 @@ export const Payment = () => {
                   lineHeight="1.71"
                   fontWeight="bold"
                   fontSize="14px"
-                  color="#3182CE"
+                  color={theme_primary_color}
                   flex="1"
                   textAlign="end"
                 >
@@ -282,7 +283,7 @@ export const Payment = () => {
               fontFamily="Inter"
               fontWeight="semibold"
               fontSize="18px"
-              color="#000000"
+              color={black}
             >
               결제 수단 선택
             </Text>
@@ -299,7 +300,7 @@ export const Payment = () => {
               <HStack w="100%">
                 <Center
                   borderRadius="10px"
-                  borderColor="#D9D9D9"
+                  borderColor={gray_500}
                   borderStartWidth="1.5px"
                   borderEndWidth="1.5px"
                   borderTopWidth="1.5px"
@@ -307,15 +308,15 @@ export const Payment = () => {
                   width="100%"
                   height="50px"
                   _hover={{
-                    backgroundColor: "#EBF8FF",
-                    borderColor: "#3182CE",
+                    backgroundColor: gray_400,
+                    borderColor: theme_primary_color,
                   }}
                 >
                   <Image src={require("../assets/kakao.png")} h="24px"></Image>
                 </Center>
                 <Center
                   borderRadius="10px"
-                  borderColor="#D9D9D9"
+                  borderColor={gray_500}
                   borderStartWidth="1.5px"
                   borderEndWidth="1.5px"
                   borderTopWidth="1.5px"
@@ -323,15 +324,15 @@ export const Payment = () => {
                   width="100%"
                   height="50px"
                   _hover={{
-                    backgroundColor: "#EBF8FF",
-                    borderColor: "#3182CE",
+                    backgroundColor: gray_400,
+                    borderColor: {theme_primary_color},
                   }}
                 >
                   <Image src={require("../assets/toss.png")} h="50px"></Image>
                 </Center>
                 <Center
                   borderRadius="10px"
-                  borderColor="#D9D9D9"
+                  borderColor={gray_500}
                   borderStartWidth="1.5px"
                   borderEndWidth="1.5px"
                   borderTopWidth="1.5px"
@@ -339,8 +340,8 @@ export const Payment = () => {
                   width="100%"
                   height="50px"
                   _hover={{
-                    backgroundColor: "#EBF8FF",
-                    borderColor: "#3182CE",
+                    backgroundColor: gray_400,
+                    borderColor: theme_primary_color,
                   }}
                 >
                   <Image src={require("../assets/naver.png")} h="24px"></Image>
@@ -350,7 +351,7 @@ export const Payment = () => {
               <HStack w="100%">
                 <Center
                   borderRadius="10px"
-                  borderColor="#D9D9D9"
+                  borderColor={gray_500}
                   borderStartWidth="1.5px"
                   borderEndWidth="1.5px"
                   borderTopWidth="1.5px"
@@ -358,8 +359,8 @@ export const Payment = () => {
                   width="100%"
                   height="50px"
                   _hover={{
-                    backgroundColor: "#EBF8FF",
-                    borderColor: "#3182CE",
+                    backgroundColor: gray_400,
+                    borderColor: {theme_primary_color},
                   }}
                 >
                   <Image
@@ -369,7 +370,7 @@ export const Payment = () => {
                 </Center>
                 <Center
                   borderRadius="10px"
-                  borderColor="#D9D9D9"
+                  borderColor={gray_500}
                   borderStartWidth="1.5px"
                   borderEndWidth="1.5px"
                   borderTopWidth="1.5px"
@@ -377,8 +378,8 @@ export const Payment = () => {
                   width="100%"
                   height="50px"
                   _hover={{
-                    backgroundColor: "#EBF8FF",
-                    borderColor: "#3182CE",
+                    backgroundColor: gray_400,
+                    borderColor: theme_primary_color,
                   }}
                 >
                   <Text
@@ -386,14 +387,14 @@ export const Payment = () => {
                     lineHeight="1.5"
                     fontWeight="semibold"
                     fontSize="16px"
-                    color="#444444"
+                    color={gray_700}
                   >
                     신용카드
                   </Text>
                 </Center>
                 <Center
                   borderRadius="10px"
-                  borderColor="#D9D9D9"
+                  borderColor={gray_500}
                   borderStartWidth="1.5px"
                   borderEndWidth="1.5px"
                   borderTopWidth="1.5px"
@@ -401,8 +402,8 @@ export const Payment = () => {
                   width="100%"
                   height="50px"
                   _hover={{
-                    backgroundColor: "#EBF8FF",
-                    borderColor: "#3182CE",
+                    backgroundColor: gray_400,
+                    borderColor: {theme_primary_color},
                   }}
                 >
                   <Text
@@ -410,7 +411,7 @@ export const Payment = () => {
                     lineHeight="1.5"
                     fontWeight="semibold"
                     fontSize="16px"
-                    color="#444444"
+                    color={gray_700}
                   >
                     휴대폰결제
                   </Text>
@@ -419,7 +420,7 @@ export const Payment = () => {
 
               <Center
                 borderRadius="10px"
-                borderColor="#D9D9D9"
+                borderColor={gray_500}
                 borderStartWidth="1.5px"
                 borderEndWidth="1.5px"
                 borderTopWidth="1.5px"
@@ -427,8 +428,8 @@ export const Payment = () => {
                 width="32%"
                 height="50px"
                 _hover={{
-                  backgroundColor: "#EBF8FF",
-                  borderColor: "#3182CE",
+                  backgroundColor: gray_400,
+                  borderColor: theme_primary_color,
                 }}
               >
                 <Text
@@ -436,7 +437,7 @@ export const Payment = () => {
                   lineHeight="1.25"
                   fontWeight="semibold"
                   fontSize="16px"
-                  color="#444444"
+                  color={gray_700}
                   textAlign="center"
                 >
                   실시간 계좌이체

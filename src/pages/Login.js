@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth_login_password, auth_set_local } from "../js/Auth";
 import { auth } from "../db/firebase_config";
+import { black, gray_600, white } from "../App";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ export const Login = () => {
         // width="393px"
         height="100vh"
         maxWidth="100%"
-        background="#FFFFFF"
+        background={white}
       >
         <Stack
           paddingX="10px"
@@ -68,7 +69,7 @@ export const Login = () => {
               fontFamily="Pretendard"
               fontWeight="black"
               fontSize="50px"
-              color="#000000"
+              color={black}
               textAlign="center"
             >
               식사회
@@ -125,7 +126,7 @@ export const Login = () => {
                 fontFamily="SF Pro"
                 fontWeight="regular"
                 fontSize="14px"
-                color="#8C8C8C"
+                color={gray_600}
                 onClick={() => navigate("/signup")}
               >
                 회원가입
@@ -134,7 +135,7 @@ export const Login = () => {
                 fontFamily="SF Pro"
                 fontWeight="regular"
                 fontSize="14px"
-                color="#8C8C8C"
+                color={gray_600}
               >
                 비밀번호찾기
               </Text>

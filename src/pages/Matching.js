@@ -16,6 +16,7 @@ import { MdChevronLeft } from "react-icons/md";
 import { BsStarFill } from "react-icons/bs";
 import HorizonLine from "../component/HorizontalLine";
 import { useLocation, useNavigate } from "react-router-dom";
+import { black, gray_300, gray_600, gray_700, gray_800, gray_900, theme_primary_color, white } from "../App";
 
 export const Matching = () => {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ export const Matching = () => {
           overflow="hidden"
           // width="393px"
           maxWidth="100%"
-          background="#FFFFFF"
+          background={white}
         >
           <Stack className="header">
             <Container>
@@ -54,7 +55,7 @@ export const Matching = () => {
                   fontFamily="Pretendard"
                   fontWeight="Bold"
                   fontSize="18px"
-                  color="#000000"
+                  color={black}
                   textAlign="center"
                 >
                   밥친구 프로필
@@ -107,7 +108,7 @@ export const Matching = () => {
                       fontFamily="Inter"
                       fontWeight="bold"
                       fontSize="16px"
-                      color="#000000"
+                      color={black}
                       textAlign="center"
                     >
                       {data.name.slice(0, -1) + "*"}
@@ -117,7 +118,7 @@ export const Matching = () => {
                       fontFamily="Inter"
                       fontWeight="medium"
                       fontSize="16px"
-                      color="#000000"
+                      color={black}
                       textAlign="center"
                     >
                       5.0
@@ -126,7 +127,7 @@ export const Matching = () => {
                       fontFamily="Inter"
                       fontWeight="medium"
                       fontSize="14px"
-                      color="#8C8C8C"
+                      color={gray_600}
                       textAlign="center"
                     >
                       (169)
@@ -136,7 +137,7 @@ export const Matching = () => {
                     fontFamily="Inter"
                     fontWeight="medium"
                     fontSize="14px"
-                    color="#3182CE"
+                    color={theme_primary_color}
                     textAlign="center"
                   >
                     140m
@@ -147,7 +148,7 @@ export const Matching = () => {
                   lineHeight="1.42"
                   fontWeight="medium"
                   fontSize="12px"
-                  color="#000000"
+                  color={black}
                   alignSelf="stretch"
                 >
                   {`나이 : ${data.age}, 사업분야 : ${data.business}, 매칭 금액 : ${data.price}, 매칭 가능 동네 :
@@ -180,7 +181,7 @@ export const Matching = () => {
                       fontFamily="Inter"
                       fontWeight="semibold"
                       fontSize="18px"
-                      color="#111111"
+                      color={gray_900}
                     >
                       프로필 소개말
                     </Text>
@@ -189,7 +190,7 @@ export const Matching = () => {
                       lineHeight="1.71"
                       fontWeight="medium"
                       fontSize="14px"
-                      color="#4E4E4E"
+                      color={gray_800}
                       alignSelf="stretch"
                     >
                       {data.info}
@@ -201,13 +202,13 @@ export const Matching = () => {
                       align="flex-start"
                       spacing="15px"
                       alignSelf="stretch"
-                      background="#F1F1F1"
+                      background={gray_300}
                     >
                       <Text
                         fontFamily="Inter"
                         fontWeight="semibold"
                         fontSize="18px"
-                        color="#000000"
+                        color={black}
                       >
                         식사권이란?
                       </Text>
@@ -216,7 +217,7 @@ export const Matching = () => {
                         lineHeight="1.5"
                         fontWeight="medium"
                         fontSize="16px"
-                        color="#4E4E4E"
+                        color={gray_800}
                         alignSelf="stretch"
                       >
                         기재해주신 식사권 금액을 상대 신청자가 플랫폼에 결제를
@@ -271,7 +272,7 @@ export const Matching = () => {
                           fontFamily="Inter"
                           fontWeight="medium"
                           fontSize="16px"
-                          color="#000000"
+                          color={black}
                           textAlign="center"
                         >
                           5.0
@@ -282,7 +283,7 @@ export const Matching = () => {
                         lineHeight="1.43"
                         fontWeight="medium"
                         fontSize="14px"
-                        color="#444444"
+                        color={gray_700}
                         alignSelf="stretch"
                       >
                         친구 매칭 서비스 덕분에 우연히 만난 친구가 있어서 너무
@@ -311,7 +312,7 @@ export const Matching = () => {
                           fontFamily="Inter"
                           fontWeight="medium"
                           fontSize="16px"
-                          color="#000000"
+                          color={black}
                           textAlign="center"
                         >
                           5.0
@@ -322,7 +323,7 @@ export const Matching = () => {
                         lineHeight="1.43"
                         fontWeight="medium"
                         fontSize="14px"
-                        color="#444444"
+                        color={gray_700}
                         alignSelf="stretch"
                       >
                         서비스를 통해 만난 친구는 정말로 나를 이해해주는
@@ -351,7 +352,7 @@ export const Matching = () => {
                           fontFamily="Inter"
                           fontWeight="medium"
                           fontSize="16px"
-                          color="#000000"
+                          color={black}
                           textAlign="center"
                         >
                           5.0
@@ -362,7 +363,7 @@ export const Matching = () => {
                         lineHeight="1.43"
                         fontWeight="medium"
                         fontSize="14px"
-                        color="#444444"
+                        color={gray_700}
                         alignSelf="stretch"
                       >
                         이 서비스 덕분에 소소한 일상을 함께 즐길 수 있는 친구를
@@ -391,7 +392,7 @@ export const Matching = () => {
                           fontFamily="Inter"
                           fontWeight="medium"
                           fontSize="16px"
-                          color="#000000"
+                          color={black}
                           textAlign="center"
                         >
                           5.0
@@ -402,7 +403,7 @@ export const Matching = () => {
                         lineHeight="1.43"
                         fontWeight="medium"
                         fontSize="14px"
-                        color="#444444"
+                        color={gray_700}
                         alignSelf="stretch"
                       >
                         처음 만났을 때부터 서로에게 열린 마음을 가지고 있어,

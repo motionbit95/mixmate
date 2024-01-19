@@ -1,4 +1,5 @@
 import React from "react";
+import { white } from "../App";
 
 const HorizonLine = ({ text }) => {
   return (
@@ -12,7 +13,7 @@ const HorizonLine = ({ text }) => {
       }}
     >
       {text && (
-        <span style={{ background: "#fff", padding: "0 10px" }}>{text}</span>
+        <span style={{ background: white, padding: "0 10px" }}>{text}</span>
       )}
     </div>
   );

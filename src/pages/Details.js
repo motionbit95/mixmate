@@ -28,6 +28,7 @@ import { MdChevronLeft } from "react-icons/md";
 import { BsFillStarFill, BsStarFill } from "react-icons/bs";
 import { TopHeader } from "../component/TopHeader";
 import HorizonLine from "../component/HorizontalLine";
+import { black, gray_300, gray_600, gray_800, gray_900, white } from "../App";
 
 export const Details = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -48,7 +49,7 @@ export const Details = () => {
           fontWeight="semibold"
           fontSize="16px"
           letterSpacing="-0.32px"
-          color="#000000"
+          color={black}
           textAlign="center"
         >
           후기 평점을 남겨주세요!
@@ -87,7 +88,7 @@ export const Details = () => {
         overflow="hidden"
         // width="393px"
         maxWidth="100%"
-        background="#FFFFFF"
+        background={white}
       >
         <TopHeader title={"신청내역"} />
         <Stack
@@ -113,14 +114,14 @@ export const Details = () => {
                   spacing="10px"
                   overflow="hidden"
                   alignSelf="stretch"
-                  background="#FFFFFF"
+                  background={white}
                 >
                   <Text
                     fontFamily="Inter"
                     lineHeight="1.56"
                     fontWeight="bold"
                     fontSize="18px"
-                    color="#000000"
+                    color={black}
                     textAlign="center"
                   >
                     결제완료
@@ -162,7 +163,7 @@ export const Details = () => {
                             fontFamily="Inter"
                             fontWeight="bold"
                             fontSize="16px"
-                            color="#000000"
+                            color={black}
                             textAlign="center"
                           >
                             송*혁
@@ -172,7 +173,7 @@ export const Details = () => {
                             fontFamily="Inter"
                             fontWeight="medium"
                             fontSize="16px"
-                            color="#000000"
+                            color={black}
                             textAlign="center"
                           >
                             5.0
@@ -181,7 +182,7 @@ export const Details = () => {
                             fontFamily="Inter"
                             fontWeight="medium"
                             fontSize="14px"
-                            color="#8C8C8C"
+                            color={gray_600}
                             textAlign="center"
                           >
                             (169)
@@ -201,7 +202,7 @@ export const Details = () => {
                         lineHeight="1.42"
                         fontWeight="medium"
                         fontSize="12px"
-                        color="#000000"
+                        color={black}
                         alignSelf="stretch"
                       >
                         나이 : 30~35세, 매칭 금액 : 2만원, 매칭 가능 동네 : 서울
@@ -216,7 +217,7 @@ export const Details = () => {
                     spacing="10px"
                     overflow="hidden"
                     alignSelf="stretch"
-                    background="#FFFFFF"
+                    background={white}
                   >
                     <Button size="sm" height="32px" flex="1">
                       채팅하기
@@ -234,14 +235,14 @@ export const Details = () => {
                   spacing="10px"
                   overflow="hidden"
                   alignSelf="stretch"
-                  background="#FFFFFF"
+                  background={white}
                 >
                   <Text
                     fontFamily="Inter"
                     lineHeight="1.56"
                     fontWeight="bold"
                     fontSize="18px"
-                    color="#000000"
+                    color={black}
                     textAlign="center"
                   >
                     매칭신청
@@ -283,7 +284,7 @@ export const Details = () => {
                             fontFamily="Inter"
                             fontWeight="bold"
                             fontSize="16px"
-                            color="#000000"
+                            color={black}
                             textAlign="center"
                           >
                             송*혁
@@ -293,7 +294,7 @@ export const Details = () => {
                             fontFamily="Inter"
                             fontWeight="medium"
                             fontSize="16px"
-                            color="#000000"
+                            color={black}
                             textAlign="center"
                           >
                             5.0
@@ -302,7 +303,7 @@ export const Details = () => {
                             fontFamily="Inter"
                             fontWeight="medium"
                             fontSize="14px"
-                            color="#8C8C8C"
+                            color={gray_600}
                             textAlign="center"
                           >
                             (169)
@@ -322,7 +323,7 @@ export const Details = () => {
                         lineHeight="1.42"
                         fontWeight="medium"
                         fontSize="12px"
-                        color="#000000"
+                        color={black}
                         alignSelf="stretch"
                       >
                         나이 : 30~35세, 매칭 금액 : 2만원, 매칭 가능 동네 : 서울
@@ -337,7 +338,7 @@ export const Details = () => {
                     spacing="10px"
                     overflow="hidden"
                     alignSelf="stretch"
-                    background="#FFFFFF"
+                    background={white}
                   >
                     <Button size="sm" height="32px" flex="1">
                       채팅하기
@@ -371,14 +372,14 @@ export const Details = () => {
                     spacing="10px"
                     overflow="hidden"
                     alignSelf="stretch"
-                    background="#FFFFFF"
+                    background={white}
                   >
                     <Text
                       fontFamily="Inter"
                       lineHeight="1.56"
                       fontWeight="bold"
                       fontSize="18px"
-                      color="#000000"
+                      color={black}
                       textAlign="center"
                     >
                       구매확정완료
@@ -420,7 +421,7 @@ export const Details = () => {
                               fontFamily="Inter"
                               fontWeight="bold"
                               fontSize="16px"
-                              color="#000000"
+                              color={black}
                               textAlign="center"
                             >
                               송*혁
@@ -430,7 +431,7 @@ export const Details = () => {
                               fontFamily="Inter"
                               fontWeight="medium"
                               fontSize="16px"
-                              color="#000000"
+                              color={black}
                               textAlign="center"
                             >
                               5.0
@@ -439,7 +440,7 @@ export const Details = () => {
                               fontFamily="Inter"
                               fontWeight="medium"
                               fontSize="14px"
-                              color="#8C8C8C"
+                              color={gray_600}
                               textAlign="center"
                             >
                               (169)
@@ -459,7 +460,7 @@ export const Details = () => {
                           lineHeight="1.42"
                           fontWeight="medium"
                           fontSize="12px"
-                          color="#000000"
+                          color={black}
                           alignSelf="stretch"
                         >
                           나이 : 30~35세, 매칭 금액 : 2만원, 매칭 가능 동네 :
@@ -474,7 +475,7 @@ export const Details = () => {
                       spacing="10px"
                       overflow="hidden"
                       alignSelf="stretch"
-                      background="#FFFFFF"
+                      background={white}
                     >
                       <Button size="sm" height="32px" flex="1">
                         다시 신청하기
@@ -498,14 +499,14 @@ export const Details = () => {
                     spacing="10px"
                     overflow="hidden"
                     alignSelf="stretch"
-                    background="#FFFFFF"
+                    background={white}
                   >
                     <Text
                       fontFamily="Inter"
                       lineHeight="1.56"
                       fontWeight="bold"
                       fontSize="18px"
-                      color="#000000"
+                      color={black}
                       textAlign="center"
                     >
                       매칭거절
@@ -547,7 +548,7 @@ export const Details = () => {
                               fontFamily="Inter"
                               fontWeight="bold"
                               fontSize="16px"
-                              color="#000000"
+                              color={black}
                               textAlign="center"
                             >
                               송*혁
@@ -557,7 +558,7 @@ export const Details = () => {
                               fontFamily="Inter"
                               fontWeight="medium"
                               fontSize="16px"
-                              color="#000000"
+                              color={black}
                               textAlign="center"
                             >
                               5.0
@@ -566,7 +567,7 @@ export const Details = () => {
                               fontFamily="Inter"
                               fontWeight="medium"
                               fontSize="14px"
-                              color="#8C8C8C"
+                              color={gray_600}
                               textAlign="center"
                             >
                               (169)
@@ -586,7 +587,7 @@ export const Details = () => {
                           lineHeight="1.42"
                           fontWeight="medium"
                           fontSize="12px"
-                          color="#000000"
+                          color={black}
                           alignSelf="stretch"
                         >
                           나이 : 30~35세, 매칭 금액 : 2만원, 매칭 가능 동네 :
@@ -599,7 +600,7 @@ export const Details = () => {
                       lineHeight="1.43"
                       fontWeight="semibold"
                       fontSize="14px"
-                      color="#000000"
+                      color={black}
                       alignSelf="stretch"
                     >
                       <span>거절사유</span>
@@ -614,7 +615,7 @@ export const Details = () => {
                         나은 조건에서 만남을 찾기를 기원합니다.
                       </Box>
                     </Text>
-                    <Accordion width="100%" background="#F1F1F1">
+                    <Accordion width="100%" background={gray_300}>
                       <AccordionItem width="100%">
                         <AccordionButton width="100%" height="44px" alignSelf="stretch">
                           <Text
@@ -622,7 +623,7 @@ export const Details = () => {
                             lineHeight="1.71"
                             fontWeight="regular"
                             fontSize="14px"
-                            color="#111111"
+                            color={gray_900}
                             flex="1"
                           >
                             결제 취소 안내
@@ -636,7 +637,7 @@ export const Details = () => {
                             fontWeight="regular"
                             fontSize="12px"
                             whiteSpace="pre-wrap"
-                            color="#4E4E4E"
+                            color={gray_800}
                             
                             maxWidth="100%"
                           >
@@ -668,14 +669,14 @@ export const Details = () => {
                     spacing="10px"
                     overflow="hidden"
                     alignSelf="stretch"
-                    background="#FFFFFF"
+                    background={white}
                   >
                     <Text
                       fontFamily="Inter"
                       lineHeight="1.56"
                       fontWeight="bold"
                       fontSize="18px"
-                      color="#000000"
+                      color={black}
                       textAlign="center"
                     >
                       매칭완료
@@ -717,7 +718,7 @@ export const Details = () => {
                               fontFamily="Inter"
                               fontWeight="bold"
                               fontSize="16px"
-                              color="#000000"
+                              color={black}
                               textAlign="center"
                             >
                               송*혁
@@ -727,7 +728,7 @@ export const Details = () => {
                               fontFamily="Inter"
                               fontWeight="medium"
                               fontSize="16px"
-                              color="#000000"
+                              color={black}
                               textAlign="center"
                             >
                               5.0
@@ -736,7 +737,7 @@ export const Details = () => {
                               fontFamily="Inter"
                               fontWeight="medium"
                               fontSize="14px"
-                              color="#8C8C8C"
+                              color={gray_600}
                               textAlign="center"
                             >
                               (169)
@@ -756,7 +757,7 @@ export const Details = () => {
                           lineHeight="1.42"
                           fontWeight="medium"
                           fontSize="12px"
-                          color="#000000"
+                          color={black}
                           alignSelf="stretch"
                         >
                           나이 : 30~35세, 매칭 금액 : 2만원, 매칭 가능 동네 :
@@ -769,7 +770,7 @@ export const Details = () => {
                       lineHeight="1.43"
                       fontWeight="semibold"
                       fontSize="14px"
-                      color="#000000"
+                      color={black}
                       alignSelf="stretch"
                     >
                       <span>후기</span>
@@ -791,14 +792,14 @@ export const Details = () => {
                     spacing="10px"
                     overflow="hidden"
                     alignSelf="stretch"
-                    background="#FFFFFF"
+                    background={white}
                   >
                     <Text
                       fontFamily="Inter"
                       lineHeight="1.56"
                       fontWeight="bold"
                       fontSize="18px"
-                      color="#000000"
+                      color={black}
                       textAlign="center"
                     >
                       매칭완료
@@ -840,7 +841,7 @@ export const Details = () => {
                               fontFamily="Inter"
                               fontWeight="bold"
                               fontSize="16px"
-                              color="#000000"
+                              color={black}
                               textAlign="center"
                             >
                               송*혁
@@ -850,7 +851,7 @@ export const Details = () => {
                               fontFamily="Inter"
                               fontWeight="medium"
                               fontSize="16px"
-                              color="#000000"
+                              color={black}
                               textAlign="center"
                             >
                               5.0
@@ -859,7 +860,7 @@ export const Details = () => {
                               fontFamily="Inter"
                               fontWeight="medium"
                               fontSize="14px"
-                              color="#8C8C8C"
+                              color={gray_600}
                               textAlign="center"
                             >
                               (169)
@@ -879,7 +880,7 @@ export const Details = () => {
                           lineHeight="1.42"
                           fontWeight="medium"
                           fontSize="12px"
-                          color="#000000"
+                          color={black}
                           alignSelf="stretch"
                         >
                           나이 : 30~35세, 매칭 금액 : 2만원, 매칭 가능 동네 :
@@ -899,7 +900,7 @@ export const Details = () => {
                         lineHeight="1.43"
                         fontWeight="semibold"
                         fontSize="14px"
-                        color="#000000"
+                        color={black}
                       >
                         후기
                       </Text>
@@ -914,7 +915,7 @@ export const Details = () => {
                           fontFamily="Inter"
                           fontWeight="medium"
                           fontSize="16px"
-                          color="#000000"
+                          color={black}
                           textAlign="center"
                         >
                           5.0
@@ -926,7 +927,7 @@ export const Details = () => {
                       lineHeight="1.67"
                       fontWeight="regular"
                       fontSize="12px"
-                      color="#000000"
+                      color={black}
                       alignSelf="stretch"
                     >
                       친구 매칭 서비스 덕분에 우연히 만난 친구가 있어서 너무
@@ -949,14 +950,14 @@ export const Details = () => {
           spacing="10px"
           overflow="hidden"
           alignSelf="stretch"
-          background="#F1F1F1"
+          background={gray_300}
         >
           <Text
             fontFamily="Inter"
             lineHeight="1.56"
             fontWeight="bold"
             fontSize="18px"
-            color="#000000"
+            color={black}
             textAlign="center"
           >
             추천친구
@@ -974,7 +975,7 @@ export const Details = () => {
               align="flex-start"
               spacing="20px"
               overflow="hidden"
-              background="#FFFFFF"
+              background={white}
               boxShadow="0px 4px 10px 0px rgba(0, 0, 0, 0.25)"
             >
               <Avatar name="TA" src=" " />
@@ -1003,7 +1004,7 @@ export const Details = () => {
                       fontFamily="Inter"
                       fontWeight="bold"
                       fontSize="16px"
-                      color="#000000"
+                      color={black}
                       textAlign="center"
                     >
                       송*혁
@@ -1013,7 +1014,7 @@ export const Details = () => {
                       fontFamily="Inter"
                       fontWeight="medium"
                       fontSize="16px"
-                      color="#000000"
+                      color={black}
                       textAlign="center"
                     >
                       5.0
@@ -1022,7 +1023,7 @@ export const Details = () => {
                       fontFamily="Inter"
                       fontWeight="medium"
                       fontSize="14px"
-                      color="#8C8C8C"
+                      color={gray_600}
                       textAlign="center"
                     >
                       (169)
@@ -1034,7 +1035,7 @@ export const Details = () => {
                   lineHeight="1.42"
                   fontWeight="medium"
                   fontSize="12px"
-                  color="#000000"
+                  color={black}
                 >
                   나이 : 30~35세 매칭 금액 : 2만원
                 </Text>
@@ -1047,7 +1048,7 @@ export const Details = () => {
               align="flex-start"
               spacing="20px"
               overflow="hidden"
-              background="#FFFFFF"
+              background={white}
               boxShadow="0px 4px 10px 0px rgba(0, 0, 0, 0.25)"
             >
               <Avatar name="TA" src=" " />
@@ -1076,7 +1077,7 @@ export const Details = () => {
                       fontFamily="Inter"
                       fontWeight="bold"
                       fontSize="16px"
-                      color="#000000"
+                      color={black}
                       textAlign="center"
                     >
                       송*혁
@@ -1086,7 +1087,7 @@ export const Details = () => {
                       fontFamily="Inter"
                       fontWeight="medium"
                       fontSize="16px"
-                      color="#000000"
+                      color={black}
                       textAlign="center"
                     >
                       5.0
@@ -1095,7 +1096,7 @@ export const Details = () => {
                       fontFamily="Inter"
                       fontWeight="medium"
                       fontSize="14px"
-                      color="#8C8C8C"
+                      color={gray_600}
                       textAlign="center"
                     >
                       (169)
@@ -1107,7 +1108,7 @@ export const Details = () => {
                   lineHeight="1.42"
                   fontWeight="medium"
                   fontSize="12px"
-                  color="#000000"
+                  color={black}
                 >
                   나이 : 30~35세 매칭 금액 : 2만원
                 </Text>
@@ -1120,7 +1121,7 @@ export const Details = () => {
               align="flex-start"
               spacing="20px"
               overflow="hidden"
-              background="#FFFFFF"
+              background={white}
               boxShadow="0px 4px 10px 0px rgba(0, 0, 0, 0.25)"
             >
               <Avatar name="TA" src=" " />
@@ -1149,7 +1150,7 @@ export const Details = () => {
                       fontFamily="Inter"
                       fontWeight="bold"
                       fontSize="16px"
-                      color="#000000"
+                      color={black}
                       textAlign="center"
                     >
                       송*혁
@@ -1159,7 +1160,7 @@ export const Details = () => {
                       fontFamily="Inter"
                       fontWeight="medium"
                       fontSize="16px"
-                      color="#000000"
+                      color={black}
                       textAlign="center"
                     >
                       5.0
@@ -1168,7 +1169,7 @@ export const Details = () => {
                       fontFamily="Inter"
                       fontWeight="medium"
                       fontSize="14px"
-                      color="#8C8C8C"
+                      color={gray_600}
                       textAlign="center"
                     >
                       (169)
@@ -1180,7 +1181,7 @@ export const Details = () => {
                   lineHeight="1.42"
                   fontWeight="medium"
                   fontSize="12px"
-                  color="#000000"
+                  color={black}
                 >
                   나이 : 30~35세 매칭 금액 : 2만원
                 </Text>

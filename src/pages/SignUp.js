@@ -22,6 +22,7 @@ import {
   step1_confirm_blank,
 } from "../js/UserAPI";
 import { auth_login_password, auth_signup_password } from "../js/Auth";
+import { gray_300, white } from "../App";
 
 export const SignUp = () => {
   const navigate = useNavigate();
@@ -131,7 +132,7 @@ export const SignUp = () => {
               zIndex={9999}
               isIndeterminate
               color="blue.300"
-              trackColor="#f1f1f1"
+              trackColor={gray_300}
             />
           </Center>
         </Box>
@@ -145,7 +146,7 @@ export const SignUp = () => {
         // width="393px"
         height="100vh"
         maxWidth="100%"
-        background="#FFFFFF"
+        background={white}
       >
         <Stack
           paddingX="10px"

@@ -1,6 +1,7 @@
 import { Box, Container, Icon, Stack, Text } from "@chakra-ui/react";
 import { MdChevronLeft } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { black } from "../App";
 
 export const TopHeader = ({ title }) => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export const TopHeader = ({ title }) => {
             fontFamily="Pretendard"
             fontWeight="Bold"
             fontSize="18px"
-            color="#000000"
+            color={black}
             textAlign="center"
           >
             {title}

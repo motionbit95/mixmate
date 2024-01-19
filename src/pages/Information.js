@@ -38,6 +38,7 @@ import {
 } from "../js/UserAPI";
 import { db_update } from "../js/Database";
 import { terms } from "../assets/terms";
+import { black, gray_600, white } from "../App";
 
 export const Information = () => {
   const navigate = useNavigate();
@@ -506,7 +507,7 @@ export const Information = () => {
         // width="393px"
         height="852px"
         maxWidth="100%"
-        background="#FFFFFF"
+        background={white}
       >
         <Stack
           paddingX="1vw"
@@ -549,7 +550,7 @@ export const Information = () => {
                   lineHeight="1.43"
                   fontWeight="regular"
                   fontSize="16px"
-                  color="#000000"
+                  color={black}
                   // width="90px"
                 >
                   부수입으로 받고 싶은 식사권 금액
@@ -586,7 +587,7 @@ export const Information = () => {
                     lineHeight="1.43"
                     fontWeight="regular"
                     fontSize="16px"
-                    color="#000000"
+                    color={black}
                     // width="90px"
                   >
                     식사 가능 동네
@@ -634,7 +635,7 @@ export const Information = () => {
                     lineHeight="1.43"
                     fontWeight="regular"
                     fontSize="16px"
-                    color="#000000"
+                    color={black}
                   >
                     좋아하는 음식
                   </Text>
@@ -708,7 +709,7 @@ export const Information = () => {
                   lineHeight="1.43"
                   fontWeight="regular"
                   fontSize="16px"
-                  color="#000000"
+                  color={black}
                   width="90px"
                 >
                   정산계좌
@@ -774,7 +775,7 @@ export const Information = () => {
                     lineHeight="1.43"
                     fontWeight="regular"
                     fontSize="16px"
-                    color="#000000"
+                    color={black}
                   >
                     성별
                   </Text>
@@ -814,7 +815,7 @@ export const Information = () => {
                 lineHeight="1.43"
                 fontWeight="regular"
                 fontSize="14px"
-                color="#8C8C8C"
+                color={gray_600}
                 // width="108.27px"
                 textAlign="end"
                 onClick={() => onOpen()}

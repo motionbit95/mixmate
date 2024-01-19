@@ -28,6 +28,7 @@ import { display_age_range } from "../js/UserAPI";
 import { SettingsIcon } from "@chakra-ui/icons";
 import HorizonLine from "../component/HorizontalLine";
 import { terms } from "../assets/terms";
+import { black, gray_600, gray_800, gray_900, white } from "../App";
 
 export const MyPage = () => {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ export const MyPage = () => {
       width="393px"
       height="852px"
       maxWidth="100%"
-      background="#FFFFFF"
+      background={white}
     >
       <TopHeader title={"마이페이지"} />
       <Stack
@@ -120,7 +121,7 @@ export const MyPage = () => {
                     fontFamily="Inter"
                     fontWeight="bold"
                     fontSize="16px"
-                    color="#000000"
+                    color={black}
                     textAlign="center"
                   >
                     {user?.user_name.slice(0, -1) + "*"}
@@ -130,7 +131,7 @@ export const MyPage = () => {
                     fontFamily="Inter"
                     fontWeight="medium"
                     fontSize="16px"
-                    color="#000000"
+                    color={black}
                     textAlign="center"
                   >
                     5.0
@@ -139,7 +140,7 @@ export const MyPage = () => {
                     fontFamily="Inter"
                     fontWeight="medium"
                     fontSize="14px"
-                    color="#8C8C8C"
+                    color={gray_600}
                     textAlign="center"
                   >
                     (169)
@@ -154,7 +155,7 @@ export const MyPage = () => {
                 lineHeight="1.42"
                 fontWeight="medium"
                 fontSize="12px"
-                color="#000000"
+                color={black}
                 alignSelf="stretch"
               >
                 {`나이 : ${display_age_range(33)}, 매칭 금액 : ${
@@ -177,7 +178,7 @@ export const MyPage = () => {
             fontFamily="Inter"
             fontWeight="semibold"
             fontSize="18px"
-            color="#111111"
+            color={gray_900}
           >
             프로필 소개말
           </Text>
@@ -208,7 +209,7 @@ export const MyPage = () => {
               lineHeight="1.5"
               fontWeight="medium"
               fontSize="16px"
-              color={user?.user_info ? "#4E4E4E" : "#8c8c8c"}
+              color={user?.user_info ? gray_800 : gray_600}
               alignSelf="stretch"
             >
               {info_text
@@ -224,7 +225,7 @@ export const MyPage = () => {
           fontFamily="Inter"
           fontWeight="semibold"
           fontSize="18px"
-          color="#000000"
+          color={black}
           textAlign="center"
           onClick={() => onOpen()}
         >
@@ -235,7 +236,7 @@ export const MyPage = () => {
           fontFamily="Inter"
           fontWeight="semibold"
           fontSize="18px"
-          color="#000000"
+          color={black}
           textAlign="center"
         >
           공지사항
@@ -245,7 +246,7 @@ export const MyPage = () => {
           fontFamily="Inter"
           fontWeight="semibold"
           fontSize="18px"
-          color="#000000"
+          color={black}
           textAlign="center"
         >
           문의하기
@@ -255,7 +256,7 @@ export const MyPage = () => {
           fontFamily="Inter"
           fontWeight="semibold"
           fontSize="18px"
-          color="#000000"
+          color={black}
           textAlign="center"
         >
           로그아웃
