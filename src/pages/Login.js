@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth_login_password, auth_set_local } from "../js/Auth";
+import { auth } from "../db/firebase_config";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -20,8 +21,8 @@ export const Login = () => {
 
   function login() {
     if (auth_login_password(account.id, account.password)) {
-      // console.log("로그인 성공!");
-      auth_set_local();
+      console.log("로그인 성공! : ", auth.currentUser);
+      // auth_set_local();
       navigate("/home");
     } else {
       alert("로그인실패! 계정을 확인하세요");

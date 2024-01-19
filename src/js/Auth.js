@@ -56,7 +56,7 @@ export const auth_login_password = async (doc_id, email, password) => {
       await db_update("user", doc_id, { user_id: uid });
       // ...
     })
-    .catch((error) => {
+    .catch(async (error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
     });
