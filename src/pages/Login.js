@@ -26,7 +26,7 @@ export const Login = () => {
     if (login_uid) {
       // console.log("로그인 성공! : ", auth.currentUser);
       // auth_set_local();
-      navigate("/home");
+      navigate("/");
     } else {
       alert("로그인실패! 계정을 확인하세요");
       setAccount({ id: "", password: "" });

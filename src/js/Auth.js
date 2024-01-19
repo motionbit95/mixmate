@@ -38,7 +38,6 @@ export const auth_signup_password = async (email, password) => {
 
 /** 이메일 주소와 비밀번호로 사용자 로그인
  * @function auth_login_password
- * @param {string} doc_id 문서 번호
  * @param {string} email 유저 이메일
  * @param {string} password 유저 패스워드
  * @returns {string} 유저 uid
@@ -50,13 +49,13 @@ export const auth_login_password = async (email, password) => {
       // Signed in
       const user = userCredential.user;
       uid = user.uid;
-      // console.log("login : ", uid);
       // ...
     })
     .catch(async (error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
 
+      // 에러메세지 출력
       console.log(errorMessage);
     });
 
