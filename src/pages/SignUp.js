@@ -22,7 +22,10 @@ import {
   step1_confirm_blank,
 } from "../js/UserAPI";
 import { auth_login_password, auth_signup_password } from "../js/Auth";
-import { gray_300, white } from "../App";
+import { gray_300, theme_primary_color, white } from "../App";
+import { useAuthState } from "../js/chatHooks";
+import { auth } from "../db/firebase_config";
+import { get_satuation } from "../js/Basic";
 
 export const SignUp = () => {
   const navigate = useNavigate();
@@ -32,10 +35,12 @@ export const SignUp = () => {
     state: true,
     message: "",
   });
+
+  const { user } = useAuthState(auth);
   const [formData, setFormData] = useState({
-    user_profile: "",
-    user_email: "",
-    user_name: "",
+    user_profile: user?.photoURL,
+    user_email: user?.email,
+    user_name: user?.displayName,
     user_password: "",
   });
 
@@ -163,7 +168,8 @@ export const SignUp = () => {
           padding="10px"
           direction="row"
           justify="center"
-          align="center"
+          // align="center"
+          mt={"4vh"}
           spacing="10px"
           overflow="hidden"
           flex="1"
@@ -171,7 +177,11 @@ export const SignUp = () => {
         >
           <Stack justify="flex-start" align="center" spacing="50px">
             <VStack>
-              <Avatar src={formData.user_profile} size="2xl" />
+              <Avatar
+                name={formData.user_name}
+                src={formData.user_profile}
+                size="2xl"
+              />
               <Button onClick={onClickProfileButton}>프로필 업로드</Button>
               <Input
                 display={"none"}
@@ -193,15 +203,17 @@ export const SignUp = () => {
                 placeholder="실명"
                 height="40px"
                 alignSelf="stretch"
+                value={formData.user_name}
                 onChange={(e) =>
                   setFormData({ ...formData, user_name: e.target.value })
                 }
               />
               <Input
                 type="email"
-                placeholder="아이디"
+                placeholder="이메일"
                 height="40px"
                 alignSelf="stretch"
+                value={formData.user_email}
                 onChange={(e) => {
                   setFormData({ ...formData, user_email: e.target.value });
                 }}
@@ -254,7 +266,7 @@ export const SignUp = () => {
               )}
             </Stack>
             <Button
-              colorScheme="blue"
+              colorScheme={get_satuation(theme_primary_color)}
               width="313px"
               height="40px"
               maxWidth="100%"
@@ -274,7 +286,7 @@ export const SignUp = () => {
                 }
               }}
             >
-              본인인증하기
+              가입 완료하기
             </Button>
           </Stack>
         </Stack>

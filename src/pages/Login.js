@@ -93,7 +93,11 @@ export const Login = () => {
                     code={"yellow.200"}
                   />
                   <FullButton
-                    onClick={signInWithGoogle}
+                    onClick={async () => {
+                      await signInWithGoogle();
+                      //회원가입 1step으로 이동
+                      navigate("/signup");
+                    }}
                     text="구글로 로그인하기"
                     code={"white.100"}
                   />

@@ -112,9 +112,9 @@ export function step2_confirm_blank(
  * @param {string} town 추가할 태그의 읍,면,동
  * @returns {array} 태그 항목이 추가 된 배열 반환
  */
-export function add_place_tag(array, city, district, town) {
+export function add_place_tag(array, city, district) {
   let tag_list = array;
-  let str_place = city + "," + district + "," + town;
+  let str_place = city + "," + district;
   // 배열에 항목이 존재하지 않으면 추가
   if (!tag_list.includes(str_place)) {
     tag_list.push(str_place);

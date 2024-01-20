@@ -86,11 +86,7 @@ export const signInWithGoogle = async () => {
   // Start sign in process
 
   try {
-    let ret = await firebase.auth().signInWithPopup(provider);
-    // 회원가입 2step으로 이동
-    //navigate("/");
-
-    console.log(ret);
+    await firebase.auth().signInWithPopup(provider);
   } catch (error) {
     console.log(error.message);
   }

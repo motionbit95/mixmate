@@ -38,7 +38,8 @@ import {
 } from "../js/UserAPI";
 import { db_update } from "../js/Database";
 import { terms } from "../assets/terms";
-import { black, gray_600, theme_primary_color, white } from "../App";
+import { black, gray_500, gray_600, theme_primary_color, white } from "../App";
+import { get_satuation } from "../js/Basic";
 
 export const Information = () => {
   const navigate = useNavigate();
@@ -66,6 +67,7 @@ export const Information = () => {
   ];
   const [user_food, setUserFood] = useState("선택");
   const [input_food, setInputFood] = useState("");
+  const [input_place, setInputPlace] = useState("");
   const [check_terms, setCheckTerms] = useState(false);
   const [isValid, setValid] = useState({
     state: true,
@@ -104,6 +106,7 @@ export const Information = () => {
     // 가상의 시/도, 군/구, 읍/면/동 데이터 - 추가 예정
     //# 진영 - 여기 추가해주세용...!
     const cities = [
+      "직접입력",
       "강원도",
       "경기도",
       "경상남도",
@@ -385,42 +388,42 @@ export const Information = () => {
         "충주시",
       ],
     };
-    const towns = {
-      강남구: [
-        "신사동",
-        "논현동",
-        "압구정동",
-        "청담동",
-        "삼성동",
-        "대치동",
-        "역삼동",
-        "도곡동",
-        "개포동",
-        "일원본동",
-        "일원동",
-        "수서동",
-        "세곡동",
-      ],
-      강동구: [
-        "강일동",
-        "상일동",
-        "명일동",
-        "고덕동",
-        "암사동",
-        "천호동",
-        "성내동",
-        "길동",
-        "둔촌동",
-      ],
-      강북구: [""],
-      강서구: ["화곡동", "등촌동", "방화동"],
-      수원시: ["장안구", "팔달구", "영통구"],
-      성남시: ["수정구", "중원구", "분당구"],
-      용인시: ["수지구", "기흥구", "처인구"],
-      해운대구: ["우동", "재송동", "좌동"],
-      동래구: ["명장동", "사직동", "온천동"],
-      부산진구: ["부전동", "양정동", "연지동"],
-    };
+    // const towns = {
+    //   강남구: [
+    //     "신사동",
+    //     "논현동",
+    //     "압구정동",
+    //     "청담동",
+    //     "삼성동",
+    //     "대치동",
+    //     "역삼동",
+    //     "도곡동",
+    //     "개포동",
+    //     "일원본동",
+    //     "일원동",
+    //     "수서동",
+    //     "세곡동",
+    //   ],
+    //   강동구: [
+    //     "강일동",
+    //     "상일동",
+    //     "명일동",
+    //     "고덕동",
+    //     "암사동",
+    //     "천호동",
+    //     "성내동",
+    //     "길동",
+    //     "둔촌동",
+    //   ],
+    //   강북구: [""],
+    //   강서구: ["화곡동", "등촌동", "방화동"],
+    //   수원시: ["장안구", "팔달구", "영통구"],
+    //   성남시: ["수정구", "중원구", "분당구"],
+    //   용인시: ["수지구", "기흥구", "처인구"],
+    //   해운대구: ["우동", "재송동", "좌동"],
+    //   동래구: ["명장동", "사직동", "온천동"],
+    //   부산진구: ["부전동", "양정동", "연지동"],
+    // };
 
     const handleCityChange = (e) => {
       const selectedCity = e.target.value;
@@ -433,52 +436,51 @@ export const Information = () => {
       const selectedDistrict = e.target.value;
       setSelectedDistrict(selectedDistrict);
       setSelectedTown("");
-    };
-
-    const handleTownChange = (e) => {
-      const selectedTown = e.target.value;
-      setSelectedTown(selectedTown);
 
       // 태그에 넣는 부분
       let array = add_place_tag(
         formData.user_place,
         selectedCity,
-        selectedDistrict,
-        selectedTown
+        selectedDistrict
       );
 
       setFormData({ ...formData, user_place: array });
     };
 
     return (
-      <HStack w="100%">
-        {/* <label>시/도:</label> */}
-        <Select value={selectedCity} onChange={handleCityChange}>
-          <option value="">시/도</option>
-          {cities.map((city) => (
-            <option key={city} value={city}>
-              {city}
-            </option>
-          ))}
-        </Select>
-
-        {/* <label>군/구:</label> */}
-        <Select
-          value={selectedDistrict}
-          onChange={handleDistrictChange}
-          disabled={!selectedCity}
-        >
-          <option value="">군/구</option>
-          {selectedCity &&
-            districts[selectedCity].map((district) => (
-              <option key={district} value={district}>
-                {district}
+      <Stack w="100%">
+        <HStack w="100%">
+          {/* <label>시/도:</label> */}
+          <Select value={selectedCity} onChange={handleCityChange}>
+            <option value="">시/도</option>
+            {cities.map((city) => (
+              <option key={city} value={city}>
+                {city}
               </option>
             ))}
-        </Select>
+          </Select>
 
-        {/* <label>읍/면/동:</label> */}
-        <Select
+          {selectedCity !== "직접입력" && (
+            <>
+              {/* <label>군/구:</label> */}
+              <Select
+                value={selectedDistrict}
+                onChange={handleDistrictChange}
+                disabled={!selectedCity && selectedCity === "직접입력"}
+              >
+                <option value="">군/구</option>
+                {selectedCity &&
+                  districts[selectedCity].map((district) => (
+                    <option key={district} value={district}>
+                      {district}
+                    </option>
+                  ))}
+              </Select>
+            </>
+          )}
+
+          {/* <label>읍/면/동:</label> */}
+          {/* <Select
           value={selectedTown}
           onChange={handleTownChange}
           disabled={!selectedDistrict}
@@ -491,8 +493,27 @@ export const Information = () => {
                 {town}
               </option>
             ))}
-        </Select>
-      </HStack>
+        </Select> */}
+        </HStack>
+
+        <HStack w="100%">
+          <Input
+            placeholder={"식사 가능한 지역을 입력하세요."}
+            // onChange={(e) => console.log(formData.user_place, e.target.value)}
+          />
+          <IconButton
+            onClick={() => console.log(formData.user_place, input_place)}
+            // onClick={() =>
+            //   setFormData({
+            //     ...formData,
+            //     user_place: add_place_tag(formData.user_place, "", input_place),
+            //   })
+            // }
+            icon={<MdAdd />}
+            size={"md"}
+          />
+        </HStack>
+      </Stack>
     );
   };
 
@@ -504,8 +525,7 @@ export const Information = () => {
         align="center"
         spacing="0px"
         overflow="hidden"
-        // width="393px"
-        height="852px"
+        height={"100vh"}
         maxWidth="100%"
         background={white}
       >
@@ -552,8 +572,10 @@ export const Information = () => {
                   color={black}
                   // width="90px"
                 >
-                  나와 식사하려면 상대방이 지불해야하는 금액은? (본인의
-                  부수입으로 입금됩니다)
+                  나와 식사하려면 상대방이 지불해야하는 금액은?{" "}
+                  <Text fontSize={"sm"} color={gray_600}>
+                    (본인의 부수입으로 입금됩니다)
+                  </Text>
                 </Text>
                 <Select
                   height="40px"
@@ -602,8 +624,11 @@ export const Information = () => {
                   alignSelf="stretch"
                 >
                   {formData.user_place.map((value) => (
-                    <Tag size="md" colorScheme="blue">
-                      <TagLabel>{value.split(",")[2]}</TagLabel>
+                    <Tag
+                      size="md"
+                      colorScheme={get_satuation(theme_primary_color)}
+                    >
+                      <TagLabel>{value.split(",")[1]}</TagLabel>
                       <TagCloseButton
                         onClick={() =>
                           setFormData({
@@ -681,7 +706,10 @@ export const Information = () => {
                   alignSelf="stretch"
                 >
                   {formData.user_food.map((value) => (
-                    <Tag size="md" colorScheme="blue">
+                    <Tag
+                      size="md"
+                      colorScheme={get_satuation(theme_primary_color)}
+                    >
                       <TagLabel>{value}</TagLabel>
                       <TagCloseButton
                         onClick={() =>
