@@ -10,6 +10,22 @@ import {
 import { auth } from "../db/firebase_config";
 import { db_update } from "./Database";
 
+// Firebase deps
+// v9에서 v8 호환 API
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+
+firebase.initializeApp({
+  apiKey: "AIzaSyBwCYJaEn1Ey5rU8Le5Adu_JvdJodQAOe8",
+  authDomain: "dinnermate-8d37b.firebaseapp.com",
+  projectId: "dinnermate-8d37b",
+  storageBucket: "dinnermate-8d37b.appspot.com",
+  messagingSenderId: "698586027961",
+  appId: "1:698586027961:web:bfacf1423d3c895397c868",
+  measurementId: "G-YJSWYJ83RK",
+});
+
 /** 비밀번호 기반 계정 만들기
  * @function auth_signup_password
  * @param {string} email 유저 이메일
@@ -62,6 +78,24 @@ export const auth_login_password = async (email, password) => {
   return uid;
 };
 
+export const signInWithGoogle = async () => {
+  // Retrieve Google provider object
+  const provider = new firebase.auth.GoogleAuthProvider();
+  // Set language to the default browser preference
+  firebase.auth().useDeviceLanguage();
+  // Start sign in process
+
+  try {
+    let ret = await firebase.auth().signInWithPopup(provider);
+    // 회원가입 2step으로 이동
+    //navigate("/");
+
+    console.log(ret);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 /** 인증 상태 지속성 수정
  * @function auth_set_local
  */
@@ -76,4 +110,12 @@ export const auth_set_local = () => {
 
 export const auth_set_session = () => {
   setPersistence(auth, browserSessionPersistence);
+};
+
+export const sign_out = async () => {
+  try {
+    await firebase.auth().signOut();
+  } catch (error) {
+    console.log(error.message);
+  }
 };

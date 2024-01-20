@@ -30,6 +30,7 @@ import { SettingsIcon } from "@chakra-ui/icons";
 import HorizonLine from "../component/HorizontalLine";
 import { terms } from "../assets/terms";
 import { black, gray_600, gray_800, gray_900, white } from "../App";
+import { sign_out } from "../js/Auth";
 
 export const MyPage = () => {
   const navigate = useNavigate();
@@ -251,6 +252,7 @@ export const MyPage = () => {
             fontSize="18px"
             color={black}
             textAlign="center"
+            onClick={sign_out}
           >
             로그아웃
           </Text>
