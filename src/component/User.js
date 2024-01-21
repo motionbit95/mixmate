@@ -18,9 +18,9 @@ export const User = ({ data }) => {
     <Flex
       p={"1vh 2vh"}
       borderRadius={"2vh"}
-      _hover={{ bgColor: `${get_satuation(theme_primary_color)}.100` }}
+      // _hover={{ bgColor: `${get_satuation(theme_primary_color)}.100` }}
       w="100%"
-      border={"1px solid #f1f1f1"}
+      // border={"1px solid #f1f1f1"}
       //   maxW={"400px"}
       onClick={() => {
         if (!window.location.pathname.includes("matching")) {
@@ -39,9 +39,11 @@ export const User = ({ data }) => {
             <Text fontSize={"lg"} fontWeight={"bold"}>
               {get_display_name(data.user_name)}
             </Text>
-            <Text color={theme_primary_color}>
-              {parseFloat(data.distance).toFixed(1)}km
-            </Text>
+            {!window.location.pathname.includes("mypage") && (
+              <Text color={theme_primary_color}>
+                {parseFloat(data.distance).toFixed(1)}km
+              </Text>
+            )}
           </HStack>
           <Text fontSize={"12px"}>
             {`나이 : ${get_display_age(data.user_birth)}, 매칭 금액 : 

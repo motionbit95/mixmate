@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../db/firebase_config";
 import { calculateDistance } from "./UserAPI";
+import { ck_null } from "./Basic";
 
 /** firebase에 문서를 생성하여 data field를 저장합니다.
  * @function db_add
@@ -20,6 +21,7 @@ import { calculateDistance } from "./UserAPI";
  * @returns {string} 추가된 document의 id
  */
 export const db_add = async (col, data) => {
+  console.log(col, " 추가");
   // Add a new document with a generated id.
   const docRef = await addDoc(collection(db, col), {
     ...data,
@@ -37,18 +39,20 @@ export const db_add = async (col, data) => {
  * @param {object} data 추가할 데이터
  */
 export const db_update = async (col, doc_id, data) => {
+  console.log(col, " 수정");
   // Add a new document in collection
   await updateDoc(doc(db, col, doc_id), data);
 };
 
 /** collection 내 특정 문서 삭제
  * @function db_delete
- * @param {string} collection collection 이름
+ * @param {string} col collection 이름
  * @param {string} doc_id 문서 id
  */
 
-export const db_delete = async (collection, doc_id) => {
-  await deleteDoc(doc(db, collection, doc_id));
+export const db_delete = async (col, doc_id) => {
+  console.log(col, " 삭제");
+  await deleteDoc(doc(db, col, doc_id));
 };
 
 /** 컬렉션에서 여러 문서 가져오기(특정 속성으로 검색해서 리스트를 가지고 올 때 사용)
@@ -57,6 +61,7 @@ export const db_delete = async (collection, doc_id) => {
  * @return {object} property 값이 value 와 일치하는 데이터 반환
  */
 export const get_doc_all = async (col) => {
+  console.log(col, " 모두 조회");
   const q = query(collection(db, col));
   const querySnapshot = await getDocs(q);
 
@@ -70,12 +75,13 @@ export const get_doc_all = async (col) => {
 
 /** 문서 id로 데이터 가지고 오기
  * @function get_doc_data
- * @param {string} collection collection 이름
+ * @param {string} col collection 이름
  * @param {string} doc_id 문서 id
  * @return {object} 단일 문서의 내용
  */
-export const get_doc_data = async (collection, doc_id) => {
-  const docRef = doc(db, collection, doc_id);
+export const get_doc_data = async (col, doc_id) => {
+  console.log(col, " 조회");
+  const docRef = doc(db, col, doc_id);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
@@ -96,6 +102,7 @@ export const get_doc_data = async (collection, doc_id) => {
  * @return {object} property 값이 value 와 일치하는 데이터 반환
  */
 export const get_doc_list = async (col, property, value) => {
+  console.log(col, property, value, " 조회");
   const q = query(collection(db, col), where(property, "==", value));
   const querySnapshot = await getDocs(q);
 
@@ -109,6 +116,7 @@ export const get_doc_list = async (col, property, value) => {
 };
 
 export async function arrange_distance(user_location, user_type) {
+  console.log("거리순 정렬");
   // 현재 위치 좌표 (예시)
   const currentLocation = user_location;
 
@@ -117,7 +125,10 @@ export async function arrange_distance(user_location, user_type) {
   const places = [];
   // Firestore에서 데이터 가져오기 및 거리순 정렬
   querySnapshot.forEach((doc) => {
-    const place = doc.data().user_location;
+    const place = ck_null(doc.data().user_location, {
+      latitude: 37.5664056,
+      longitude: 126.9778222,
+    });
     // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산
     place.distance = calculateDistance(currentLocation, {
       latitude: place.latitude,
@@ -133,6 +144,7 @@ export async function arrange_distance(user_location, user_type) {
 }
 
 export async function arrange_random(user_location, user_dong, user_type) {
+  console.log("랜덤 정렬");
   // 현재 위치 좌표 (예시)
   const currentLocation = user_location;
   const dong = user_dong;

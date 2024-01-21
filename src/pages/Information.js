@@ -409,10 +409,6 @@ export const Information = () => {
       setFormData({ ...formData, user_place: array });
     };
 
-    useEffect(() => {
-      console.log(location.state);
-    });
-
     return (
       <Stack w="100%">
         <HStack w="100%">

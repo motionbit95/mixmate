@@ -37,9 +37,12 @@ import { Logo } from "../component/Logo";
 import { FullButton, TextButton } from "../component/Buttons";
 import EmailLoginForm from "../component/EmailLoginForm";
 import { signOut } from "firebase/auth";
+import { db_add, db_update, get_doc_list } from "../js/Database";
+import { formatDate } from "date-fns";
 
 export const Login = () => {
   const navigate = useNavigate();
+  const { user } = useAuthState(auth);
 
   const [account, setAccount] = useState({
     id: "",
@@ -97,9 +100,34 @@ export const Login = () => {
                   />
                   <FullButton
                     onClick={async () => {
+                      await sign_out();
+
                       await signInWithGoogle();
-                      //회원가입 1step으로 이동
-                      navigate("/signup");
+
+                      let userList = await get_doc_list(
+                        "user",
+                        "user_id",
+                        user.uid
+                      );
+
+                      if (userList.length > 0) {
+                        let docId = "";
+                        docId = userList[0].doc_id;
+                        console.log("doc!", docId);
+                        await db_update("user", docId, {
+                          user_id: user.uid,
+                        });
+
+                        console.log(userList[0], user.uid);
+                      }
+
+                      if (!userList[0].user_password) {
+                        navigate("/signup");
+                      } else if (!userList[0].user_price) {
+                        navigate("/info");
+                      } else {
+                        navigate("/");
+                      }
                     }}
                     text="구글로 로그인하기"
                     code={"white.100"}

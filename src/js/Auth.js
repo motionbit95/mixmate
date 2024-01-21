@@ -1,5 +1,4 @@
 import {
-  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   setPersistence,
@@ -8,7 +7,7 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../db/firebase_config";
-import { db_update } from "./Database";
+import { db_update, get_doc_list } from "./Database";
 
 // Firebase deps
 // v9에서 v8 호환 API
@@ -17,13 +16,15 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
 firebase.initializeApp({
-  apiKey: "AIzaSyBwCYJaEn1Ey5rU8Le5Adu_JvdJodQAOe8",
-  authDomain: "dinnermate-8d37b.firebaseapp.com",
-  projectId: "dinnermate-8d37b",
-  storageBucket: "dinnermate-8d37b.appspot.com",
-  messagingSenderId: "698586027961",
-  appId: "1:698586027961:web:bfacf1423d3c895397c868",
-  measurementId: "G-YJSWYJ83RK",
+  apiKey: "AIzaSyA6_ETeOdnsf9rI_OGZ9vyg2TYQ1jxRBA8",
+  authDomain: "dinnermate-database.firebaseapp.com",
+  databaseURL:
+    "https://dinnermate-database-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "dinnermate-database",
+  storageBucket: "dinnermate-database.appspot.com",
+  messagingSenderId: "266027037200",
+  appId: "1:266027037200:web:8c09ec93d5e28965ddd095",
+  measurementId: "G-SST92XMXJH",
 });
 
 /** 비밀번호 기반 계정 만들기
@@ -86,7 +87,7 @@ export const signInWithGoogle = async () => {
   // Start sign in process
 
   try {
-    await firebase.auth().signInWithPopup(provider);
+    console.log(await firebase.auth().signInWithPopup(provider));
   } catch (error) {
     console.log(error.message);
   }
@@ -111,6 +112,7 @@ export const auth_set_session = () => {
 export const sign_out = async () => {
   try {
     await firebase.auth().signOut();
+    console.log("로그아웃");
   } catch (error) {
     console.log(error.message);
   }

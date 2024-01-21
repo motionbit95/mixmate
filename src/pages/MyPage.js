@@ -43,15 +43,17 @@ export const MyPage = () => {
   const [info_text, setInfoText] = useState();
   const [info_edit_mode, setInfoEditMode] = useState(false);
   useEffect(() => {
-    // 고객의 계정을 가지고 옵니다.
-    auth.onAuthStateChanged(async function (user) {
-      if (user) {
-        let user_info = await get_doc_list("user", "user_id", user.uid);
-        setUser(user_info[0]);
-      } else {
-        navigate("/login");
-      }
-    });
+    if (!user) {
+      // 고객의 계정을 가지고 옵니다.
+      auth.onAuthStateChanged(async function (user) {
+        if (user) {
+          let user_info = await get_doc_list("user", "user_id", user.uid);
+          setUser(user_info[0]);
+        } else {
+          navigate("/login");
+        }
+      });
+    }
   });
 
   return (
@@ -101,15 +103,15 @@ export const MyPage = () => {
             </Text>
             <Button
               size="sm"
-              onClick={async () => {
-                setInfoEditMode(!info_edit_mode);
+              onClick={() => {
                 if (info_edit_mode) {
                   // 문서 업데이트
-                  console.log(user.user_id);
-                  await db_update("user", user.doc_id, {
+                  console.log(user.doc_id, info_text);
+                  db_update("user", user.doc_id, {
                     user_info: info_text,
                   });
                 }
+                setInfoEditMode(!info_edit_mode);
               }}
             >
               수정하기

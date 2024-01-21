@@ -67,18 +67,16 @@ export const Home = () => {
 
   const getUserList = async () => {
     if (businessList.length === 0 || customerList.length === 0) {
-      let customer = await get_doc_list("user", "user_type", "개인");
-      // let business = await get_doc_list("user", "user_type", "사업 전문가");
-      // console.log(customer, business);
-
       if (userInfo?.user_location) {
-        let data = await arrange_distance(
+        let business = await arrange_distance(
           userInfo.user_location,
           "사업 전문가"
         );
-        setBusinessList(data);
+        setBusinessList(business);
+
+        let customer = await arrange_distance(userInfo.user_location, "개인");
+        setCustomerList(customer);
       }
-      setCustomerList(customer);
     }
   };
 
@@ -122,8 +120,8 @@ export const Home = () => {
           let user_info = await get_doc_list("user", "user_id", user.uid);
           setUserInfo(user_info[0]);
           // 위치 가지고 와서 사용자 정보에 업데이트
-          // console.log(user_info[0], user.uid, user_info[0].doc_id);
-          get_update_location(user_info, user_info[0].doc_id);
+          console.log(user_info[0], user.uid, user_info[0]?.doc_id);
+          get_update_location(user_info, user_info[0]?.doc_id);
         }
       });
     }
@@ -359,21 +357,59 @@ export const Home = () => {
                         spacing="10px"
                       >
                         <Button
+                          onClick={async () => {
+                            let data = await arrange_distance(
+                              userInfo.user_location,
+                              "개인"
+                            );
+                            setBusinessList(data);
+                          }}
                           size="xs"
                           variant="outline"
                           colorScheme={get_satuation(theme_primary_color)}
-                          height="24px"
                         >
                           가까운순
                         </Button>
                         <Button
+                          onClick={async () => {
+                            let data = await arrange_random(
+                              userInfo.user_location,
+                              userInfo.dong,
+                              "개인"
+                            );
+                            setBusinessList(data);
+                          }}
                           size="xs"
                           variant="outline"
                           colorScheme={get_satuation(theme_primary_color)}
-                          height="24px"
                         >
                           랜덤찾기
                         </Button>
+                        <Tooltip
+                          hasArrow
+                          whiteSpace={"pre-wrap"}
+                          placement="bottom-end"
+                          label={
+                            <Stack>
+                              <Text fontWeight={"bold"}>가까운순</Text>
+                              <Text color={gray_600} fontSize={"small"}>
+                                {`현재 사용자의 위치에서 가까운 순서대로 밥친구를 정렬합니다.`}
+                              </Text>
+                              <Text fontWeight={"bold"}>랜덤찾기</Text>
+                              <Text color={gray_600} fontSize={"small"}>
+                                {`현재 사용자의 동내에서 랜덤으로 밥친구를 정렬합니다.`}
+                              </Text>
+                            </Stack>
+                          }
+                          bg={gray_200}
+                          color={black}
+                        >
+                          <IconButton
+                            variant={"ghost"}
+                            size={"xs"}
+                            icon={<BsQuestionCircle />}
+                          />
+                        </Tooltip>
                       </Stack>
                       <Stack
                         justify="flex-start"

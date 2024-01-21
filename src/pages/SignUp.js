@@ -15,7 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { upload_image } from "../js/Storage";
 import { useRef, useState } from "react";
-import { db_add, db_update } from "../js/Database";
+import { db_add, db_update, get_doc_data, get_doc_list } from "../js/Database";
 import {
   check_password_valid,
   compare_password,
@@ -82,11 +82,15 @@ export const SignUp = () => {
   const onClickApprove = async () => {
     if (!isValid.state) return;
     setLoading(true);
-    // 파이어베이스 Authentication에 계정 추가
-    let ret = await auth_signup_password(
-      formData.user_email,
-      formData.user_password
-    );
+
+    let ret = "";
+    if (!user) {
+      // 파이어베이스 Authentication에 계정 추가
+      ret = await auth_signup_password(
+        formData.user_email,
+        formData.user_password
+      );
+    }
 
     console.log(ret);
 
@@ -96,19 +100,31 @@ export const SignUp = () => {
     });
 
     if (ret === "") {
-      // 입력 정보로 파이어베이스에 저장
-      let docId = await db_add("user", formData);
-      // console.log("doc", docId);
+      let userList = await get_doc_list("user", "user_id", user.uid);
+      let uid = "";
+      let docId = "";
+      if (userList.length === 0) {
+        // 입력 정보로 파이어베이스에 저장
+        docId = await db_add("user", formData);
+        // console.log("doc", docId);
 
-      //# 로그인 처리
-      let uid = await auth_login_password(
-        formData.user_email,
-        formData.user_password
-      );
+        //# 로그인 처리
+        uid = await auth_login_password(
+          formData.user_email,
+          formData.user_password
+        );
 
-      // 사용자의 uid 정보를 user_id로 저장
-      // console.log("uid", uid);
-      await db_update("user", docId, { user_id: uid });
+        // 사용자의 uid 정보를 user_id로 저장
+        // console.log("uid", uid);
+        await db_update("user", docId, { user_id: uid });
+      } else {
+        // console.log(await get_doc_list("user", "user_id", user.uid));
+        docId = userList[0].doc_id;
+        console.log("doc!", docId);
+        await db_update("user", docId, {
+          user_password: formData.user_password,
+        });
+      }
 
       setLoading(false);
 

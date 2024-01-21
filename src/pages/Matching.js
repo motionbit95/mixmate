@@ -28,6 +28,7 @@ import {
 } from "../App";
 import { TopHeader } from "../component/TopHeader";
 import { User } from "../component/User";
+import { get_satuation } from "../js/Basic";
 
 export const Matching = () => {
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ export const Matching = () => {
             alignSelf="stretch"
           >
             <User data={data} />
-            <Tabs w="100%">
+            <Tabs w="100%" colorScheme={get_satuation(theme_primary_color)}>
               <TabList>
                 <Tab height="54px" flex="1">
                   밥친구 소개
@@ -89,7 +90,7 @@ export const Matching = () => {
                       color={gray_800}
                       alignSelf="stretch"
                     >
-                      {data.info}
+                      {data.user_info}
                     </Text>
                     <Stack
                       padding="10px"
@@ -107,7 +108,7 @@ export const Matching = () => {
                         lineHeight="1.5"
                         fontWeight="medium"
                         fontSize="sm"
-                        color={gray_800}
+                        color={gray_700}
                         alignSelf="stretch"
                       >
                         ● 식사 매칭 신청하기 <br />
@@ -124,7 +125,7 @@ export const Matching = () => {
                       </Text>
                     </Stack>
                     <Button
-                      colorScheme="blue"
+                      colorScheme={get_satuation(theme_primary_color)}
                       height="40px"
                       alignSelf="stretch"
                       onClick={() => navigate("/payment")}
@@ -295,7 +296,7 @@ export const Matching = () => {
                     </Stack>
                     <Button
                       my={"10px"}
-                      colorScheme="blue"
+                      colorScheme={get_satuation(theme_primary_color)}
                       height="40px"
                       alignSelf="stretch"
                       onClick={() => navigate("/payment")}
