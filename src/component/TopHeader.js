@@ -7,10 +7,15 @@ import { get_satuation } from "../js/Basic";
 export const TopHeader = ({ title }) => {
   const navigate = useNavigate();
   return (
-    <Stack className="header" zIndex={9999}>
+    <Stack
+      className="header"
+      zIndex={9999}
+      bgColor={"white"}
+      borderBottom={"1px solid #d9d9d9"}
+    >
       <Container>
         <Stack
-          padding="10px"
+          py="10px"
           direction="row"
           justify="space-between"
           align="flex-start"

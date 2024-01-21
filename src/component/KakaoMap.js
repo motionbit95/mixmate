@@ -2,6 +2,7 @@ import { Button, HStack, IconButton, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { MdLocationPin, MdLocationSearching } from "react-icons/md";
 import { gray_600, gray_700 } from "../App";
+import { db_update } from "../js/Database";
 
 export const TextAddress = ({ user }) => {
   // head에 작성한 Kakao API 불러오기
@@ -12,33 +13,37 @@ export const TextAddress = ({ user }) => {
     handleMapClick();
   });
 
-  const handleMapClick = () => {
-    if (!dong) {
-      console.log(user);
-      const location = user.user_location;
-      console.log(location);
-      const geolocation = new kakao.maps.services.Geocoder();
-      //좌표로 행정동 정보 가져오기
-      geolocation.coord2Address(
-        location.longitude,
-        location.latitude,
-        (result, status) => {
-          if (status) {
-            //   console.log(result[0].address.region_3depth_name);
-            const address = result[0].address.region_3depth_name;
-            setDong(address);
-          } else {
-            alert("주소를 가져오지 못했습니다.");
-          }
+  const handleMapClick = async () => {
+    // if (!dong) {
+    console.log(user);
+    const location = user.user_location;
+    console.log(location);
+    const geolocation = new kakao.maps.services.Geocoder();
+    //좌표로 행정동 정보 가져오기
+    geolocation.coord2Address(
+      location.longitude,
+      location.latitude,
+      (result, status) => {
+        if (status) {
+          //   console.log(result[0].address.region_3depth_name);
+          const address = result[0].address.region_3depth_name;
+          setDong(address);
+
+          console.log(address, user.doc_id);
+
+          db_update("user", user.doc_id, { dong: address });
+        } else {
+          alert("주소를 가져오지 못했습니다.");
         }
-      );
-    }
+      }
+    );
+    // }
   };
 
   return (
     <HStack w={"100%"}>
       <IconButton
-        variant={"goast"}
+        variant={"ghost"}
         icon={<MdLocationPin color={gray_700} size={"24px"} />}
         onClick={handleMapClick}
       >

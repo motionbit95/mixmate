@@ -74,19 +74,23 @@ export const Information = () => {
     message: "",
   });
 
-  const [formData, setFormData] = useState({
-    user_price: 2,
-    user_place: [],
-    user_food: [],
-    user_bank: {
-      bank_name: "",
-      accout_number: "",
-    },
-    user_gender: "남",
-    user_category: "관심분야1",
-    user_type: "개인",
-    user_birth: "",
-  });
+  const [formData, setFormData] = useState(
+    location.state?.user
+      ? location.state?.user
+      : {
+          user_price: 2,
+          user_place: [],
+          user_food: [],
+          user_bank: {
+            bank_name: "",
+            accout_number: "",
+          },
+          user_gender: "남",
+          user_category: "관심분야1",
+          user_type: "개인",
+          user_birth: "",
+        }
+  );
 
   // 음식 태그 추가하는 함수
   function add_food(tag) {
@@ -405,6 +409,10 @@ export const Information = () => {
       setFormData({ ...formData, user_place: array });
     };
 
+    useEffect(() => {
+      console.log(location.state);
+    });
+
     return (
       <Stack w="100%">
         <HStack w="100%">
@@ -450,29 +458,30 @@ export const Information = () => {
         align="center"
         spacing="0px"
         overflow="hidden"
-        maxWidth="100%"
+        width="100%"
         background={white}
       >
         <Stack
           direction="row"
           justify="center"
-          align="center"
+          align="flex-start"
           spacing="10px"
           overflow="hidden"
           flex="1"
           alignSelf="stretch"
           w={"100%"}
+          p={"4vh 2vh"}
         >
           <Stack
             justify="flex-start"
-            align="center"
+            align="flex-start"
             spacing="4vh"
             flex="1"
             w={"100%"}
           >
             <Stack
               justify="flex-start"
-              align="center"
+              align="flex-start"
               spacing="2vh"
               alignSelf="stretch"
               w={"100%"}
@@ -496,12 +505,12 @@ export const Information = () => {
                     fontWeight="regular"
                     fontSize="16px"
                     color={black}
-                    w="100%"
+                    w="100px"
                   >
                     유저 구분
                   </Text>
                   <RadioGroup
-                    defaultValue="개인"
+                    defaultValue={formData.user_type}
                     onChange={(value) =>
                       setFormData({ ...formData, user_type: value })
                     }
@@ -543,12 +552,12 @@ export const Information = () => {
                     fontWeight="regular"
                     fontSize="16px"
                     color={black}
-                    w="100%"
+                    w="100px"
                   >
                     성별
                   </Text>
                   <RadioGroup
-                    defaultValue={"남"}
+                    defaultValue={formData.user_gender}
                     onChange={(value) =>
                       setFormData({ ...formData, user_gender: value })
                     }
@@ -576,6 +585,7 @@ export const Information = () => {
                 <Text w="100px">생년월일</Text>
                 <Input
                   type="date"
+                  defaultValue={formData.user_birth}
                   onChange={(e) =>
                     setFormData({
                       ...formData,
@@ -589,7 +599,7 @@ export const Information = () => {
                   {formData.user_type === "개인" ? "관심분야" : "사업분야"}
                 </Text>
                 <Select
-                  defaultValue={"관심분야1"}
+                  defaultValue={formData.user_category}
                   w="100%"
                   onChange={(e) =>
                     setFormData({ ...formData, user_category: e.target.value })
@@ -802,12 +812,14 @@ export const Information = () => {
                     placeholder="선택"
                     size="md"
                     width="90px"
+                    defaultValue={formData.user_bank.bank_name}
                   >
                     {bank.map((value) => (
                       <option value={value}>{value}</option>
                     ))}
                   </Select>
                   <Input
+                    defaultValue={formData.user_bank.accout_number}
                     onChange={(e) =>
                       setFormData({
                         ...formData,
@@ -825,32 +837,34 @@ export const Information = () => {
                 </Stack>
               </Stack>
             </Stack>
-            <Flex
-              w="100%"
-              justifyContent={"space-between"}
-              alignItems={"flex-end"}
-            >
-              <Checkbox
-                defaultChecked={check_terms}
-                colorScheme={get_satuation(theme_primary_color)}
-                // width="256.42px"
-                maxWidth="100%"
-                onChange={(e) => setCheckTerms(e.target.checked)}
+            {window.location.pathname.includes("info") && (
+              <Flex
+                w="100%"
+                justifyContent={"space-between"}
+                alignItems={"flex-end"}
               >
-                이용약관에 동의합니다.
-              </Checkbox>
-              <Text
-                lineHeight="1.43"
-                fontWeight="regular"
-                fontSize="14px"
-                color={gray_600}
-                // width="108.27px"
-                textAlign="end"
-                onClick={() => onOpen()}
-              >
-                자세히보기
-              </Text>
-            </Flex>
+                <Checkbox
+                  defaultChecked={check_terms}
+                  colorScheme={get_satuation(theme_primary_color)}
+                  // width="256.42px"
+                  maxWidth="100%"
+                  onChange={(e) => setCheckTerms(e.target.checked)}
+                >
+                  이용약관에 동의합니다.
+                </Checkbox>
+                <Text
+                  lineHeight="1.43"
+                  fontWeight="regular"
+                  fontSize="14px"
+                  color={gray_600}
+                  // width="108.27px"
+                  textAlign="end"
+                  onClick={() => onOpen()}
+                >
+                  자세히보기
+                </Text>
+              </Flex>
+            )}
             {isValid.state ? null : (
               <Alert fontSize={"small"} status="error">
                 <AlertIcon />
@@ -884,29 +898,41 @@ export const Information = () => {
                   return;
                 }
 
-                // 이용약관 미동의 시
-                if (!check_terms) {
-                  setValid({
-                    state: false,
-                    message: "이용약관에 동의해주세요.",
-                  });
-                  return;
+                if (window.location.pathname.includes("info")) {
+                  // 이용약관 미동의 시
+                  if (!check_terms) {
+                    setValid({
+                      state: false,
+                      message: "이용약관에 동의해주세요.",
+                    });
+                    return;
+                  }
                 }
 
                 // 모든 정보 입력 & 이용약관 동의 시
                 if (ret === "" || check_terms) {
                   // 정보 추가
-                  await db_update("user", user_id, formData);
 
-                  alert(
-                    "회원가입을 완료하였습니다. 로그인 화면으로 이동합니다."
-                  );
-                  // 로그인 화면으로 이동
-                  navigate("/login");
+                  if (window.location.pathname.includes("info")) {
+                    await db_update("user", user_id, formData);
+                    alert(
+                      "회원가입을 완료하였습니다. 로그인 화면으로 이동합니다."
+                    );
+                    // 로그인 화면으로 이동
+                    navigate("/login");
+                  } else {
+                    await db_update("user", formData.doc_id, formData);
+                    alert(
+                      "회원가입을 정보가 수정되었습니다. 이전 화면으로 이동합니다."
+                    );
+                    navigate(-1);
+                  }
                 }
               }}
             >
-              회원가입하기
+              {window.location.pathname.includes("info")
+                ? "회원가입하기"
+                : "회원정보수정"}
             </Button>
           </Stack>
         </Stack>

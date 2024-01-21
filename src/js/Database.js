@@ -11,6 +11,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../db/firebase_config";
+import { calculateDistance } from "./UserAPI";
 
 /** firebase에 문서를 생성하여 data field를 저장합니다.
  * @function db_add
@@ -106,3 +107,53 @@ export const get_doc_list = async (col, property, value) => {
 
   return doc_list;
 };
+
+export async function arrange_distance(user_location, user_type) {
+  // 현재 위치 좌표 (예시)
+  const currentLocation = user_location;
+
+  const q = query(collection(db, "user"), where("user_type", "==", user_type));
+  const querySnapshot = await getDocs(q);
+  const places = [];
+  // Firestore에서 데이터 가져오기 및 거리순 정렬
+  querySnapshot.forEach((doc) => {
+    const place = doc.data().user_location;
+    // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산
+    place.distance = calculateDistance(currentLocation, {
+      latitude: place.latitude,
+      longitude: place.longitude,
+    });
+    places.push({ ...doc.data(), ...place });
+  });
+
+  // 거리순으로 정렬
+  places.sort((a, b) => a.distance - b.distance);
+
+  return places;
+}
+
+export async function arrange_random(user_location, user_dong, user_type) {
+  // 현재 위치 좌표 (예시)
+  const currentLocation = user_location;
+  const dong = user_dong;
+
+  const q = query(
+    collection(db, "user"),
+    where("dong", "==", dong),
+    where("user_type", "==", user_type)
+  );
+  const querySnapshot = await getDocs(q);
+  const places = [];
+  // Firestore에서 데이터 가져오기 및 거리순 정렬
+  querySnapshot.forEach((doc) => {
+    const place = doc.data().user_location;
+    // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산
+    place.distance = calculateDistance(currentLocation, {
+      latitude: place.latitude,
+      longitude: place.longitude,
+    });
+    places.push({ ...doc.data(), ...place });
+  });
+
+  return places;
+}

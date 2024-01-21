@@ -18,6 +18,8 @@ import {
   ModalContent,
   ModalBody,
   Container,
+  HStack,
+  Flex,
 } from "@chakra-ui/react";
 import { BsStarFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
@@ -31,6 +33,8 @@ import HorizonLine from "../component/HorizontalLine";
 import { terms } from "../assets/terms";
 import { black, gray_600, gray_800, gray_900, white } from "../App";
 import { sign_out } from "../js/Auth";
+import { User } from "../component/User";
+import { Navbar } from "../component/Navbar";
 
 export const MyPage = () => {
   const navigate = useNavigate();
@@ -42,26 +46,16 @@ export const MyPage = () => {
     // 고객의 계정을 가지고 옵니다.
     auth.onAuthStateChanged(async function (user) {
       if (user) {
-        // User is signed in.
-
-        // 유저의 이메일 속성으로 유저 테이블의 정보에 접근합니다.
-        let user_info = await get_doc_list("user", "user_email", user.email)[0];
-        set_data(user_info);
+        let user_info = await get_doc_list("user", "user_id", user.uid);
+        setUser(user_info[0]);
       } else {
-        // No user is signed in.
-        // 로그인 페이지로 이동
         navigate("/login");
       }
     });
   });
 
-  function set_data(user_info) {
-    console.log(user_info);
-    if (!user) setUser(user_info);
-  }
-
   return (
-    <Container px={0}>
+    <Container py={"60px"} px={0} minH={"100vh"}>
       <Stack
         px={0}
         justify="flex-start"
@@ -74,7 +68,6 @@ export const MyPage = () => {
         <TopHeader title={"마이페이지"} />
         <Stack
           px={"10px"}
-          pt={"50px"}
           justify="flex-start"
           align="flex-start"
           spacing="16px"
@@ -82,92 +75,19 @@ export const MyPage = () => {
           flex="1"
           alignSelf="stretch"
         >
-          <Stack
-            //   paddingY="10px"
-            mt={"20px"}
-            direction="row"
-            justify="flex-start"
-            align="flex-start"
-            spacing="10px"
-            overflow="hidden"
-            alignSelf="stretch"
-          >
-            <Skeleton borderRadius={"100px"} isLoaded={user}>
-              <Avatar src={user?.user_profile} size="lg" />
-            </Skeleton>
-            <Stack
-              justify="flex-start"
-              align="flex-start"
-              spacing="10px"
-              overflow="hidden"
-              height="78px"
-              flex="1"
-            >
-              <Stack
-                direction="row"
-                justify="space-between"
-                align="center"
-                spacing="5px"
-                overflow="hidden"
-                height="19px"
-                alignSelf="stretch"
-              >
-                <SkeletonText isLoaded={user}>
-                  <Stack
-                    direction="row"
-                    justify="flex-start"
-                    align="center"
-                    spacing="5px"
-                  >
-                    <Text
-                      fontWeight="bold"
-                      fontSize="18px"
-                      color={black}
-                      textAlign="center"
-                    >
-                      {user?.user_name.slice(0, -1) + "*"}
-                    </Text>
-                    <Icon as={BsStarFill} />
-                    <Text
-                      fontWeight="medium"
-                      fontSize="18px"
-                      color={black}
-                      textAlign="center"
-                    >
-                      5.0
-                    </Text>
-                    <Text
-                      fontWeight="medium"
-                      fontSize="16px"
-                      color={gray_600}
-                      textAlign="center"
-                    >
-                      (169)
-                    </Text>
-                  </Stack>
-                </SkeletonText>
-                <Box />
-              </Stack>
-              <SkeletonText isLoaded={user}>
-                <Text
-                  lineHeight="1.42"
-                  fontWeight="medium"
-                  fontSize="12px"
-                  color={black}
-                  alignSelf="stretch"
-                >
-                  {`나이 : ${display_age_range(33)}, 매칭 금액 : ${
-                    user?.user_price
-                  }만원, 매칭 가능 동네 : ${user?.user_place}`}
-                </Text>
-              </SkeletonText>
-            </Stack>
-            <IconButton
-              variant={"unstyled"}
-              icon={<SettingsIcon />}
-              size="sm"
-            />
-          </Stack>
+          <Flex w={"100%"} h="80px">
+            {user ? (
+              <HStack w={"100%"} h="100%">
+                <User data={user} />
+                <IconButton
+                  icon={<SettingsIcon />}
+                  onClick={() => navigate("/modify", { state: { user: user } })}
+                />
+              </HStack>
+            ) : (
+              <Skeleton w={"100%"} h={"100%"}></Skeleton>
+            )}
+          </Flex>
           <HorizonLine />
           <Stack
             direction="row"
@@ -186,7 +106,7 @@ export const MyPage = () => {
                 if (info_edit_mode) {
                   // 문서 업데이트
                   console.log(user.user_id);
-                  await db_update("user", user.user_id, {
+                  await db_update("user", user.doc_id, {
                     user_info: info_text,
                   });
                 }
@@ -234,6 +154,7 @@ export const MyPage = () => {
             fontSize="18px"
             color={black}
             textAlign="center"
+            onClick={() => navigate("/notice")}
           >
             공지사항
           </Text>
@@ -256,13 +177,14 @@ export const MyPage = () => {
           >
             로그아웃
           </Text>
-          <HorizonLine />
 
-          <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
+          <Navbar />
+
+          <Modal isCentered onClose={onClose} size={"md"} isOpen={isOpen}>
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent pt={"50px"}>
               <ModalHeader>이용약관</ModalHeader>
-              <ModalCloseButton />
+              <ModalCloseButton mt={"50px"} />
               <ModalBody>
                 <Text fontSize={"small"} whiteSpace={"pre-wrap"}>
                   {terms}

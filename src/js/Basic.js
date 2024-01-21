@@ -19,7 +19,8 @@ export function input_data(_state, _key, _value) {
 }
 
 export function get_display_name(name) {
-  return name.slice(0, -1) + "*";
+  if (name === "") return "";
+  else return name.slice(0, -1) + "*";
 }
 
 export function get_display_age(birthdate) {
@@ -38,4 +39,8 @@ export function get_display_age(birthdate) {
   var lowerRange = Math.floor(age / 5) * 5;
   var upperRange = lowerRange + 4;
   return `${lowerRange}~${upperRange}세`;
+}
+
+export function deg2rad(deg) {
+  return deg * (Math.PI / 180);
 }

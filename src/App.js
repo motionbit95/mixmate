@@ -45,6 +45,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/info" element={<Information />} />
+          <Route path="/modify" element={<Information />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/matching" element={<Matching />} />
           <Route path="/details" element={<Details />} />

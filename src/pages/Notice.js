@@ -5,7 +5,7 @@ import { black, gray_600, white } from "../App";
 
 export const Notice = () => {
   return (
-    <Container py="50px">
+    <Container py="60px">
       <Stack
         justify="flex-start"
         align="flex-start"

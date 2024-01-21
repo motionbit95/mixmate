@@ -1,4 +1,5 @@
 import { auth } from "../db/firebase_config";
+import { deg2rad } from "./Basic";
 import { db_update } from "./Database";
 
 /** 선택된 페이지 번호를 반환합니다.
@@ -170,11 +171,11 @@ export function display_age_range(age) {
 }
 
 /** 위치 좌표를 가져오는 함수
- * @function get_current_location
+ * @function get_update_location
  * @param {object} user_info 유저 정보
  * @param {string} doc_id 문서 id
  */
-export function get_current_location(user_info, doc_id) {
+export function get_update_location(user_info, doc_id) {
   // 위치 정보를 지원하는지 확인
   if (navigator.geolocation) {
     // 위치 정보 요청 옵션 설정 (maximumAge: 캐시된 위치 정보의 유효 기간, 여기서는 5분)
@@ -188,8 +189,6 @@ export function get_current_location(user_info, doc_id) {
       async function (position) {
         var latitude = position.coords.latitude;
         var longitude = position.coords.longitude;
-
-        // console.log(doc_id, latitude, longitude);
 
         await db_update("user", doc_id, {
           user_location: { latitude: latitude, longitude: longitude },
@@ -209,4 +208,20 @@ export function get_current_location(user_info, doc_id) {
   } else {
     console.error("현재 브라우저에서 위치 정보를 지원하지 않습니다.");
   }
+}
+
+// 두 좌표 간의 거리 계산 함수
+export function calculateDistance(coord1, coord2) {
+  const R = 6371; // 지구 반경 (단위: km)
+  const dLat = deg2rad(coord2.latitude - coord1.latitude);
+  const dLon = deg2rad(coord2.longitude - coord1.longitude);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(coord1.latitude)) *
+      Math.cos(deg2rad(coord2.latitude)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c;
+  return distance;
 }
