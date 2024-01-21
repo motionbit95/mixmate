@@ -29,7 +29,7 @@
 <nav >
     
     
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#add_food_tag">add_food_tag</a></li><li><a href="global.html#add_place_tag">add_place_tag</a></li><li><a href="global.html#auth_login_password">auth_login_password</a></li><li><a href="global.html#auth_set_local">auth_set_local</a></li><li><a href="global.html#auth_set_session">auth_set_session</a></li><li><a href="global.html#auth_signup_password">auth_signup_password</a></li><li><a href="global.html#check_password_valid">check_password_valid</a></li><li><a href="global.html#compare_password">compare_password</a></li><li><a href="global.html#db_add">db_add</a></li><li><a href="global.html#db_update">db_update</a></li><li><a href="global.html#del_tag">del_tag</a></li><li><a href="global.html#display_age_range">display_age_range</a></li><li><a href="global.html#get_current_location">get_current_location</a></li><li><a href="global.html#get_doc_info">get_doc_info</a></li><li><a href="global.html#get_page_num">get_page_num</a></li><li><a href="global.html#step1_confirm_blank">step1_confirm_blank</a></li><li><a href="global.html#step2_confirm_blank">step2_confirm_blank</a></li><li><a href="global.html#upload_image">upload_image</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Auth.html">Auth</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_signin_google">_signin_google</a></li><li><a href="global.html#_signin_password">_signin_password</a></li><li><a href="global.html#_signup_password">_signup_password</a></li><li><a href="global.html#add_food_tag">add_food_tag</a></li><li><a href="global.html#add_place_tag">add_place_tag</a></li><li><a href="global.html#check_password_valid">check_password_valid</a></li><li><a href="global.html#compare_password">compare_password</a></li><li><a href="global.html#db_add">db_add</a></li><li><a href="global.html#db_delete">db_delete</a></li><li><a href="global.html#db_update">db_update</a></li><li><a href="global.html#del_tag">del_tag</a></li><li><a href="global.html#display_age_range">display_age_range</a></li><li><a href="global.html#get_doc_all">get_doc_all</a></li><li><a href="global.html#get_doc_data">get_doc_data</a></li><li><a href="global.html#get_doc_list">get_doc_list</a></li><li><a href="global.html#get_page_num">get_page_num</a></li><li><a href="global.html#get_update_location">get_update_location</a></li><li><a href="global.html#matching_add">matching_add</a></li><li><a href="global.html#matching_get_item">matching_get_item</a></li><li><a href="global.html#matching_get_list">matching_get_list</a></li><li><a href="global.html#matching_set">matching_set</a></li><li><a href="global.html#step1_confirm_blank">step1_confirm_blank</a></li><li><a href="global.html#step2_confirm_blank">step2_confirm_blank</a></li><li><a href="global.html#upload_image">upload_image</a></li></ul>
     
 </nav>
 
@@ -48,7 +48,9 @@
             <pre class="prettyprint source linenums"><code>import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
+  getDoc,
   getDocs,
   query,
   serverTimestamp,
@@ -56,6 +58,8 @@
   where,
 } from "firebase/firestore";
 import { db } from "../db/firebase_config";
+import { calculateDistance } from "./UserAPI";
+import { ck_null } from "./Basic";
 
 /** firebase에 문서를 생성하여 data field를 저장합니다.
  * @function db_add
@@ -64,6 +68,7 @@ import { db } from "../db/firebase_config";
  * @returns {string} 추가된 document의 id
  */
 export const db_add = async (col, data) => {
+  console.log(col, " 추가");
   // Add a new document with a generated id.
   const docRef = await addDoc(collection(db, col), {
     ...data,
@@ -81,28 +86,136 @@ export const db_add = async (col, data) => {
  * @param {object} data 추가할 데이터
  */
 export const db_update = async (col, doc_id, data) => {
+  console.log(col, " 수정");
   // Add a new document in collection
   await updateDoc(doc(db, col, doc_id), data);
 };
 
-/** 컬렉션에서 여러 문서 가져오기
- * @function get_doc_info
+/** collection 내 특정 문서 삭제
+ * @function db_delete
+ * @param {string} col collection 이름
+ * @param {string} doc_id 문서 id
+ */
+
+export const db_delete = async (col, doc_id) => {
+  console.log(col, " 삭제");
+  await deleteDoc(doc(db, col, doc_id));
+};
+
+/** 컬렉션에서 여러 문서 가져오기(특정 속성으로 검색해서 리스트를 가지고 올 때 사용)
+ * @function get_doc_all
+ * @param {string} col collection 이름
+ * @return {object} property 값이 value 와 일치하는 데이터 반환
+ */
+export const get_doc_all = async (col) => {
+  console.log(col, " 모두 조회");
+  const q = query(collection(db, col));
+  const querySnapshot = await getDocs(q);
+
+  const doc_list = [];
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    doc_list.push({ ...doc.data(), doc_id: doc.id });
+  });
+  return doc_list;
+};
+
+/** 문서 id로 데이터 가지고 오기
+ * @function get_doc_data
+ * @param {string} col collection 이름
+ * @param {string} doc_id 문서 id
+ * @return {object} 단일 문서의 내용
+ */
+export const get_doc_data = async (col, doc_id) => {
+  console.log(col, " 조회");
+  const docRef = doc(db, col, doc_id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    console.log("Document data:", { ...docSnap.data(), doc_id: doc.id });
+  } else {
+    // docSnap.data() will be undefined in this case
+    console.log("No such document!");
+  }
+
+  return docSnap.data();
+};
+
+/** 조건에 일치하는 모든 문서를 가지고 오기
+ * @function get_doc_list
  * @param {string} col collection 이름
  * @param {string} property 검색 속성
  * @param {string} value 검색 값
  * @return {object} property 값이 value 와 일치하는 데이터 반환
  */
-export const get_doc_info = async (col, property, value) => {
+export const get_doc_list = async (col, property, value) => {
+  console.log(col, property, value, " 조회");
   const q = query(collection(db, col), where(property, "==", value));
   const querySnapshot = await getDocs(q);
 
-  if (querySnapshot.docs.length > 0)
-    return {
-      ...querySnapshot.docs[0].data(),
-      doc_id: querySnapshot.docs[0].id,
-    };
-  else return null;
+  const doc_list = [];
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    doc_list.push({ ...doc.data(), doc_id: doc.id });
+  });
+
+  return doc_list;
 };
+
+export async function arrange_distance(user_location, user_type) {
+  console.log("거리순 정렬");
+  // 현재 위치 좌표 (예시)
+  const currentLocation = user_location;
+
+  const q = query(collection(db, "user"), where("user_type", "==", user_type));
+  const querySnapshot = await getDocs(q);
+  const places = [];
+  // Firestore에서 데이터 가져오기 및 거리순 정렬
+  querySnapshot.forEach((doc) => {
+    const place = ck_null(doc.data().user_location, {
+      latitude: 37.5664056,
+      longitude: 126.9778222,
+    });
+    // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산
+    place.distance = calculateDistance(currentLocation, {
+      latitude: place.latitude,
+      longitude: place.longitude,
+    });
+    places.push({ ...doc.data(), ...place });
+  });
+
+  // 거리순으로 정렬
+  places.sort((a, b) => a.distance - b.distance);
+
+  return places;
+}
+
+export async function arrange_random(user_location, user_dong, user_type) {
+  console.log("랜덤 정렬");
+  // 현재 위치 좌표 (예시)
+  const currentLocation = user_location;
+  const dong = user_dong;
+
+  const q = query(
+    collection(db, "user"),
+    where("dong", "==", dong),
+    where("user_type", "==", user_type)
+  );
+  const querySnapshot = await getDocs(q);
+  const places = [];
+  // Firestore에서 데이터 가져오기 및 거리순 정렬
+  querySnapshot.forEach((doc) => {
+    const place = doc.data().user_location;
+    // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산
+    place.distance = calculateDistance(currentLocation, {
+      latitude: place.latitude,
+      longitude: place.longitude,
+    });
+    places.push({ ...doc.data(), ...place });
+  });
+
+  return places;
+}
 </code></pre>
         </article>
     </section>
@@ -117,7 +230,7 @@ export const get_doc_info = async (col, property, value) => {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Fri Jan 19 2024 00:12:49 GMT+0900 (GMT+09:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Mon Jan 22 2024 08:36:42 GMT+0900 (GMT+09:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
