@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Auth.js - Documentation</title>
+    <title>API.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -35,7 +35,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Auth.js</h1>
+    <h1 class="page-title">API.js</h1>
     
 
     
@@ -45,120 +45,102 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { auth } from "../db/firebase_config";
-
-// Firebase deps
-// v9에서 v8 호환 API
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import "firebase/compat/firestore";
-
-// firebase 초기화
-firebase.initializeApp({
-  apiKey: "AIzaSyA6_ETeOdnsf9rI_OGZ9vyg2TYQ1jxRBA8",
-  authDomain: "dinnermate-database.firebaseapp.com",
-  databaseURL:
-    "https://dinnermate-database-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "dinnermate-database",
-  storageBucket: "dinnermate-database.appspot.com",
-  messagingSenderId: "266027037200",
-  appId: "1:266027037200:web:8c09ec93d5e28965ddd095",
-  measurementId: "G-SST92XMXJH",
-});
+            <pre class="prettyprint source linenums"><code>import { white } from "../App";
 
 /**
- * @namespace Auth
+ * @namespace API
  */
 
-/** 비밀번호 기반 계정 만들기
- * @function _signup_password
- * @memberof Auth
- * @param {string} email 유저 이메일
- * @param {string} password 유저 패스워드
- * @returns {string} 에러 메세지
+/** 입력 값이 null 일 때 대체값으로 출력하는 함수
+ * @function checkNull
+ * @memberof API
+ * @param {object} a 입력값
+ * @param {object} b 입력값이 null이면 출력할 default 값
+ * @returns {object} null이 아닌 값 출력
  */
-export async function _signup_password(email, password) {
-  let err_msg = "";
-  await createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-
-      // 동일한 이메일로는 가입할 수 없습니다.
-      if (errorMessage.includes("already-in-use"))
-        err_msg = "이미 존재하는 이메일입니다.";
-      // ..
-    });
-
-  return err_msg;
+export function checkNull(a, b) {
+  return a ? a : b;
 }
 
-/** 이메일 주소와 비밀번호로 사용자 로그인
- * @function _signin_password
- * @memberof Auth
- * @param {string} email 유저 이메일
- * @param {string} password 유저 패스워드
- * @returns {string} 유저 uid
+/** colorScheme 변환
+ * @function getSatuation
+ * @memberof API
+ * @param {string} code "[색상].[명도]" 포맷으로 작성된 코드
+ * @returns {string} 색상값만 반환
  */
-export const _signin_password = async (email, password) => {
-  let uid = "";
-  await signInWithEmailAndPassword(auth, email, password)
-    .then(async (userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      uid = user.uid;
-      // ...
-    })
-    .catch(async (error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-
-      // 에러메세지 출력
-      console.log(errorMessage);
-    });
-
-  return uid;
-};
-
-/** 구글 로그인
- * @function _signin_google
- * @memberof Auth
+export function getSatuation(code) {
+  if (!code.includes(".")) return white;
+  return checkNull(code.split(".")[0], "white");
+}
+/** colorScheme 변환
+ * @function getBrightness
+ * @memberof API
+ * @param {string} code "[색상].[명도]" 포맷으로 작성된 코드
+ * @returns {string} 명도값만 반환
  */
-export const _signin_google = async () => {
-  // Retrieve Google provider object
-  const provider = new firebase.auth.GoogleAuthProvider();
-  // Set language to the default browser preference
-  firebase.auth().useDeviceLanguage();
-  // Start sign in process
+export function getBrightness(code) {
+  if (!code.includes(".")) return white;
+  return checkNull(parseInt(code.split(".")[1]), 50);
+}
 
-  try {
-    await firebase.auth().signInWithPopup(provider);
-  } catch (error) {
-    console.log(error.message);
+/** object에 item 추가 / 변경
+ * @function setData
+ * @memberof API
+ * @param {object} _state 기존 오브젝트
+ * @param {string} _key 키
+ * @param {string} _value 값
+ * @returns {object} key 의 값을 value로 변경 또는 추가한 오브젝트 반환
+ */
+export function setData(_state, _key, _value) {
+  return { ..._state, _key: _value };
+}
+
+/** 실명 가리기 함수
+ * @function getDisplayName
+ * @memberof API
+ * @param {string} name 기존 실명
+ * @returns {string} 실명 맨 끝의 값을 *로 처리(3글자 초과는 2개 지움)
+ */
+export function getDisplayName(name) {
+  if (name === "") return "";
+
+  if (name.length > 3) return name.slice(0, -2) + "*";
+  else return name.slice(0, -1) + "*";
+}
+
+/** 실명 가리기 함수
+ * @function getDisplayAge
+ * @memberof API
+ * @param {string} birthdate 생년월일
+ * @returns {string} 생년월일을 나이로 변환한 후 5살 범위로 반환
+ */
+export function getDisplayAge(birthdate) {
+  var currentDate = new Date();
+  var birthdateObj = new Date(birthdate);
+  var age = currentDate.getFullYear() - birthdateObj.getFullYear();
+
+  if (
+    currentDate.getMonth() &lt; birthdateObj.getMonth() ||
+    (currentDate.getMonth() === birthdateObj.getMonth() &amp;&amp;
+      currentDate.getDate() &lt; birthdateObj.getDate())
+  ) {
+    age--;
   }
-};
 
-/** 로그아웃
- * @function _sign_out
- * @memberof Auth
+  var lowerRange = Math.floor(age / 5) * 5;
+  var upperRange = lowerRange + 4;
+  return `${lowerRange}~${upperRange}세`;
+}
+
+/** 실명 가리기 함수
+ * @function deg2rad
+ * @memberof API
+ * @param {number} deg 생년월일
+ * @returns {number} deg를 rad로 변환
  */
-export const _sign_out = async () => {
-  try {
-    await firebase.auth().signOut();
-    console.log("로그아웃");
-  } catch (error) {
-    console.log(error.message);
-  }
-};
+export function deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
 </code></pre>
         </article>
     </section>
