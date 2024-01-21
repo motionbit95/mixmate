@@ -32,7 +32,11 @@ export const Logo = ({ ...props }) => {
         h={ck_null(props.h, "auto")}
         src={symbol_logo}
       />
-      <Image w={ck_null(props.w, "auto")} h={"auto"} src={text_logo} />
+      <Image
+        w={ck_null(props.w, "auto")}
+        h={ck_null(props.h, "auto")}
+        src={text_logo}
+      />
     </Stack>
   );
 };

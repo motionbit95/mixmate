@@ -22,7 +22,7 @@ import {
 import { BsStarFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { auth } from "../db/firebase_config";
-import { db_update, get_doc_info } from "../js/Database";
+import { db_update, get_doc_list } from "../js/Database";
 import { TopHeader } from "../component/TopHeader";
 import { useNavigate } from "react-router-dom";
 import { display_age_range } from "../js/UserAPI";
@@ -45,7 +45,7 @@ export const MyPage = () => {
         // User is signed in.
 
         // 유저의 이메일 속성으로 유저 테이블의 정보에 접근합니다.
-        let user_info = await get_doc_info("user", "user_email", user.email);
+        let user_info = await get_doc_list("user", "user_email", user.email)[0];
         set_data(user_info);
       } else {
         // No user is signed in.

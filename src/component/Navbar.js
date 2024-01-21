@@ -13,108 +13,111 @@ export const Navbar = () => {
   const page = get_page_num();
   return (
     <Box w="100%" className="nav">
-      <HorizonLine />
-      <Stack
-        paddingY="10px"
-        direction="row"
-        justify="space-between"
-        align="flex-start"
-        spacing="10px"
-        overflow="hidden"
-        alignSelf="stretch"
-      >
-        <Stack
-          justify="center"
-          align="center"
-          spacing="0px"
-          overflow="hidden"
-          flex="1"
-          onClick={() => {
-            window.location.replace("/");
-          }}
-        >
-          <Icon
-            as={page === 0 ? AiFillHome : AiOutlineHome}
-            color={page === 0 ? theme_primary_color : "black"}
-          />
-          <Text
-            fontWeight="medium"
-            fontSize="12px"
-            color={page === 0 ? theme_primary_color : "black"}
-            textAlign="center"
+      <Stack>
+        <Container p={0} border={"1px solid #d9d9d9"} bgColor={"white"}>
+          <Stack
+            paddingY="10px"
+            direction="row"
+            justify="space-between"
+            align="flex-start"
+            spacing="10px"
+            overflow="hidden"
+            alignSelf="stretch"
           >
-            홈
-          </Text>
-        </Stack>
-        <Stack
-          justify="center"
-          align="center"
-          spacing="0px"
-          overflow="hidden"
-          flex="1"
-          onClick={() => {
-            window.location.replace("/details");
-          }}
-        >
-          <Icon
-            as={BsList}
-            color={page === 1 ? theme_primary_color : "black"}
-          />
-          <Text
-            fontWeight="medium"
-            fontSize="12px"
-            color={page === 1 ? theme_primary_color : "black"}
-            textAlign="center"
-          >
-            신청내역
-          </Text>
-        </Stack>
-        <Stack
-          justify="center"
-          align="center"
-          spacing="0px"
-          overflow="hidden"
-          flex="1"
-          onClick={() => {
-            window.location.replace("/chat");
-          }}
-        >
-          <Icon
-            as={page === 2 ? MdChatBubble : MdChatBubbleOutline}
-            color={page === 2 ? theme_primary_color : "black"}
-          />
-          <Text
-            fontWeight="medium"
-            fontSize="12px"
-            color={page === 2 ? theme_primary_color : "black"}
-            textAlign="center"
-          >
-            채팅
-          </Text>
-        </Stack>
-        <Stack
-          justify="center"
-          align="center"
-          spacing="0px"
-          overflow="hidden"
-          flex="1"
-          onClick={() => {
-            window.location.replace("/mypage");
-          }}
-        >
-          <Icon
-            as={page === 3 ? BsPersonFill : BsPerson}
-            color={page === 3 ? theme_primary_color : "black"}
-          />
-          <Text
-            fontWeight="medium"
-            fontSize="12px"
-            color={page === 3 ? theme_primary_color : "black"}
-            textAlign="center"
-          >
-            마이페이지
-          </Text>
-        </Stack>
+            <Stack
+              justify="center"
+              align="center"
+              spacing="0px"
+              overflow="hidden"
+              flex="1"
+              onClick={() => {
+                window.location.replace("/");
+              }}
+            >
+              <Icon
+                as={page === 0 ? AiFillHome : AiOutlineHome}
+                color={page === 0 ? theme_primary_color : "black"}
+              />
+              <Text
+                fontWeight="medium"
+                fontSize="12px"
+                color={page === 0 ? theme_primary_color : "black"}
+                textAlign="center"
+              >
+                홈
+              </Text>
+            </Stack>
+            <Stack
+              justify="center"
+              align="center"
+              spacing="0px"
+              overflow="hidden"
+              flex="1"
+              onClick={() => {
+                window.location.replace("/details");
+              }}
+            >
+              <Icon
+                as={BsList}
+                color={page === 1 ? theme_primary_color : "black"}
+              />
+              <Text
+                fontWeight="medium"
+                fontSize="12px"
+                color={page === 1 ? theme_primary_color : "black"}
+                textAlign="center"
+              >
+                신청내역
+              </Text>
+            </Stack>
+            <Stack
+              justify="center"
+              align="center"
+              spacing="0px"
+              overflow="hidden"
+              flex="1"
+              onClick={() => {
+                window.location.replace("/chat");
+              }}
+            >
+              <Icon
+                as={page === 2 ? MdChatBubble : MdChatBubbleOutline}
+                color={page === 2 ? theme_primary_color : "black"}
+              />
+              <Text
+                fontWeight="medium"
+                fontSize="12px"
+                color={page === 2 ? theme_primary_color : "black"}
+                textAlign="center"
+              >
+                채팅
+              </Text>
+            </Stack>
+            <Stack
+              justify="center"
+              align="center"
+              spacing="0px"
+              overflow="hidden"
+              flex="1"
+              onClick={() => {
+                window.location.replace("/mypage");
+              }}
+            >
+              <Icon
+                as={page === 3 ? BsPersonFill : BsPerson}
+                color={page === 3 ? theme_primary_color : "black"}
+              />
+              <Text
+                fontWeight="medium"
+                fontSize="12px"
+                color={page === 3 ? theme_primary_color : "black"}
+                textAlign="center"
+              >
+                마이페이지
+              </Text>
+            </Stack>
+          </Stack>
+        </Container>
       </Stack>
     </Box>
   );

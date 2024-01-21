@@ -84,7 +84,8 @@ export function step2_confirm_blank(
   user_place,
   user_food,
   user_bank,
-  user_gender
+  user_gender,
+  user_birth
 ) {
   // console.log(
   //   user_price,
@@ -99,6 +100,7 @@ export function step2_confirm_blank(
   if (user_bank.bank_name === "" || user_bank.accout_number === "")
     return "계좌 정보를 입력해주세요.";
   if (user_gender === "") return "성별을 선택해주세요.";
+  if (user_birth === "") return "생년월일을 선택해주세요.";
 
   // 모든 필드가 작성되었을 경우
   return "";
@@ -186,6 +188,8 @@ export function get_current_location(user_info, doc_id) {
       async function (position) {
         var latitude = position.coords.latitude;
         var longitude = position.coords.longitude;
+
+        // console.log(doc_id, latitude, longitude);
 
         await db_update("user", doc_id, {
           user_location: { latitude: latitude, longitude: longitude },

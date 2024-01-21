@@ -14,98 +14,227 @@ import {
   HStack,
   TabPanels,
   TabPanel,
+  IconButton,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { BsBell, BsPeopleFill, BsStarFill, BsPersonFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { get_current_location } from "../js/UserAPI";
 import { auth } from "../db/firebase_config";
-import { get_doc_info } from "../js/Database";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import { black, gray_300, gray_600, theme_primary_color, white } from "../App";
 import { Navbar } from "../component/Navbar";
+import { Logo, TextLogo } from "../component/Logo";
+import { Footer } from "../component/Footer";
+import { User } from "../component/User";
+import { get_satuation } from "../js/Basic";
+import { CustomButton } from "../component/Buttons";
+import { get_doc_all, get_doc_list } from "../js/Database";
+import { TextAddress } from "../component/KakaoMap";
+import HorizonLine from "../component/HorizontalLine";
 
 export const Home = () => {
   const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState();
+  const [businessList, setBusinessList] = useState([]);
+  const [customerList, setCustomerList] = useState([]);
+
+  useEffect(() => {
+    getUserList();
+  }, []);
+
+  const getUserList = async () => {
+    let customer = await get_doc_list("user", "user_type", "개인");
+    let business = await get_doc_list("user", "user_type", "사업 전문가");
+    console.log(customer, business);
+
+    setBusinessList(business);
+    setCustomerList(customer);
+  };
 
   const imageData = [
     {
       label: "Image 1",
       alt: "image1",
-      url: require("../assets/iOS 16 Wallpaper.png"),
+      url: require("../assets/banner.png"),
     },
 
     {
       label: "Image 2",
       alt: "image2",
-      url: require("../assets/iOS 16 Wallpaper.png"),
+      url: require("../assets/banner.png"),
     },
 
     {
       label: "Image 3",
       alt: "image3",
-      url: require("../assets/iOS 16 Wallpaper.png"),
+      url: require("../assets/banner.png"),
     },
 
     {
       label: "Image 4",
       alt: "image4",
-      url: require("../assets/iOS 16 Wallpaper.png"),
+      url: require("../assets/banner.png"),
     },
 
     {
       label: "Image 5",
       alt: "image5",
-      url: require("../assets/iOS 16 Wallpaper.png"),
+      url: require("../assets/banner.png"),
     },
   ];
 
   const test_data_b = [
     {
-      name: "김아중",
-      age: "35~40세",
-      business: "IT 기업",
-      price: "15만원",
-      place: "강남구 역삼동",
+      user_type: "사업 전문가",
+      user_name: "김아중",
+      user_birth: "1990.11.14",
+      user_category: "IT 기업",
+      user_price: 15,
+      user_place: "강남구 역삼동",
       food: "한식",
       info: "에듀테크 it기업 엑싯경험으로 다양한 경험과 노하우를 알려드리겠습니다. 사업 조언 및 방향성 등에 도움이 많이 되실거에요 식사시간은 평일 점심시간만 역삼동에서 가능합니다. 12시~1시30분 입니다. 감사합니다.",
     },
     {
-      name: "송강호",
-      age: "35~40세",
-      business: "쇼핑몰",
-      price: "8만원",
-      place: "하남 스타필드",
+      user_type: "사업 전문가",
+      user_name: "김아중",
+      user_birth: "1990.11.14",
+      user_category: "IT 기업",
+      user_price: 15,
+      user_place: "강남구 역삼동",
+      food: "한식",
+      info: "에듀테크 it기업 엑싯경험으로 다양한 경험과 노하우를 알려드리겠습니다. 사업 조언 및 방향성 등에 도움이 많이 되실거에요 식사시간은 평일 점심시간만 역삼동에서 가능합니다. 12시~1시30분 입니다. 감사합니다.",
+    },
+    {
+      user_type: "사업 전문가",
+      user_name: "김아중",
+      user_birth: "1990.11.14",
+      user_category: "IT 기업",
+      user_price: 15,
+      user_place: "강남구 역삼동",
+      food: "한식",
+      info: "에듀테크 it기업 엑싯경험으로 다양한 경험과 노하우를 알려드리겠습니다. 사업 조언 및 방향성 등에 도움이 많이 되실거에요 식사시간은 평일 점심시간만 역삼동에서 가능합니다. 12시~1시30분 입니다. 감사합니다.",
+    },
+    {
+      user_type: "사업 전문가",
+      user_name: "김아중",
+      user_birth: "1990.11.14",
+      user_category: "IT 기업",
+      user_price: 15,
+      user_place: "강남구 역삼동",
+      food: "한식",
+      info: "에듀테크 it기업 엑싯경험으로 다양한 경험과 노하우를 알려드리겠습니다. 사업 조언 및 방향성 등에 도움이 많이 되실거에요 식사시간은 평일 점심시간만 역삼동에서 가능합니다. 12시~1시30분 입니다. 감사합니다.",
+    },
+    {
+      user_type: "사업 전문가",
+      user_name: "김아중",
+      user_birth: "1990.11.14",
+      user_category: "IT 기업",
+      user_price: 15,
+      user_place: "강남구 역삼동",
+      food: "한식",
+      info: "에듀테크 it기업 엑싯경험으로 다양한 경험과 노하우를 알려드리겠습니다. 사업 조언 및 방향성 등에 도움이 많이 되실거에요 식사시간은 평일 점심시간만 역삼동에서 가능합니다. 12시~1시30분 입니다. 감사합니다.",
+    },
+    {
+      user_type: "사업 전문가",
+      user_name: "김아중",
+      user_birth: "1990.11.14",
+      user_category: "IT 기업",
+      user_price: 15,
+      user_place: "강남구 역삼동",
+      food: "한식",
+      info: "에듀테크 it기업 엑싯경험으로 다양한 경험과 노하우를 알려드리겠습니다. 사업 조언 및 방향성 등에 도움이 많이 되실거에요 식사시간은 평일 점심시간만 역삼동에서 가능합니다. 12시~1시30분 입니다. 감사합니다.",
+    },
+    {
+      user_type: "사업 전문가",
+      user_name: "김아중",
+      user_birth: "1990.11.14",
+      user_category: "IT 기업",
+      user_price: 15,
+      user_place: "강남구 역삼동",
+      food: "한식",
+      info: "에듀테크 it기업 엑싯경험으로 다양한 경험과 노하우를 알려드리겠습니다. 사업 조언 및 방향성 등에 도움이 많이 되실거에요 식사시간은 평일 점심시간만 역삼동에서 가능합니다. 12시~1시30분 입니다. 감사합니다.",
+    },
+    {
+      user_type: "사업 전문가",
+      user_name: "김아중",
+      user_birth: "1990.11.14",
+      user_category: "IT 기업",
+      user_price: 15,
+      user_place: "강남구 역삼동",
+      food: "한식",
+      info: "에듀테크 it기업 엑싯경험으로 다양한 경험과 노하우를 알려드리겠습니다. 사업 조언 및 방향성 등에 도움이 많이 되실거에요 식사시간은 평일 점심시간만 역삼동에서 가능합니다. 12시~1시30분 입니다. 감사합니다.",
+    },
+    {
+      user_type: "사업 전문가",
+      user_name: "김아중",
+      user_birth: "1990.11.14",
+      user_category: "IT 기업",
+      user_price: 15,
+      user_place: "강남구 역삼동",
+      food: "한식",
+      info: "에듀테크 it기업 엑싯경험으로 다양한 경험과 노하우를 알려드리겠습니다. 사업 조언 및 방향성 등에 도움이 많이 되실거에요 식사시간은 평일 점심시간만 역삼동에서 가능합니다. 12시~1시30분 입니다. 감사합니다.",
+    },
+    {
+      user_type: "사업 전문가",
+      user_name: "김아중",
+      user_birth: "1990.11.14",
+      user_category: "IT 기업",
+      user_price: 15,
+      user_place: "강남구 역삼동",
+      food: "한식",
+      info: "에듀테크 it기업 엑싯경험으로 다양한 경험과 노하우를 알려드리겠습니다. 사업 조언 및 방향성 등에 도움이 많이 되실거에요 식사시간은 평일 점심시간만 역삼동에서 가능합니다. 12시~1시30분 입니다. 감사합니다.",
+    },
+    {
+      user_type: "사업 전문가",
+      user_name: "김아중",
+      user_birth: "1990.11.14",
+      user_category: "IT 기업",
+      user_price: 15,
+      user_place: "강남구 역삼동",
+      food: "한식",
+      info: "에듀테크 it기업 엑싯경험으로 다양한 경험과 노하우를 알려드리겠습니다. 사업 조언 및 방향성 등에 도움이 많이 되실거에요 식사시간은 평일 점심시간만 역삼동에서 가능합니다. 12시~1시30분 입니다. 감사합니다.",
+    },
+    {
+      user_type: "사업 전문가",
+      user_name: "송강호",
+      user_birth: "1994.11.14",
+      user_category: "쇼핑몰",
+      user_price: 8,
+      user_place: "하남 스타필드",
       food: "한식,중식",
       info: "의류 쇼핑몰 연 매출 20억 달성하고 디자이너 브랜드 런칭하여 운영중에 있어요. 의류 쇼핑몰로 매출 내고 있으신 분들만 식사권 신청 부탁드려요! 식사 가능 시간은 평일 저녁 7시~8시30분 가능합니다!",
     },
     {
-      name: "전지현",
-      age: "20~25세",
-      business: "해외구매대행",
-      price: "5만원",
-      place: "인천 송도 센트럴파크",
+      user_type: "사업 전문가",
+      user_name: "전지현",
+      user_birth: "1961.11.14",
+      user_category: "해외구매대행",
+      user_price: 5,
+      user_place: "인천 송도 센트럴파크",
       food: "초밥,한식",
       info: "해외구매대행 처음 시작하시는 분들에게 방향성 및 소싱 방법에 대한 노하우 전수해드립니다. 유통업이 처음이시더라도 조언 들으신 후 사업하시는 것이 시간을 줄이실 수 있으실거에요. 해외구매대행으로만 작년 기준 매출 3억 달성하였고 올해는 아기 용품 브랜드 런칭하였습니다. 브랜드 런칭에도 도움드릴 수 있으니 관심있으신분들은 식사권 신청바랍니다. 식사가능 시간은 평일 저녁 6시 이후 부터 가능합니다.",
     },
   ];
   const test_data_p = [
     {
-      name: "공지철",
-      age: "30~35세",
-      business: "AI 인공지능",
-      price: "2만원",
-      place: "해운대 현대백화점",
+      user_type: "개인",
+      user_name: "공지철",
+      user_birth: "1999.01.20",
+      user_category: "AI 인공지능",
+      user_price: 2,
+      user_place: "해운대 현대백화점",
       food: "한식,중식",
       info: "AI 인공지능 회사에서 CTO로 근무하고 있어요! AI 관심있으신분 평일 저녁에 해운대 현백에서 간단히 식사하면서 얘기 나눠요~",
     },
     {
-      name: "이동욱",
-      age: "30~35세",
-      business: "심리학 독서",
-      price: "2만원",
-      place: "압구정동",
+      user_type: "개인",
+      user_name: "이동욱",
+      user_birth: "1999.01.20",
+      user_category: "심리학 독서",
+      user_price: 2,
+      user_place: "압구정동",
       food: "일식",
       info: "심리학 공부하고 있는데 심리학 관련 밥 친구 구합니다! 심리마케팅 및 인문학, 심리학 관심 있으신 분들 식사권 신청 부탁드려요 식사시간은 조율 가능해요!",
     },
@@ -115,12 +244,11 @@ export const Home = () => {
     // 고객의 계정을 가지고 옵니다.
     auth.onAuthStateChanged(async function (user) {
       if (user) {
-        console.log(user.uid);
-        let user_info = await get_doc_info("user", "user_id", user.uid);
+        let user_info = await get_doc_list("user", "user_id", user.uid);
+        setUserInfo(user_info[0]);
         // 위치 가지고 와서 사용자 정보에 업데이트
-        // 위치 정보 없을 때만 가지고 오도록 수정 - 24.01.19
-        if (!user_info.user_location)
-          get_current_location(user_info, user_info.doc_id);
+        // console.log(user_info[0], user.uid, user_info[0].doc_id);
+        get_current_location(user_info, user_info[0].doc_id);
       }
     });
   });
@@ -136,114 +264,85 @@ export const Home = () => {
       <img
         src={image.url}
         alt={image.alt}
-        style={{ height: "250px", borderRadius: "10px", objectFit: "cover" }}
+        style={{
+          width: "100%",
+          height: "auto",
+          borderRadius: "10px",
+          objectFit: "cover",
+        }}
       />
     </div>
   ));
 
+  const ItemList = ({ items }) => {
+    const [visibleItems, setVisibleItems] = useState(6);
+
+    const handleLoadMore = () => {
+      setVisibleItems((prevVisibleItems) => prevVisibleItems + 6);
+    };
+
+    return (
+      <Stack spacing={"4vh"} alignItems={"center"} w={"100%"}>
+        <Stack alignItems={"center"} w={"100%"}>
+          {items.slice(0, visibleItems).map((item, index) => (
+            <User data={item} />
+          ))}
+        </Stack>
+        {visibleItems < items.length && (
+          <CustomButton
+            w="90px"
+            text={"더보기"}
+            code={theme_primary_color}
+            onClick={handleLoadMore}
+          />
+        )}
+      </Stack>
+    );
+  };
+
   return (
-    <Container py={"50px"} px={0}>
+    <Container px={0} pt={"50px"} pb={"55px"}>
+      <Box className="header">
+        <Container border={"1px solid #d9d9d9"} p={0} bgColor={"white"}>
+          <Stack>
+            <HStack
+              p="1vw 2vw"
+              alignItems={"center"}
+              justifyContent={"space-between"}
+            >
+              <HStack w={"100%"}>
+                <TextLogo h={"3vh"} />
+                {userInfo && <TextAddress user={userInfo} />}
+              </HStack>
+
+              <IconButton
+                onClick={() => navigate("/notice")}
+                variant={"unstyled"}
+                icon={<BsBell size={"24px"} />}
+              />
+            </HStack>
+          </Stack>
+        </Container>
+      </Box>
       <Stack
         justify="flex-start"
         align="flex-start"
         spacing="0px"
         overflow="hidden"
-        // width="393px"
         maxWidth="100%"
-        background={white}
-        minH={"90vh"}
       >
-        <Stack className="header">
-          <Container>
-            <Stack
-              padding="10px"
-              direction="row"
-              justify="space-between"
-              align="flex-start"
-              spacing="10px"
-              overflow="hidden"
-              alignSelf="stretch"
-            >
-              <Text
-                fontWeight="black"
-                fontSize="24px"
-                color={black}
-                textAlign="center"
-              >
-                식사회
-              </Text>
-              <Box
-                // justify="space-between"
-                // align="flex-start"
-                // spacing="10px"
-                height="26px"
-              >
-                <Icon
-                  as={BsBell}
-                  onClick={() => navigate("/notice")}
-                  boxSize={"24px"}
-                />
-                <Circle
-                  position={"absolute"}
-                  top={"10px"}
-                  ml={"14px"}
-                  size="10px"
-                  background="#FF0000"
-                />
-              </Box>
-            </Stack>
-          </Container>
-        </Stack>
         <Stack
-          // padding="10px"
           pt={"10px"}
           justify="flex-start"
           align="flex-start"
           spacing="20px"
           overflow="hidden"
           alignSelf="stretch"
+          m={"2vh"}
         >
-          {/* <Stack
-            padding="20px"
-            borderRadius="10px"
-            justify="space-between"
-            align="flex-end"
-            spacing="76px"
-            height="211px"
-            alignSelf="stretch"
-            bgImage={require("../assets/iOS 16 Wallpaper.png")}
-          >
-            <Text
-              lineHeight="0.7"
-              fontWeight="semibold"
-              fontSize="30px"
-              letterSpacing="-0.32px"
-              color={white}
-              textAlign="center"
-            >
-              Event
-            </Text>
-            <Center
-              borderRadius="100px"
-              width="74px"
-              height="30px"
-              background="rgba(0, 0, 0, 0.5)"
-            >
-              <Text
-                lineHeight="1.31"
-                fontWeight="semibold"
-                fontSize="16px"
-                letterSpacing="-0.32px"
-                color={white}
-                textAlign="center"
-              >
-                1 / 3
-              </Text>
-            </Center>
-          </Stack> */}
           <Carousel
             showArrows={false}
-            autoPlay={true}
+            autoPlay={false}
             infiniteLoop={true}
             showThumbs={false}
             selectedItem={imageData[currentIndex]}
@@ -265,7 +364,7 @@ export const Home = () => {
               align="center"
               spacing="10px"
             >
-              <Tabs w="100%">
+              <Tabs w="100%" colorScheme={get_satuation(theme_primary_color)}>
                 <TabList>
                   <Tab w="100%">
                     <HStack>
@@ -299,263 +398,77 @@ export const Home = () => {
                   </Tab>
                 </TabList>
 
-                <TabPanels>
-                  <TabPanel>
-                    <Stack
-                      w="100%"
-                      direction="row"
-                      justify="flex-end"
-                      align="flex-start"
-                      spacing="10px"
-                    >
-                      <Button
-                        size="xs"
-                        variant="outline"
-                        colorScheme="blue"
-                        height="24px"
+                <TabPanels width={"100%"}>
+                  <TabPanel px={0} width={"100%"}>
+                    <Stack>
+                      <Stack
+                        w="100%"
+                        direction="row"
+                        justify="flex-end"
+                        align="flex-start"
+                        spacing="10px"
                       >
-                        가까운순
-                      </Button>
-                      <Button
-                        size="xs"
-                        variant="outline"
-                        colorScheme="blue"
-                        height="24px"
-                      >
-                        랜덤찾기
-                      </Button>
-                    </Stack>
-                    <Stack
-                      justify="flex-start"
-                      align="center"
-                      spacing="0px"
-                      alignSelf="stretch"
-                    >
-                      {test_data_b.map((value, index) => (
-                        <Stack
-                          paddingY="10px"
-                          direction="row"
-                          justify="flex-start"
-                          align="center"
-                          spacing="10px"
-                          overflow="hidden"
-                          alignSelf="stretch"
+                        <Button
+                          size="xs"
+                          variant="outline"
+                          colorScheme={get_satuation(theme_primary_color)}
+                          height="24px"
                         >
-                          <Avatar name={value.name} src=" " size="lg" />
-                          <Stack
-                            justify="flex-start"
-                            align="flex-start"
-                            spacing="10px"
-                            overflow="hidden"
-                            height="78px"
-                            flex="1"
-                          >
-                            <Stack
-                              direction="row"
-                              justify="space-between"
-                              align="center"
-                              spacing="5px"
-                              overflow="hidden"
-                              height="19px"
-                              alignSelf="stretch"
-                            >
-                              <Stack
-                                direction="row"
-                                justify="flex-start"
-                                align="center"
-                                spacing="5px"
-                              >
-                                <Text
-                                  fontWeight="bold"
-                                  fontSize="16px"
-                                  color={black}
-                                  textAlign="center"
-                                >
-                                  {value.name.slice(0, -1) + "*"}
-                                </Text>
-                                <Icon as={BsStarFill} />
-                                <Text
-                                  fontWeight="medium"
-                                  fontSize="16px"
-                                  color={black}
-                                  textAlign="center"
-                                >
-                                  5.0
-                                </Text>
-                                <Text
-                                  fontWeight="medium"
-                                  fontSize="14px"
-                                  color={gray_600}
-                                  textAlign="center"
-                                >
-                                  (169)
-                                </Text>
-                              </Stack>
-                              <Text
-                                fontWeight="medium"
-                                fontSize="14px"
-                                color={theme_primary_color}
-                                textAlign="center"
-                              >
-                                140m
-                              </Text>
-                            </Stack>
-                            <Text
-                              lineHeight="1.42"
-                              fontWeight="medium"
-                              fontSize="12px"
-                              color={black}
-                              alignSelf="stretch"
-                            >
-                              {`나이 : ${value.age}, 사업분야 : ${value.business}, 매칭 금액 : ${value.price}, 매칭 가능 동네 :
-                          ${value.place}`}
-                            </Text>
-                          </Stack>
-                          <Button
-                            size="sm"
-                            onClick={() =>
-                              navigate("/matching", {
-                                state: { data: value },
-                              })
-                            }
-                          >
-                            식사매칭
-                          </Button>
-                        </Stack>
-                      ))}
-
-                      <Button colorScheme="blue" height="40px">
-                        더보기
-                      </Button>
+                          가까운순
+                        </Button>
+                        <Button
+                          size="xs"
+                          variant="outline"
+                          colorScheme={get_satuation(theme_primary_color)}
+                          height="24px"
+                        >
+                          랜덤찾기
+                        </Button>
+                      </Stack>
+                      <Stack
+                        justify="flex-start"
+                        align="center"
+                        spacing="2vh"
+                        alignSelf="stretch"
+                      >
+                        <ItemList items={businessList} />
+                      </Stack>
                     </Stack>
                   </TabPanel>
-                  <TabPanel>
-                    <Stack
-                      w="100%"
-                      direction="row"
-                      justify="flex-end"
-                      align="flex-start"
-                      spacing="10px"
-                    >
-                      <Button
-                        size="xs"
-                        variant="outline"
-                        colorScheme="blue"
-                        height="24px"
+                  <TabPanel px={0} width={"100%"}>
+                    <Stack>
+                      <Stack
+                        w="100%"
+                        direction="row"
+                        justify="flex-end"
+                        align="flex-start"
+                        spacing="10px"
                       >
-                        가까운순
-                      </Button>
-                      <Button
-                        size="xs"
-                        variant="outline"
-                        colorScheme="blue"
-                        height="24px"
-                      >
-                        랜덤찾기
-                      </Button>
-                    </Stack>
-                    <Stack
-                      justify="flex-start"
-                      align="center"
-                      spacing="0px"
-                      alignSelf="stretch"
-                    >
-                      {test_data_p.map((value, index) => (
-                        <Stack
-                          paddingY="10px"
-                          direction="row"
-                          justify="flex-start"
-                          align="center"
-                          spacing="10px"
-                          overflow="hidden"
-                          alignSelf="stretch"
+                        <Button
+                          size="xs"
+                          variant="outline"
+                          colorScheme={get_satuation(theme_primary_color)}
+                          height="24px"
                         >
-                          <Avatar name={value.name} src=" " size="lg" />
-                          <Stack
-                            justify="flex-start"
-                            align="flex-start"
-                            spacing="10px"
-                            overflow="hidden"
-                            height="78px"
-                            flex="1"
-                          >
-                            <Stack
-                              direction="row"
-                              justify="space-between"
-                              align="center"
-                              spacing="5px"
-                              overflow="hidden"
-                              height="19px"
-                              alignSelf="stretch"
-                            >
-                              <Stack
-                                direction="row"
-                                justify="flex-start"
-                                align="center"
-                                spacing="5px"
-                              >
-                                <Text
-                                  fontWeight="bold"
-                                  fontSize="16px"
-                                  color={black}
-                                  textAlign="center"
-                                >
-                                  {value.name.slice(0, -1) + "*"}
-                                </Text>
-                                <Icon as={BsStarFill} />
-                                <Text
-                                  fontWeight="medium"
-                                  fontSize="16px"
-                                  color={black}
-                                  textAlign="center"
-                                >
-                                  5.0
-                                </Text>
-                                <Text
-                                  fontWeight="medium"
-                                  fontSize="14px"
-                                  color={gray_600}
-                                  textAlign="center"
-                                >
-                                  (169)
-                                </Text>
-                              </Stack>
-                              <Text
-                                fontWeight="medium"
-                                fontSize="14px"
-                                color={theme_primary_color}
-                                textAlign="center"
-                              >
-                                140m
-                              </Text>
-                            </Stack>
-                            <Text
-                              lineHeight="1.42"
-                              fontWeight="medium"
-                              fontSize="12px"
-                              color={black}
-                              alignSelf="stretch"
-                            >
-                              {`나이 : ${value.age}, 사업분야 : ${value.business}, 매칭 금액 : ${value.price}, 매칭 가능 동네 :
-                          ${value.place}`}
-                            </Text>
-                          </Stack>
-                          <Button
-                            size="sm"
-                            onClick={() =>
-                              navigate("/matching", {
-                                state: { data: value },
-                              })
-                            }
-                          >
-                            식사매칭
-                          </Button>
-                        </Stack>
-                      ))}
-
-                      <Button colorScheme="blue" height="40px">
-                        더보기
-                      </Button>
+                          가까운순
+                        </Button>
+                        <Button
+                          size="xs"
+                          variant="outline"
+                          colorScheme={get_satuation(theme_primary_color)}
+                          height="24px"
+                        >
+                          랜덤찾기
+                        </Button>
+                      </Stack>
+                      <Stack
+                        justify="flex-start"
+                        align="center"
+                        spacing="2vh"
+                        alignSelf="stretch"
+                      >
+                        <ItemList items={customerList} />
+                      </Stack>
                     </Stack>
                   </TabPanel>
                 </TabPanels>
@@ -564,37 +477,17 @@ export const Home = () => {
           </Stack>
         </Stack>
         <Stack display={"flex"} flex={1}></Stack>
-        <Stack
-          padding="20px"
-          justify="flex-start"
-          align="flex-start"
-          spacing="5px"
-          alignSelf="stretch"
-          background={gray_300}
-        >
-          <Text
-            lineHeight="1.4"
-            fontWeight="semibold"
-            fontSize="15px"
-            letterSpacing="-0.32px"
-            color={black}
-            textAlign="center"
-          >
-            (주) 세이프바운더리
-          </Text>
-          <Text
-            lineHeight="1.5"
-            fontWeight="regular"
-            fontSize="14px"
-            letterSpacing="-0.32px"
-            color={black}
-          >
-            대표자명 : 김지훈 | 사업자 등록번호 : 817 88 02796 주소 : 강남
-            서초구 강남대로 51길10 강남효성해링턴 103 통신판매 신고번호 :
-            2023-서울서초-1772 전화번호 : 02 3471 8197 | 이메일 :
-            safeboundary@naver.com
-          </Text>
-        </Stack>
+
+        <Footer
+          companyName="(주)세이프바운더리"
+          ceoName="김지훈"
+          businessNumber="817-88-02796"
+          address="서울시 강남구
+            서초구 강남대로 51길10 강남효성해링턴 103"
+          commNumber="2023-서울서초-1772"
+          tel="02-3471-8197"
+          mail="safeboundary@naver.com"
+        />
       </Stack>
       <Navbar />
     </Container>

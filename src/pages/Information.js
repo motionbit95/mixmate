@@ -47,7 +47,7 @@ export const Information = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const user_id = location.state?.user_id;
   const cost = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-  //# 진영 - 여기 추가!!
+  const category = ["관심분야1", "관심분야2", "관심분야3"];
   const bank = [
     "우리",
     "기업",
@@ -82,11 +82,10 @@ export const Information = () => {
       bank_name: "",
       accout_number: "",
     },
-    user_gender: "",
-  });
-
-  useEffect(() => {
-    console.log("load!", user_id);
+    user_gender: "남",
+    user_category: "관심분야1",
+    user_type: "개인",
+    user_birth: "",
   });
 
   // 음식 태그 추가하는 함수
@@ -101,12 +100,9 @@ export const Information = () => {
   const LocationSelector = () => {
     const [selectedCity, setSelectedCity] = useState("");
     const [selectedDistrict, setSelectedDistrict] = useState("");
-    const [selectedTown, setSelectedTown] = useState("");
 
-    // 가상의 시/도, 군/구, 읍/면/동 데이터 - 추가 예정
-    //# 진영 - 여기 추가해주세용...!
+    // 시/도, 군/구
     const cities = [
-      "직접입력",
       "강원도",
       "경기도",
       "경상남도",
@@ -388,54 +384,16 @@ export const Information = () => {
         "충주시",
       ],
     };
-    // const towns = {
-    //   강남구: [
-    //     "신사동",
-    //     "논현동",
-    //     "압구정동",
-    //     "청담동",
-    //     "삼성동",
-    //     "대치동",
-    //     "역삼동",
-    //     "도곡동",
-    //     "개포동",
-    //     "일원본동",
-    //     "일원동",
-    //     "수서동",
-    //     "세곡동",
-    //   ],
-    //   강동구: [
-    //     "강일동",
-    //     "상일동",
-    //     "명일동",
-    //     "고덕동",
-    //     "암사동",
-    //     "천호동",
-    //     "성내동",
-    //     "길동",
-    //     "둔촌동",
-    //   ],
-    //   강북구: [""],
-    //   강서구: ["화곡동", "등촌동", "방화동"],
-    //   수원시: ["장안구", "팔달구", "영통구"],
-    //   성남시: ["수정구", "중원구", "분당구"],
-    //   용인시: ["수지구", "기흥구", "처인구"],
-    //   해운대구: ["우동", "재송동", "좌동"],
-    //   동래구: ["명장동", "사직동", "온천동"],
-    //   부산진구: ["부전동", "양정동", "연지동"],
-    // };
 
     const handleCityChange = (e) => {
       const selectedCity = e.target.value;
       setSelectedCity(selectedCity);
       setSelectedDistrict("");
-      setSelectedTown("");
     };
 
     const handleDistrictChange = (e) => {
       const selectedDistrict = e.target.value;
       setSelectedDistrict(selectedDistrict);
-      setSelectedTown("");
 
       // 태그에 넣는 부분
       let array = add_place_tag(
@@ -460,89 +418,42 @@ export const Information = () => {
             ))}
           </Select>
 
-          {selectedCity !== "직접입력" && (
-            <>
-              {/* <label>군/구:</label> */}
-              <Select
-                value={selectedDistrict}
-                onChange={handleDistrictChange}
-                disabled={!selectedCity && selectedCity === "직접입력"}
-              >
-                <option value="">군/구</option>
-                {selectedCity &&
-                  districts[selectedCity].map((district) => (
-                    <option key={district} value={district}>
-                      {district}
-                    </option>
-                  ))}
-              </Select>
-            </>
-          )}
-
-          {/* <label>읍/면/동:</label> */}
-          {/* <Select
-          value={selectedTown}
-          onChange={handleTownChange}
-          disabled={!selectedDistrict}
-          w="100%"
-        >
-          <option value="">읍/면/동</option>
-          {selectedDistrict &&
-            towns[selectedDistrict].map((town) => (
-              <option key={town} value={town}>
-                {town}
-              </option>
-            ))}
-        </Select> */}
-        </HStack>
-
-        <HStack w="100%">
-          <Input
-            placeholder={"식사 가능한 지역을 입력하세요."}
-            // onChange={(e) => console.log(formData.user_place, e.target.value)}
-          />
-          <IconButton
-            onClick={() => console.log(formData.user_place, input_place)}
-            // onClick={() =>
-            //   setFormData({
-            //     ...formData,
-            //     user_place: add_place_tag(formData.user_place, "", input_place),
-            //   })
-            // }
-            icon={<MdAdd />}
-            size={"md"}
-          />
+          {/* <label>군/구:</label> */}
+          <Select
+            value={selectedDistrict}
+            onChange={handleDistrictChange}
+            disabled={!selectedCity}
+          >
+            <option value="">군/구</option>
+            {selectedCity &&
+              districts[selectedCity].map((district) => (
+                <option key={district} value={district}>
+                  {district}
+                </option>
+              ))}
+          </Select>
         </HStack>
       </Stack>
     );
   };
 
   return (
-    <Container>
+    <Container
+      minH={"100vh"}
+      display={"flex"}
+      justifyContent={"center"}
+      w={"100%"}
+      // alignItems={"center"}
+    >
       <Stack
-        paddingY="10px"
         justify="flex-start"
         align="center"
         spacing="0px"
         overflow="hidden"
-        height={"100vh"}
         maxWidth="100%"
         background={white}
       >
         <Stack
-          paddingX="1vw"
-          direction="row"
-          justify="flex-start"
-          align="flex-start"
-          spacing="0px"
-          overflow="hidden"
-          alignSelf="stretch"
-        >
-          <Stack size="lg" width="40px" height="40px" />
-        </Stack>
-        <Stack
-          // paddingX="20px"
-          paddingY="10px"
           direction="row"
           justify="center"
           align="center"
@@ -550,14 +461,145 @@ export const Information = () => {
           overflow="hidden"
           flex="1"
           alignSelf="stretch"
+          w={"100%"}
         >
-          <Stack justify="flex-start" align="center" spacing="50px" flex="1">
+          <Stack
+            justify="flex-start"
+            align="center"
+            spacing="4vh"
+            flex="1"
+            w={"100%"}
+          >
             <Stack
               justify="flex-start"
               align="center"
-              spacing="20px"
+              spacing="2vh"
               alignSelf="stretch"
+              w={"100%"}
             >
+              <Stack
+                justify="flex-start"
+                align="flex-start"
+                spacing="10px"
+                alignSelf="stretch"
+                w={"100%"}
+              >
+                <Stack
+                  direction="row"
+                  justify="flex-start"
+                  align="flex-start"
+                  alignSelf="stretch"
+                  w={"100%"}
+                >
+                  <Text
+                    lineHeight="1.43"
+                    fontWeight="regular"
+                    fontSize="16px"
+                    color={black}
+                    w="100%"
+                  >
+                    유저 구분
+                  </Text>
+                  <RadioGroup
+                    defaultValue="개인"
+                    onChange={(value) =>
+                      setFormData({ ...formData, user_type: value })
+                    }
+                  >
+                    <HStack w="100%">
+                      <Radio
+                        colorScheme={get_satuation(theme_primary_color)}
+                        value={"개인"}
+                        w="100px"
+                      >
+                        개인
+                      </Radio>
+                      <Radio
+                        colorScheme={get_satuation(theme_primary_color)}
+                        value={"사업 전문가"}
+                        w="100px"
+                      >
+                        사업 전문가
+                      </Radio>
+                    </HStack>
+                  </RadioGroup>
+                </Stack>
+              </Stack>
+              <Stack
+                justify="flex-start"
+                align="flex-start"
+                spacing="10px"
+                alignSelf="stretch"
+              >
+                <Stack
+                  direction="row"
+                  justify="flex-start"
+                  align="flex-start"
+                  alignSelf="stretch"
+                  w={"100%"}
+                >
+                  <Text
+                    lineHeight="1.43"
+                    fontWeight="regular"
+                    fontSize="16px"
+                    color={black}
+                    w="100%"
+                  >
+                    성별
+                  </Text>
+                  <RadioGroup
+                    defaultValue={"남"}
+                    onChange={(value) =>
+                      setFormData({ ...formData, user_gender: value })
+                    }
+                  >
+                    <HStack w="100%">
+                      <Radio
+                        colorScheme={get_satuation(theme_primary_color)}
+                        value={"남"}
+                        w="100px"
+                      >
+                        남
+                      </Radio>
+                      <Radio
+                        colorScheme={get_satuation(theme_primary_color)}
+                        value={"여"}
+                        w="100px"
+                      >
+                        여
+                      </Radio>
+                    </HStack>
+                  </RadioGroup>
+                </Stack>
+              </Stack>
+              <HStack w="100%">
+                <Text w="100px">생년월일</Text>
+                <Input
+                  type="date"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      user_birth: e.target.value,
+                    })
+                  }
+                />
+              </HStack>
+              <HStack justify="flex-start" align="center" w="100%">
+                <Text w="100px">
+                  {formData.user_type === "개인" ? "관심분야" : "사업분야"}
+                </Text>
+                <Select
+                  defaultValue={"관심분야1"}
+                  w="100%"
+                  onChange={(e) =>
+                    setFormData({ ...formData, user_category: e.target.value })
+                  }
+                >
+                  {category.map((value) => (
+                    <option value={value}>{value}</option>
+                  ))}
+                </Select>
+              </HStack>
               <Stack
                 direction="column"
                 justify="flex-start"
@@ -782,43 +824,6 @@ export const Information = () => {
                   />
                 </Stack>
               </Stack>
-              <Stack
-                justify="flex-start"
-                align="flex-start"
-                spacing="10px"
-                alignSelf="stretch"
-              >
-                <Stack
-                  direction="row"
-                  justify="flex-start"
-                  align="flex-start"
-                  spacing="77px"
-                  alignSelf="stretch"
-                >
-                  <Text
-                    lineHeight="1.43"
-                    fontWeight="regular"
-                    fontSize="16px"
-                    color={black}
-                  >
-                    성별
-                  </Text>
-                  <RadioGroup
-                    onChange={(value) =>
-                      setFormData({ ...formData, user_gender: value })
-                    }
-                  >
-                    <HStack>
-                      <Radio value={"남"} w="100px">
-                        남
-                      </Radio>
-                      <Radio value={"여"} w="100px">
-                        여
-                      </Radio>
-                    </HStack>
-                  </RadioGroup>
-                </Stack>
-              </Stack>
             </Stack>
             <Flex
               w="100%"
@@ -827,7 +832,7 @@ export const Information = () => {
             >
               <Checkbox
                 defaultChecked={check_terms}
-                color={theme_primary_color}
+                colorScheme={get_satuation(theme_primary_color)}
                 // width="256.42px"
                 maxWidth="100%"
                 onChange={(e) => setCheckTerms(e.target.checked)}
@@ -853,17 +858,19 @@ export const Information = () => {
               </Alert>
             )}
             <Button
-              colorScheme="blue"
+              colorScheme={get_satuation(theme_primary_color)}
               height="40px"
               alignSelf="stretch"
               onClick={async () => {
+                console.log(formData);
                 // 데이터 빈 곳 없는지 확인
                 let ret = step2_confirm_blank(
                   formData.user_price,
                   formData.user_place,
                   formData.user_food,
                   formData.user_bank,
-                  formData.user_gender
+                  formData.user_gender,
+                  formData.user_birth
                 );
 
                 console.log(ret);
@@ -891,6 +898,9 @@ export const Information = () => {
                   // 정보 추가
                   await db_update("user", user_id, formData);
 
+                  alert(
+                    "회원가입을 완료하였습니다. 로그인 화면으로 이동합니다."
+                  );
                   // 로그인 화면으로 이동
                   navigate("/login");
                 }
@@ -902,7 +912,7 @@ export const Information = () => {
         </Stack>
       </Stack>
 
-      <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
+      <Modal isCentered onClose={onClose} size={"md"} isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>이용약관</ModalHeader>

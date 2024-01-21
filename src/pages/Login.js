@@ -17,6 +17,7 @@ import {
   auth_login_password,
   auth_set_local,
   signInWithGoogle,
+  sign_out,
 } from "../js/Auth";
 import { auth } from "../db/firebase_config";
 import {
@@ -35,6 +36,7 @@ import HorizonLine from "../component/HorizontalLine";
 import { Logo } from "../component/Logo";
 import { FullButton, TextButton } from "../component/Buttons";
 import EmailLoginForm from "../component/EmailLoginForm";
+import { signOut } from "firebase/auth";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -54,9 +56,10 @@ export const Login = () => {
           overflow="hidden"
           width="100%"
           height="100%"
-          maxWidth="360px"
+          // maxWidth="360px"
           background={white}
-          p={"4vw"}
+          // p={"4vw"}
+          px={"4vw"}
         >
           <Stack
             paddingX="10px"
@@ -83,7 +86,7 @@ export const Login = () => {
               align="center"
               spacing="4vh"
             >
-              <Logo w={"16vh"} h={"16vh"} spacing={"4vh"} />
+              <Logo w={"16vh"} spacing={"4vh"} />
 
               <Stack w="100%" spacing={"4vh"}>
                 <Stack w="100%">
@@ -111,7 +114,10 @@ export const Login = () => {
               <HStack w="100%" justifyContent={"space-between"}>
                 <TextButton
                   text={"회원가입"}
-                  onClick={() => navigate("/signup")}
+                  onClick={async () => {
+                    await sign_out();
+                    navigate("/signup");
+                  }}
                 />
                 <TextButton
                   text={"아이디 / 비밀번호 찾기"}

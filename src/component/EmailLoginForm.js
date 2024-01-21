@@ -23,7 +23,8 @@ const EmailLoginForm = () => {
           value={account.user_email}
           id="user_email"
           type="email"
-          placeholder="이메일"
+          placeholder="아이디"
+          defaultValue={localStorage.getItem("user_id")}
           onChange={(e) =>
             setAccount(input_data(account, "user_email", e.target.value))
           }
@@ -54,6 +55,7 @@ const EmailLoginForm = () => {
           );
           console.log(uid);
           if (uid) {
+            localStorage.setItem("user_id", account.user_email);
             navigate("/");
           } else {
             alert("로그인에 실패했습니다. 계정을 확인하세요");

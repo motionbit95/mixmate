@@ -35,7 +35,7 @@ import HorizonLine from "../component/HorizontalLine";
 import { black, gray_300, gray_600, gray_800, gray_900, white } from "../App";
 import { useEffect, useState } from "react";
 import { auth } from "../db/firebase_config";
-import { get_doc_info } from "../js/Database";
+import { get_doc_list } from "../js/Database";
 import {
   matching_add,
   matching_get_list,
@@ -65,7 +65,7 @@ export const Details = () => {
     auth.onAuthStateChanged(async function (user) {
       if (user) {
         console.log(user.uid);
-        let user_info = await get_doc_info("user", "user_id", user.uid);
+        let user_info = await get_doc_list("user", "user_id", user.uid)[0];
         console.log(user_info);
 
         // uid를 저장합니다.

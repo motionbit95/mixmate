@@ -27,6 +27,7 @@ import {
   white,
 } from "../App";
 import { TopHeader } from "../component/TopHeader";
+import { User } from "../component/User";
 
 export const Matching = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ export const Matching = () => {
   const data = location.state?.data;
 
   return (
-    <Container py="50px">
+    <Container py="50px" minH={"100vh"}>
       {data && (
         <Stack
           justify="flex-start"
@@ -54,85 +55,7 @@ export const Matching = () => {
             overflow="hidden"
             alignSelf="stretch"
           >
-            <Stack
-              paddingY="10px"
-              direction="row"
-              justify="flex-start"
-              align="center"
-              spacing="20px"
-              overflow="hidden"
-              alignSelf="stretch"
-            >
-              <Avatar name="" src=" " size="lg" />
-              <Stack
-                justify="flex-start"
-                align="flex-start"
-                spacing="10px"
-                overflow="hidden"
-                flex="1"
-              >
-                <Stack
-                  direction="row"
-                  justify="space-between"
-                  align="center"
-                  spacing="5px"
-                  overflow="hidden"
-                  height="19px"
-                  alignSelf="stretch"
-                >
-                  <Stack
-                    direction="row"
-                    justify="flex-start"
-                    align="center"
-                    spacing="5px"
-                  >
-                    <Text
-                      fontWeight="bold"
-                      fontSize="16px"
-                      color={black}
-                      textAlign="center"
-                    >
-                      {data.name.slice(0, -1) + "*"}
-                    </Text>
-                    <Icon as={BsStarFill} />
-                    <Text
-                      fontWeight="medium"
-                      fontSize="16px"
-                      color={black}
-                      textAlign="center"
-                    >
-                      5.0
-                    </Text>
-                    <Text
-                      fontWeight="medium"
-                      fontSize="14px"
-                      color={gray_600}
-                      textAlign="center"
-                    >
-                      (169)
-                    </Text>
-                  </Stack>
-                  <Text
-                    fontWeight="medium"
-                    fontSize="14px"
-                    color={theme_primary_color}
-                    textAlign="center"
-                  >
-                    140m
-                  </Text>
-                </Stack>
-                <Text
-                  lineHeight="1.42"
-                  fontWeight="medium"
-                  fontSize="12px"
-                  color={black}
-                  alignSelf="stretch"
-                >
-                  {`나이 : ${data.age}, 사업분야 : ${data.business}, 매칭 금액 : ${data.price}, 매칭 가능 동네 :
-                          ${data.place}`}
-                </Text>
-              </Stack>
-            </Stack>
+            <User data={data} />
             <Tabs w="100%">
               <TabList>
                 <Tab height="54px" flex="1">
@@ -177,13 +100,13 @@ export const Matching = () => {
                       alignSelf="stretch"
                       background={gray_300}
                     >
-                      <Text fontWeight="semibold" fontSize="18px" color={black}>
+                      <Text fontWeight="semibold" fontSize="lg" color={black}>
                         식사 매칭 시스템 🍜
                       </Text>
                       <Text
                         lineHeight="1.5"
                         fontWeight="medium"
-                        fontSize="16px"
+                        fontSize="sm"
                         color={gray_800}
                         alignSelf="stretch"
                       >
