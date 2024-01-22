@@ -32,7 +32,7 @@ import { SettingsIcon } from "@chakra-ui/icons";
 import HorizonLine from "../component/HorizontalLine";
 import { terms } from "../assets/terms";
 import { black, gray_600, gray_800, gray_900, white } from "../App";
-import { _sign_out } from "../js/Auth";
+import { logout } from "../js/Auth";
 import { User } from "../component/User";
 import { Navbar } from "../component/Navbar";
 
@@ -175,7 +175,7 @@ export const MyPage = () => {
             fontSize="18px"
             color={black}
             textAlign="center"
-            onClick={_sign_out}
+            onClick={logout}
           >
             로그아웃
           </Text>

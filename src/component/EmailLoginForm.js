@@ -2,15 +2,14 @@ import { Checkbox, FormControl, Input, Stack } from "@chakra-ui/react";
 import { FullButton } from "./Buttons";
 import { useState } from "react";
 import { theme_primary_color } from "../App";
-import { getSatuation } from "../js/API";
+import { getSatuation, setData } from "../js/API";
 import { signInPassword } from "../js/Auth";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../db/firebase_config";
+import { useAuthState } from "../js/Hooks";
 
-function setData(_state, _key, _value) {
-  return { ..._state, [_key]: _value };
-}
-
-const EmailLoginForm = () => {
+const EmailLoginForm = ({ ...props }) => {
+  const { user } = useAuthState(auth);
   const navigate = useNavigate();
   const [account, setAccount] = useState({
     user_email: "",
@@ -49,16 +48,15 @@ const EmailLoginForm = () => {
       </Checkbox>
       <FullButton
         onClick={async () => {
-          let uid = await signInPassword(
+          let success = await signInPassword(
             account.user_email,
             account.user_password
           );
-          console.log(uid);
-          if (uid) {
-            localStorage.setItem("user_id", account.user_email);
-
+          if (success) {
+            // 로그인 성공
             navigate("/");
           } else {
+            // 로그인 실패
             alert("로그인에 실패했습니다. 계정을 확인하세요");
             setAccount({ user_email: "", user_password: "" });
           }

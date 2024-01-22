@@ -85,6 +85,7 @@ export const signInPassword = async (email, password) => {
 /** 구글 로그인
  * @function signInGoogle
  * @memberof Auth
+ * @returns {boolean} 로그인 성공 여부
  */
 export const signInGoogle = async () => {
   // Retrieve Google provider object
@@ -95,19 +96,20 @@ export const signInGoogle = async () => {
 
   try {
     await firebase.auth().signInWithPopup(provider);
-    console.log("로그인 성공");
+    return true;
   } catch (error) {
     if (error.code == "auth/popup-blocked") {
       alert("팝업 차단을 해제해주세요!");
     }
+    return false;
   }
 };
 
 /** 로그아웃
- * @function _sign_out
+ * @function logout
  * @memberof Auth
  */
-export const _sign_out = async () => {
+export const logout = async () => {
   try {
     await firebase.auth().signOut();
     console.log("로그아웃");

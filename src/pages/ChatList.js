@@ -9,7 +9,7 @@ import HorizonLine from "../component/HorizontalLine";
 export const ChatList = () => {
   const navigate = useNavigate();
   return (
-    <Container px={"0px"} py={"50px"}>
+    <Container px={"0px"} py={"50px"} h={"100vh"}>
       <TopHeader title={"채팅"} />
 
       <Stack
@@ -283,6 +283,8 @@ export const ChatList = () => {
           </Stack>
         </Stack>
       </Stack>
+
+      <Navbar />
     </Container>
   );
 };

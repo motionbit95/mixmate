@@ -45,7 +45,7 @@ export function getBrightness(code) {
  * @returns {object} key 의 값을 value로 변경 또는 추가한 오브젝트 반환
  */
 export function setData(_state, _key, _value) {
-  return { ..._state, _key: _value };
+  return { ..._state, [_key]: _value };
 }
 
 /** 실명 가리기 함수

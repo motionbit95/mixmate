@@ -2,11 +2,8 @@ import {
   Stack,
   Text,
   Icon,
-  Circle,
   Box,
   Button,
-  Avatar,
-  Center,
   Container,
   Tabs,
   TabList,
@@ -21,39 +18,23 @@ import { useEffect, useState } from "react";
 import {
   BsBell,
   BsPeopleFill,
-  BsStarFill,
   BsPersonFill,
   BsQuestionCircle,
 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { calculateDistance, get_update_location } from "../js/UserAPI";
-import { auth, db } from "../db/firebase_config";
+import { get_update_location } from "../js/UserAPI";
+import { auth } from "../db/firebase_config";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
-import {
-  black,
-  gray_100,
-  gray_200,
-  gray_300,
-  gray_500,
-  gray_600,
-  theme_primary_color,
-  white,
-} from "../App";
+import { black, gray_200, gray_600, theme_primary_color } from "../App";
 import { Navbar } from "../component/Navbar";
 import { Logo, TextLogo } from "../component/Logo";
 import { Footer } from "../component/Footer";
 import { User } from "../component/User";
 import { getSatuation } from "../js/API";
 import { CustomButton } from "../component/Buttons";
-import {
-  arrange_distance,
-  arrange_random,
-  get_doc_all,
-  get_doc_list,
-} from "../js/Database";
+import { arrange_distance, arrange_random, get_doc_list } from "../js/Database";
 import { TextAddress } from "../component/KakaoMap";
-import HorizonLine from "../component/HorizontalLine";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -186,7 +167,9 @@ export const Home = () => {
             >
               <HStack w={"100%"}>
                 <TextLogo h={"2vh"} />
-                {userInfo && <TextAddress user={userInfo} />}
+                {userInfo && userInfo.user_location && (
+                  <TextAddress user={userInfo} />
+                )}
               </HStack>
 
               <IconButton
