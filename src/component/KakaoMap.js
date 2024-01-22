@@ -14,6 +14,7 @@ export const TextAddress = ({ user }) => {
   });
 
   const handleMapClick = async () => {
+    if (!user) return;
     // if (!dong) {
     console.log(user);
     const location = user.user_location;

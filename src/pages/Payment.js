@@ -111,11 +111,7 @@ export const Payment = () => {
             overflow="hidden"
             alignSelf="stretch"
           >
-            <Text
-              fontWeight="semibold"
-              fontSize="18px"
-              color={gray_900}
-            >
+            <Text fontWeight="semibold" fontSize="18px" color={gray_900}>
               신청 전 유의사항
             </Text>
             <Text
@@ -132,11 +128,7 @@ export const Payment = () => {
               </Box>
               <Box as="span">해주세요.</Box>
             </Text>
-            <Text
-              fontWeight="semibold"
-              fontSize="18px"
-              color={black}
-            >
+            <Text fontWeight="semibold" fontSize="18px" color={black}>
               진행과정
             </Text>
             <Stack
@@ -203,11 +195,7 @@ export const Payment = () => {
                 </Text>
               </Stack>
             </Stack>
-            <Text
-              fontWeight="semibold"
-              fontSize="18px"
-              color={black}
-            >
+            <Text fontWeight="semibold" fontSize="18px" color={black}>
               최종 결제 금액
             </Text>
             <Stack
@@ -303,11 +291,7 @@ export const Payment = () => {
                 </Text>
               </Stack>
             </Stack>
-            <Text
-              fontWeight="semibold"
-              fontSize="18px"
-              color={black}
-            >
+            <Text fontWeight="semibold" fontSize="18px" color={black}>
               결제 수단 선택
             </Text>
             <Stack
