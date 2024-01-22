@@ -109,7 +109,6 @@ export const SignUp = () => {
 
         //# 로그인 처리
         uid = await signInPassword(formData.user_email, formData.user_password);
-
         // 사용자의 uid 정보를 user_id로 저장
         // console.log("uid", uid);
         await db_update("user", docId, { user_id: uid });

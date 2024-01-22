@@ -70,10 +70,10 @@ button {
 .bottom-fixed-box {
   position : fixed;
   width: 100%;
-  bottom: 50px;
+  bottom: 45px;
   left: 0;
   background-color: white;
-  border-top: var(--border-light-solid);
+  /* border-top: var(--border-light-solid); */
   padding-bottom: 10px;
 }
 

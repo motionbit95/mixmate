@@ -56,6 +56,7 @@ const EmailLoginForm = () => {
           console.log(uid);
           if (uid) {
             localStorage.setItem("user_id", account.user_email);
+
             navigate("/");
           } else {
             alert("로그인에 실패했습니다. 계정을 확인하세요");

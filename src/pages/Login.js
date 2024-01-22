@@ -119,6 +119,8 @@ export const Login = () => {
 
                       if (!user) return;
 
+                      console.log(user);
+
                       let userList = await get_doc_list(
                         "user",
                         "user_id",

@@ -149,6 +149,8 @@ export async function arrange_random(user_location, user_dong, user_type) {
   const currentLocation = user_location;
   const dong = user_dong;
 
+  console.log("------------>", currentLocation, user_dong, user_type);
+
   const q = query(
     collection(db, "user"),
     where("dong", "==", dong),

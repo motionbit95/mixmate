@@ -75,7 +75,7 @@ const Channel = ({ user = null }) => {
   return (
     <Box w={"100%"}>
       <TopHeader title={user.uid} />
-      <Box>
+      <Container>
         <Box id="chat-container">
           <Box className="scroll_view" mt={"50px"} mb={"120px"}>
             {messages
@@ -91,24 +91,26 @@ const Channel = ({ user = null }) => {
           <div ref={bottomListRef} />
         </Box>
         <div className="bottom-fixed-box">
-          <div className="padding-box">
-            <form className="input-wrap" onSubmit={handleOnSubmit}>
-              <Input
-                border={"1px solid #d9d9d9"}
-                mr={"4px"}
-                ref={inputRef}
-                type="text"
-                value={newMessage}
-                onChange={handleOnChange}
-                placeholder="메시지를 입력하세요."
-              />
-              <Button type="submit" disabled={!newMessage}>
-                전송
-              </Button>
-            </form>
-          </div>
+          <Container px={0}>
+            <Box border={"1px solid #d9d9d9"} className="padding-box">
+              <form className="input-wrap" onSubmit={handleOnSubmit}>
+                <Input
+                  border={"1px solid #d9d9d9"}
+                  mr={"4px"}
+                  ref={inputRef}
+                  type="text"
+                  value={newMessage}
+                  onChange={handleOnChange}
+                  placeholder="메시지를 입력하세요."
+                />
+                <Button type="submit" disabled={!newMessage}>
+                  전송
+                </Button>
+              </form>
+            </Box>
+          </Container>
         </div>
-      </Box>
+      </Container>
     </Box>
   );
 };
