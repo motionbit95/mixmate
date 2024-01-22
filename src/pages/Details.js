@@ -42,6 +42,7 @@ import {
   matching_set,
 } from "../js/MatchingAPI";
 import { HorizontalScrollBox } from "../component/HorizontalScrollBox";
+import { useAuthState } from "../js/Hooks";
 
 export const Details = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -53,10 +54,13 @@ export const Details = () => {
   const test_uid = "I7ChOfgrmqWNUpneqOD9OmrWwiE3";
   const [my_uid, setUID] = useState();
 
+  const { user } = useAuthState(auth);
+
   // 테스트용 매칭 id 저장 변수
   const [test_matching_id, setMatchingId] = useState();
 
   useEffect(() => {
+    console.log(user);
     get_matching_list();
   });
 

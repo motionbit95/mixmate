@@ -96,7 +96,9 @@ export const SignUp = () => {
       message: ret,
     });
 
-    if (ret === "") {
+    if (ret !== "") return;
+
+    if (user.uid) {
       let userList = await get_doc_list("user", "user_id", user.uid);
       let uid = "";
       let docId = "";
