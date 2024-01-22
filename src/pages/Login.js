@@ -136,9 +136,9 @@ export const Login = () => {
                         console.log(userList[0], user.uid);
                       }
 
-                      if (!userList[0].user_password) {
+                      if (!userList[0]?.user_password) {
                         navigate("/signup");
-                      } else if (!userList[0].user_price) {
+                      } else if (!userList[0]?.user_price) {
                         navigate("/info");
                       } else {
                         navigate("/");

@@ -29,6 +29,7 @@ import {
 import { TopHeader } from "../component/TopHeader";
 import { User } from "../component/User";
 import { getSatuation } from "../js/API";
+import { Navbar } from "../component/Navbar";
 
 export const Matching = () => {
   const navigate = useNavigate();
@@ -310,6 +311,7 @@ export const Matching = () => {
           </Stack>
         </Stack>
       )}
+      <Navbar />
     </Container>
   );
 };
