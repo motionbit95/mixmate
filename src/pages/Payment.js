@@ -8,6 +8,13 @@ import {
   Center,
   Image,
   HStack,
+  FormControl,
+  FormLabel,
+  Input,
+  FormHelperText,
+  Select,
+  Flex,
+  Checkbox,
 } from "@chakra-ui/react";
 import { MdChevronLeft, MdChatBubbleOutline } from "react-icons/md";
 import { AiOutlineCalendar } from "react-icons/ai";
@@ -28,6 +35,10 @@ import {
 import { matching_add } from "../js/MatchingAPI";
 import { useState } from "react";
 import { auth } from "../db/firebase_config";
+import { FullButton } from "../component/Buttons";
+import { getSatuation } from "../js/API";
+import { TopHeader } from "../component/TopHeader";
+import { Navbar } from "../component/Navbar";
 
 export const Payment = () => {
   const navigate = useNavigate();
@@ -58,6 +69,7 @@ export const Payment = () => {
   }
   return (
     <Container py="50px">
+      <TopHeader title={"결제하기"} />
       <Stack
         justify="flex-start"
         align="center"
@@ -67,34 +79,6 @@ export const Payment = () => {
         maxWidth="100%"
         background={white}
       >
-        <Stack className="header">
-          <Container>
-            <Stack
-              padding="10px"
-              direction="row"
-              justify="space-between"
-              align="flex-start"
-              spacing="10px"
-              overflow="hidden"
-              alignSelf="stretch"
-            >
-              <Icon
-                as={MdChevronLeft}
-                onClick={() => navigate(-1)}
-                boxSize={"24px"}
-              />
-              <Text
-                fontWeight="Bold"
-                fontSize="18px"
-                color={black}
-                textAlign="center"
-              >
-                밥친구 프로필
-              </Text>
-              <Box height="26px"></Box>
-            </Stack>
-          </Container>
-        </Stack>
         <Stack
           padding="10px"
           justify="center"
@@ -448,17 +432,64 @@ export const Payment = () => {
                 </Text>
               </Center>
             </Stack>
-            <Button
+
+            <Stack w="100%" spacing={"10px"}>
+              <Text fontWeight="semibold" fontSize="18px" color={gray_900}>
+                신용카드 정보 입력
+              </Text>
+              <FormControl isRequired>
+                <FormLabel>신용카드 정보</FormLabel>
+                <Input />
+                <FormHelperText>
+                  신용카드 번호 숫자만 입력해주세요.
+                </FormHelperText>
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>만료일</FormLabel>
+                <HStack>
+                  <Select></Select>
+                  <Select></Select>
+                </HStack>
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>비밀번호 앞 2자리</FormLabel>
+                <Input type="password" maxLength={2} />
+                <FormHelperText>
+                  신용카드 비밀번호의 앞 2자리를 입력해주세요.
+                </FormHelperText>
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>생년월일 6자리 또는 사업자 등록번호</FormLabel>
+                <Input type="password" maxLength={2} />
+                <FormHelperText>
+                  개인카드는 생년월일 6자리, 법인카드는 사업자등록번호 10자리를
+                  입력해주세요.
+                </FormHelperText>
+              </FormControl>
+              <Flex py={"2vh"}>
+                <HorizonLine />
+              </Flex>
+              <Checkbox>
+                결제 조건을 확인하였으며 구매 진행에 동의합니다.
+              </Checkbox>
+            </Stack>
+            <FullButton
+              onClick={onClickPayment}
+              code={theme_primary_color}
+              text={"20,000원 결제"}
+            />
+            {/* <Button
               onClick={onClickPayment}
               colorScheme="blue"
               height="40px"
               alignSelf="stretch"
             >
               결제하기
-            </Button>
+            </Button> */}
           </Stack>
         </Stack>
       </Stack>
+      {/* <Navbar /> */}
     </Container>
   );
 };

@@ -28,37 +28,65 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import { black, gray_200, gray_600, theme_primary_color } from "../App";
 import { Navbar } from "../component/Navbar";
-import { Logo, TextLogo } from "../component/Logo";
+import { TextLogo } from "../component/Logo";
 import { Footer } from "../component/Footer";
 import { User } from "../component/User";
 import { getSatuation } from "../js/API";
 import { CustomButton } from "../component/Buttons";
 import { arrange_distance, arrange_random, get_doc_list } from "../js/Database";
 import { TextAddress } from "../component/KakaoMap";
+import { useAuthState } from "../js/Hooks";
 
 export const Home = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState();
   const [businessList, setBusinessList] = useState([]);
   const [customerList, setCustomerList] = useState([]);
+  const { user, initializing } = useAuthState(auth);
 
+  // 초기 로딩시 한번만 실행되는 로직(초기화)
   useEffect(() => {
-    getUserList();
-  });
+    initialize();
 
-  const getUserList = async () => {
-    if (businessList.length === 0 || customerList.length === 0) {
-      if (userInfo?.user_location) {
-        let business = await arrange_distance(
-          userInfo.user_location,
-          "사업 전문가"
-        );
-        setBusinessList(business);
-
-        let customer = await arrange_distance(userInfo.user_location, "개인");
-        setCustomerList(customer);
-      }
+    if (initializing) {
+      navigate("/");
     }
+  }, []);
+
+  const initialize = async () => {
+    await updateUserInfo();
+  };
+
+  const updateUserInfo = async (_key, _value) => {
+    // 1. 현재 로그인 된 고객의 uid로 고객 문서를 조회합니다.
+    auth.onAuthStateChanged(async function (user) {
+      if (!userInfo) {
+        let userList = await get_doc_list("user", "user_id", user.uid);
+        let userInfo = userList[0];
+        setUserInfo(userInfo);
+
+        // 사용자의 위치 정보를 업데이트 합니다.
+        await get_update_location(userInfo.doc_id);
+
+        await getUserList(userInfo);
+      }
+    });
+  };
+
+  const getUserList = async (userInfo) => {
+    //# 거리 정보를 가지고 왔을 경우, 회원 리스트를 개인/사업으로 분류하여 가지고 옵니다. (초기 -> 거리순)
+    let business = [];
+    let customer = [];
+
+    if (userInfo?.user_location) {
+      business = await arrange_distance(userInfo.user_location, "사업 전문가");
+      customer = await arrange_distance(userInfo.user_location, "개인");
+    } else {
+      business = await get_doc_list("user", "user_type", "사업 전문가");
+      customer = await get_doc_list("user", "user_type", "개인");
+    }
+    setBusinessList(business);
+    setCustomerList(customer);
   };
 
   const imageData = [
@@ -93,21 +121,6 @@ export const Home = () => {
     },
   ];
 
-  useEffect(() => {
-    // 고객의 계정을 가지고 옵니다.
-    if (!userInfo) {
-      auth.onAuthStateChanged(async function (user) {
-        if (user) {
-          let user_info = await get_doc_list("user", "user_id", user.uid);
-          setUserInfo(user_info[0]);
-          // 위치 가지고 와서 사용자 정보에 업데이트
-          console.log(user_info[0], user.uid, user_info[0]?.doc_id);
-          get_update_location(user_info, user_info[0]?.doc_id);
-        }
-      });
-    }
-  });
-
   const [currentIndex, setCurrentIndex] = useState();
 
   function handleChange(index) {
@@ -140,7 +153,7 @@ export const Home = () => {
       <Stack spacing={"4vh"} alignItems={"center"} w={"100%"}>
         <Stack alignItems={"center"} w={"100%"}>
           {items.slice(0, visibleItems).map((item, index) => (
-            <User data={item} />
+            <User key={index} data={item} />
           ))}
         </Stack>
         {visibleItems < items.length && (
@@ -238,7 +251,7 @@ export const Home = () => {
                       </Text>
                     </HStack>
                   </Tab>
-                  <Tab w="100%">
+                  <Tab>
                     <HStack>
                       <Icon as={BsPeopleFill} />
                       <Text
@@ -247,7 +260,7 @@ export const Home = () => {
                         fontSize="16px"
                         letterSpacing="-0.32px"
                         // color={black}
-                        textAlign="center"
+                        textAlign="left"
                       >
                         내 주변 밥친구
                       </Text>
@@ -345,7 +358,7 @@ export const Home = () => {
                               userInfo.user_location,
                               "개인"
                             );
-                            setBusinessList(data);
+                            setCustomerList(data);
                           }}
                           size="xs"
                           variant="outline"
@@ -360,7 +373,7 @@ export const Home = () => {
                               userInfo.dong,
                               "개인"
                             );
-                            setBusinessList(data);
+                            setCustomerList(data);
                           }}
                           size="xs"
                           variant="outline"

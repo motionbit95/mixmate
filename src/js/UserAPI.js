@@ -172,10 +172,13 @@ export function display_age_range(age) {
 
 /** 위치 좌표를 가져오는 함수
  * @function get_update_location
- * @param {object} user_info 유저 정보
  * @param {string} doc_id 문서 id
  */
-export function get_update_location(user_info, doc_id) {
+export async function get_update_location(doc_id) {
+  const pos = {
+    latitude: null,
+    longitude: null,
+  };
   // 위치 정보를 지원하는지 확인
   if (navigator.geolocation) {
     // 위치 정보 요청 옵션 설정 (maximumAge: 캐시된 위치 정보의 유효 기간, 여기서는 5분)
@@ -187,21 +190,15 @@ export function get_update_location(user_info, doc_id) {
     navigator.geolocation.getCurrentPosition(
       // 성공 시 호출되는 콜백 함수
       async function (position) {
-        var latitude = position.coords.latitude;
-        var longitude = position.coords.longitude;
+        pos.latitude = position.coords.latitude;
+        pos.longitude = position.coords.longitude;
 
-        await db_update("user", doc_id, {
-          user_location: { latitude: latitude, longitude: longitude },
-        });
+        await db_update("user", doc_id, { user_location: pos });
+        console.log("위치 정보를 DB에 업데이트하였습니다.");
       },
       // 실패 시 호출되는 콜백 함수
-      function (error) {
-        console.error(
-          "위치 정보를 가져오는 데 실패했습니다. 오류 코드: " +
-            error.code +
-            ", 메시지: " +
-            error.message
-        );
+      async function (error) {
+        console.log(error);
       },
       options // 위치 정보 요청 옵션 전달
     );

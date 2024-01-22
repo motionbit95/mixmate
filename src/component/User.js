@@ -7,7 +7,12 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { getDisplayAge, getDisplayName, getSatuation } from "../js/API";
+import {
+  checkNull,
+  getDisplayAge,
+  getDisplayName,
+  getSatuation,
+} from "../js/API";
 import { CustomButton } from "./Buttons";
 import { useNavigate } from "react-router-dom";
 import { theme_primary_color } from "../App";
@@ -41,7 +46,9 @@ export const User = ({ data }) => {
             </Text>
             {!window.location.pathname.includes("mypage") && (
               <Text color={theme_primary_color}>
-                {parseFloat(data.distance).toFixed(1)}km
+                {isNaN(parseFloat(data.distance).toFixed(1))
+                  ? ""
+                  : parseFloat(data.distance).toFixed(1) + "km"}
               </Text>
             )}
           </HStack>
