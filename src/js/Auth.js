@@ -95,8 +95,11 @@ export const signInGoogle = async () => {
 
   try {
     await firebase.auth().signInWithPopup(provider);
+    console.log("로그인 성공");
   } catch (error) {
-    console.log(error.message);
+    if (error.code == "auth/popup-blocked") {
+      alert("팝업 차단을 해제해주세요!");
+    }
   }
 };
 

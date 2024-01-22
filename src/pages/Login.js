@@ -117,6 +117,8 @@ export const Login = () => {
 
                       await signInGoogle();
 
+                      if (!user) return;
+
                       let userList = await get_doc_list(
                         "user",
                         "user_id",
