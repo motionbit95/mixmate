@@ -1,5 +1,5 @@
 import { auth } from "../db/firebase_config";
-import { deg2rad } from "./Basic";
+import { deg2rad } from "./API";
 import { db_update } from "./Database";
 
 /** 선택된 페이지 번호를 반환합니다.

@@ -44,7 +44,7 @@ import { Navbar } from "../component/Navbar";
 import { Logo, TextLogo } from "../component/Logo";
 import { Footer } from "../component/Footer";
 import { User } from "../component/User";
-import { get_satuation } from "../js/Basic";
+import { getSatuation } from "../js/API";
 import { CustomButton } from "../component/Buttons";
 import {
   arrange_distance,
@@ -238,7 +238,7 @@ export const Home = () => {
               align="center"
               spacing="10px"
             >
-              <Tabs w="100%" colorScheme={get_satuation(theme_primary_color)}>
+              <Tabs w="100%" colorScheme={getSatuation(theme_primary_color)}>
                 <TabList>
                   <Tab w="100%">
                     <HStack>
@@ -292,7 +292,7 @@ export const Home = () => {
                           }}
                           size="xs"
                           variant="outline"
-                          colorScheme={get_satuation(theme_primary_color)}
+                          colorScheme={getSatuation(theme_primary_color)}
                         >
                           가까운순
                         </Button>
@@ -307,7 +307,7 @@ export const Home = () => {
                           }}
                           size="xs"
                           variant="outline"
-                          colorScheme={get_satuation(theme_primary_color)}
+                          colorScheme={getSatuation(theme_primary_color)}
                         >
                           랜덤찾기
                         </Button>
@@ -366,7 +366,7 @@ export const Home = () => {
                           }}
                           size="xs"
                           variant="outline"
-                          colorScheme={get_satuation(theme_primary_color)}
+                          colorScheme={getSatuation(theme_primary_color)}
                         >
                           가까운순
                         </Button>
@@ -381,7 +381,7 @@ export const Home = () => {
                           }}
                           size="xs"
                           variant="outline"
-                          colorScheme={get_satuation(theme_primary_color)}
+                          colorScheme={getSatuation(theme_primary_color)}
                         >
                           랜덤찾기
                         </Button>

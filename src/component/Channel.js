@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase/compat/app";
-import { useFirestoreQuery } from "../js/chatHooks";
+import { useFirestoreQuery } from "../js/Hooks";
 // Components
 import Message from "./Message";
 import { Box, Button, Container, Input, Textarea } from "@chakra-ui/react";

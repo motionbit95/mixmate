@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Storage.js - Documentation</title>
+    <title>Hooks.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -35,7 +35,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Storage.js</h1>
+    <h1 class="page-title">Hooks.js</h1>
     
 
     
@@ -45,28 +45,128 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "../db/firebase_config";
+            <pre class="prettyprint source linenums"><code>import { useEffect, useState, useRef, useCallback } from "react";
 
-/** firestore profile 폴더 내에 이미지를 업로드랍니다.
- * @function upload_image
- * @param {React.ChangeEvent&lt;HTMLInputElement>} e input 이벤트
- * @returns {string} 이미지 호스팅 완료 된 링크
+/**
+ * @namespace Hooks
  */
-export const upload_image = async (e) => {
-  const uploaded_file = await uploadBytes(
-    ref(
-      storage,
-      `profile/${e.target.files[0].name}`
-      //업로드 할 파일의 이름을 각 파일 이름으로 저장!
-    ),
-    e.target.files[0]
-  );
 
-  // url을 가지고 옵니다
-  const file_url = await getDownloadURL(uploaded_file.ref);
-  return file_url;
-};
+/** 데이터 쿼리
+ * @function useFirestoreQuery
+ * @memberof Hooks
+ * @param {Query&lt;DocumentData, DocumentData>} query 쿼리
+ * @return {Array} 조회된 문서들
+ */
+export function useFirestoreQuery(query) {
+  const [docs, setDocs] = useState([]);
+
+  // Store current query in ref
+  const queryRef = useRef(query);
+
+  // Compare current query with the previous one
+  useEffect(() => {
+    // Use Firestore built-in 'isEqual' method
+    // to compare queries
+    if (!queryRef?.curent?.isEqual(query)) {
+      queryRef.current = query;
+    }
+  });
+
+  // Re-run data listener only if query has changed
+  useEffect(() => {
+    if (!queryRef.current) {
+      return null;
+    }
+
+    // Subscribe to query with onSnapshot
+    const unsubscribe = queryRef.current.onSnapshot((querySnapshot) => {
+      // Get all documents from collection - with IDs
+      const data = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        doc_id: doc.id,
+      }));
+      // Update state
+      setDocs(data);
+    });
+
+    // Detach listener
+    return unsubscribe;
+  }, [queryRef]);
+
+  return docs;
+}
+
+/** 인증 정보
+ * @function useAuthState
+ * @memberof Hooks
+ * @param {Auth} auth 인증 정보
+ * @return {object} 유저 정보, 인증 상태
+ */
+export function useAuthState(auth) {
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState(() => auth.currentUser);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(false);
+      }
+      if (initializing) {
+        setInitializing(false);
+      }
+    });
+
+    // Cleanup subscription
+    return unsubscribe;
+  }, [auth, initializing]);
+
+  return { user, initializing };
+}
+
+/** 로컬 메모리 저장
+ * @function useLocalStorage
+ * @memberof Hooks
+ * @param {string} key 키
+ * @param {string} initialValue 값
+ * @return { string } 저장된 값 반환
+ */
+export function useLocalStorage(key, initialValue) {
+  // State to store our value
+  // Pass initial state function to useState so logic is only executed once
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      // Get from local storage by key
+      const item = window.localStorage.getItem(key);
+      // Parse stored json or if none return initialValue
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      // If error also return initialValue
+      console.log(error);
+      return initialValue;
+    }
+  });
+
+  // Return a wrapped version of useState's setter function that ...
+  // ... persists the new value to localStorage.
+  const setValue = (value) => {
+    try {
+      // Allow value to be a function so we have same API as useState
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+      // Save state
+      setStoredValue(valueToStore);
+      // Save to local storage
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      // A more advanced implementation would handle the error case
+      console.log(error);
+    }
+  };
+
+  return [storedValue, setValue];
+}
 </code></pre>
         </article>
     </section>

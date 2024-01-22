@@ -12,7 +12,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../db/firebase_config";
 import { calculateDistance } from "./UserAPI";
-import { ck_null } from "./Basic";
+import { checkNull } from "./API";
 
 /** firebase에 문서를 생성하여 data field를 저장합니다.
  * @function db_add
@@ -125,7 +125,7 @@ export async function arrange_distance(user_location, user_type) {
   const places = [];
   // Firestore에서 데이터 가져오기 및 거리순 정렬
   querySnapshot.forEach((doc) => {
-    const place = ck_null(doc.data().user_location, {
+    const place = checkNull(doc.data().user_location, {
       latitude: 37.5664056,
       longitude: 126.9778222,
     });

@@ -2,7 +2,7 @@ import { Box, Container, Icon, Stack, Text } from "@chakra-ui/react";
 import { MdChevronLeft } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { black, theme_primary_color } from "../App";
-import { get_satuation } from "../js/Basic";
+import { getSatuation } from "../js/API";
 
 export const TopHeader = ({ title }) => {
   const navigate = useNavigate();

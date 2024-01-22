@@ -2,11 +2,11 @@ import { Checkbox, FormControl, Input, Stack } from "@chakra-ui/react";
 import { FullButton } from "./Buttons";
 import { useState } from "react";
 import { theme_primary_color } from "../App";
-import { get_satuation } from "../js/Basic";
-import { auth_login_password } from "../js/Auth";
+import { getSatuation } from "../js/API";
+import { signInPassword } from "../js/Auth";
 import { useNavigate } from "react-router-dom";
 
-function input_data(_state, _key, _value) {
+function setData(_state, _key, _value) {
   return { ..._state, [_key]: _value };
 }
 
@@ -26,7 +26,7 @@ const EmailLoginForm = () => {
           placeholder="아이디"
           defaultValue={localStorage.getItem("user_id")}
           onChange={(e) =>
-            setAccount(input_data(account, "user_email", e.target.value))
+            setAccount(setData(account, "user_email", e.target.value))
           }
         />
       </FormControl>
@@ -37,19 +37,19 @@ const EmailLoginForm = () => {
           type="password"
           placeholder="패스워드"
           onChange={(e) =>
-            setAccount(input_data(account, "user_password", e.target.value))
+            setAccount(setData(account, "user_password", e.target.value))
           }
         />
       </FormControl>
       <Checkbox
         defaultChecked={true}
-        colorScheme={get_satuation(theme_primary_color)}
+        colorScheme={getSatuation(theme_primary_color)}
       >
         자동 로그인
       </Checkbox>
       <FullButton
         onClick={async () => {
-          let uid = await auth_login_password(
+          let uid = await signInPassword(
             account.user_email,
             account.user_password
           );

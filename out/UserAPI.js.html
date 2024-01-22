@@ -29,7 +29,7 @@
 <nav >
     
     
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#add_food_tag">add_food_tag</a></li><li><a href="global.html#add_place_tag">add_place_tag</a></li><li><a href="global.html#auth_login_password">auth_login_password</a></li><li><a href="global.html#auth_set_local">auth_set_local</a></li><li><a href="global.html#auth_set_session">auth_set_session</a></li><li><a href="global.html#auth_signup_password">auth_signup_password</a></li><li><a href="global.html#check_password_valid">check_password_valid</a></li><li><a href="global.html#compare_password">compare_password</a></li><li><a href="global.html#db_add">db_add</a></li><li><a href="global.html#db_update">db_update</a></li><li><a href="global.html#del_tag">del_tag</a></li><li><a href="global.html#display_age_range">display_age_range</a></li><li><a href="global.html#get_current_location">get_current_location</a></li><li><a href="global.html#get_doc_info">get_doc_info</a></li><li><a href="global.html#get_page_num">get_page_num</a></li><li><a href="global.html#step1_confirm_blank">step1_confirm_blank</a></li><li><a href="global.html#step2_confirm_blank">step2_confirm_blank</a></li><li><a href="global.html#upload_image">upload_image</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="API.html">API</a><ul class='methods'><li data-type='method'><a href="API.html#.checkNull">checkNull</a></li><li data-type='method'><a href="API.html#.deg2rad">deg2rad</a></li><li data-type='method'><a href="API.html#.getBrightness">getBrightness</a></li><li data-type='method'><a href="API.html#.getDisplayAge">getDisplayAge</a></li><li data-type='method'><a href="API.html#.getDisplayName">getDisplayName</a></li><li data-type='method'><a href="API.html#.getSatuation">getSatuation</a></li><li data-type='method'><a href="API.html#.setData">setData</a></li></ul></li><li><a href="Auth.html">Auth</a><ul class='methods'><li data-type='method'><a href="Auth.html#.signInGoogle">signInGoogle</a></li><li data-type='method'><a href="Auth.html#.signInPassword">signInPassword</a></li><li data-type='method'><a href="Auth.html#.signOut">signOut</a></li><li data-type='method'><a href="Auth.html#.signUpPassword">signUpPassword</a></li></ul></li><li><a href="Hooks.html">Hooks</a><ul class='methods'><li data-type='method'><a href="Hooks.html#.useAuthState">useAuthState</a></li><li data-type='method'><a href="Hooks.html#.useFirestoreQuery">useFirestoreQuery</a></li><li data-type='method'><a href="Hooks.html#.useLocalStorage">useLocalStorage</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#add_food_tag">add_food_tag</a></li><li><a href="global.html#add_place_tag">add_place_tag</a></li><li><a href="global.html#check_password_valid">check_password_valid</a></li><li><a href="global.html#compare_password">compare_password</a></li><li><a href="global.html#db_add">db_add</a></li><li><a href="global.html#db_delete">db_delete</a></li><li><a href="global.html#db_update">db_update</a></li><li><a href="global.html#del_tag">del_tag</a></li><li><a href="global.html#display_age_range">display_age_range</a></li><li><a href="global.html#get_doc_all">get_doc_all</a></li><li><a href="global.html#get_doc_data">get_doc_data</a></li><li><a href="global.html#get_doc_list">get_doc_list</a></li><li><a href="global.html#get_page_num">get_page_num</a></li><li><a href="global.html#get_update_location">get_update_location</a></li><li><a href="global.html#matching_add">matching_add</a></li><li><a href="global.html#matching_get_item">matching_get_item</a></li><li><a href="global.html#matching_get_list">matching_get_list</a></li><li><a href="global.html#matching_set">matching_set</a></li><li><a href="global.html#step1_confirm_blank">step1_confirm_blank</a></li><li><a href="global.html#step2_confirm_blank">step2_confirm_blank</a></li><li><a href="global.html#upload_image">upload_image</a></li></ul>
     
 </nav>
 
@@ -46,6 +46,7 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import { auth } from "../db/firebase_config";
+import { deg2rad } from "./API";
 import { db_update } from "./Database";
 
 /** 선택된 페이지 번호를 반환합니다.
@@ -54,6 +55,7 @@ import { db_update } from "./Database";
  */
 export function get_page_num() {
   if (window.location.pathname.includes("home")) return 0;
+  if (window.location.pathname.includes("details")) return 1;
   if (window.location.pathname.includes("mypage")) return 3;
 }
 
@@ -130,7 +132,8 @@ export function step2_confirm_blank(
   user_place,
   user_food,
   user_bank,
-  user_gender
+  user_gender,
+  user_birth
 ) {
   // console.log(
   //   user_price,
@@ -145,6 +148,7 @@ export function step2_confirm_blank(
   if (user_bank.bank_name === "" || user_bank.accout_number === "")
     return "계좌 정보를 입력해주세요.";
   if (user_gender === "") return "성별을 선택해주세요.";
+  if (user_birth === "") return "생년월일을 선택해주세요.";
 
   // 모든 필드가 작성되었을 경우
   return "";
@@ -158,9 +162,9 @@ export function step2_confirm_blank(
  * @param {string} town 추가할 태그의 읍,면,동
  * @returns {array} 태그 항목이 추가 된 배열 반환
  */
-export function add_place_tag(array, city, district, town) {
+export function add_place_tag(array, city, district) {
   let tag_list = array;
-  let str_place = city + "," + district + "," + town;
+  let str_place = city + "," + district;
   // 배열에 항목이 존재하지 않으면 추가
   if (!tag_list.includes(str_place)) {
     tag_list.push(str_place);
@@ -214,11 +218,11 @@ export function display_age_range(age) {
 }
 
 /** 위치 좌표를 가져오는 함수
- * @function get_current_location
+ * @function get_update_location
  * @param {object} user_info 유저 정보
  * @param {string} doc_id 문서 id
  */
-export function get_current_location(user_info, doc_id) {
+export function get_update_location(user_info, doc_id) {
   // 위치 정보를 지원하는지 확인
   if (navigator.geolocation) {
     // 위치 정보 요청 옵션 설정 (maximumAge: 캐시된 위치 정보의 유효 기간, 여기서는 5분)
@@ -236,10 +240,6 @@ export function get_current_location(user_info, doc_id) {
         await db_update("user", doc_id, {
           user_location: { latitude: latitude, longitude: longitude },
         });
-
-        console.log(user_info);
-
-        console.log("현재 위치의 좌표: " + latitude + ", " + longitude);
       },
       // 실패 시 호출되는 콜백 함수
       function (error) {
@@ -256,6 +256,22 @@ export function get_current_location(user_info, doc_id) {
     console.error("현재 브라우저에서 위치 정보를 지원하지 않습니다.");
   }
 }
+
+// 두 좌표 간의 거리 계산 함수
+export function calculateDistance(coord1, coord2) {
+  const R = 6371; // 지구 반경 (단위: km)
+  const dLat = deg2rad(coord2.latitude - coord1.latitude);
+  const dLon = deg2rad(coord2.longitude - coord1.longitude);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(coord1.latitude)) *
+      Math.cos(deg2rad(coord2.latitude)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c;
+  return distance;
+}
 </code></pre>
         </article>
     </section>
@@ -270,7 +286,7 @@ export function get_current_location(user_info, doc_id) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Fri Jan 19 2024 00:12:49 GMT+0900 (GMT+09:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Mon Jan 22 2024 09:19:33 GMT+0900 (GMT+09:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

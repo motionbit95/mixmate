@@ -13,12 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  auth_login_password,
-  auth_set_local,
-  signInWithGoogle,
-  sign_out,
-} from "../js/Auth";
+import { signInGoogle, _sign_out } from "../js/Auth";
 import { auth } from "../db/firebase_config";
 import {
   bg,
@@ -30,7 +25,7 @@ import {
 } from "../App";
 
 // Hooks
-import { useAuthState } from "../js/chatHooks";
+import { useAuthState } from "../js/Hooks";
 
 import HorizonLine from "../component/HorizontalLine";
 import { Logo } from "../component/Logo";
@@ -39,6 +34,7 @@ import EmailLoginForm from "../component/EmailLoginForm";
 import { signOut } from "firebase/auth";
 import { db_add, db_update, get_doc_list } from "../js/Database";
 import { formatDate } from "date-fns";
+import KakaoLogin from "react-kakao-login";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -48,6 +44,11 @@ export const Login = () => {
     id: "",
     password: "",
   });
+
+  const responseKaKao = (response) => {
+    console.log(response);
+    // 카카오톡 로그인 성공 시 처리 로직을 여기에 추가합니다.
+  };
 
   return (
     <Container p={0} h={"100vh"} bgColor={white}>
@@ -93,16 +94,28 @@ export const Login = () => {
 
               <Stack w="100%" spacing={"4vh"}>
                 <Stack w="100%">
-                  <FullButton
+                  {/* <FullButton
                     onClick={() => alert("준비중입니다.")}
                     text={"카카오로 로그인하기"}
                     code={"yellow.200"}
-                  />
+                  /> */}
+                  <KakaoLogin
+                    token="e26ead914deda0c6ee6fb6e3038c69c5" // 카카오 개발자 사이트에서 발급받은 API 키를 입력하세요.
+                    onSuccess={responseKaKao}
+                    onFail={(error) => console.log(error)}
+                    onLogout={() => console.log("로그아웃")}
+                    style={{
+                      padding: "10px",
+                      backgroundColor: "#FEE500",
+                      color: "#000000",
+                      fontSize: "16px",
+                    }}
+                  ></KakaoLogin>
                   <FullButton
                     onClick={async () => {
-                      await sign_out();
+                      await _sign_out();
 
-                      await signInWithGoogle();
+                      await signInGoogle();
 
                       let userList = await get_doc_list(
                         "user",
@@ -143,7 +156,7 @@ export const Login = () => {
                 <TextButton
                   text={"회원가입"}
                   onClick={async () => {
-                    await sign_out();
+                    await _sign_out();
                     navigate("/signup");
                   }}
                 />

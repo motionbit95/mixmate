@@ -50,7 +50,7 @@ export const Details = () => {
 
   // 매칭 받을 테스트 계정 => motionbit.dev@gmail.com
   //# local state 로 받아오도록 수정 예정
-  const test_uid = "6ANvpNStOsUj7kfehPPETnUhBHy2";
+  const test_uid = "I7ChOfgrmqWNUpneqOD9OmrWwiE3";
   const [my_uid, setUID] = useState();
 
   // 테스트용 매칭 id 저장 변수

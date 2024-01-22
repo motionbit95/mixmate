@@ -28,7 +28,7 @@ import {
 } from "../App";
 import { TopHeader } from "../component/TopHeader";
 import { User } from "../component/User";
-import { get_satuation } from "../js/Basic";
+import { getSatuation } from "../js/API";
 
 export const Matching = () => {
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ export const Matching = () => {
             alignSelf="stretch"
           >
             <User data={data} />
-            <Tabs w="100%" colorScheme={get_satuation(theme_primary_color)}>
+            <Tabs w="100%" colorScheme={getSatuation(theme_primary_color)}>
               <TabList>
                 <Tab height="54px" flex="1">
                   밥친구 소개
@@ -125,7 +125,7 @@ export const Matching = () => {
                       </Text>
                     </Stack>
                     <Button
-                      colorScheme={get_satuation(theme_primary_color)}
+                      colorScheme={getSatuation(theme_primary_color)}
                       height="40px"
                       alignSelf="stretch"
                       onClick={() => navigate("/payment")}
@@ -296,7 +296,7 @@ export const Matching = () => {
                     </Stack>
                     <Button
                       my={"10px"}
-                      colorScheme={get_satuation(theme_primary_color)}
+                      colorScheme={getSatuation(theme_primary_color)}
                       height="40px"
                       alignSelf="stretch"
                       onClick={() => navigate("/payment")}

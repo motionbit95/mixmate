@@ -1,17 +1,17 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 
-function ck_null(a, b) {
+function checkNull(a, b) {
   return a ? a : b;
 }
 
-function get_satuation(code) {
+function getSatuation(code) {
   if (!code.includes(".")) return "white";
-  return ck_null(code.split(".")[0], "white");
+  return checkNull(code.split(".")[0], "white");
 }
 
-function get_brightness(code) {
+function getBrightness(code) {
   if (!code.includes(".")) return "white";
-  return ck_null(parseInt(code.split(".")[1]), 50);
+  return checkNull(parseInt(code.split(".")[1]), 50);
 }
 
 export const TextButton = ({ text, ...props }) => {
@@ -28,15 +28,15 @@ export const TextButton = ({ text, ...props }) => {
 };
 
 export const CustomButton = ({ ...props }) => {
-  const brightness = get_brightness(ck_null(props.code, "gray.100"));
+  const brightness = getBrightness(checkNull(props.code, "gray.100"));
   return (
     <Button
-      w={ck_null(props.w, "100%")}
-      colorScheme={get_satuation(ck_null(props.code, "gray.100"))}
+      w={checkNull(props.w, "100%")}
+      colorScheme={getSatuation(checkNull(props.code, "gray.100"))}
       color={brightness < 500 ? "black" : "white"}
       border={"1px solid"}
       borderColor={brightness < 300 ? "gray.300" : "white"}
-      leftIcon={ck_null(props.icon, null)}
+      leftIcon={checkNull(props.icon, null)}
       onClick={() => props.onClick()}
     >
       {props.text}

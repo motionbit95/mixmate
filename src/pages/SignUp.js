@@ -21,11 +21,11 @@ import {
   compare_password,
   step1_confirm_blank,
 } from "../js/UserAPI";
-import { auth_login_password, auth_signup_password } from "../js/Auth";
+import { signUpPassword, signInPassword } from "../js/Auth";
 import { gray_300, theme_primary_color, white } from "../App";
-import { useAuthState } from "../js/chatHooks";
+import { useAuthState } from "../js/Hooks";
 import { auth } from "../db/firebase_config";
-import { get_satuation } from "../js/Basic";
+import { getSatuation } from "../js/API";
 
 export const SignUp = () => {
   const navigate = useNavigate();
@@ -86,10 +86,7 @@ export const SignUp = () => {
     let ret = "";
     if (!user) {
       // 파이어베이스 Authentication에 계정 추가
-      ret = await auth_signup_password(
-        formData.user_email,
-        formData.user_password
-      );
+      ret = await signUpPassword(formData.user_email, formData.user_password);
     }
 
     console.log(ret);
@@ -109,10 +106,7 @@ export const SignUp = () => {
         // console.log("doc", docId);
 
         //# 로그인 처리
-        uid = await auth_login_password(
-          formData.user_email,
-          formData.user_password
-        );
+        uid = await signInPassword(formData.user_email, formData.user_password);
 
         // 사용자의 uid 정보를 user_id로 저장
         // console.log("uid", uid);
@@ -282,7 +276,7 @@ export const SignUp = () => {
               )}
             </Stack>
             <Button
-              colorScheme={get_satuation(theme_primary_color)}
+              colorScheme={getSatuation(theme_primary_color)}
               width="313px"
               height="40px"
               maxWidth="100%"

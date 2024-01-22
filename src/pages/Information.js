@@ -39,7 +39,7 @@ import {
 import { db_update } from "../js/Database";
 import { terms } from "../assets/terms";
 import { black, gray_500, gray_600, theme_primary_color, white } from "../App";
-import { get_satuation } from "../js/Basic";
+import { getSatuation } from "../js/API";
 
 export const Information = () => {
   const navigate = useNavigate();
@@ -513,14 +513,14 @@ export const Information = () => {
                   >
                     <HStack w="100%">
                       <Radio
-                        colorScheme={get_satuation(theme_primary_color)}
+                        colorScheme={getSatuation(theme_primary_color)}
                         value={"개인"}
                         w="100px"
                       >
                         개인
                       </Radio>
                       <Radio
-                        colorScheme={get_satuation(theme_primary_color)}
+                        colorScheme={getSatuation(theme_primary_color)}
                         value={"사업 전문가"}
                         w="100px"
                       >
@@ -560,14 +560,14 @@ export const Information = () => {
                   >
                     <HStack w="100%">
                       <Radio
-                        colorScheme={get_satuation(theme_primary_color)}
+                        colorScheme={getSatuation(theme_primary_color)}
                         value={"남"}
                         w="100px"
                       >
                         남
                       </Radio>
                       <Radio
-                        colorScheme={get_satuation(theme_primary_color)}
+                        colorScheme={getSatuation(theme_primary_color)}
                         value={"여"}
                         w="100px"
                       >
@@ -674,7 +674,7 @@ export const Information = () => {
                   {formData.user_place.map((value) => (
                     <Tag
                       size="md"
-                      colorScheme={get_satuation(theme_primary_color)}
+                      colorScheme={getSatuation(theme_primary_color)}
                     >
                       <TagLabel>{value.split(",")[1]}</TagLabel>
                       <TagCloseButton
@@ -756,7 +756,7 @@ export const Information = () => {
                   {formData.user_food.map((value) => (
                     <Tag
                       size="md"
-                      colorScheme={get_satuation(theme_primary_color)}
+                      colorScheme={getSatuation(theme_primary_color)}
                     >
                       <TagLabel>{value}</TagLabel>
                       <TagCloseButton
@@ -841,7 +841,7 @@ export const Information = () => {
               >
                 <Checkbox
                   defaultChecked={check_terms}
-                  colorScheme={get_satuation(theme_primary_color)}
+                  colorScheme={getSatuation(theme_primary_color)}
                   // width="256.42px"
                   maxWidth="100%"
                   onChange={(e) => setCheckTerms(e.target.checked)}
@@ -868,7 +868,7 @@ export const Information = () => {
               </Alert>
             )}
             <Button
-              colorScheme={get_satuation(theme_primary_color)}
+              colorScheme={getSatuation(theme_primary_color)}
               height="40px"
               alignSelf="stretch"
               onClick={async () => {

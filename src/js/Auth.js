@@ -1,13 +1,8 @@
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  setPersistence,
-  browserLocalPersistence,
-  browserSessionPersistence,
-  onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../db/firebase_config";
-import { db_update, get_doc_list } from "./Database";
 
 // Firebase deps
 // v9에서 v8 호환 API
@@ -15,6 +10,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
+// firebase 초기화
 firebase.initializeApp({
   apiKey: "AIzaSyA6_ETeOdnsf9rI_OGZ9vyg2TYQ1jxRBA8",
   authDomain: "dinnermate-database.firebaseapp.com",
@@ -27,13 +23,18 @@ firebase.initializeApp({
   measurementId: "G-SST92XMXJH",
 });
 
+/**
+ * @namespace Auth
+ */
+
 /** 비밀번호 기반 계정 만들기
- * @function auth_signup_password
+ * @function signUpPassword
+ * @memberof Auth
  * @param {string} email 유저 이메일
  * @param {string} password 유저 패스워드
  * @returns {string} 에러 메세지
  */
-export const auth_signup_password = async (email, password) => {
+export async function signUpPassword(email, password) {
   let err_msg = "";
   await createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
@@ -45,21 +46,23 @@ export const auth_signup_password = async (email, password) => {
       const errorCode = error.code;
       const errorMessage = error.message;
 
+      // 동일한 이메일로는 가입할 수 없습니다.
       if (errorMessage.includes("already-in-use"))
         err_msg = "이미 존재하는 이메일입니다.";
       // ..
     });
 
   return err_msg;
-};
+}
 
 /** 이메일 주소와 비밀번호로 사용자 로그인
- * @function auth_login_password
+ * @function signInPassword
+ * @memberof Auth
  * @param {string} email 유저 이메일
  * @param {string} password 유저 패스워드
  * @returns {string} 유저 uid
  */
-export const auth_login_password = async (email, password) => {
+export const signInPassword = async (email, password) => {
   let uid = "";
   await signInWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
@@ -79,7 +82,11 @@ export const auth_login_password = async (email, password) => {
   return uid;
 };
 
-export const signInWithGoogle = async () => {
+/** 구글 로그인
+ * @function signInGoogle
+ * @memberof Auth
+ */
+export const signInGoogle = async () => {
   // Retrieve Google provider object
   const provider = new firebase.auth.GoogleAuthProvider();
   // Set language to the default browser preference
@@ -87,29 +94,17 @@ export const signInWithGoogle = async () => {
   // Start sign in process
 
   try {
-    console.log(await firebase.auth().signInWithPopup(provider));
+    await firebase.auth().signInWithPopup(provider);
   } catch (error) {
     console.log(error.message);
   }
 };
 
-/** 인증 상태 지속성 수정
- * @function auth_set_local
+/** 로그아웃
+ * @function _sign_out
+ * @memberof Auth
  */
-
-export const auth_set_local = () => {
-  setPersistence(auth, browserLocalPersistence);
-};
-
-/** 인증 상태 지속성 수정
- * @function auth_set_session
- */
-
-export const auth_set_session = () => {
-  setPersistence(auth, browserSessionPersistence);
-};
-
-export const sign_out = async () => {
+export const _sign_out = async () => {
   try {
     await firebase.auth().signOut();
     console.log("로그아웃");

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { format } from "date-fns";
-import { useAuthState } from "../js/chatHooks";
+import { useAuthState } from "../js/Hooks";
 import firebase from "firebase/compat/app";
 
 const formatDate = (date) => {

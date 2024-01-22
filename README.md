@@ -2,9 +2,9 @@
 
 ## Auth
 
-| 구분      | 상세                                                                                           |
-| --------- | ---------------------------------------------------------------------------------------------- |
-| 계정 생성 | [auth_signup_password](https://motionbit95.github.io/mixmate/global.html#auth_signup_password) |
+| 구분      | 상세                                                                                       |
+| --------- | ------------------------------------------------------------------------------------------ |
+| 계정 생성 | [authsignUpPassword](https://motionbit95.github.io/mixmate/global.html#authsignUpPassword) |
 
 ## Database
 

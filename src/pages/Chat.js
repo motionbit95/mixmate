@@ -3,7 +3,7 @@ import React from "react";
 // Components
 import Channel from "../component/Channel";
 import { Flex } from "@chakra-ui/react";
-import { useAuthState } from "../js/chatHooks";
+import { useAuthState } from "../js/Hooks";
 import { auth } from "../db/firebase_config";
 import { Navbar } from "../component/Navbar";
 
