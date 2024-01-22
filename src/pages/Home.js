@@ -48,9 +48,12 @@ export const Home = () => {
   useEffect(() => {
     initialize();
 
-    if (initializing) {
-      navigate("/");
-    }
+    auth.onAuthStateChanged(async function (user) {
+      if (!user) {
+        console.log("이동!");
+        navigate("/login");
+      }
+    });
   }, []);
 
   const initialize = async () => {
@@ -169,7 +172,7 @@ export const Home = () => {
   };
 
   return (
-    <Container px={0} pt={"50px"} pb={"55px"}>
+    <Container px={0} pt={"50px"} pb={"55px"} minH={"100vh"}>
       <Box className="header">
         <Container border={"1px solid #d9d9d9"} p={0} bgColor={"white"}>
           <Stack>
