@@ -100,7 +100,7 @@ export const Login = () => {
                     code={"yellow.200"}
                   /> */}
                   <KakaoLogin
-                    token="e26ead914deda0c6ee6fb6e3038c69c5" // 카카오 개발자 사이트에서 발급받은 API 키를 입력하세요.
+                    token="f0b9cea901481ede3c202e108f61ef3e" // 카카오 개발자 사이트에서 발급받은 API 키를 입력하세요.
                     onSuccess={responseKaKao}
                     onFail={(error) => console.log(error)}
                     onLogout={() => console.log("로그아웃")}
