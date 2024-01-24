@@ -89,8 +89,6 @@ export const SignUp = () => {
       ret = await signUpPassword(formData.user_email, formData.user_password);
     }
 
-    console.log(ret);
-
     setValid({
       state: ret === "",
       message: ret,
@@ -98,8 +96,14 @@ export const SignUp = () => {
 
     if (ret !== "") return;
 
-    if (user.uid) {
-      let userList = await get_doc_list("user", "user_id", user.uid);
+    console.log(auth.currentUser);
+
+    if (auth.currentUser) {
+      let userList = await get_doc_list(
+        "user",
+        "user_id",
+        auth.currentUser.uid
+      );
       let uid = "";
       let docId = "";
       if (userList.length === 0) {
@@ -108,10 +112,10 @@ export const SignUp = () => {
         // console.log("doc", docId);
 
         //# 로그인 처리
-        uid = await signInPassword(formData.user_email, formData.user_password);
+        //uid = await signInPassword(formData.user_email, formData.user_password);
         // 사용자의 uid 정보를 user_id로 저장
         // console.log("uid", uid);
-        await db_update("user", docId, { user_id: uid });
+        await db_update("user", docId, { user_id: auth.currentUser.uid });
       } else {
         // console.log(await get_doc_list("user", "user_id", user.uid));
         docId = userList[0].doc_id;

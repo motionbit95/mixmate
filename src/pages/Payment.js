@@ -431,9 +431,14 @@ export const Payment = () => {
                   실시간 계좌이체
                 </Text>
               </Center>
+              <FullButton
+                onClick={onClickPayment}
+                code={theme_primary_color}
+                text={"20,000원 결제"}
+              />
             </Stack>
 
-            <Stack w="100%" spacing={"10px"}>
+            {/* <Stack w="100%" spacing={"10px"}>
               <Text fontWeight="semibold" fontSize="18px" color={gray_900}>
                 신용카드 정보 입력
               </Text>
@@ -472,12 +477,7 @@ export const Payment = () => {
               <Checkbox>
                 결제 조건을 확인하였으며 구매 진행에 동의합니다.
               </Checkbox>
-            </Stack>
-            <FullButton
-              onClick={onClickPayment}
-              code={theme_primary_color}
-              text={"20,000원 결제"}
-            />
+            </Stack> */}
             {/* <Button
               onClick={onClickPayment}
               colorScheme="blue"

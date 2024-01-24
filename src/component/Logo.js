@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Stack } from "@chakra-ui/react";
+import { Image, Stack, Text } from "@chakra-ui/react";
 import symbol_logo from "../assets/symbol_logo.svg";
 import text_logo from "../assets/text_logo.svg";
 import { checkNull } from "../js/API";
@@ -16,18 +16,29 @@ export const SymbolLogo = ({ ...props }) => {
 
 export const TextLogo = ({ ...props }) => {
   return (
-    <Image
-      w={checkNull(props.w, "auto")}
-      h={checkNull(props.h, "auto")}
-      src={text_logo}
-    />
+    <Text
+      fontSize={"x-large"}
+      fontWeight={"black"}
+      whiteSpace={"nowrap"}
+      px={"1vw"}
+    >
+      {"식사회"}
+    </Text>
+    // <Image
+    //   w={checkNull(props.w, "auto")}
+    //   h={checkNull(props.h, "auto")}
+    //   src={text_logo}
+    // />
   );
 };
 
 export const Logo = ({ ...props }) => {
   return (
     <Stack direction={props.direction} spacing={props.spacing}>
-      <Image
+      <Text fontSize={"xxx-large"} fontWeight={"black"} my={"8vh"}>
+        {"식사회"}
+      </Text>
+      {/* <Image
         w={checkNull(props.w, "auto")}
         h={checkNull(props.h, "auto")}
         src={symbol_logo}
@@ -36,7 +47,7 @@ export const Logo = ({ ...props }) => {
         w={checkNull(props.w, "auto")}
         h={checkNull(props.h, "auto")}
         src={text_logo}
-      />
+      /> */}
     </Stack>
   );
 };

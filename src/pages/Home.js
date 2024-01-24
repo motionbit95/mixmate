@@ -140,6 +140,7 @@ export const Home = () => {
           height: "auto",
           borderRadius: "10px",
           objectFit: "cover",
+          marginBottom: "40px",
         }}
       />
     </div>
@@ -241,21 +242,6 @@ export const Home = () => {
                 <TabList>
                   <Tab w="100%">
                     <HStack>
-                      <Icon as={BsPersonFill} />
-                      <Text
-                        lineHeight="1.31"
-                        fontWeight="semibold"
-                        fontSize="16px"
-                        letterSpacing="-0.32px"
-                        // color={black}
-                        textAlign="center"
-                      >
-                        사업 전문가
-                      </Text>
-                    </HStack>
-                  </Tab>
-                  <Tab>
-                    <HStack>
                       <Icon as={BsPeopleFill} />
                       <Text
                         lineHeight="1.31"
@@ -269,83 +255,24 @@ export const Home = () => {
                       </Text>
                     </HStack>
                   </Tab>
+                  <Tab w="100%">
+                    <HStack>
+                      <Icon as={BsPersonFill} />
+                      <Text
+                        lineHeight="1.31"
+                        fontWeight="semibold"
+                        fontSize="16px"
+                        letterSpacing="-0.32px"
+                        // color={black}
+                        textAlign="center"
+                      >
+                        내 주변 밥멘토
+                      </Text>
+                    </HStack>
+                  </Tab>
                 </TabList>
 
                 <TabPanels width={"100%"}>
-                  <TabPanel px={0} width={"100%"}>
-                    <Stack>
-                      <Stack
-                        w="100%"
-                        direction="row"
-                        justify="flex-end"
-                        align="flex-start"
-                        spacing="10px"
-                      >
-                        <Button
-                          onClick={async () => {
-                            let data = await arrange_distance(
-                              userInfo.user_location,
-                              "사업 전문가"
-                            );
-                            setBusinessList(data);
-                          }}
-                          size="xs"
-                          variant="outline"
-                          colorScheme={getSatuation(theme_primary_color)}
-                        >
-                          가까운순
-                        </Button>
-                        <Button
-                          onClick={async () => {
-                            let data = await arrange_random(
-                              userInfo.user_location,
-                              userInfo.dong,
-                              "사업 전문가"
-                            );
-                            setBusinessList(data);
-                          }}
-                          size="xs"
-                          variant="outline"
-                          colorScheme={getSatuation(theme_primary_color)}
-                        >
-                          랜덤찾기
-                        </Button>
-                        <Tooltip
-                          hasArrow
-                          whiteSpace={"pre-wrap"}
-                          placement="bottom-end"
-                          label={
-                            <Stack>
-                              <Text fontWeight={"bold"}>가까운순</Text>
-                              <Text color={gray_600} fontSize={"small"}>
-                                {`현재 사용자의 위치에서 가까운 순서대로 밥친구를 정렬합니다.`}
-                              </Text>
-                              <Text fontWeight={"bold"}>랜덤찾기</Text>
-                              <Text color={gray_600} fontSize={"small"}>
-                                {`현재 사용자의 동내에서 랜덤으로 밥친구를 정렬합니다.`}
-                              </Text>
-                            </Stack>
-                          }
-                          bg={gray_200}
-                          color={black}
-                        >
-                          <IconButton
-                            variant={"ghost"}
-                            size={"xs"}
-                            icon={<BsQuestionCircle />}
-                          />
-                        </Tooltip>
-                      </Stack>
-                      <Stack
-                        justify="flex-start"
-                        align="center"
-                        spacing="2vh"
-                        alignSelf="stretch"
-                      >
-                        <ItemList items={businessList} />
-                      </Stack>
-                    </Stack>
-                  </TabPanel>
                   <TabPanel px={0} width={"100%"}>
                     <Stack>
                       <Stack
@@ -420,6 +347,80 @@ export const Home = () => {
                       </Stack>
                     </Stack>
                   </TabPanel>
+                  <TabPanel px={0} width={"100%"}>
+                    <Stack>
+                      <Stack
+                        w="100%"
+                        direction="row"
+                        justify="flex-end"
+                        align="flex-start"
+                        spacing="10px"
+                      >
+                        <Button
+                          onClick={async () => {
+                            let data = await arrange_distance(
+                              userInfo.user_location,
+                              "사업 전문가"
+                            );
+                            setBusinessList(data);
+                          }}
+                          size="xs"
+                          variant="outline"
+                          colorScheme={getSatuation(theme_primary_color)}
+                        >
+                          가까운순
+                        </Button>
+                        <Button
+                          onClick={async () => {
+                            let data = await arrange_random(
+                              userInfo.user_location,
+                              userInfo.dong,
+                              "사업 전문가"
+                            );
+                            setBusinessList(data);
+                          }}
+                          size="xs"
+                          variant="outline"
+                          colorScheme={getSatuation(theme_primary_color)}
+                        >
+                          랜덤찾기
+                        </Button>
+                        <Tooltip
+                          hasArrow
+                          whiteSpace={"pre-wrap"}
+                          placement="bottom-end"
+                          label={
+                            <Stack>
+                              <Text fontWeight={"bold"}>가까운순</Text>
+                              <Text color={gray_600} fontSize={"small"}>
+                                {`현재 사용자의 위치에서 가까운 순서대로 밥친구를 정렬합니다.`}
+                              </Text>
+                              <Text fontWeight={"bold"}>랜덤찾기</Text>
+                              <Text color={gray_600} fontSize={"small"}>
+                                {`현재 사용자의 동내에서 랜덤으로 밥친구를 정렬합니다.`}
+                              </Text>
+                            </Stack>
+                          }
+                          bg={gray_200}
+                          color={black}
+                        >
+                          <IconButton
+                            variant={"ghost"}
+                            size={"xs"}
+                            icon={<BsQuestionCircle />}
+                          />
+                        </Tooltip>
+                      </Stack>
+                      <Stack
+                        justify="flex-start"
+                        align="center"
+                        spacing="2vh"
+                        alignSelf="stretch"
+                      >
+                        <ItemList items={businessList} />
+                      </Stack>
+                    </Stack>
+                  </TabPanel>
                 </TabPanels>
               </Tabs>
             </Stack>
@@ -431,8 +432,7 @@ export const Home = () => {
           companyName="(주)세이프바운더리"
           ceoName="김지훈"
           businessNumber="817-88-02796"
-          address="서울시 강남구
-            서초구 강남대로 51길10 강남효성해링턴 103"
+          address="06627 서울 서초구 강남대로51길 10 비1층 103-26호(서초동, 강남효성해링턴타워)"
           commNumber="2023-서울서초-1772"
           tel="02-3471-8197"
           mail="safeboundary@naver.com"

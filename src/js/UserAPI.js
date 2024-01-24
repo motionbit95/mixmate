@@ -116,6 +116,9 @@ export function step2_confirm_blank(
  * @returns {array} 태그 항목이 추가 된 배열 반환
  */
 export function add_place_tag(array, city, district) {
+  if (array.length > 2) {
+    alert("식사가능 동네는 3개 까지 선택할 수 있습니다.");
+  }
   let tag_list = array;
   let str_place = city + "," + district;
   // 배열에 항목이 존재하지 않으면 추가
@@ -134,6 +137,9 @@ export function add_place_tag(array, city, district) {
  * @returns {array} 태그 항목이 추가 된 배열 반환
  */
 export function add_food_tag(array, food) {
+  if (array.length > 2) {
+    alert("좋아하는 음식은 3개 까지 선택할 수 있습니다.");
+  }
   let tag_list = array;
   // 배열에 항목이 존재하지 않으면 추가
   if (!tag_list.includes(food)) {

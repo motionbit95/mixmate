@@ -524,7 +524,7 @@ export const Information = () => {
                         value={"사업 전문가"}
                         w="100px"
                       >
-                        사업 전문가
+                        멘토
                       </Radio>
                     </HStack>
                   </RadioGroup>
@@ -590,22 +590,20 @@ export const Information = () => {
                   }
                 />
               </HStack>
-              <HStack justify="flex-start" align="center" w="100%">
-                <Text w="100px">
-                  {formData.user_type === "개인" ? "관심분야" : "사업분야"}
-                </Text>
-                <Select
-                  defaultValue={formData.user_category}
-                  w="100%"
-                  onChange={(e) =>
-                    setFormData({ ...formData, user_category: e.target.value })
-                  }
-                >
-                  {category.map((value) => (
-                    <option value={value}>{value}</option>
-                  ))}
-                </Select>
-              </HStack>
+              {formData.user_type === "개인" && (
+                <HStack justify="flex-start" align="center" w="100%">
+                  <Text w="100px">{"멘토 전문 분야"}</Text>
+                  <Input
+                    type="text"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        user_category: e.target.value,
+                      })
+                    }
+                  />
+                </HStack>
+              )}
               <Stack
                 direction="column"
                 justify="flex-start"
@@ -785,7 +783,7 @@ export const Information = () => {
                   color={black}
                   width="90px"
                 >
-                  정산계좌
+                  식사권 부수입 정산 받을 계좌
                 </Text>
                 <Stack
                   direction="row"

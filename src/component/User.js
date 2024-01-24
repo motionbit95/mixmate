@@ -54,9 +54,10 @@ export const User = ({ data }) => {
           </HStack>
           <Text fontSize={"12px"}>
             {`나이 : ${getDisplayAge(data.user_birth)}, 매칭 금액 : 
-            ${data.user_price}만원, 식사 가능 지역 : ${data.user_place},
-            ${data.user_type === "개인" ? " 관심분야 : " : " 사업분야 : "}
-            ${data.user_category}`}
+            ${data.user_price}만원, 식사 가능 지역 : ${data.user_place}`}
+            {data.user_type === "개인"
+              ? ""
+              : `, 멘토 전문 분야 : ${data.user_category}`}
           </Text>
         </Stack>
         {/* {!window.location.pathname.includes("matching") && (
