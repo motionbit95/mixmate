@@ -39,7 +39,10 @@ import { FullButton } from "../component/Buttons";
 import { getSatuation } from "../js/API";
 import { TopHeader } from "../component/TopHeader";
 import { Navbar } from "../component/Navbar";
+import axios from "axios";
 
+// head에 작성한 Kakao API 불러오기
+const { AUTHNICE, kakao } = window;
 export const Payment = () => {
   const navigate = useNavigate();
 
@@ -52,20 +55,31 @@ export const Payment = () => {
     auth.onAuthStateChanged(async function (user) {
       if (user) {
         //# 여기에 결제 API 추가
-        // 결제 정보 추가
+        // 결제창 띄우기
+        AUTHNICE.requestPay({
+          clientId: "R2_c5abe31e532b4925b90d26a364362951",
+          method: "card",
+          orderId: "fafd82e6-9983-4e3a-a716-297ab70482bc",
+          amount: 1004,
+          goodsName: "나이스페이-상품",
+          returnUrl: "http://localhost:3001/serverAuth",
+          fnError: function (result) {
+            alert("개발자확인용 : " + result.errorMsg + "");
+          },
+        });
+
+        // 신청 내역 페이지로 이동
+        // navigate("/details");
 
         // 매칭 정보 추가
-        let matching_id = await matching_add({
-          matching_sender: user.uid, // 매칭 신청자 (본인)
-          matching_reciever: test_uid, // 현재 보고있는 페이지 유저(매칭 수신자)
-          matching_state: 0, // default 신청 상태
-          matching_payment: "", // 결제 정보 id
-        });
+        // let matching_id = await matching_add({
+        //   matching_sender: user.uid, // 매칭 신청자 (본인)
+        //   matching_reciever: test_uid, // 현재 보고있는 페이지 유저(매칭 수신자)
+        //   matching_state: 0, // default 신청 상태
+        //   matching_payment: "", // 결제 정보 id
+        // });
       }
     });
-
-    // 신청 내역 페이지로 이동
-    navigate("/details");
   }
   return (
     <Container py="50px">
@@ -437,7 +451,6 @@ export const Payment = () => {
                 text={"20,000원 결제"}
               />
             </Stack>
-
             {/* <Stack w="100%" spacing={"10px"}>
               <Text fontWeight="semibold" fontSize="18px" color={gray_900}>
                 신용카드 정보 입력

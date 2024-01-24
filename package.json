@@ -10,12 +10,20 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.6.5",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
     "date-fns": "^3.2.0",
+    "debug": "~2.6.9",
+    "ejs": "^3.1.6",
     "express": "^4.18.2",
     "firebase": "^10.7.1",
     "framer-motion": "^10.18.0",
     "gh-pages": "^6.1.1",
+    "got": "^11.8.2",
+    "http-errors": "~1.6.3",
     "jsdoc": "^4.0.2",
+    "morgan": "~1.9.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
@@ -23,13 +31,14 @@
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.21.2",
     "react-scripts": "5.0.1",
+    "uuid": "^8.3.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "docs": "jsdoc src README.md -r -t ./node_modules/jsdoc/node_modules/docdash",
     "predeploy": "npm run docs",
     "deploy": "gh-pages -d out",
-    "start": "react-scripts start",
+    "start": "concurrently \"node server\" \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -51,5 +60,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }
