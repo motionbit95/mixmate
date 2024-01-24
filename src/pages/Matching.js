@@ -129,7 +129,11 @@ export const Matching = () => {
                       colorScheme={getSatuation(theme_primary_color)}
                       height="40px"
                       alignSelf="stretch"
-                      onClick={() => navigate("/payment")}
+                      onClick={() =>
+                        navigate("/payment", {
+                          state: { price: data.user_price },
+                        })
+                      }
                     >
                       매칭 신청하기
                     </Button>
@@ -300,7 +304,11 @@ export const Matching = () => {
                       colorScheme={getSatuation(theme_primary_color)}
                       height="40px"
                       alignSelf="stretch"
-                      onClick={() => navigate("/payment")}
+                      onClick={() =>
+                        navigate("/payment", {
+                          state: { price: data.user_price },
+                        })
+                      }
                     >
                       매칭 신청하기
                     </Button>

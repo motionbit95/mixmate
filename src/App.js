@@ -20,6 +20,7 @@ import "./index.css";
 import "./styleguide.css";
 
 export const theme_primary_color = "orange.500";
+export const theme_bright_color = "orange.200";
 export const theme_secondary_color = "yellow.500";
 export const white = "#ffffff";
 export const black = "#000000";
@@ -34,6 +35,10 @@ export const gray_600 = "#8c8c8c";
 export const gray_700 = "#444444";
 export const gray_800 = "#4e4e4e";
 export const gray_900 = "#111111";
+
+export const product_mode = "dev"; //product
+export const homepage =
+  product_mode == "dev" ? "https://localhost:3000" : "https://dinnermate.kr";
 
 function App() {
   return (

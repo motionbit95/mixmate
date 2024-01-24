@@ -94,3 +94,12 @@ export function getDisplayAge(birthdate) {
 export function deg2rad(deg) {
   return deg * (Math.PI / 180);
 }
+
+export function formatCurrency(number, currencyCode = "KRW") {
+  const formattedNumber = new Intl.NumberFormat("ko-KR", {
+    style: "currency",
+    currency: currencyCode,
+  }).format(number);
+
+  return formattedNumber;
+}

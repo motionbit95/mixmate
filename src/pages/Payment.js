@@ -19,7 +19,7 @@ import {
 import { MdChevronLeft, MdChatBubbleOutline } from "react-icons/md";
 import { AiOutlineCalendar } from "react-icons/ai";
 import { HiOutlineTicket } from "react-icons/hi";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import HorizonLine from "../component/HorizontalLine";
 import {
   black,
@@ -29,6 +29,7 @@ import {
   gray_700,
   gray_800,
   gray_900,
+  theme_bright_color,
   theme_primary_color,
   white,
 } from "../App";
@@ -36,40 +37,70 @@ import { matching_add } from "../js/MatchingAPI";
 import { useState } from "react";
 import { auth } from "../db/firebase_config";
 import { FullButton } from "../component/Buttons";
-import { getSatuation } from "../js/API";
+import { formatCurrency, getSatuation } from "../js/API";
 import { TopHeader } from "../component/TopHeader";
 import { Navbar } from "../component/Navbar";
 import axios from "axios";
+import { uuidv4 } from "@firebase/util";
 
 // head에 작성한 Kakao API 불러오기
 const { AUTHNICE, kakao } = window;
 export const Payment = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const clientId = "S2_af4543a0be4d49a98122e01ec2059a56";
+  const secretKey = "9eb85607103646da9f9c02b128f2e5ee";
 
   // 매칭 받을 테스트 계정 => motionbit.dev@gmail.com
   //# local state 로 받아오도록 수정 예정
   const test_uid = "6ANvpNStOsUj7kfehPPETnUhBHy2";
 
+  const payMethod = [
+    "kakaopay",
+    "naverpayCard",
+    "samsungpayCard",
+    "card",
+    "cellphone",
+    "bank",
+  ];
+
+  const price = location.state?.price * 10000;
+  const [pay_method, setPayMethod] = useState("card");
   async function onClickPayment() {
     // 현재 회원 uid 가지고 오기
     auth.onAuthStateChanged(async function (user) {
+      /* 결제 메소드
+      card : 신용카드
+      bank : 계좌이체
+      directCard : 결제창 없이 카드사 바로 노출
+      vbank : 가상계좌
+      cellphone : 휴대폰
+      naverpayCard : 네이버페이-신용카드 전액결제(포인트 이용불가)
+      kakaopay : 카카오페이(카드전액 또는 포인트전액)
+      kakaopayCard : 카카오페이-신용카드 전액결제
+      kakaopayMoney : 카카오페이-머니 전액결제
+      samsungpayCard : 삼성페이 카드전액 결제
+      payco : 페이코
+      ssgpay : SSGPAY
+      cardAndEasyPay : 신용카드와 간편결제 노출
+      cardAndEasyPay인 경우, 아래 파라미터와 함께 사용불가
+      - cardCode, cardQuota, shopInterest, quotaInterest
+      */
       if (user) {
         //# 여기에 결제 API 추가
         // 결제창 띄우기
         AUTHNICE.requestPay({
-          clientId: "R2_c5abe31e532b4925b90d26a364362951",
-          method: "card",
-          orderId: "fafd82e6-9983-4e3a-a716-297ab70482bc",
-          amount: 1004,
-          goodsName: "나이스페이-상품",
+          clientId: clientId,
+          method: pay_method,
+          orderId: uuidv4(),
+          amount: price,
+          goodsName: "매칭 서비스 결제",
           returnUrl: "http://localhost:3001/serverAuth",
           fnError: function (result) {
             alert("개발자확인용 : " + result.errorMsg + "");
           },
         });
-
-        // 신청 내역 페이지로 이동
-        // navigate("/details");
 
         // 매칭 정보 추가
         // let matching_id = await matching_add({
@@ -229,7 +260,7 @@ export const Payment = () => {
                   flex="1"
                   textAlign="end"
                 >
-                  20,000원
+                  {formatCurrency(price)}
                 </Text>
               </Stack>
               <HorizonLine />
@@ -257,7 +288,7 @@ export const Payment = () => {
                   flex="1"
                   textAlign="end"
                 >
-                  0원
+                  {formatCurrency(0)}
                 </Text>
               </Stack>
               <HorizonLine />
@@ -285,7 +316,7 @@ export const Payment = () => {
                   flex="1"
                   textAlign="end"
                 >
-                  20,000원
+                  {formatCurrency(price)}
                 </Text>
               </Stack>
             </Stack>
@@ -312,14 +343,18 @@ export const Payment = () => {
                   borderBottomWidth="1.5px"
                   width="100%"
                   height="50px"
+                  backgroundColor={
+                    pay_method === payMethod[0] ? theme_bright_color : "white"
+                  }
                   _hover={{
-                    backgroundColor: gray_400,
+                    backgroundColor: theme_bright_color,
                     borderColor: theme_primary_color,
                   }}
+                  onClick={() => setPayMethod(payMethod[0])}
                 >
                   <Image src={require("../assets/kakao.png")} h="24px"></Image>
                 </Center>
-                <Center
+                {/* <Center
                   borderRadius="10px"
                   borderColor={gray_500}
                   borderStartWidth="1.5px"
@@ -334,6 +369,26 @@ export const Payment = () => {
                   }}
                 >
                   <Image src={require("../assets/toss.png")} h="50px"></Image>
+                </Center> */}
+                <Center
+                  borderRadius="10px"
+                  borderColor={gray_500}
+                  borderStartWidth="1.5px"
+                  borderEndWidth="1.5px"
+                  borderTopWidth="1.5px"
+                  borderBottomWidth="1.5px"
+                  width="100%"
+                  height="50px"
+                  backgroundColor={
+                    pay_method === payMethod[1] ? theme_bright_color : "white"
+                  }
+                  _hover={{
+                    backgroundColor: theme_bright_color,
+                    borderColor: theme_primary_color,
+                  }}
+                  onClick={() => setPayMethod(payMethod[1])}
+                >
+                  <Image src={require("../assets/naver.png")} h="24px"></Image>
                 </Center>
                 <Center
                   borderRadius="10px"
@@ -344,12 +399,19 @@ export const Payment = () => {
                   borderBottomWidth="1.5px"
                   width="100%"
                   height="50px"
+                  backgroundColor={
+                    pay_method === payMethod[2] ? theme_bright_color : "white"
+                  }
                   _hover={{
-                    backgroundColor: gray_400,
-                    borderColor: theme_primary_color,
+                    backgroundColor: theme_bright_color,
+                    borderColor: { theme_primary_color },
                   }}
+                  onClick={() => setPayMethod(payMethod[2])}
                 >
-                  <Image src={require("../assets/naver.png")} h="24px"></Image>
+                  <Image
+                    src={require("../assets/samsung.png")}
+                    h="24px"
+                  ></Image>
                 </Center>
               </HStack>
 
@@ -363,29 +425,14 @@ export const Payment = () => {
                   borderBottomWidth="1.5px"
                   width="100%"
                   height="50px"
+                  backgroundColor={
+                    pay_method === payMethod[3] ? theme_bright_color : "white"
+                  }
                   _hover={{
-                    backgroundColor: gray_400,
-                    borderColor: { theme_primary_color },
-                  }}
-                >
-                  <Image
-                    src={require("../assets/samsung.png")}
-                    h="24px"
-                  ></Image>
-                </Center>
-                <Center
-                  borderRadius="10px"
-                  borderColor={gray_500}
-                  borderStartWidth="1.5px"
-                  borderEndWidth="1.5px"
-                  borderTopWidth="1.5px"
-                  borderBottomWidth="1.5px"
-                  width="100%"
-                  height="50px"
-                  _hover={{
-                    backgroundColor: gray_400,
+                    backgroundColor: theme_bright_color,
                     borderColor: theme_primary_color,
                   }}
+                  onClick={() => setPayMethod(payMethod[3])}
                 >
                   <Text
                     lineHeight="1.5"
@@ -405,10 +452,14 @@ export const Payment = () => {
                   borderBottomWidth="1.5px"
                   width="100%"
                   height="50px"
+                  backgroundColor={
+                    pay_method === payMethod[4] ? theme_bright_color : "white"
+                  }
                   _hover={{
-                    backgroundColor: gray_400,
+                    backgroundColor: theme_bright_color,
                     borderColor: { theme_primary_color },
                   }}
+                  onClick={() => setPayMethod(payMethod[4])}
                 >
                   <Text
                     lineHeight="1.5"
@@ -419,36 +470,40 @@ export const Payment = () => {
                     휴대폰결제
                   </Text>
                 </Center>
+                <Center
+                  borderRadius="10px"
+                  borderColor={gray_500}
+                  borderStartWidth="1.5px"
+                  borderEndWidth="1.5px"
+                  borderTopWidth="1.5px"
+                  borderBottomWidth="1.5px"
+                  width="100%"
+                  height="50px"
+                  backgroundColor={
+                    pay_method === payMethod[5] ? theme_bright_color : "white"
+                  }
+                  _hover={{
+                    backgroundColor: theme_bright_color,
+                    borderColor: theme_primary_color,
+                  }}
+                  onClick={() => setPayMethod(payMethod[5])}
+                >
+                  <Text
+                    lineHeight="1.25"
+                    fontWeight="semibold"
+                    fontSize="16px"
+                    color={gray_700}
+                    textAlign="center"
+                  >
+                    실시간 계좌이체
+                  </Text>
+                </Center>
               </HStack>
 
-              <Center
-                borderRadius="10px"
-                borderColor={gray_500}
-                borderStartWidth="1.5px"
-                borderEndWidth="1.5px"
-                borderTopWidth="1.5px"
-                borderBottomWidth="1.5px"
-                width="32%"
-                height="50px"
-                _hover={{
-                  backgroundColor: gray_400,
-                  borderColor: theme_primary_color,
-                }}
-              >
-                <Text
-                  lineHeight="1.25"
-                  fontWeight="semibold"
-                  fontSize="16px"
-                  color={gray_700}
-                  textAlign="center"
-                >
-                  실시간 계좌이체
-                </Text>
-              </Center>
               <FullButton
                 onClick={onClickPayment}
                 code={theme_primary_color}
-                text={"20,000원 결제"}
+                text={`${formatCurrency(price)} 결제`}
               />
             </Stack>
             {/* <Stack w="100%" spacing={"10px"}>
