@@ -18,6 +18,7 @@ import { Chat } from "./pages/Chat";
 // import "./reset.css";
 import "./index.css";
 import "./styleguide.css";
+import { PayResult } from "./pages/PayResult";
 
 export const theme_primary_color = "orange.500";
 export const theme_bright_color = "orange.200";
@@ -55,6 +56,7 @@ function App() {
           <Route path="/matching" element={<Matching />} />
           <Route path="/details" element={<Details />} />
           <Route path="/payment" element={<Payment />} />
+          <Route path="/payresult" element={<PayResult />} />
           <Route path="/chat" element={<ChatList />} />
           <Route path="/chat/*" element={<Chat />} />
           <Route path="/mypage" element={<MyPage />} />

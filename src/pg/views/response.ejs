@@ -1,44 +1,28 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <title>결제완료</title>
-  <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Transfer Example</title>
 </head>
-
-<body style="align-items: center; justify-content: center; display: flex; min-height: 80vh;" >
-  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+<body>
     <h1>결제가 완료되었습니다.</h1>
-    <div>
-      <button  href="javascript:;" onclick="goDetail();" style="  border: none;
-      background-color: #d9d9d9;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: medium;
-      white-space: nowrap;">신청내역 보기</button>
-      <button href="javascript:;" onclick="goHome();" style="  border: none;
-      background-color: #d9d9d9;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: medium;
-      white-space: nowrap;">홈으로 돌아가기</button>
-    </div>
-  </div>
+    <script>
+        // Server-encoded JSON data is decoded before parsing
+        var encodedData = '<%= data %>';
+        var decodedData = decodeURIComponent(encodedData);
+        var receivedData = JSON.parse(decodedData);
 
-  <script>
-    function goHome() {
-      returnUrl = window.location.protocol + "//" + window.location.hostname + ":3000"
-      console.log(returnUrl)
-      window.location.replace(returnUrl)
-    }
+        console.log(decodedData, receivedData)
 
-    function goDetail() {
-      returnUrl = window.location.protocol + "//" + window.location.hostname + ":3000/details"
-      console.log(returnUrl)
-      window.location.replace(returnUrl)
-    }
-  </script>
+        // 데이터를 가져와 URL에 추가
+        var targetUrl = 'http://localhost:3000/payresult?data=' + decodedData;
+
+        // 페이지 이동
+        window.location.replace(targetUrl);
+
+        console.log(receivedData);
+        // Perform necessary actions with the received data
+    </script>
 </body>
-
 </html>

@@ -42,6 +42,8 @@ import { TopHeader } from "../component/TopHeader";
 import { Navbar } from "../component/Navbar";
 import axios from "axios";
 import { uuidv4 } from "@firebase/util";
+import { db_add, db_set } from "../js/Database";
+import { serverTimestamp } from "@firebase/firestore";
 
 // head에 작성한 Kakao API 불러오기
 const { AUTHNICE, kakao } = window;
@@ -90,24 +92,47 @@ export const Payment = () => {
       if (user) {
         //# 여기에 결제 API 추가
         // 결제창 띄우기
+        const orderId = uuidv4();
         AUTHNICE.requestPay({
           clientId: clientId,
+          appScheme: `nicepaysample://`,
           method: pay_method,
-          orderId: uuidv4(),
+          orderId: orderId,
           amount: price,
           goodsName: "매칭 서비스 결제",
           returnUrl: "http://localhost:3001/serverAuth",
           fnError: function (result) {
-            alert("개발자확인용 : " + result.errorMsg + "");
+            console.log(result);
+            // alert("개발자확인용 : " + result.errorMsg + "");
           },
         });
 
-        // 매칭 정보 추가
+        // navigate("/payresult", {
+        //   state: {
+        //     clientId: clientId,
+        //     appScheme: `nicepaysample://`,
+        //     method: pay_method,
+        //     orderId: orderId,
+        //     amount: price,
+        //     goodsName: "매칭 서비스 결제",
+        //     returnUrl: "/payresult",
+        //   },
+        // });
+
+        // await db_set(`messages-${orderId}`, "chat_info", {
+        //   orderId: orderId,
+        //   timestamp: serverTimestamp(),
+        //   sender: user.uid,
+        //   reciever: test_uid,
+        //   lastmessage: "마지막 메세지입니다.",
+        // });
+
+        // // 매칭 정보 추가
         // let matching_id = await matching_add({
         //   matching_sender: user.uid, // 매칭 신청자 (본인)
         //   matching_reciever: test_uid, // 현재 보고있는 페이지 유저(매칭 수신자)
         //   matching_state: 0, // default 신청 상태
-        //   matching_payment: "", // 결제 정보 id
+        //   matching_payment: orderId, // 결제 정보 id
         // });
       }
     });

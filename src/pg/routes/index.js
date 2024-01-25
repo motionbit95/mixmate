@@ -36,8 +36,14 @@ router.post("/serverAuth", function (req, res) {
       console.log(response.body);
       // 결제 비즈니스 로직 구현
 
+      const jsonData = JSON.stringify(response.body);
+
+      // Encode JSON data for HTML embedding
+      const encodedData = encodeURIComponent(jsonData);
+
+      // Pass the encoded data to the HTML file
       res.render("response", {
-        resultMsg: response.body.resultMsg,
+        data: encodedData,
       });
     })
     .catch(function (error) {

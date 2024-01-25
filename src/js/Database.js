@@ -7,6 +7,7 @@ import {
   getDocs,
   query,
   serverTimestamp,
+  setDoc,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -30,6 +31,12 @@ export const db_add = async (col, data) => {
   // console.log("doc add! ", docRef.id);
 
   return docRef.id;
+};
+
+export const db_set = async (col, doc_id, data) => {
+  console.log(col, " 추가");
+  // 데이터 id 지정해서 추가
+  await setDoc(doc(db, col, doc_id), data);
 };
 
 /** collection에 이미 생성된 문서에 data field를 추가합니다.
