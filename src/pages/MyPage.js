@@ -2,7 +2,6 @@ import {
   Stack,
   Icon,
   Text,
-  Avatar,
   Button,
   Box,
   Skeleton,

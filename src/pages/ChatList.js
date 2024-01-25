@@ -89,6 +89,15 @@ export const ChatList = () => {
                   alignSelf="stretch"
                 >
                   <Avatar
+                    bg={
+                      value.isSender
+                        ? value.matching_reciever.user_gender === "남"
+                          ? "teal.500"
+                          : "red.500"
+                        : value.matching_sender.user_gender === "남"
+                        ? "teal.500"
+                        : "red.500"
+                    }
                     src={
                       value.isSender
                         ? value.matching_reciever.user_profile

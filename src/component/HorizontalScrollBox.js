@@ -49,7 +49,14 @@ export const HorizontalScrollBox = ({ title, model_list }) => {
                             });
                           }}
                         >
-                          <Avatar src={value.user_profile} />
+                          <Avatar
+                            bg={
+                              value.user_gender === "남"
+                                ? "teal.500"
+                                : "red.500"
+                            }
+                            src={value.user_profile}
+                          />
                           <Text fontSize={"large"} fontWeight={"bold"}>
                             {getDisplayName(value.user_name)}
                           </Text>

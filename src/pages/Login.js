@@ -116,7 +116,7 @@ export const Login = () => {
               align="center"
               spacing="4vh"
             >
-              <Logo w={"16vh"} spacing={"4vh"} />
+              <Logo w={"20vh"} />
               <Stack w="100%" spacing={"4vh"}>
                 <Stack w="100%">
                   <Flex w={"100%"} align={"center"}>

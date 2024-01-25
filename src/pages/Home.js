@@ -190,7 +190,7 @@ export const Home = () => {
               justifyContent={"space-between"}
             >
               <HStack w={"100%"}>
-                <TextLogo h={"2vh"} />
+                <TextLogo h={"4vh"} />
                 {userInfo && userInfo.user_location && (
                   <TextAddress user={userInfo} />
                 )}

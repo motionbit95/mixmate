@@ -192,6 +192,7 @@ export const SignUp = () => {
           <Stack justify="flex-start" align="center" spacing="50px" w="100%">
             <VStack>
               <Avatar
+                bg={formData.user_gender === "남" ? "teal.500" : "red.500"}
                 // name={formData.user_name}
                 src={formData.user_profile}
                 size="2xl"

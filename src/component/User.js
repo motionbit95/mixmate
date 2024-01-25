@@ -31,7 +31,12 @@ export const User = ({ data }) => {
     >
       <HStack spacing={"2vw"} w={"100%"}>
         <Skeleton isLoaded={data}>
-          <Avatar alignSelf={"flex-start"} src={data.user_profile} mr={"2vw"} />
+          <Avatar
+            bg={data.user_gender === "남" ? "teal.500" : "red.500"}
+            alignSelf={"flex-start"}
+            src={data.user_profile}
+            mr={"2vw"}
+          />
         </Skeleton>
         <Stack w="100%">
           <HStack justifyContent={"space-between"} w="100%">

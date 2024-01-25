@@ -2,7 +2,6 @@ import {
   Stack,
   Icon,
   Text,
-  Avatar,
   Tabs,
   Tab,
   TabPanels,
@@ -11,6 +10,7 @@ import {
   Container,
   TabList,
   TabPanel,
+  HStack,
 } from "@chakra-ui/react";
 import { MdChevronLeft } from "react-icons/md";
 import { BsStarFill } from "react-icons/bs";
@@ -127,20 +127,36 @@ export const Matching = () => {
                         식사권 금액에서 매칭 수수료를 제외한 금액이 정산됨.
                       </Text>
                     </Stack>
-                    <CustomButton
-                      code={theme_bright_color}
-                      height="40px"
-                      alignSelf="stretch"
-                      onClick={() =>
-                        navigate("/payment", {
-                          state: {
-                            price: data.user_price,
-                            reciever: data,
-                          },
-                        })
-                      }
-                      text={"매칭 신청하기"}
-                    />
+                    <HStack w="100%">
+                      <CustomButton
+                        code={theme_bright_color}
+                        height="40px"
+                        alignSelf="stretch"
+                        onClick={() =>
+                          navigate("/payment", {
+                            state: {
+                              price: data.user_price,
+                              reciever: data,
+                            },
+                          })
+                        }
+                        text={"🍛 식사 매칭 신청"}
+                      />
+                      <CustomButton
+                        code={theme_bright_color}
+                        height="40px"
+                        alignSelf="stretch"
+                        onClick={() =>
+                          navigate("/payment", {
+                            state: {
+                              price: data.user_price,
+                              reciever: data,
+                            },
+                          })
+                        }
+                        text={"☕️ 커피 매칭 신청"}
+                      />
+                    </HStack>
                   </Stack>
                 </TabPanel>
                 <TabPanel px={0}>

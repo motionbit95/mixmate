@@ -5,7 +5,6 @@ import {
   Tabs,
   Tab,
   TabPanels,
-  Avatar,
   Button,
   Container,
   TabPanel,
