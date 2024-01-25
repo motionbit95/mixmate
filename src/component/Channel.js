@@ -6,13 +6,18 @@ import { useFirestoreQuery } from "../js/Hooks";
 import Message from "./Message";
 import { Box, Button, Container, Input, Textarea } from "@chakra-ui/react";
 import { TopHeader } from "./TopHeader";
+import { useLocation } from "react-router-dom";
+import { auth } from "../db/firebase_config";
+import { getDisplayName } from "../js/API";
 
 const Channel = ({ user = null }) => {
+  const location = useLocation();
+  const chat_id = location.state?.chat_id;
+  const matchingInfo = location.state?.data;
+
   const db = firebase.firestore();
 
-  const channel_id = "test";
-
-  const messagesRef = db.collection(`messages-${channel_id}`);
+  const messagesRef = db.collection(`messages-${chat_id}`);
   const messages = useFirestoreQuery(
     messagesRef.orderBy("createdAt", "desc").limit(100)
   );
@@ -74,7 +79,13 @@ const Channel = ({ user = null }) => {
 
   return (
     <Box w={"100%"}>
-      <TopHeader title={user.uid} />
+      <TopHeader
+        title={
+          auth.currentUser.uid === matchingInfo.matching_sender.user_id
+            ? getDisplayName(matchingInfo.matching_reciever.user_name)
+            : getDisplayName(matchingInfo.matching_sender.user_name)
+        }
+      />
       <Container>
         <Box id="chat-container">
           <Box className="scroll_view" mt={"50px"} mb={"120px"}>

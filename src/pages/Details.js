@@ -36,6 +36,7 @@ import { TopHeader } from "../component/TopHeader";
 import HorizonLine from "../component/HorizontalLine";
 import {
   black,
+  gray_100,
   gray_300,
   gray_500,
   gray_600,
@@ -47,7 +48,12 @@ import {
 } from "../App";
 import { useEffect, useState } from "react";
 import { auth } from "../db/firebase_config";
-import { arrange_distance, get_doc_list } from "../js/Database";
+import {
+  arrange_distance,
+  db_add,
+  db_update,
+  get_doc_list,
+} from "../js/Database";
 import {
   matching_add,
   matching_get_list,
@@ -59,32 +65,33 @@ import { Navbar } from "../component/Navbar";
 import { getSatuation } from "../js/API";
 import { User } from "../component/User";
 import { CustomButton } from "../component/Buttons";
+import { useNavigate } from "react-router-dom";
 
 export const Details = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modal_type, setModalType] = useState();
-  const [matching_refund_message, setRefundMessage] = useState();
+  const [matching_id, setMatchingId] = useState();
+  const navigate = useNavigate();
 
-  // 매칭 받을 테스트 계정 => motionbit.dev@gmail.com
-  //# local state 로 받아오도록 수정 예정
-  const test_uid = "I7ChOfgrmqWNUpneqOD9OmrWwiE3";
-  const [my_uid, setUID] = useState();
-
-  const { user } = useAuthState(auth);
-
-  // 테스트용 매칭 id 저장 변수
-  const [test_matching_id, setMatchingId] = useState();
-
+  // 신청 리스트, 받은 리스트
   const [sendList, setSendList] = useState();
   const [recieveList, setRecieveList] = useState();
 
   // 추천친구 리스트
   const [recommend, setRecommend] = useState();
 
+  // 리뷰 쓰는 매칭 정보
+  const [reviewMatching, setReviewMatching] = useState();
+
   useEffect(() => {
-    console.log(user);
     get_matching_list();
   }, []);
+
+  function get_review(value) {
+    console.log(value.matcing_id);
+    // let reviews = get_doc_list("review", "review_matching", value.matcing_id);
+    // return reviews[0];
+  }
 
   async function get_matching_list() {
     // 현재 로그인 한 고객의 계정을 가지고 옵니다.
@@ -100,11 +107,6 @@ export const Details = () => {
           setRecommend(array);
         }
 
-        // uid를 저장합니다.
-        if (!my_uid) {
-          setUID(user.uid);
-        }
-
         // 매칭 리스트에서 내가 받은 신청인지 보낸 신청인지 구분해서 저장해둡니다.
         let send_list = await matching_get_list(0);
         let receive_list = await matching_get_list(1);
@@ -116,6 +118,14 @@ export const Details = () => {
     });
   }
 
+  async function onClickReviewMatching(value) {
+    setMatchingId(value.matching_id);
+    setReviewMatching(value);
+    // 거절 모달 띄우기
+    setModalType("review");
+    onOpen();
+  }
+
   async function onClickRefundMatching() {
     // 거절 모달 띄우기
     setModalType("refund");
@@ -124,24 +134,64 @@ export const Details = () => {
 
   async function onClickRefundMessage(message) {
     if (window.confirm("매칭을 거절하시겠습니까?")) {
-      await matching_set(test_matching_id, {
+      await matching_set(matching_id, {
         matching_state: 400, // 매칭 거절 코드
         matching_refund_message: message,
       });
       onClose();
+      window.location.reload();
     }
   }
 
-  async function onClickCompleteMatching() {
+  async function onClickCompleteMatching(matching_id) {
     if (window.confirm("매칭을 확정지으시겠습니까?")) {
-      await matching_set(test_matching_id, {
-        matching_state: 2, // 매칭 완료 코드
+      await matching_set(matching_id, {
+        matching_state: 1, // 매칭 완료 코드
       });
     }
     window.location.reload();
   }
 
   function ReviewContent() {
+    const [score, setScore] = useState();
+    const [message, setMessage] = useState();
+
+    async function onClickReviewMessage(message) {
+      /*
+      review_id	string	리뷰 id	NOT NULL
+      review_sender	map	후기를 작성한 회원정보	NOT NULL
+      review_receiver	map	후기를 받은 회원정보	NOT NULL
+      review_matching	map	후기가 작성되는 매칭정보	NOT NULL
+      review_score	number	후기 평점	NOT NULL
+      review_comment	string	후기	NOT NULL
+      timestamp	timestamp	문서생성시간	NOT NUL
+   */
+      if (window.confirm("후기를 등록하시겠습니까?")) {
+        let doc_id = await db_add("review", {
+          review_sender: reviewMatching.matching_sender,
+          review_receiver: reviewMatching.matching_reciever,
+          review_matching: matching_id,
+          review_score: score,
+          review_comment: message,
+        });
+
+        // 매칭 상태 후기등록 상태(2)로 변경
+        await db_update("matching", matching_id, {
+          matching_state: 2,
+          matching_review: {
+            review_sender: reviewMatching.matching_sender,
+            review_receiver: reviewMatching.matching_reciever,
+            review_matching: matching_id,
+            review_score: score,
+            review_comment: message,
+          },
+        });
+
+        window.location.reload();
+        onClose();
+      }
+    }
+
     return (
       <Stack
         paddingX="30px"
@@ -161,28 +211,51 @@ export const Details = () => {
         >
           후기 평점을 남겨주세요!
         </Text>
-        <Box>
-          <Icon as={BsFillStarFill} />
-          <Icon as={BsFillStarFill} />
-          <Icon as={BsFillStarFill} />
-          <Icon as={BsFillStarFill} />
-          <Icon as={BsFillStarFill} />
-        </Box>
-        <Stack
-          borderRadius="6px"
-          borderColor="gray.200"
-          borderStartWidth="1px"
-          borderEndWidth="1px"
-          borderTopWidth="1px"
-          borderBottomWidth="1px"
-          width="320px"
-          height="219px"
-          maxWidth="100%"
-          background="white"
+        <HStack>
+          <Icon
+            as={BsFillStarFill}
+            boxSize={"32px"}
+            color={score > 0 ? "yellow.400" : gray_500}
+            onClick={() => setScore(1)}
+          />
+          <Icon
+            as={BsFillStarFill}
+            boxSize={"32px"}
+            color={score > 1 ? "yellow.400" : gray_500}
+            v
+            onClick={() => setScore(2)}
+          />
+          <Icon
+            as={BsFillStarFill}
+            boxSize={"32px"}
+            color={score > 2 ? "yellow.400" : gray_500}
+            onClick={() => setScore(3)}
+          />
+          <Icon
+            as={BsFillStarFill}
+            boxSize={"32px"}
+            color={score > 3 ? "yellow.400" : gray_500}
+            onClick={() => setScore(4)}
+          />
+          <Icon
+            as={BsFillStarFill}
+            boxSize={"32px"}
+            color={score > 4 ? "yellow.400" : gray_500}
+            onClick={() => setScore(5)}
+          />
+        </HStack>
+        <Textarea
+          placeholder="후기를 입력해주세요."
+          onChange={(e) => setMessage(e.target.value)}
+          minH={"200px"}
         />
-        <Button size="sm" colorScheme="blue" height="32px" alignSelf="stretch">
-          후기작성하기
-        </Button>
+        <CustomButton
+          text="후기작성하기"
+          size="md"
+          code={theme_bright_color}
+          alignSelf="stretch"
+          onClick={() => onClickReviewMessage(message)}
+        />
       </Stack>
     );
   }
@@ -212,6 +285,7 @@ export const Details = () => {
           </Text>
           <RadioGroup
             w="100%"
+            colorScheme={getSatuation(theme_primary_color)}
             defaultValue={message}
             onChange={(value) => setMessage(value)}
           >
@@ -222,38 +296,34 @@ export const Details = () => {
               <Radio value="일정합의 불가">일정합의 불가</Radio>
               <Radio value="">직접입력</Radio>
               <Textarea
-                placeholder="거절 사유룰 입력해주세요."
+                placeholder="거절 사유를 입력하세요."
                 onChange={(e) => setMessage(e.target.value)}
               />
             </Stack>
           </RadioGroup>
-          <Button
-            size="sm"
-            colorScheme="blue"
-            height="32px"
-            alignSelf="stretch"
-            onClick={() => onClickRefundMessage(message)}
-          >
-            신청 거절하기
-          </Button>
+          <HStack w="100%">
+            {/* <CustomButton
+              size="md"
+              code={"white.100"}
+              alignSelf="stretch"
+              onClick={onClose}
+              text={"취소"}
+            /> */}
+            <CustomButton
+              size="md"
+              code={theme_bright_color}
+              alignSelf="stretch"
+              onClick={() => onClickRefundMessage(message)}
+              text={"신청 거절하기"}
+            />
+          </HStack>
         </Stack>
       </Stack>
     );
   }
 
-  const get_user = async (userId) => {
-    console.log(userId);
-    // let user_info = await get_doc_list("user", "user_id", userId);
-    // return user_info[0];
-  };
-
   return (
     <Container px={0}>
-      {/* <Box>
-        <Button>후기작성</Button>
-        <Button>채팅하기</Button>
-        <Button>다시신청하기</Button>
-      </Box> */}
       <Stack
         justify="space-between"
         align="center"
@@ -290,633 +360,269 @@ export const Details = () => {
                   </Center>
                 ) : (
                   <Stack>
-                    {sendList?.map((value, index) => (
-                      <>
-                        <Text fontSize={"large"} fontWeight={"bold"}>
-                          {value.matching_state === 0
-                            ? "결제완료"
-                            : value.matching_state === 1
-                            ? "구매확정"
-                            : "구매거절"}
-                        </Text>
-                        <User data={value.matching_reciever} />
-                        {value.matching_state < 400 && (
-                          <HStack>
-                            <CustomButton
-                              onClick={() => console.log(value.matching_state)}
-                              text={
-                                value.matching_state === 0
-                                  ? "채팅하기"
-                                  : value.matching_state === 1
-                                  ? "다시신청하기"
-                                  : ""
-                              }
-                            />
-                            <CustomButton
-                              code={theme_bright_color}
-                              onClick={() => console.log(value.matching_state)}
-                              text={
-                                value.matching_state === 0
-                                  ? "구매확정하기"
-                                  : value.matching_state === 1
-                                  ? "후기쓰기"
-                                  : ""
-                              }
-                            />
-                          </HStack>
-                        )}
-                        <HorizonLine />
-                      </>
-                    ))}
-                    {recieveList?.map((value, index) => (
-                      <>
-                        <Text fontSize={"large"} fontWeight={"bold"}>
-                          {value.matching_state === 0
-                            ? "매칭신청"
-                            : value.matching_state === 1
-                            ? "매칭완료"
-                            : "매칭거절"}
-                        </Text>
-                        <User data={value.matching_sender} />
-                        {value.matching_state < 400 && (
-                          <HStack>
-                            <CustomButton
-                              onClick={() => console.log(value.matching_state)}
-                              text={
-                                value.matching_state === 0 ? "채팅하기" : ""
-                              }
-                            />
-                            <CustomButton
-                              code={theme_bright_color}
-                              onClick={() => console.log(value.matching_state)}
-                              text={
-                                value.matching_state === 0 ? "거절하기" : ""
-                              }
-                            />
-                          </HStack>
-                        )}
-                        <HorizonLine />
-                      </>
-                    ))}
+                    {sendList?.map(
+                      (value, index) =>
+                        value.matching_state < 1 && (
+                          <>
+                            <Text fontSize={"large"} fontWeight={"bold"}>
+                              {value.matching_state === 0
+                                ? "결제완료"
+                                : value.matching_state === 1
+                                ? "구매확정"
+                                : value.matching_state === 2
+                                ? "후기작성완료"
+                                : "구매취소"}
+                            </Text>
+                            <User data={value.matching_reciever} />
+                            {value.matching_state < 400 && (
+                              <HStack>
+                                <CustomButton
+                                  onClick={() => {
+                                    if (value.matching_state === 0) {
+                                      navigate(
+                                        `/chat/${value.matching_payment}`,
+                                        {
+                                          state: {
+                                            chat_id: value.matching_payment,
+                                            data: value,
+                                          },
+                                        }
+                                      );
+                                    }
+                                  }}
+                                  text={
+                                    value.matching_state === 0
+                                      ? "채팅하기"
+                                      : value.matching_state === 1
+                                      ? "다시신청하기"
+                                      : ""
+                                  }
+                                />
+                                <CustomButton
+                                  code={theme_bright_color}
+                                  onClick={() => {
+                                    if (value.matching_state === 0)
+                                      onClickCompleteMatching(
+                                        value.matching_id
+                                      );
+                                  }}
+                                  text={
+                                    value.matching_state === 0
+                                      ? "구매확정하기"
+                                      : value.matching_state === 1
+                                      ? "후기쓰기"
+                                      : ""
+                                  }
+                                />
+                              </HStack>
+                            )}
+                            <HorizonLine />
+                          </>
+                        )
+                    )}
+                    {recieveList?.map(
+                      (value, index) =>
+                        value.matching_state < 1 && (
+                          <>
+                            <Text fontSize={"large"} fontWeight={"bold"}>
+                              {value.matching_state === 0
+                                ? "매칭신청"
+                                : value.matching_state === 1
+                                ? "매칭완료"
+                                : "매칭거절"}
+                            </Text>
+                            <User data={value.matching_sender} />
+                            {value.matching_state < 400 && (
+                              <HStack>
+                                <CustomButton
+                                  onClick={() => {
+                                    if (value.matching_state === 0) {
+                                      navigate(
+                                        `/chat/${value.matching_payment}`,
+                                        {
+                                          state: {
+                                            chat_id: value.matching_payment,
+                                            data: value,
+                                          },
+                                        }
+                                      );
+                                    }
+                                  }}
+                                  text={
+                                    value.matching_state === 0 ? "채팅하기" : ""
+                                  }
+                                />
+                                <CustomButton
+                                  code={theme_bright_color}
+                                  onClick={() => {
+                                    setMatchingId(value.matching_id);
+                                    onClickRefundMatching();
+                                  }}
+                                  text={
+                                    value.matching_state === 0 ? "거절하기" : ""
+                                  }
+                                />
+                              </HStack>
+                            )}
+                            <HorizonLine />
+                          </>
+                        )
+                    )}
                   </Stack>
                 )}
               </TabPanel>
               <TabPanel>
-                <Stack
-                  // paddingX="10px"
-                  paddingBottom="10px"
-                  justify="center"
-                  align="flex-start"
-                  spacing="10px"
-                  overflow="hidden"
-                  alignSelf="stretch"
-                >
-                  <Stack
-                    padding="10px"
-                    justify="flex-start"
-                    align="flex-start"
-                    spacing="10px"
-                    overflow="hidden"
-                    alignSelf="stretch"
-                    background={white}
-                  >
-                    <Text
-                      lineHeight="1.56"
-                      fontWeight="bold"
-                      fontSize="18px"
-                      color={black}
-                      textAlign="center"
-                    >
-                      구매확정완료
-                    </Text>
-                    <Stack
-                      paddingY="10px"
-                      direction="row"
-                      justify="flex-start"
-                      align="center"
-                      spacing="20px"
-                      overflow="hidden"
-                      alignSelf="stretch"
-                    >
-                      <Avatar name="TA" src=" " size="lg" />
-                      <Stack
-                        justify="flex-start"
-                        align="flex-start"
-                        spacing="10px"
-                        overflow="hidden"
-                        height="78px"
-                        flex="1"
-                      >
-                        <Stack
-                          direction="row"
-                          justify="space-between"
-                          align="center"
-                          spacing="5px"
-                          overflow="hidden"
-                          height="19px"
-                          alignSelf="stretch"
-                        >
-                          <Stack
-                            direction="row"
-                            justify="flex-start"
-                            align="center"
-                            spacing="5px"
-                          >
-                            <Text
-                              fontWeight="bold"
-                              fontSize="16px"
-                              color={black}
-                              textAlign="center"
-                            >
-                              송*혁
-                            </Text>
-                            <Icon as={BsStarFill} />
-                            <Text
-                              fontWeight="medium"
-                              fontSize="16px"
-                              color={black}
-                              textAlign="center"
-                            >
-                              5.0
-                            </Text>
-                            <Text
-                              fontWeight="medium"
-                              fontSize="14px"
-                              color={gray_600}
-                              textAlign="center"
-                            >
-                              (169)
-                            </Text>
-                          </Stack>
-                          <Text
-                            fontWeight="medium"
-                            fontSize="14px"
-                            textAlign="center"
-                          >
-                            140m
-                          </Text>
-                        </Stack>
-                        <Text
-                          lineHeight="1.42"
-                          fontWeight="medium"
-                          fontSize="12px"
-                          color={black}
-                          alignSelf="stretch"
-                        >
-                          나이 : 30~35세, 매칭 금액 : 2만원, 매칭 가능 동네 :
-                          서울 성북구, 역삼동 좋아하는 취미: 테니스, 골프
-                        </Text>
-                      </Stack>
-                    </Stack>
-                    <Stack
-                      direction="row"
-                      justify="flex-start"
-                      align="flex-start"
-                      spacing="10px"
-                      overflow="hidden"
-                      alignSelf="stretch"
-                      background={white}
-                    >
-                      <Button size="sm" height="32px" flex="1">
-                        다시 신청하기
-                      </Button>
-                      <Button
-                        size="sm"
-                        colorScheme="blue"
-                        height="32px"
-                        flex="1"
-                        onClick={() => {
-                          setModalType("review");
-                          onOpen();
-                        }}
-                      >
-                        후기작성하기
-                      </Button>
-                    </Stack>
-                  </Stack>
-                  <HorizonLine />
-                  <Stack
-                    padding="10px"
-                    justify="flex-start"
-                    align="flex-start"
-                    spacing="10px"
-                    overflow="hidden"
-                    alignSelf="stretch"
-                    background={white}
-                  >
-                    <Text
-                      lineHeight="1.56"
-                      fontWeight="bold"
-                      fontSize="18px"
-                      color={black}
-                      textAlign="center"
-                    >
-                      매칭거절
-                    </Text>
-                    <Stack
-                      paddingY="10px"
-                      direction="row"
-                      justify="flex-start"
-                      align="center"
-                      spacing="20px"
-                      overflow="hidden"
-                      alignSelf="stretch"
-                    >
-                      <Avatar name="TA" src=" " size="lg" />
-                      <Stack
-                        justify="flex-start"
-                        align="flex-start"
-                        spacing="10px"
-                        overflow="hidden"
-                        height="78px"
-                        flex="1"
-                      >
-                        <Stack
-                          direction="row"
-                          justify="space-between"
-                          align="center"
-                          spacing="5px"
-                          overflow="hidden"
-                          height="19px"
-                          alignSelf="stretch"
-                        >
-                          <Stack
-                            direction="row"
-                            justify="flex-start"
-                            align="center"
-                            spacing="5px"
-                          >
-                            <Text
-                              fontWeight="bold"
-                              fontSize="16px"
-                              color={black}
-                              textAlign="center"
-                            >
-                              송*혁
-                            </Text>
-                            <Icon as={BsStarFill} />
-                            <Text
-                              fontWeight="medium"
-                              fontSize="16px"
-                              color={black}
-                              textAlign="center"
-                            >
-                              5.0
-                            </Text>
-                            <Text
-                              fontWeight="medium"
-                              fontSize="14px"
-                              color={gray_600}
-                              textAlign="center"
-                            >
-                              (169)
-                            </Text>
-                          </Stack>
-                          <Text
-                            fontWeight="medium"
-                            fontSize="14px"
-                            textAlign="center"
-                          >
-                            140m
-                          </Text>
-                        </Stack>
-                        <Text
-                          lineHeight="1.42"
-                          fontWeight="medium"
-                          fontSize="12px"
-                          color={black}
-                          alignSelf="stretch"
-                        >
-                          나이 : 30~35세, 매칭 금액 : 2만원, 매칭 가능 동네 :
-                          서울 성북구, 역삼동 좋아하는 취미: 테니스, 골프
-                        </Text>
-                      </Stack>
-                    </Stack>
-                    <Text
-                      lineHeight="1.43"
-                      fontWeight="semibold"
-                      fontSize="14px"
-                      color={black}
-                      alignSelf="stretch"
-                    >
-                      <span>거절사유</span>
-                      <Box
-                        as="span"
-                        lineHeight="1.67"
-                        fontWeight="regular"
-                        fontSize="12px"
-                      >
-                        매칭에 감사드립니다만, 현재 지리적으로 너무 멀어 만남이
-                        어려울 것으로 판단되어 거절하게 되었습니다. 미래에 더
-                        나은 조건에서 만남을 찾기를 기원합니다.
-                      </Box>
-                    </Text>
-                    <Accordion width="100%" background={gray_300}>
-                      <AccordionItem width="100%">
-                        <AccordionButton
-                          width="100%"
-                          height="44px"
-                          alignSelf="stretch"
-                        >
-                          <Text
-                            lineHeight="1.71"
-                            fontWeight="regular"
-                            fontSize="14px"
-                            color={gray_900}
-                            flex="1"
-                          >
-                            결제 취소 안내
-                          </Text>
-                          <Icon />
-                        </AccordionButton>
-                        <AccordionPanel>
-                          <Text
-                            lineHeight="1.67"
-                            fontWeight="regular"
-                            fontSize="12px"
-                            whiteSpace="pre-wrap"
-                            color={gray_800}
-                            maxWidth="100%"
-                          >
-                            안녕하세요,식사회입니다. 고객님의 결제 취소에 관한
-                            안내드립니다. 결제 취소 요청이 정상적으로
-                            접수되었습니다. 아래는 취소에 관한 상세 정보입니다.
-                            <br />
-                            주문번호: 192930
-                            <br />
-                            취소 금액: 20,000원
-                            <br />
-                            취소 일시: 2024.01.16
-                            <br />
-                            취소된 금액은 최대 3 영업일 이내에 원래 결제
-                            수단으로 환불될 예정입니다. 추가적인 궁금한 사항이나
-                            도움이 필요하신 경우, 언제든지 고객센터로 문의해
-                            주세요. 감사합니다. 식사회 드림
-                          </Text>
-                        </AccordionPanel>
-                      </AccordionItem>
-                    </Accordion>
-                  </Stack>
-                  <HorizonLine />
-                  <Stack
-                    padding="10px"
-                    justify="flex-start"
-                    align="flex-start"
-                    spacing="10px"
-                    overflow="hidden"
-                    alignSelf="stretch"
-                    background={white}
-                  >
-                    <Text
-                      lineHeight="1.56"
-                      fontWeight="bold"
-                      fontSize="18px"
-                      color={black}
-                      textAlign="center"
-                    >
-                      매칭완료
-                    </Text>
-                    <Stack
-                      paddingY="10px"
-                      direction="row"
-                      justify="flex-start"
-                      align="center"
-                      spacing="20px"
-                      overflow="hidden"
-                      alignSelf="stretch"
-                    >
-                      <Avatar name="TA" src=" " size="lg" />
-                      <Stack
-                        justify="flex-start"
-                        align="flex-start"
-                        spacing="10px"
-                        overflow="hidden"
-                        height="78px"
-                        flex="1"
-                      >
-                        <Stack
-                          direction="row"
-                          justify="space-between"
-                          align="center"
-                          spacing="5px"
-                          overflow="hidden"
-                          height="19px"
-                          alignSelf="stretch"
-                        >
-                          <Stack
-                            direction="row"
-                            justify="flex-start"
-                            align="center"
-                            spacing="5px"
-                          >
-                            <Text
-                              fontWeight="bold"
-                              fontSize="16px"
-                              color={black}
-                              textAlign="center"
-                            >
-                              송*혁
-                            </Text>
-                            <Icon as={BsStarFill} />
-                            <Text
-                              fontWeight="medium"
-                              fontSize="16px"
-                              color={black}
-                              textAlign="center"
-                            >
-                              5.0
-                            </Text>
-                            <Text
-                              fontWeight="medium"
-                              fontSize="14px"
-                              color={gray_600}
-                              textAlign="center"
-                            >
-                              (169)
-                            </Text>
-                          </Stack>
-                          <Text
-                            fontWeight="medium"
-                            fontSize="14px"
-                            textAlign="center"
-                          >
-                            140m
-                          </Text>
-                        </Stack>
-                        <Text
-                          lineHeight="1.42"
-                          fontWeight="medium"
-                          fontSize="12px"
-                          color={black}
-                          alignSelf="stretch"
-                        >
-                          나이 : 30~35세, 매칭 금액 : 2만원, 매칭 가능 동네 :
-                          서울 성북구, 역삼동 좋아하는 취미: 테니스, 골프
-                        </Text>
-                      </Stack>
-                    </Stack>
-                    <Text
-                      lineHeight="1.43"
-                      fontWeight="semibold"
-                      fontSize="14px"
-                      color={black}
-                      alignSelf="stretch"
-                    >
-                      <span>후기</span>
-                      <Box
-                        as="span"
-                        lineHeight="1.67"
-                        fontWeight="regular"
-                        fontSize="12px"
-                      >
-                        미작성
-                      </Box>
-                    </Text>
-                  </Stack>
-                  <HorizonLine />
-                  <Stack
-                    padding="10px"
-                    justify="flex-start"
-                    align="flex-start"
-                    spacing="10px"
-                    overflow="hidden"
-                    alignSelf="stretch"
-                    background={white}
-                  >
-                    <Text
-                      lineHeight="1.56"
-                      fontWeight="bold"
-                      fontSize="18px"
-                      color={black}
-                      textAlign="center"
-                    >
-                      매칭완료
-                    </Text>
-                    <Stack
-                      paddingY="10px"
-                      direction="row"
-                      justify="flex-start"
-                      align="center"
-                      spacing="20px"
-                      overflow="hidden"
-                      alignSelf="stretch"
-                    >
-                      <Avatar name="TA" src=" " size="lg" />
-                      <Stack
-                        justify="flex-start"
-                        align="flex-start"
-                        spacing="10px"
-                        overflow="hidden"
-                        height="78px"
-                        flex="1"
-                      >
-                        <Stack
-                          direction="row"
-                          justify="space-between"
-                          align="center"
-                          spacing="5px"
-                          overflow="hidden"
-                          height="19px"
-                          alignSelf="stretch"
-                        >
-                          <Stack
-                            direction="row"
-                            justify="flex-start"
-                            align="center"
-                            spacing="5px"
-                          >
-                            <Text
-                              fontWeight="bold"
-                              fontSize="16px"
-                              color={black}
-                              textAlign="center"
-                            >
-                              송*혁
-                            </Text>
-                            <Icon as={BsStarFill} />
-                            <Text
-                              fontWeight="medium"
-                              fontSize="16px"
-                              color={black}
-                              textAlign="center"
-                            >
-                              5.0
-                            </Text>
-                            <Text
-                              fontWeight="medium"
-                              fontSize="14px"
-                              color={gray_600}
-                              textAlign="center"
-                            >
-                              (169)
-                            </Text>
-                          </Stack>
-                          <Text
-                            fontWeight="medium"
-                            fontSize="14px"
-                            textAlign="center"
-                          >
-                            140m
-                          </Text>
-                        </Stack>
-                        <Text
-                          lineHeight="1.42"
-                          fontWeight="medium"
-                          fontSize="12px"
-                          color={black}
-                          alignSelf="stretch"
-                        >
-                          나이 : 30~35세, 매칭 금액 : 2만원, 매칭 가능 동네 :
-                          서울 성북구, 역삼동 좋아하는 취미: 테니스, 골프
-                        </Text>
-                      </Stack>
-                    </Stack>
-                    <Stack
-                      direction="row"
-                      justify="flex-start"
-                      align="flex-end"
-                      spacing="5px"
-                      alignSelf="stretch"
-                    >
-                      <Text
-                        lineHeight="1.43"
-                        fontWeight="semibold"
-                        fontSize="14px"
-                        color={black}
-                      >
-                        후기
+                <>
+                  {sendList?.length === 0 && recieveList?.length === 0 ? (
+                    <Center minH={"45vh"}>
+                      <Text fontSize={"sm"} color={gray_600}>
+                        매칭 신청 내역이 존재하지 않습니다.
                       </Text>
-                      <Stack
-                        direction="row"
-                        justify="flex-start"
-                        align="flex-start"
-                        spacing="5px"
-                      >
-                        <Icon as={BsStarFill} />
-                        <Text
-                          fontWeight="medium"
-                          fontSize="16px"
-                          color={black}
-                          textAlign="center"
-                        >
-                          5.0
-                        </Text>
-                      </Stack>
+                    </Center>
+                  ) : (
+                    <Stack>
+                      {sendList?.map(
+                        (value, index) =>
+                          value.matching_state > 0 && (
+                            <>
+                              <Text fontSize={"large"} fontWeight={"bold"}>
+                                {value.matching_state === 0
+                                  ? "결제완료"
+                                  : value.matching_state === 1
+                                  ? "구매확정"
+                                  : value.matching_state === 2
+                                  ? "후기작성완료"
+                                  : "구매취소"}
+                              </Text>
+                              <User data={value.matching_reciever} />
+                              {value.matching_state < 3 && (
+                                <HStack>
+                                  <CustomButton
+                                    onClick={() => {
+                                      if (value.matching_state === 1) {
+                                        navigate("/matching", {
+                                          state: {
+                                            data: value.matching_reciever,
+                                          },
+                                        });
+                                      }
+                                    }}
+                                    text={
+                                      value.matching_state === 0
+                                        ? "채팅하기"
+                                        : value.matching_state === 1 ||
+                                          value.matching_state === 2
+                                        ? "다시신청하기"
+                                        : ""
+                                    }
+                                  />
+                                  <CustomButton
+                                    code={theme_bright_color}
+                                    disabled={value.matching_state > 1}
+                                    onClick={() => {
+                                      if (value.matching_state === 0)
+                                        onClickCompleteMatching(
+                                          value.matching_id
+                                        );
+                                      if (value.matching_state === 1)
+                                        onClickReviewMatching(value);
+                                    }}
+                                    text={
+                                      value.matching_state === 0
+                                        ? "구매확정하기"
+                                        : value.matching_state === 1
+                                        ? "후기쓰기"
+                                        : value.matching_state === 2
+                                        ? "후기작성완료"
+                                        : ""
+                                    }
+                                  />
+                                </HStack>
+                              )}
+                              {value.matching_state === 2 && (
+                                <Stack
+                                  fontSize={"sm"}
+                                  w="100%"
+                                  bgColor={gray_100}
+                                  p="2vh"
+                                  borderRadius={"8px"}
+                                >
+                                  <HStack alignItems={"center"}>
+                                    <Icon
+                                      as={BsFillStarFill}
+                                      boxSize={"24px"}
+                                      color={"yellow.400"}
+                                    />
+                                    <Text fontSize={"lg"} fontWeight={"bold"}>
+                                      {value.matching_review?.review_score.toFixed(
+                                        1
+                                      )}
+                                    </Text>
+                                  </HStack>
+                                  <Text>
+                                    {value.matching_review?.review_comment}
+                                  </Text>
+                                </Stack>
+                              )}
+                              <HorizonLine />
+                            </>
+                          )
+                      )}
+                      {recieveList?.map(
+                        (value, index) =>
+                          value.matching_state > 0 && (
+                            <>
+                              <Text fontSize={"large"} fontWeight={"bold"}>
+                                {value.matching_state === 0
+                                  ? "매칭신청"
+                                  : value.matching_state === 1
+                                  ? "매칭완료"
+                                  : "매칭거절"}
+                              </Text>
+                              <User data={value.matching_sender} />
+                              {value.matching_state < 400 ? (
+                                <HStack>
+                                  <CustomButton
+                                    onClick={() =>
+                                      console.log(value.matching_state)
+                                    }
+                                    text={
+                                      value.matching_state === 0
+                                        ? "채팅하기"
+                                        : ""
+                                    }
+                                  />
+                                  <CustomButton
+                                    code={theme_bright_color}
+                                    onClick={() =>
+                                      setMatchingId(value.matching_id)
+                                    }
+                                    text={
+                                      value.matching_state === 0
+                                        ? "거절하기"
+                                        : ""
+                                    }
+                                  />
+                                </HStack>
+                              ) : (
+                                <Text
+                                  fontSize={"sm"}
+                                  w="100%"
+                                  bgColor={gray_100}
+                                  p="2vh"
+                                  borderRadius={"8px"}
+                                >
+                                  매칭 거절 이유 :{" "}
+                                  {value.matching_refund_message}
+                                </Text>
+                              )}
+                              <HorizonLine />
+                            </>
+                          )
+                      )}
                     </Stack>
-                    <Text
-                      lineHeight="1.67"
-                      fontWeight="regular"
-                      fontSize="12px"
-                      color={black}
-                      alignSelf="stretch"
-                    >
-                      친구 매칭 서비스 덕분에 우연히 만난 친구가 있어서 너무
-                      행복해요. 서로의 취향과 성향이 꽤 일치해서 처음 만났을
-                      때부터 편안한 느낌이었어요. 이제는 함께 많은 추억을
-                      쌓아가고 있습니다.
-                    </Text>
-                  </Stack>
-                </Stack>
+                  )}
+                </>
               </TabPanel>
             </TabPanels>
           </Tabs>
@@ -931,8 +637,8 @@ export const Details = () => {
       <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader></ModalHeader>
-          <ModalCloseButton />
+          <ModalHeader mt={"50px"}></ModalHeader>
+          <ModalCloseButton mt={"50px"} />
           <ModalBody>
             {modal_type && modal_type === "review" ? (
               <ReviewContent />
@@ -940,9 +646,9 @@ export const Details = () => {
               <RefundContent />
             )}
           </ModalBody>
-          <ModalFooter>
+          {/* <ModalFooter>
             <Button onClick={onClose}></Button>
-          </ModalFooter>
+          </ModalFooter> */}
         </ModalContent>
       </Modal>
     </Container>

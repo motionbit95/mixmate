@@ -3,22 +3,14 @@ import React, { useEffect, useState } from "react";
 import { gray_200, gray_300, gray_50, white } from "../App";
 import { getDisplayAge, getDisplayName } from "../js/API";
 import HorizonLine from "./HorizontalLine";
+import { useNavigate } from "react-router-dom";
 
 export const HorizontalScrollBox = ({ title, model_list }) => {
   // code(javascript)
   // model : 변수
   // setModel("값") : 함수 <- 변수에 값을 집어넣는
   // useState("디폴트값") <- 초기화
-  const [model, setModel] = useState({
-    user_name: "박수정",
-    age: 28,
-    price: 5,
-    profile: require("../assets/iOS 16 Wallpaper.png"),
-  });
-
-  useEffect(() => {
-    console.log(model_list);
-  }, []);
+  const navigate = useNavigate();
 
   return (
     //component
@@ -45,11 +37,18 @@ export const HorizontalScrollBox = ({ title, model_list }) => {
                       <Box
                         boxShadow={`1px 1px 10px rgba(170, 170, 170, 0.5)`}
                         borderRadius={"16px"}
-                        w={"40vw"}
+                        // w={"40%"}
                         p={"2vw"}
                         bgColor={white}
                       >
-                        <Stack>
+                        <Stack
+                          p={"2vw"}
+                          onClick={() => {
+                            navigate("/matching", {
+                              state: { data: value },
+                            });
+                          }}
+                        >
                           <Avatar src={value.user_profile} />
                           <Text fontSize={"large"} fontWeight={"bold"}>
                             {getDisplayName(value.user_name)}
