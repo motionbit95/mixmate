@@ -51,7 +51,7 @@ export const HorizontalScrollBox = ({ title, model_list }) => {
                         >
                           <Avatar
                             bg={
-                              value.user_gender === "남"
+                              value?.user_gender === "남"
                                 ? "teal.500"
                                 : "red.500"
                             }

@@ -2,15 +2,20 @@ import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase/compat/app";
 import { useFirestoreQuery } from "../js/Hooks";
-// Components
+
+// components
 import Message from "./Message";
-import { Box, Button, Container, Input, Textarea } from "@chakra-ui/react";
 import { TopHeader } from "./TopHeader";
+import { Box, Button, Container, Input } from "@chakra-ui/react";
+
+// hook
 import { useLocation } from "react-router-dom";
 import { auth } from "../db/firebase_config";
-import { getDisplayName } from "../js/API";
-import { db_set, db_update } from "../js/Database";
+import { db_update } from "../js/Database";
 import { serverTimestamp } from "firebase/firestore";
+
+// mixmate - 이름 끝 부분 숨김 처리
+import { getDisplayName } from "../js/API";
 
 const Channel = ({ user = null }) => {
   const location = useLocation();
@@ -90,7 +95,7 @@ const Channel = ({ user = null }) => {
       <TopHeader
         title={
           auth.currentUser?.uid === matchingInfo.matching_sender.user_id
-            ? getDisplayName(matchingInfo.matching_reciever.user_name)
+            ? getDisplayName(matchingInfo.matching_receiver.user_name)
             : getDisplayName(matchingInfo.matching_sender.user_name)
         }
       />

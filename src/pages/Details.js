@@ -28,6 +28,7 @@ import {
   Radio,
   Center,
   HStack,
+  AccordionIcon,
 } from "@chakra-ui/react";
 import { MdChevronLeft } from "react-icons/md";
 import { BsStarFill, BsFillStarFill } from "react-icons/bs";
@@ -168,7 +169,7 @@ export const Details = () => {
       if (window.confirm("후기를 등록하시겠습니까?")) {
         let doc_id = await db_add("review", {
           review_sender: reviewMatching.matching_sender,
-          review_receiver: reviewMatching.matching_reciever,
+          review_receiver: reviewMatching.matching_receiver,
           review_matching: matching_id,
           review_score: score,
           review_comment: message,
@@ -179,7 +180,7 @@ export const Details = () => {
           matching_state: 2,
           matching_review: {
             review_sender: reviewMatching.matching_sender,
-            review_receiver: reviewMatching.matching_reciever,
+            review_receiver: reviewMatching.matching_receiver,
             review_matching: matching_id,
             review_score: score,
             review_comment: message,
@@ -380,7 +381,7 @@ export const Details = () => {
                                 ? "후기작성완료"
                                 : "구매취소"}
                             </Text>
-                            <User data={value.matching_reciever} />
+                            <User data={value.matching_receiver} />
                             {value.matching_state < 400 && (
                               <HStack>
                                 <CustomButton
@@ -509,7 +510,7 @@ export const Details = () => {
                                   ? "후기작성완료"
                                   : "구매취소"}
                               </Text>
-                              <User data={value.matching_reciever} />
+                              <User data={value.matching_receiver} />
                               {value.matching_state < 3 && (
                                 <HStack>
                                   <CustomButton
@@ -517,7 +518,7 @@ export const Details = () => {
                                       if (value.matching_state === 1) {
                                         navigate("/matching", {
                                           state: {
-                                            data: value.matching_reciever,
+                                            data: value.matching_receiver,
                                           },
                                         });
                                       }
@@ -620,16 +621,51 @@ export const Details = () => {
                                   />
                                 </HStack>
                               ) : (
-                                <Text
-                                  fontSize={"sm"}
-                                  w="100%"
-                                  bgColor={gray_100}
-                                  p="2vh"
-                                  borderRadius={"8px"}
-                                >
-                                  매칭 거절 이유 :{" "}
-                                  {value.matching_refund_message}
-                                </Text>
+                                <>
+                                  <Text
+                                    fontSize={"sm"}
+                                    w="100%"
+                                    bgColor={gray_100}
+                                    p="2vh"
+                                    borderRadius={"8px"}
+                                  >
+                                    거절사유 : {value.matching_refund_message}
+                                  </Text>
+                                  <Accordion w={"100%"} background={gray_300}>
+                                    <AccordionItem w={"100%"}>
+                                      <AccordionButton
+                                        w={"100%"}
+                                        h={"44px"}
+                                        alignSelf={"stretch"}
+                                      >
+                                        <Text
+                                          lineHeight="1.71"
+                                          fontWeight={"regular"}
+                                          fontSize={"14px"}
+                                          color={gray_900}
+                                          flex={"1"}
+                                        >
+                                          결제 취소 안내
+                                        </Text>
+                                        <AccordionIcon />
+                                      </AccordionButton>
+                                      <AccordionPanel>
+                                        <Text
+                                          whiteSpace={"pre-wrap"}
+                                          maxWidth={"100%"}
+                                          lineHeight="1.67"
+                                          fontWeight={"regular"}
+                                          fontSize={"12px"}
+                                          color={gray_900}
+                                          flex={"1"}
+                                        >
+                                          {"여기에 메세지 가지고 오도록 수정"}
+                                          {/* {get_refund_message(value.matching_payment)} */}
+                                        </Text>
+                                      </AccordionPanel>
+                                    </AccordionItem>
+                                  </Accordion>
+                                </>
                               )}
                               <HorizonLine />
                             </>

@@ -29,53 +29,55 @@ export const User = ({ data }) => {
       // border={"1px solid #f1f1f1"}
       //   maxW={"400px"}
     >
-      <HStack spacing={"2vw"} w={"100%"}>
-        <Skeleton isLoaded={data}>
-          <Avatar
-            bg={data.user_gender === "남" ? "teal.500" : "red.500"}
-            alignSelf={"flex-start"}
-            src={data.user_profile}
-            mr={"2vw"}
-          />
-        </Skeleton>
-        <Stack w="100%">
-          <HStack justifyContent={"space-between"} w="100%">
-            <Text fontSize={"lg"} fontWeight={"bold"}>
-              {getDisplayName(data.user_name)}
-            </Text>
-          </HStack>
-          <Text fontSize={"12px"}>
-            {`나이 : ${getDisplayAge(data.user_birth)}, 매칭 금액 : 
-            ${data.user_price}만원, 식사 가능 지역 : ${data.user_place}`}
-            {data.user_type === "개인"
-              ? ""
-              : `, 멘토 전문 분야 : ${data.user_category}`}
-          </Text>
-        </Stack>
-        <VStack>
-          {window.location.pathname === "/" && (
-            <Text color={theme_primary_color}>
-              {isNaN(parseFloat(data.distance).toFixed(1))
-                ? ""
-                : parseFloat(data.distance).toFixed(1) + "km"}
-            </Text>
-          )}
-          {window.location.pathname === "/" && (
-            <CustomButton
-              code={theme_bright_color}
-              w="100px"
-              text={data.user_type === "개인" ? "식사매칭" : "멘토매칭"}
-              onClick={() => {
-                if (!window.location.pathname.includes("matching")) {
-                  navigate("/matching", {
-                    state: { data: data },
-                  });
-                }
-              }}
+      {data && (
+        <HStack spacing={"2vw"} w={"100%"}>
+          <Skeleton isLoaded={data}>
+            <Avatar
+              bg={data.user_gender === "남" ? "teal.500" : "red.500"}
+              alignSelf={"flex-start"}
+              src={data.user_profile}
+              mr={"2vw"}
             />
-          )}
-        </VStack>
-      </HStack>
+          </Skeleton>
+          <Stack w="100%">
+            <HStack justifyContent={"space-between"} w="100%">
+              <Text fontSize={"lg"} fontWeight={"bold"}>
+                {getDisplayName(data.user_name)}
+              </Text>
+            </HStack>
+            <Text fontSize={"12px"}>
+              {`나이 : ${getDisplayAge(data.user_birth)}, 매칭 금액 : 
+            ${data.user_price}만원, 식사 가능 지역 : ${data.user_place}`}
+              {data.user_type === "개인"
+                ? ""
+                : `, 멘토 전문 분야 : ${data.user_category}`}
+            </Text>
+          </Stack>
+          <VStack>
+            {window.location.pathname === "/" && (
+              <Text color={theme_primary_color}>
+                {isNaN(parseFloat(data.distance).toFixed(1))
+                  ? ""
+                  : parseFloat(data.distance).toFixed(1) + "km"}
+              </Text>
+            )}
+            {window.location.pathname === "/" && (
+              <CustomButton
+                code={theme_bright_color}
+                w="100px"
+                text={data.user_type === "개인" ? "식사매칭" : "멘토매칭"}
+                onClick={() => {
+                  if (!window.location.pathname.includes("matching")) {
+                    navigate("/matching", {
+                      state: { data: data },
+                    });
+                  }
+                }}
+              />
+            )}
+          </VStack>
+        </HStack>
+      )}
     </Flex>
   );
 };

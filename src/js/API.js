@@ -1,4 +1,4 @@
-import { serverTimestamp } from "firebase/firestore";
+import { Timestamp, serverTimestamp } from "firebase/firestore";
 import { white } from "../App";
 
 /**
@@ -96,6 +96,13 @@ export function deg2rad(deg) {
   return deg * (Math.PI / 180);
 }
 
+/** 숫자를 통화 단위로 반환
+ * @function formatCurrency
+ * @memberof API
+ * @param {number} deg 숫자
+ * @param {number} currencyCode 통화 단위
+ * @returns {string} 통화 단위 별 구분자가 찍힌 포맷으로 출력
+ */
 export function formatCurrency(number, currencyCode = "KRW") {
   const formattedNumber = new Intl.NumberFormat("ko-KR", {
     style: "currency",
@@ -105,13 +112,12 @@ export function formatCurrency(number, currencyCode = "KRW") {
   return formattedNumber;
 }
 
-// Firestore에서 가져온 timestamp
-const firestoreTimestamp = {
-  seconds: 1706123143,
-  nanoseconds: 515000000,
-};
-
-// Firestore Timestamp를 JavaScript Date 객체로 변환하는 함수
+/** Firestore Timestamp를 JavaScript Date 객체로 변환하는 함수
+ * @function convertFirestoreTimestampToDate
+ * @memberof API
+ * @param {Timestamp} timestamp timestamp
+ * @returns {Date} 날짜로 변환
+ */
 export function convertFirestoreTimestampToDate(timestamp) {
   if (!timestamp) return new Date();
   const milliseconds =
@@ -119,12 +125,21 @@ export function convertFirestoreTimestampToDate(timestamp) {
   return new Date(milliseconds);
 }
 
-// 현재 시간을 가져오는 함수
+/** 현재 시간을 가져오는 함수
+ * @function getCurrentTime
+ * @memberof API
+ * @returns {Date} 현재 시간 반환
+ */
 export function getCurrentTime() {
   return new Date();
 }
 
-// Firestore Timestamp를 현재 시간과 비교하는 함수
+/** Firestore Timestamp를 현재 시간과 비교하는 함수
+ * @function compareTimestampWithCurrentTime
+ * @memberof API
+ * @param {Timestamp} firestoreTimestamp 타임스탬프
+ * @returns {string} 현재 시간과 비교하여 시간차를 출력
+ */
 export function compareTimestampWithCurrentTime(firestoreTimestamp) {
   const firestoreDate = convertFirestoreTimestampToDate(firestoreTimestamp);
   const currentDate = getCurrentTime();

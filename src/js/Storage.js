@@ -3,6 +3,7 @@ import { storage } from "../db/firebase_config";
 
 /** firestore profile 폴더 내에 이미지를 업로드랍니다.
  * @function upload_image
+ * @memberof DB
  * @param {React.ChangeEvent<HTMLInputElement>} e input 이벤트
  * @returns {string} 이미지 호스팅 완료 된 링크
  */

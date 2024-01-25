@@ -15,8 +15,13 @@ import { db } from "../db/firebase_config";
 import { calculateDistance } from "./UserAPI";
 import { checkNull } from "./API";
 
+/**
+ * @namespace DB
+ */
+
 /** firebase에 문서를 생성하여 data field를 저장합니다.
  * @function db_add
+ * @memberof DB
  * @param {string} col collection 이름
  * @param {object} data 추가할 데이터
  * @returns {string} 추가된 document의 id
@@ -33,6 +38,13 @@ export const db_add = async (col, data) => {
   return docRef.id;
 };
 
+/** firebase에 문서 이름을 지정하여 data field를 저장합니다.
+ * @function db_set
+ * @memberof DB
+ * @param {string} col collection 이름
+ * @param {string} doc_id doc_id
+ * @param {object} data 추가할 데이터
+ */
 export const db_set = async (col, doc_id, data) => {
   console.log(col, " 추가");
   // 데이터 id 지정해서 추가
@@ -41,6 +53,7 @@ export const db_set = async (col, doc_id, data) => {
 
 /** collection에 이미 생성된 문서에 data field를 추가합니다.
  * @function db_update
+ * @memberof DB
  * @param {string} col collection 이름
  * @param {string} doc_id 추가할 문서의 id
  * @param {object} data 추가할 데이터
@@ -52,6 +65,7 @@ export const db_update = async (col, doc_id, data) => {
 
 /** collection 내 특정 문서 삭제
  * @function db_delete
+ * @memberof DB
  * @param {string} col collection 이름
  * @param {string} doc_id 문서 id
  */
@@ -63,6 +77,7 @@ export const db_delete = async (col, doc_id) => {
 
 /** 컬렉션에서 여러 문서 가져오기(특정 속성으로 검색해서 리스트를 가지고 올 때 사용)
  * @function get_doc_all
+ * @memberof DB
  * @param {string} col collection 이름
  * @return {object} property 값이 value 와 일치하는 데이터 반환
  */
@@ -81,6 +96,7 @@ export const get_doc_all = async (col) => {
 
 /** 문서 id로 데이터 가지고 오기
  * @function get_doc_data
+ * @memberof DB
  * @param {string} col collection 이름
  * @param {string} doc_id 문서 id
  * @return {object} 단일 문서의 내용
@@ -102,6 +118,7 @@ export const get_doc_data = async (col, doc_id) => {
 
 /** 조건에 일치하는 모든 문서를 가지고 오기
  * @function get_doc_list
+ * @memberof DB
  * @param {string} col collection 이름
  * @param {string} property 검색 속성
  * @param {string} value 검색 값
@@ -124,6 +141,7 @@ export const get_doc_list = async (col, property, value) => {
 
 /** 거리순 정렬
  * @function arrange_distance
+ * @memberof DB
  * @param {object} user_location 유저 위치
  * @param {string} user_type 유저 타입
  * @return {Array} 거리순 정렬을 한 목록 반환
@@ -159,6 +177,7 @@ export async function arrange_distance(user_location, user_type) {
 
 /** 랜덤 정렬
  * @function arrange_distance
+ * @memberof DB
  * @param {string} user_location 유저 위치
  * @param {string} user_location 유저의 행정동
  * @param {string} user_type 유저 타입

@@ -12,9 +12,14 @@ import { compareTimestampWithCurrentTime, getDisplayName } from "../js/API";
 import { gray_600 } from "../App";
 
 export const ChatList = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // 채팅방 이동 시 사용
+
+  //# chat 데이터와 matching 데이터 간 데이터 공유 필요
+  //# 현재는 두 데이터가 분리되어 있으므로 채팅리스트와 매칭 리스트를 두개 다 불러온다.
   const [machingList, setMatchingList] = useState();
   const [chatList, setChatList] = useState();
+
+  // 처음 로딩 시 chatList / matchingList 를 저장한다.
   useEffect(() => {
     getChatList();
   }, []);
@@ -22,26 +27,30 @@ export const ChatList = () => {
   const getChatList = async () => {
     auth.onAuthStateChanged(async function (user) {
       if (user) {
-        let userList = await get_doc_list("user", "user_id", user?.uid);
-
+        // 본인이 sender인 매칭리스트와 본인이 receiver인 매칭리스트를 가지고 와서 배열에 담는다
         let sender = await matching_get_list(0);
         let receiver = await matching_get_list(1);
-        let total = [...sender, ...receiver];
+        let total = [...sender, ...receiver]; // total matching 배열
+        // 상태 변수에 저장
         setMatchingList(total);
-        let chatList = [];
+
+        // chat list를 담는다.
+        let chatList = []; // 초기화
         total.forEach(async (element) => {
-          console.log("element", element);
+          // 결제 id(orderId)에 따른 채팅방 정보를 가지고온다. (sender, receiver 정보, 마지막 메세지, 시간 등등)
           let chat = await get_doc_data(
             `messages-${element.matching_payment}`,
             "chat_info"
           );
-          // console.log(chat);
+
+          // chatList에 채팅 데이터를 담는다. 현재 본인이 sender인지, 아닌지 flag도 함께 저장한다.
           chatList.push({
             ...chat,
             isSender: user?.uid === chat.sender.user_id,
           });
+
+          // 상태 변수에 저장
           setChatList(chatList);
-          // console.log(chatList);
         });
       }
     });
@@ -68,6 +77,7 @@ export const ChatList = () => {
           alignSelf="stretch"
           background="#FFFFFF"
         >
+          {/* 채팅 리스트 & 매칭 리스트가 있을 때 */}
           {chatList ? (
             machingList?.map((value, index) => (
               <Stack w={"100%"} key={index}>
@@ -94,14 +104,14 @@ export const ChatList = () => {
                         ? value.matching_sender.user_gender === "남"
                           ? "teal.500"
                           : "red.500"
-                        : value.matching_reciever.user_gender === "남"
+                        : value.matching_receiver.user_gender === "남"
                         ? "teal.500"
                         : "red.500"
                     }
                     src={
                       value.isSender
                         ? value.matching_sender.user_profile
-                        : value.matching_reciever.user_profile
+                        : value.matching_receiver.user_profile
                     }
                     size="lg"
                   />
@@ -138,7 +148,7 @@ export const ChatList = () => {
                           {getDisplayName(
                             value.isSender
                               ? value.matching_sender.user_name
-                              : value.matching_reciever.user_name
+                              : value.matching_receiver.user_name
                           )}
                         </Text>
                         <Text

@@ -7,17 +7,13 @@ import {
 } from "./Database";
 import { auth } from "../db/firebase_config";
 
-// matching data example
-export const demo_matching = {
-  matching_sender: "", // 매칭 신청자 uid
-  matching_receiver: "", //매칭 수락자 uid
-  matching_state: 0, // 매칭 상태
-  matching_payment: "", // 매칭 결제 정보
-  timestamp: new Date(), // 현재 시각
-};
+/**
+ * @namespace Matching
+ */
 
 /** 신규 매칭을 생성합니다.(매칭 결제 완료 시 호출)
  * @function matching_add
+ * @memberof Matching
  * @param {object} data 추가할 데이터
  * @returns {string} doc id
  * @description doc 생성 확인 완료
@@ -35,6 +31,7 @@ export const matching_add = async (data) => {
 
 /** 기존 매칭의 data 정보를 수정합니다.
  * @function matching_set
+ * @memberof Matching
  * @param {string} doc_id 문서 번호
  * @param {object} data 추가할 데이터
  * @description doc 수정 확인 완료
@@ -45,6 +42,7 @@ export const matching_set = async (doc_id, data) => {
 
 /** 특정 문서의 매칭 정보를 조회합니다.
  * @function matching_get_item
+ * @memberof Matching
  * @param {string} doc_id 문서 번호
  * @returns {object} 문서의 데이터
  */
@@ -54,6 +52,7 @@ export const matching_get_item = async (doc_id) => {
 
 /** 본인의 모든 매칭을 조회합니다.
  * @function matching_get_list
+ * @memberof Matching
  * @param {int} type 본인이 매칭 신청자인지, 수신자인지 구분
  * @returns {array} 조회 된 메칭 리스트 반환
  * @description list 조회 동작 확인 완료
@@ -75,7 +74,7 @@ export const matching_get_list = async (type) => {
     // 본인이 매칭 수신자라면 -> 매칭 받은 사람의 uid로 매칭 검색
     matching_list = await get_doc_list(
       "matching",
-      "matching_reciever.user_id",
+      "matching_receiver.user_id",
       user_uid
     );
   }
@@ -85,6 +84,7 @@ export const matching_get_list = async (type) => {
 
 /** 매칭을 삭제합니다. (Danger)
  * @function matching_get_item
+ * @memberof Matching
  * @param {string} doc_id 문서 번호
  */
 export const matching_del = async (doc_id) => {

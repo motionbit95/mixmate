@@ -2,8 +2,13 @@ import { auth } from "../db/firebase_config";
 import { deg2rad } from "./API";
 import { db_update } from "./Database";
 
+/**
+ * @namespace User
+ */
+
 /** 선택된 페이지 번호를 반환합니다.
  * @function get_page_num
+ * @memberof User
  * @returns {number} 페이지 번호
  */
 export function get_page_num() {
@@ -14,6 +19,7 @@ export function get_page_num() {
 
 /** 패스워드 정책에 부합하는지 확인합니다.
  * @function check_password_valid
+ * @memberof User
  * @param {string} user_password 유저 패스워드
  * @returns {string} 에러 메세지
  */
@@ -36,6 +42,7 @@ export function check_password_valid(user_password) {
 
 /** 입력한 패스워드와 일치하는지 확인합니다.
  * @function compare_password
+ * @memberof User
  * @param {string} user_password 유저 패스워드
  * @param {string} confirm_password 패스워드 확인
  * @returns {boolean} 비밀번호 일치여부
@@ -47,6 +54,7 @@ export function compare_password(user_password, confirm_password) {
 
 /** 회원가입 step1에서 모든 필드에 데이터가 존재하는지 확인합니다.
  * @function step1_confirm_blank
+ * @memberof User
  * @param {string} user_profile 유저 프로필 이미지
  * @param {string} user_name 유저 실명
  * @param {string} user_email 유저의 아이디
@@ -73,6 +81,7 @@ export function step1_confirm_blank(
 
 /** 회원가입 step1에서 모든 필드에 데이터가 존재하는지 확인합니다.
  * @function step2_confirm_blank
+ * @memberof User
  * @param {string} user_price 부수입으로 받고 싶은 식사권 금액
  * @param {array} user_place 식사가능 동네
  * @param {array} user_food 좋아하는 음식
@@ -109,6 +118,7 @@ export function step2_confirm_blank(
 
 /** 기존 지역 배열에 tag 항목이 있는지 검색하고 없으면 추가합니다.
  * @function add_place_tag
+ * @memberof User
  * @param {array} array 기존 배열
  * @param {string} city 추가할 태그의 시
  * @param {string} district 추가할 태그의 군,구
@@ -132,6 +142,7 @@ export function add_place_tag(array, city, district) {
 
 /** 기존 음식 배열에 tag 항목이 있는지 검색하고 없으면 추가합니다.
  * @function add_food_tag
+ * @memberof User
  * @param {array} array 기존 배열
  * @param {string} food 추가할 태그(음식)
  * @returns {array} 태그 항목이 추가 된 배열 반환
@@ -152,6 +163,7 @@ export function add_food_tag(array, food) {
 
 /** 기존 배열에서 tag 항목을 삭제합니다.
  * @function del_tag
+ * @memberof User
  * @param {array} array 기존 배열
  * @param {string} tag 삭제할 태그("시,군/구,읍/면/동" 의 문자열로 구성)
  * @returns {array} 태그 항목이 삭제 된 배열 반환
@@ -165,6 +177,7 @@ export function del_tag(array, tag) {
 
 /** 다음은 나이를 5살 단위의 범위로 표시
  * @function display_age_range
+ * @memberof User
  * @param {int} age 실제 나이
  * @returns {string} 나이에 대해 5살 단위의 범위를 계산하고 해당 범위를 리턴합니다.
  */
@@ -178,6 +191,7 @@ export function display_age_range(age) {
 
 /** 위치 좌표를 가져오는 함수
  * @function get_update_location
+ * @memberof User
  * @param {string} doc_id 문서 id
  */
 export async function get_update_location(doc_id) {
@@ -213,7 +227,13 @@ export async function get_update_location(doc_id) {
   }
 }
 
-// 두 좌표 간의 거리 계산 함수
+/** 두 좌표간 거리 계산 함수
+ * @function calculateDistance
+ * @memberof User
+ * @param {object} coord1 좌표 1
+ * @param {object} coord2 좌표 2
+ * @returns {number} 두 좌표 사이의 거리를 km 단위로 반환
+ */
 export function calculateDistance(coord1, coord2) {
   const R = 6371; // 지구 반경 (단위: km)
   const dLat = deg2rad(coord2.latitude - coord1.latitude);

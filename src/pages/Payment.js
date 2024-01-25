@@ -65,7 +65,7 @@ export const Payment = () => {
 
   const { userInfo } = "";
   const price = location.state?.price * 10000;
-  const recieverUser = location.state?.reciever;
+  const receiverUser = location.state?.receiver;
   const [pay_method, setPayMethod] = useState("card");
 
   async function onClickPayment() {
@@ -123,13 +123,13 @@ export const Payment = () => {
         //   orderId: orderId,
         //   timestamp: null,
         //   sender: user.uid,
-        //   reciever: recieverUser.user_id,
+        //   receiver: receiverUser.user_id,
         //   lastmessage: "",
         // });
 
         // console.log({
         //   matching_sender: user.uid, // 매칭 신청자 (본인)
-        //   matching_reciever: recieverUser.user_id, // 현재 보고있는 페이지 유저(매칭 수신자)
+        //   matching_receiver: receiverUser.user_id, // 현재 보고있는 페이지 유저(매칭 수신자)
         //   matching_state: 0, // default 신청 상태
         //   matching_payment: orderId, // 결제 정보 id
         // });
@@ -139,14 +139,14 @@ export const Payment = () => {
           orderId: orderId,
           timestamp: new Date(),
           sender: userList[0],
-          reciever: recieverUser,
+          receiver: receiverUser,
           lastmessage: "",
         });
 
         // 매칭 정보 추가
         await matching_add({
           matching_sender: userList[0], // 매칭 신청자 (본인)
-          matching_reciever: recieverUser, // 현재 보고있는 페이지 유저(매칭 수신자)
+          matching_receiver: receiverUser, // 현재 보고있는 페이지 유저(매칭 수신자)
           matching_state: 0, // default 신청 상태
           matching_payment: orderId, // 결제 정보 id
         });

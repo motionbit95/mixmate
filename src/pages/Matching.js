@@ -136,7 +136,7 @@ export const Matching = () => {
                           navigate("/payment", {
                             state: {
                               price: data.user_price,
-                              reciever: data,
+                              receiver: data,
                             },
                           })
                         }
@@ -150,7 +150,7 @@ export const Matching = () => {
                           navigate("/payment", {
                             state: {
                               price: data.user_price,
-                              reciever: data,
+                              receiver: data,
                             },
                           })
                         }
@@ -327,7 +327,7 @@ export const Matching = () => {
                         navigate("/payment", {
                           state: {
                             price: data.user_price,
-                            reciever: data,
+                            receiver: data,
                           },
                         })
                       }
