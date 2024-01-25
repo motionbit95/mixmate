@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom";
 import { auth } from "../db/firebase_config";
 import { getDisplayName } from "../js/API";
 import { db_set, db_update } from "../js/Database";
+import { serverTimestamp } from "firebase/firestore";
 
 const Channel = ({ user = null }) => {
   const location = useLocation();
@@ -64,7 +65,7 @@ const Channel = ({ user = null }) => {
       // Add new message in Firestore
       messagesRef.add({
         text: trimmedMessage,
-        createdAt: new Date(),
+        createdAt: serverTimestamp(),
         uid,
         displayName,
         photoURL,
@@ -88,7 +89,7 @@ const Channel = ({ user = null }) => {
     <Box w={"100%"}>
       <TopHeader
         title={
-          auth.currentUser.uid === matchingInfo.matching_sender.user_id
+          auth.currentUser?.uid === matchingInfo.matching_sender.user_id
             ? getDisplayName(matchingInfo.matching_reciever.user_name)
             : getDisplayName(matchingInfo.matching_sender.user_name)
         }

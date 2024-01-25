@@ -49,14 +49,14 @@ export const Login = () => {
   const responseGoogle = async () => {
     // 구글 로그인 성공 시 처리 로직을 여기에 추가합니다.
     if (await signInGoogle()) {
-      console.log("구글 로그인 성공 : ", auth.currentUser.uid);
+      console.log("구글 로그인 성공 : ", auth.currentUser?.uid);
 
       // user_id 와 user.uid가 일치하는 문서 검색(가입이 된 유저인지)
 
       let userlist = await get_doc_list(
         "user",
         "user_id",
-        auth.currentUser.uid
+        auth.currentUser?.uid
       );
 
       console.log(userlist);

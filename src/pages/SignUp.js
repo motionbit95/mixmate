@@ -109,7 +109,7 @@ export const SignUp = () => {
       let userList = await get_doc_list(
         "user",
         "user_id",
-        auth.currentUser.uid
+        auth.currentUser?.uid
       );
       let uid = "";
       let docId = "";
@@ -122,7 +122,7 @@ export const SignUp = () => {
         //uid = await signInPassword(formData.user_email, formData.user_password);
         // 사용자의 uid 정보를 user_id로 저장
         // console.log("uid", uid);
-        await db_update("user", docId, { user_id: auth.currentUser.uid });
+        await db_update("user", docId, { user_id: auth.currentUser?.uid });
       } else {
         // console.log(await get_doc_list("user", "user_id", user.uid));
         docId = userList[0].doc_id;

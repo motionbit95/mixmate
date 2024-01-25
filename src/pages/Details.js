@@ -96,8 +96,8 @@ export const Details = () => {
     // 현재 로그인 한 고객의 계정을 가지고 옵니다.
     auth.onAuthStateChanged(async function (user) {
       if (user) {
-        console.log(user.uid);
-        let user_info = await get_doc_list("user", "user_id", user.uid);
+        console.log(user?.uid);
+        let user_info = await get_doc_list("user", "user_id", user?.uid);
         console.log(user_info[0]);
 
         if (user_info[0]) {

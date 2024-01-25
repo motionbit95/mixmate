@@ -68,7 +68,7 @@ export const signInPassword = async (email, password) => {
     .then(async (userCredential) => {
       // Signed in
       const user = userCredential.user;
-      uid = user.uid;
+      uid = user?.uid;
       // ...
     })
     .catch(async (error) => {

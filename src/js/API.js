@@ -113,6 +113,7 @@ const firestoreTimestamp = {
 
 // Firestore Timestamp를 JavaScript Date 객체로 변환하는 함수
 export function convertFirestoreTimestampToDate(timestamp) {
+  if (!timestamp) return new Date();
   const milliseconds =
     timestamp.seconds * 1000 + Math.floor(timestamp.nanoseconds / 1e6);
   return new Date(milliseconds);

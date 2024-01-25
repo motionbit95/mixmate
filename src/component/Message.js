@@ -22,7 +22,7 @@ const Message = ({
 }) => {
   const { user } = useAuthState(firebase.auth());
 
-  const isSender = user.uid === uid;
+  const isSender = user?.uid === uid;
 
   if (!text) return null;
 

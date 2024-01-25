@@ -71,7 +71,6 @@ export const Payment = () => {
   async function onClickPayment() {
     // 현재 회원 uid 가지고 오기
     auth.onAuthStateChanged(async function (user) {
-      let userList = await get_doc_list("user", "user_id", user.uid);
       /* 결제 메소드
       card : 신용카드
       bank : 계좌이체
@@ -90,6 +89,7 @@ export const Payment = () => {
       - cardCode, cardQuota, shopInterest, quotaInterest
       */
       if (user) {
+        let userList = await get_doc_list("user", "user_id", user?.uid);
         //# 여기에 결제 API 추가
         // 결제창 띄우기
         const orderId = uuidv4();

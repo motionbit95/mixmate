@@ -8,42 +8,41 @@ import HorizonLine from "../component/HorizontalLine";
 import { auth } from "../db/firebase_config";
 import { matching_get_list } from "../js/MatchingAPI";
 import { get_doc_data, get_doc_list } from "../js/Database";
-import {
-  Unix_timestamp,
-  compareTimestampWithCurrentTime,
-  getDisplayName,
-} from "../js/API";
+import { compareTimestampWithCurrentTime, getDisplayName } from "../js/API";
 
 export const ChatList = () => {
   const navigate = useNavigate();
   const [machingList, setMatchingList] = useState();
   const [chatList, setChatList] = useState();
-  const [userInfo, setUserInfo] = useState();
   useEffect(() => {
     getChatList();
   }, []);
 
   const getChatList = async () => {
     auth.onAuthStateChanged(async function (user) {
-      let userList = await get_doc_list("user", "user_id", user.uid);
-      setUserInfo(userList[0]);
+      if (user) {
+        let userList = await get_doc_list("user", "user_id", user?.uid);
 
-      let sender = await matching_get_list(0);
-      let receiver = await matching_get_list(1);
-      let total = [...sender, ...receiver];
-      setMatchingList(total);
-      let chatList = [];
-      total.forEach(async (element) => {
-        console.log("element", element);
-        let chat = await get_doc_data(
-          `messages-${element.matching_payment}`,
-          "chat_info"
-        );
-        console.log(chat);
-        chatList.push({ ...chat, isSender: user.uid === chat.sender.user_id });
-        setChatList(chatList);
-        console.log(chatList);
-      });
+        let sender = await matching_get_list(0);
+        let receiver = await matching_get_list(1);
+        let total = [...sender, ...receiver];
+        setMatchingList(total);
+        let chatList = [];
+        total.forEach(async (element) => {
+          console.log("element", element);
+          let chat = await get_doc_data(
+            `messages-${element.matching_payment}`,
+            "chat_info"
+          );
+          // console.log(chat);
+          chatList.push({
+            ...chat,
+            isSender: user?.uid === chat.sender.user_id,
+          });
+          setChatList(chatList);
+          // console.log(chatList);
+        });
+      }
     });
   };
   return (
@@ -68,9 +67,9 @@ export const ChatList = () => {
           alignSelf="stretch"
           background="#FFFFFF"
         >
-          {machingList?.length === chatList?.length &&
+          {chatList &&
             machingList?.map((value, index) => (
-              <Stack w={"100%"}>
+              <Stack w={"100%"} key={index}>
                 <Stack
                   onClick={() => {
                     navigate(`/chat/messages-${value.matching_payment}`, {
@@ -91,17 +90,17 @@ export const ChatList = () => {
                   <Avatar
                     bg={
                       value.isSender
-                        ? value.matching_reciever.user_gender === "남"
+                        ? value.matching_sender.user_gender === "남"
                           ? "teal.500"
                           : "red.500"
-                        : value.matching_sender.user_gender === "남"
+                        : value.matching_reciever.user_gender === "남"
                         ? "teal.500"
                         : "red.500"
                     }
                     src={
                       value.isSender
-                        ? value.matching_reciever.user_profile
-                        : value.matching_sender.user_profile
+                        ? value.matching_sender.user_profile
+                        : value.matching_reciever.user_profile
                     }
                     size="lg"
                   />
@@ -137,8 +136,8 @@ export const ChatList = () => {
                         >
                           {getDisplayName(
                             value.isSender
-                              ? value.matching_reciever.user_name
-                              : value.matching_sender.user_name
+                              ? value.matching_sender.user_name
+                              : value.matching_reciever.user_name
                           )}
                         </Text>
                         <Text

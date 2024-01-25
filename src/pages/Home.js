@@ -70,8 +70,8 @@ export const Home = () => {
   const updateUserInfo = async (_key, _value) => {
     // 1. 현재 로그인 된 고객의 uid로 고객 문서를 조회합니다.
     auth.onAuthStateChanged(async function (user) {
-      if (!userInfo) {
-        let userList = await get_doc_list("user", "user_id", user.uid);
+      if (user) {
+        let userList = await get_doc_list("user", "user_id", user?.uid);
         let userInfo = userList[0];
         setUserInfo(userInfo);
 
