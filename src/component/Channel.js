@@ -9,6 +9,7 @@ import { TopHeader } from "./TopHeader";
 import { useLocation } from "react-router-dom";
 import { auth } from "../db/firebase_config";
 import { getDisplayName } from "../js/API";
+import { db_set, db_update } from "../js/Database";
 
 const Channel = ({ user = null }) => {
   const location = useLocation();
@@ -55,7 +56,7 @@ const Channel = ({ user = null }) => {
     setNewMessage(e.target.value);
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
 
     const trimmedMessage = newMessage.trim();
@@ -63,7 +64,7 @@ const Channel = ({ user = null }) => {
       // Add new message in Firestore
       messagesRef.add({
         text: trimmedMessage,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        createdAt: new Date(),
         uid,
         displayName,
         photoURL,
@@ -74,6 +75,12 @@ const Channel = ({ user = null }) => {
       // Scroll down to the bottom of the list
       bottomListRef.current.scrollIntoView({ behavior: "smooth" });
     }
+
+    //# 채팅 정보 업데이트
+    await db_update(`messages-${chat_id}`, "chat_info", {
+      timestamp: new Date(),
+      lastmessage: trimmedMessage,
+    });
     scrollToBottom("chat-container");
   };
 

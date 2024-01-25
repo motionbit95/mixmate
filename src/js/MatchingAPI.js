@@ -1,4 +1,3 @@
-import { serverTimestamp } from "firebase/firestore";
 import {
   db_add,
   db_delete,
@@ -14,7 +13,7 @@ export const demo_matching = {
   matching_receiver: "", //매칭 수락자 uid
   matching_state: 0, // 매칭 상태
   matching_payment: "", // 매칭 결제 정보
-  timestamp: serverTimestamp(), // 현재 시각
+  timestamp: new Date(), // 현재 시각
 };
 
 /** 신규 매칭을 생성합니다.(매칭 결제 완료 시 호출)

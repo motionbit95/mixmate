@@ -352,17 +352,138 @@ export const Details = () => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                {sendList?.length === 0 && recieveList?.length === 0 ? (
+                {/* {sendList?.length === 0 && recieveList?.length === 0 ? (
                   <Center minH={"45vh"}>
                     <Text fontSize={"sm"} color={gray_600}>
                       매칭 신청 내역이 존재하지 않습니다.
                     </Text>
                   </Center>
-                ) : (
+                ) : 
+                ( */}
+                <Stack spacing={"4vh"}>
+                  {sendList?.map(
+                    (value, index) =>
+                      value.matching_state < 1 && (
+                        <Stack>
+                          <Text fontSize={"large"} fontWeight={"bold"}>
+                            {value.matching_state === 0
+                              ? "결제완료"
+                              : value.matching_state === 1
+                              ? "구매확정"
+                              : value.matching_state === 2
+                              ? "후기작성완료"
+                              : "구매취소"}
+                          </Text>
+                          <User data={value.matching_reciever} />
+                          {value.matching_state < 400 && (
+                            <HStack>
+                              <CustomButton
+                                onClick={() => {
+                                  if (value.matching_state === 0) {
+                                    navigate(
+                                      `/chat/${value.matching_payment}`,
+                                      {
+                                        state: {
+                                          chat_id: value.matching_payment,
+                                          data: value,
+                                        },
+                                      }
+                                    );
+                                  }
+                                }}
+                                text={
+                                  value.matching_state === 0
+                                    ? "채팅하기"
+                                    : value.matching_state === 1
+                                    ? "다시신청하기"
+                                    : ""
+                                }
+                              />
+                              <CustomButton
+                                code={theme_bright_color}
+                                onClick={() => {
+                                  if (value.matching_state === 0)
+                                    onClickCompleteMatching(value.matching_id);
+                                }}
+                                text={
+                                  value.matching_state === 0
+                                    ? "구매확정하기"
+                                    : value.matching_state === 1
+                                    ? "후기쓰기"
+                                    : ""
+                                }
+                              />
+                            </HStack>
+                          )}
+                          {/* <HorizonLine /> */}
+                        </Stack>
+                      )
+                  )}
+                  {recieveList?.map(
+                    (value, index) =>
+                      value.matching_state < 1 && (
+                        <>
+                          <Text fontSize={"large"} fontWeight={"bold"}>
+                            {value.matching_state === 0
+                              ? "매칭신청"
+                              : value.matching_state === 1
+                              ? "매칭완료"
+                              : "매칭거절"}
+                          </Text>
+                          <User data={value.matching_sender} />
+                          {value.matching_state < 400 && (
+                            <HStack>
+                              <CustomButton
+                                onClick={() => {
+                                  if (value.matching_state === 0) {
+                                    navigate(
+                                      `/chat/${value.matching_payment}`,
+                                      {
+                                        state: {
+                                          chat_id: value.matching_payment,
+                                          data: value,
+                                        },
+                                      }
+                                    );
+                                  }
+                                }}
+                                text={
+                                  value.matching_state === 0 ? "채팅하기" : ""
+                                }
+                              />
+                              <CustomButton
+                                code={theme_bright_color}
+                                onClick={() => {
+                                  setMatchingId(value.matching_id);
+                                  onClickRefundMatching();
+                                }}
+                                text={
+                                  value.matching_state === 0 ? "거절하기" : ""
+                                }
+                              />
+                            </HStack>
+                          )}
+                          {/* <HorizonLine /> */}
+                        </>
+                      )
+                  )}
+                </Stack>
+                {/* )} */}
+              </TabPanel>
+              <TabPanel>
+                <>
+                  {/* {sendList?.length === 0 && recieveList?.length === 0 ? (
+                    <Center minH={"45vh"}>
+                      <Text fontSize={"sm"} color={gray_600}>
+                        매칭 신청 내역이 존재하지 않습니다.
+                      </Text>
+                    </Center>
+                  ) : 
+                  ( */}
                   <Stack>
                     {sendList?.map(
                       (value, index) =>
-                        value.matching_state < 1 && (
+                        value.matching_state > 0 && (
                           <>
                             <Text fontSize={"large"} fontWeight={"bold"}>
                               {value.matching_state === 0
@@ -374,47 +495,74 @@ export const Details = () => {
                                 : "구매취소"}
                             </Text>
                             <User data={value.matching_reciever} />
-                            {value.matching_state < 400 && (
+                            {value.matching_state < 3 && (
                               <HStack>
                                 <CustomButton
                                   onClick={() => {
-                                    if (value.matching_state === 0) {
-                                      navigate(
-                                        `/chat/${value.matching_payment}`,
-                                        {
-                                          state: {
-                                            chat_id: value.matching_payment,
-                                            data: value,
-                                          },
-                                        }
-                                      );
+                                    if (value.matching_state === 1) {
+                                      navigate("/matching", {
+                                        state: {
+                                          data: value.matching_reciever,
+                                        },
+                                      });
                                     }
                                   }}
                                   text={
                                     value.matching_state === 0
                                       ? "채팅하기"
-                                      : value.matching_state === 1
+                                      : value.matching_state === 1 ||
+                                        value.matching_state === 2
                                       ? "다시신청하기"
                                       : ""
                                   }
                                 />
                                 <CustomButton
                                   code={theme_bright_color}
+                                  disabled={value.matching_state > 1}
                                   onClick={() => {
                                     if (value.matching_state === 0)
                                       onClickCompleteMatching(
                                         value.matching_id
                                       );
+                                    if (value.matching_state === 1)
+                                      onClickReviewMatching(value);
                                   }}
                                   text={
                                     value.matching_state === 0
                                       ? "구매확정하기"
                                       : value.matching_state === 1
                                       ? "후기쓰기"
+                                      : value.matching_state === 2
+                                      ? "후기작성완료"
                                       : ""
                                   }
                                 />
                               </HStack>
+                            )}
+                            {value.matching_state === 2 && (
+                              <Stack
+                                fontSize={"sm"}
+                                w="100%"
+                                bgColor={gray_100}
+                                p="2vh"
+                                borderRadius={"8px"}
+                              >
+                                <HStack alignItems={"center"}>
+                                  <Icon
+                                    as={BsFillStarFill}
+                                    boxSize={"24px"}
+                                    color={"yellow.400"}
+                                  />
+                                  <Text fontSize={"lg"} fontWeight={"bold"}>
+                                    {value.matching_review?.review_score.toFixed(
+                                      1
+                                    )}
+                                  </Text>
+                                </HStack>
+                                <Text>
+                                  {value.matching_review?.review_comment}
+                                </Text>
+                              </Stack>
                             )}
                             <HorizonLine />
                           </>
@@ -422,7 +570,7 @@ export const Details = () => {
                     )}
                     {recieveList?.map(
                       (value, index) =>
-                        value.matching_state < 1 && (
+                        value.matching_state > 0 && (
                           <>
                             <Text fontSize={"large"} fontWeight={"bold"}>
                               {value.matching_state === 0
@@ -432,196 +580,43 @@ export const Details = () => {
                                 : "매칭거절"}
                             </Text>
                             <User data={value.matching_sender} />
-                            {value.matching_state < 400 && (
+                            {value.matching_state < 400 ? (
                               <HStack>
                                 <CustomButton
-                                  onClick={() => {
-                                    if (value.matching_state === 0) {
-                                      navigate(
-                                        `/chat/${value.matching_payment}`,
-                                        {
-                                          state: {
-                                            chat_id: value.matching_payment,
-                                            data: value,
-                                          },
-                                        }
-                                      );
-                                    }
-                                  }}
+                                  onClick={() =>
+                                    console.log(value.matching_state)
+                                  }
                                   text={
                                     value.matching_state === 0 ? "채팅하기" : ""
                                   }
                                 />
                                 <CustomButton
                                   code={theme_bright_color}
-                                  onClick={() => {
-                                    setMatchingId(value.matching_id);
-                                    onClickRefundMatching();
-                                  }}
+                                  onClick={() =>
+                                    setMatchingId(value.matching_id)
+                                  }
                                   text={
                                     value.matching_state === 0 ? "거절하기" : ""
                                   }
                                 />
                               </HStack>
+                            ) : (
+                              <Text
+                                fontSize={"sm"}
+                                w="100%"
+                                bgColor={gray_100}
+                                p="2vh"
+                                borderRadius={"8px"}
+                              >
+                                매칭 거절 이유 : {value.matching_refund_message}
+                              </Text>
                             )}
                             <HorizonLine />
                           </>
                         )
                     )}
                   </Stack>
-                )}
-              </TabPanel>
-              <TabPanel>
-                <>
-                  {sendList?.length === 0 && recieveList?.length === 0 ? (
-                    <Center minH={"45vh"}>
-                      <Text fontSize={"sm"} color={gray_600}>
-                        매칭 신청 내역이 존재하지 않습니다.
-                      </Text>
-                    </Center>
-                  ) : (
-                    <Stack>
-                      {sendList?.map(
-                        (value, index) =>
-                          value.matching_state > 0 && (
-                            <>
-                              <Text fontSize={"large"} fontWeight={"bold"}>
-                                {value.matching_state === 0
-                                  ? "결제완료"
-                                  : value.matching_state === 1
-                                  ? "구매확정"
-                                  : value.matching_state === 2
-                                  ? "후기작성완료"
-                                  : "구매취소"}
-                              </Text>
-                              <User data={value.matching_reciever} />
-                              {value.matching_state < 3 && (
-                                <HStack>
-                                  <CustomButton
-                                    onClick={() => {
-                                      if (value.matching_state === 1) {
-                                        navigate("/matching", {
-                                          state: {
-                                            data: value.matching_reciever,
-                                          },
-                                        });
-                                      }
-                                    }}
-                                    text={
-                                      value.matching_state === 0
-                                        ? "채팅하기"
-                                        : value.matching_state === 1 ||
-                                          value.matching_state === 2
-                                        ? "다시신청하기"
-                                        : ""
-                                    }
-                                  />
-                                  <CustomButton
-                                    code={theme_bright_color}
-                                    disabled={value.matching_state > 1}
-                                    onClick={() => {
-                                      if (value.matching_state === 0)
-                                        onClickCompleteMatching(
-                                          value.matching_id
-                                        );
-                                      if (value.matching_state === 1)
-                                        onClickReviewMatching(value);
-                                    }}
-                                    text={
-                                      value.matching_state === 0
-                                        ? "구매확정하기"
-                                        : value.matching_state === 1
-                                        ? "후기쓰기"
-                                        : value.matching_state === 2
-                                        ? "후기작성완료"
-                                        : ""
-                                    }
-                                  />
-                                </HStack>
-                              )}
-                              {value.matching_state === 2 && (
-                                <Stack
-                                  fontSize={"sm"}
-                                  w="100%"
-                                  bgColor={gray_100}
-                                  p="2vh"
-                                  borderRadius={"8px"}
-                                >
-                                  <HStack alignItems={"center"}>
-                                    <Icon
-                                      as={BsFillStarFill}
-                                      boxSize={"24px"}
-                                      color={"yellow.400"}
-                                    />
-                                    <Text fontSize={"lg"} fontWeight={"bold"}>
-                                      {value.matching_review?.review_score.toFixed(
-                                        1
-                                      )}
-                                    </Text>
-                                  </HStack>
-                                  <Text>
-                                    {value.matching_review?.review_comment}
-                                  </Text>
-                                </Stack>
-                              )}
-                              <HorizonLine />
-                            </>
-                          )
-                      )}
-                      {recieveList?.map(
-                        (value, index) =>
-                          value.matching_state > 0 && (
-                            <>
-                              <Text fontSize={"large"} fontWeight={"bold"}>
-                                {value.matching_state === 0
-                                  ? "매칭신청"
-                                  : value.matching_state === 1
-                                  ? "매칭완료"
-                                  : "매칭거절"}
-                              </Text>
-                              <User data={value.matching_sender} />
-                              {value.matching_state < 400 ? (
-                                <HStack>
-                                  <CustomButton
-                                    onClick={() =>
-                                      console.log(value.matching_state)
-                                    }
-                                    text={
-                                      value.matching_state === 0
-                                        ? "채팅하기"
-                                        : ""
-                                    }
-                                  />
-                                  <CustomButton
-                                    code={theme_bright_color}
-                                    onClick={() =>
-                                      setMatchingId(value.matching_id)
-                                    }
-                                    text={
-                                      value.matching_state === 0
-                                        ? "거절하기"
-                                        : ""
-                                    }
-                                  />
-                                </HStack>
-                              ) : (
-                                <Text
-                                  fontSize={"sm"}
-                                  w="100%"
-                                  bgColor={gray_100}
-                                  p="2vh"
-                                  borderRadius={"8px"}
-                                >
-                                  매칭 거절 이유 :{" "}
-                                  {value.matching_refund_message}
-                                </Text>
-                              )}
-                              <HorizonLine />
-                            </>
-                          )
-                      )}
-                    </Stack>
-                  )}
+                  {/* )} */}
                 </>
               </TabPanel>
             </TabPanels>

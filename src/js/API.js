@@ -1,3 +1,4 @@
+import { serverTimestamp } from "firebase/firestore";
 import { white } from "../App";
 
 /**
@@ -102,4 +103,44 @@ export function formatCurrency(number, currencyCode = "KRW") {
   }).format(number);
 
   return formattedNumber;
+}
+
+// Firestore에서 가져온 timestamp
+const firestoreTimestamp = {
+  seconds: 1706123143,
+  nanoseconds: 515000000,
+};
+
+// Firestore Timestamp를 JavaScript Date 객체로 변환하는 함수
+export function convertFirestoreTimestampToDate(timestamp) {
+  const milliseconds =
+    timestamp.seconds * 1000 + Math.floor(timestamp.nanoseconds / 1e6);
+  return new Date(milliseconds);
+}
+
+// 현재 시간을 가져오는 함수
+export function getCurrentTime() {
+  return new Date();
+}
+
+// Firestore Timestamp를 현재 시간과 비교하는 함수
+export function compareTimestampWithCurrentTime(firestoreTimestamp) {
+  const firestoreDate = convertFirestoreTimestampToDate(firestoreTimestamp);
+  const currentDate = getCurrentTime();
+
+  // 두 날짜의 차이 계산 (밀리초 단위)
+  const timeDifference = currentDate - firestoreDate;
+
+  // 차이를 표시하는 문자열 생성
+  if (timeDifference < 60 * 1000) {
+    return `${Math.round(timeDifference / 1000)}초 전`;
+  } else if (timeDifference < 60 * 60 * 1000) {
+    return `${Math.round(timeDifference / (60 * 1000))}분 전`;
+  } else if (timeDifference < 24 * 60 * 60 * 1000) {
+    return `${Math.round(timeDifference / (60 * 60 * 1000))}시간 전`;
+  } else {
+    // 다양한 형식으로 날짜 표시 가능
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return firestoreDate.toLocaleDateString("ko-Kr", options);
+  }
 }

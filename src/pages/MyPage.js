@@ -62,7 +62,7 @@ export const MyPage = () => {
       await db_delete("user", user.doc_id);
 
       logout();
-      navigate("login");
+      navigate("/login");
     }
   };
 

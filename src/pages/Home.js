@@ -191,9 +191,9 @@ export const Home = () => {
             >
               <HStack w={"100%"}>
                 <TextLogo h={"2vh"} />
-                {/* {userInfo && userInfo.user_location && (
+                {userInfo && userInfo.user_location && (
                   <TextAddress user={userInfo} />
-                )} */}
+                )}
               </HStack>
 
               <IconButton

@@ -16,20 +16,20 @@ export const HorizontalScrollBox = ({ title, model_list }) => {
     //component
     <Box w="100%">
       <HorizonLine />
-      <Box py={"4vw"} w="100%" bgColor={gray_300}>
+      <Box py={"4vh"} w="100%" bgColor={gray_300}>
         {model_list && (
           <Stack>
-            <Text mx={"4vw"} fontSize={"larger"} fontWeight={"bold"}>
+            <Text mx={"4vh"} fontSize={"larger"} fontWeight={"bold"}>
               {title}
             </Text>
 
             <Box
-              p={"4vw"}
+              p={"4vh"}
               className="scroll_view"
               overflowX={"scroll"}
               whiteSpace={"nowrap"}
             >
-              <Box display={"inline-flex"} gap={"2vw"} overflow={"visible"}>
+              <Box display={"inline-flex"} gap={"2vh"} overflow={"visible"}>
                 {/* 배열.map(() => ())*/}
                 {model_list.map(
                   (value, index) =>
@@ -38,11 +38,11 @@ export const HorizontalScrollBox = ({ title, model_list }) => {
                         boxShadow={`1px 1px 10px rgba(170, 170, 170, 0.5)`}
                         borderRadius={"16px"}
                         // w={"40%"}
-                        p={"2vw"}
+                        p={"2vh"}
                         bgColor={white}
                       >
                         <Stack
-                          p={"2vw"}
+                          p={"2vh"}
                           onClick={() => {
                             navigate("/matching", {
                               state: { data: value },

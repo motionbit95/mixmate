@@ -1,9 +1,18 @@
-import { Box } from "@chakra-ui/layout";
+import {
+  Box,
+  Center,
+  Container,
+  HStack,
+  VStack,
+  Text,
+} from "@chakra-ui/layout";
 import { useEffect } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { db_add, db_set } from "../js/Database";
+import { CustomButton } from "../component/Buttons";
 
 export const PayResult = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   useEffect(() => {
     getPayment();
@@ -66,5 +75,20 @@ export const PayResult = () => {
 
     await db_set("payment", jsonData.orderId, jsonData);
   }
-  return <Box>결과화면</Box>;
+  return (
+    <Container minH={"100vh"}>
+      <Center minH={"100vh"}>
+        <VStack>
+          <Text fontSize={"x-large"} fontWeight={"bold"}>
+            결제가 완료되었습니다.
+          </Text>
+          <CustomButton onClick={() => navigate("/")} text="홈으로 이동하기" />
+          <CustomButton
+            onClick={() => navigate("/details")}
+            text="신청내역으로 이동하기"
+          />
+        </VStack>
+      </Center>
+    </Container>
+  );
 };

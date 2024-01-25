@@ -43,7 +43,6 @@ import { Navbar } from "../component/Navbar";
 import axios from "axios";
 import { uuidv4 } from "@firebase/util";
 import { db_add, db_set, get_doc_list } from "../js/Database";
-import { serverTimestamp } from "@firebase/firestore";
 import { AppContext, _gCurrentUser } from "./Home";
 
 // head에 작성한 Kakao API 불러오기
@@ -54,10 +53,6 @@ export const Payment = () => {
 
   const clientId = "S2_af4543a0be4d49a98122e01ec2059a56";
   const secretKey = "9eb85607103646da9f9c02b128f2e5ee";
-
-  // 매칭 받을 테스트 계정 => motionbit.dev@gmail.com
-  //# local state 로 받아오도록 수정 예정
-  const test_uid = "6ANvpNStOsUj7kfehPPETnUhBHy2";
 
   const payMethod = [
     "kakaopay",
@@ -98,19 +93,19 @@ export const Payment = () => {
         //# 여기에 결제 API 추가
         // 결제창 띄우기
         const orderId = uuidv4();
-        // AUTHNICE.requestPay({
-        //   clientId: clientId,
-        //   appScheme: `nicepaysample://`,
-        //   method: pay_method,
-        //   orderId: orderId,
-        //   amount: price,
-        //   goodsName: "매칭 서비스 결제",
-        //   returnUrl: "http://localhost:3001/serverAuth",
-        //   fnError: function (result) {
-        //     console.log(result);
-        //     // alert("개발자확인용 : " + result.errorMsg + "");
-        //   },
-        // });
+        AUTHNICE.requestPay({
+          clientId: clientId,
+          appScheme: `nicepaysample://`,
+          method: pay_method,
+          orderId: orderId,
+          amount: price,
+          goodsName: "매칭 서비스 결제",
+          returnUrl: "http://localhost:3001/serverAuth",
+          fnError: function (result) {
+            console.log(result);
+            // alert("개발자확인용 : " + result.errorMsg + "");
+          },
+        });
 
         // navigate("/payresult", {
         //   state: {
@@ -142,7 +137,7 @@ export const Payment = () => {
         // 채팅 정보 추가
         await db_set(`messages-${orderId}`, "chat_info", {
           orderId: orderId,
-          timestamp: null,
+          timestamp: new Date(),
           sender: userList[0],
           reciever: recieverUser,
           lastmessage: "",

@@ -40,6 +40,7 @@ export const TextAddress = ({ user }) => {
   return (
     <HStack w={"100%"}>
       <IconButton
+        display={"none"}
         variant={"ghost"}
         icon={<MdLocationPin color={gray_700} size={"24px"} />}
         onClick={handleMapClick}

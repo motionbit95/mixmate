@@ -90,12 +90,12 @@ export const get_doc_data = async (col, doc_id) => {
   const docRef = doc(db, col, doc_id);
   const docSnap = await getDoc(docRef);
 
-  if (docSnap.exists()) {
-    console.log("Document data:", { ...docSnap.data(), doc_id: doc.id });
-  } else {
-    // docSnap.data() will be undefined in this case
-    console.log("No such document!");
-  }
+  // if (docSnap.exists()) {
+  //   console.log("Document data:", { ...docSnap.data(), doc_id: doc.id });
+  // } else {
+  //   // docSnap.data() will be undefined in this case
+  //   console.log("No such document!");
+  // }
 
   return docSnap.data();
 };
