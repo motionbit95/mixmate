@@ -27,12 +27,24 @@ import {
   Textarea,
   RadioGroup,
   Radio,
+  Center,
+  HStack,
 } from "@chakra-ui/react";
 import { MdChevronLeft } from "react-icons/md";
 import { BsStarFill, BsFillStarFill } from "react-icons/bs";
 import { TopHeader } from "../component/TopHeader";
 import HorizonLine from "../component/HorizontalLine";
-import { black, gray_300, gray_600, gray_800, gray_900, white } from "../App";
+import {
+  black,
+  gray_300,
+  gray_500,
+  gray_600,
+  gray_800,
+  gray_900,
+  theme_bright_color,
+  theme_primary_color,
+  white,
+} from "../App";
 import { useEffect, useState } from "react";
 import { auth } from "../db/firebase_config";
 import { arrange_distance, get_doc_list } from "../js/Database";
@@ -44,6 +56,9 @@ import {
 import { HorizontalScrollBox } from "../component/HorizontalScrollBox";
 import { useAuthState } from "../js/Hooks";
 import { Navbar } from "../component/Navbar";
+import { getSatuation } from "../js/API";
+import { User } from "../component/User";
+import { CustomButton } from "../component/Buttons";
 
 export const Details = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -59,6 +74,9 @@ export const Details = () => {
 
   // 테스트용 매칭 id 저장 변수
   const [test_matching_id, setMatchingId] = useState();
+
+  const [sendList, setSendList] = useState();
+  const [recieveList, setRecieveList] = useState();
 
   // 추천친구 리스트
   const [recommend, setRecommend] = useState();
@@ -91,6 +109,9 @@ export const Details = () => {
         let send_list = await matching_get_list(0);
         let receive_list = await matching_get_list(1);
         console.log("send_list", send_list, "recieve_list", receive_list);
+
+        setSendList(send_list);
+        setRecieveList(receive_list);
       }
     });
   }
@@ -220,21 +241,29 @@ export const Details = () => {
     );
   }
 
+  const get_user = async (userId) => {
+    console.log(userId);
+    // let user_info = await get_doc_list("user", "user_id", userId);
+    // return user_info[0];
+  };
+
   return (
-    <Container py={"50px"} px={0}>
+    <Container px={0}>
       {/* <Box>
         <Button>후기작성</Button>
         <Button>채팅하기</Button>
         <Button>다시신청하기</Button>
       </Box> */}
       <Stack
-        justify="flex-start"
+        justify="space-between"
         align="center"
         spacing="0px"
         overflow="hidden"
         // width="393px"
         maxWidth="100%"
         background={white}
+        minH={"100vh"}
+        py={"50px"}
       >
         <TopHeader title={"신청내역"} />
         <Stack
@@ -246,254 +275,91 @@ export const Details = () => {
           overflow="hidden"
           alignSelf="stretch"
         >
-          <Tabs w="100%">
+          <Tabs w="100%" colorScheme={getSatuation(theme_primary_color)}>
             <TabList>
               <Tab w={"100%"}>진행</Tab>
               <Tab w={"100%"}>종료</Tab>
             </TabList>
             <TabPanels>
               <TabPanel>
-                <Stack
-                  padding="10px"
-                  justify="flex-start"
-                  align="flex-start"
-                  spacing="10px"
-                  overflow="hidden"
-                  alignSelf="stretch"
-                  background={white}
-                >
-                  <Text
-                    lineHeight="1.56"
-                    fontWeight="bold"
-                    fontSize="18px"
-                    color={black}
-                    textAlign="center"
-                  >
-                    결제완료
-                  </Text>
-                  <Stack
-                    paddingY="10px"
-                    direction="row"
-                    justify="flex-start"
-                    align="center"
-                    spacing="20px"
-                    overflow="hidden"
-                    alignSelf="stretch"
-                  >
-                    <Avatar name="TA" src=" " size="lg" />
-                    <Stack
-                      justify="flex-start"
-                      align="flex-start"
-                      spacing="10px"
-                      overflow="hidden"
-                      height="78px"
-                      flex="1"
-                    >
-                      <Stack
-                        direction="row"
-                        justify="space-between"
-                        align="center"
-                        spacing="5px"
-                        overflow="hidden"
-                        height="19px"
-                        alignSelf="stretch"
-                      >
-                        <Stack
-                          direction="row"
-                          justify="flex-start"
-                          align="center"
-                          spacing="5px"
-                        >
-                          <Text
-                            fontWeight="bold"
-                            fontSize="16px"
-                            color={black}
-                            textAlign="center"
-                          >
-                            송*혁
-                          </Text>
-                          <Icon as={BsStarFill} />
-                          <Text
-                            fontWeight="medium"
-                            fontSize="16px"
-                            color={black}
-                            textAlign="center"
-                          >
-                            5.0
-                          </Text>
-                          <Text
-                            fontWeight="medium"
-                            fontSize="14px"
-                            color={gray_600}
-                            textAlign="center"
-                          >
-                            (169)
-                          </Text>
-                        </Stack>
-                        <Text
-                          fontWeight="medium"
-                          fontSize="14px"
-                          textAlign="center"
-                        >
-                          140m
+                {sendList?.length === 0 && recieveList?.length === 0 ? (
+                  <Center minH={"45vh"}>
+                    <Text fontSize={"sm"} color={gray_600}>
+                      매칭 신청 내역이 존재하지 않습니다.
+                    </Text>
+                  </Center>
+                ) : (
+                  <Stack>
+                    {sendList?.map((value, index) => (
+                      <>
+                        <Text fontSize={"large"} fontWeight={"bold"}>
+                          {value.matching_state === 0
+                            ? "결제완료"
+                            : value.matching_state === 1
+                            ? "구매확정"
+                            : "구매거절"}
                         </Text>
-                      </Stack>
-                      <Text
-                        lineHeight="1.42"
-                        fontWeight="medium"
-                        fontSize="12px"
-                        color={black}
-                        alignSelf="stretch"
-                      >
-                        나이 : 30~35세, 매칭 금액 : 2만원, 매칭 가능 동네 : 서울
-                        성북구, 역삼동 좋아하는 취미: 테니스, 골프
-                      </Text>
-                    </Stack>
-                  </Stack>
-                  <Stack
-                    direction="row"
-                    justify="flex-start"
-                    align="flex-start"
-                    spacing="10px"
-                    overflow="hidden"
-                    alignSelf="stretch"
-                    background={white}
-                  >
-                    <Button size="sm" height="32px" flex="1">
-                      채팅하기
-                    </Button>
-                    <Button
-                      onClick={onClickCompleteMatching}
-                      size="sm"
-                      colorScheme="blue"
-                      height="32px"
-                      flex="1"
-                    >
-                      구매확정하기
-                    </Button>
-                  </Stack>
-                </Stack>
-                <HorizonLine />
-                <Stack
-                  padding="10px"
-                  justify="flex-start"
-                  align="flex-start"
-                  spacing="10px"
-                  overflow="hidden"
-                  alignSelf="stretch"
-                  background={white}
-                >
-                  <Text
-                    lineHeight="1.56"
-                    fontWeight="bold"
-                    fontSize="18px"
-                    color={black}
-                    textAlign="center"
-                  >
-                    매칭신청
-                  </Text>
-                  <Stack
-                    paddingY="10px"
-                    direction="row"
-                    justify="flex-start"
-                    align="center"
-                    spacing="20px"
-                    overflow="hidden"
-                    alignSelf="stretch"
-                  >
-                    <Avatar name="TA" src=" " size="lg" />
-                    <Stack
-                      justify="flex-start"
-                      align="flex-start"
-                      spacing="10px"
-                      overflow="hidden"
-                      height="78px"
-                      flex="1"
-                    >
-                      <Stack
-                        direction="row"
-                        justify="space-between"
-                        align="center"
-                        spacing="5px"
-                        overflow="hidden"
-                        height="19px"
-                        alignSelf="stretch"
-                      >
-                        <Stack
-                          direction="row"
-                          justify="flex-start"
-                          align="center"
-                          spacing="5px"
-                        >
-                          <Text
-                            fontWeight="bold"
-                            fontSize="16px"
-                            color={black}
-                            textAlign="center"
-                          >
-                            송*혁
-                          </Text>
-                          <Icon as={BsStarFill} />
-                          <Text
-                            fontWeight="medium"
-                            fontSize="16px"
-                            color={black}
-                            textAlign="center"
-                          >
-                            5.0
-                          </Text>
-                          <Text
-                            fontWeight="medium"
-                            fontSize="14px"
-                            color={gray_600}
-                            textAlign="center"
-                          >
-                            (169)
-                          </Text>
-                        </Stack>
-                        <Text
-                          fontWeight="medium"
-                          fontSize="14px"
-                          textAlign="center"
-                        >
-                          140m
+                        <User data={value.matching_reciever} />
+                        {value.matching_state < 400 && (
+                          <HStack>
+                            <CustomButton
+                              onClick={() => console.log(value.matching_state)}
+                              text={
+                                value.matching_state === 0
+                                  ? "채팅하기"
+                                  : value.matching_state === 1
+                                  ? "다시신청하기"
+                                  : ""
+                              }
+                            />
+                            <CustomButton
+                              code={theme_bright_color}
+                              onClick={() => console.log(value.matching_state)}
+                              text={
+                                value.matching_state === 0
+                                  ? "구매확정하기"
+                                  : value.matching_state === 1
+                                  ? "후기쓰기"
+                                  : ""
+                              }
+                            />
+                          </HStack>
+                        )}
+                        <HorizonLine />
+                      </>
+                    ))}
+                    {recieveList?.map((value, index) => (
+                      <>
+                        <Text fontSize={"large"} fontWeight={"bold"}>
+                          {value.matching_state === 0
+                            ? "매칭신청"
+                            : value.matching_state === 1
+                            ? "매칭완료"
+                            : "매칭거절"}
                         </Text>
-                      </Stack>
-                      <Text
-                        lineHeight="1.42"
-                        fontWeight="medium"
-                        fontSize="12px"
-                        color={black}
-                        alignSelf="stretch"
-                      >
-                        나이 : 30~35세, 매칭 금액 : 2만원, 매칭 가능 동네 : 서울
-                        성북구, 역삼동 좋아하는 취미: 테니스, 골프
-                      </Text>
-                    </Stack>
+                        <User data={value.matching_sender} />
+                        {value.matching_state < 400 && (
+                          <HStack>
+                            <CustomButton
+                              onClick={() => console.log(value.matching_state)}
+                              text={
+                                value.matching_state === 0 ? "채팅하기" : ""
+                              }
+                            />
+                            <CustomButton
+                              code={theme_bright_color}
+                              onClick={() => console.log(value.matching_state)}
+                              text={
+                                value.matching_state === 0 ? "거절하기" : ""
+                              }
+                            />
+                          </HStack>
+                        )}
+                        <HorizonLine />
+                      </>
+                    ))}
                   </Stack>
-                  <Stack
-                    direction="row"
-                    justify="flex-start"
-                    align="flex-start"
-                    spacing="10px"
-                    overflow="hidden"
-                    alignSelf="stretch"
-                    background={white}
-                  >
-                    <Button size="sm" height="32px" flex="1">
-                      채팅하기
-                    </Button>
-                    <Button
-                      size="sm"
-                      colorScheme="blue"
-                      height="32px"
-                      flex="1"
-                      onClick={onClickRefundMatching}
-                    >
-                      거절하기
-                    </Button>
-                  </Stack>
-                </Stack>
+                )}
               </TabPanel>
               <TabPanel>
                 <Stack
@@ -1054,243 +920,10 @@ export const Details = () => {
               </TabPanel>
             </TabPanels>
           </Tabs>
-          <HorizonLine />
         </Stack>
-        <HorizonLine />
-        <HorizontalScrollBox title={"추천친구"} model_list={recommend} />
-        {/* <Stack
-          padding="20px"
-          justify="flex-start"
-          align="flex-start"
-          spacing="10px"
-          overflow="hidden"
-          alignSelf="stretch"
-          background={gray_300}
-        >
-          <Text
-            lineHeight="1.56"
-            fontWeight="bold"
-            fontSize="18px"
-            color={black}
-            textAlign="center"
-          >
-            추천친구
-          </Text>
-          <Stack
-            direction="row"
-            justify="flex-start"
-            align="flex-start"
-            spacing="10px"
-          >
-            <Stack
-              padding="10px"
-              borderRadius="10px"
-              justify="center"
-              align="flex-start"
-              spacing="20px"
-              overflow="hidden"
-              background={white}
-              boxShadow="0px 4px 10px 0px rgba(0, 0, 0, 0.25)"
-            >
-              <Avatar name="TA" src=" " />
-              <Stack
-                justify="flex-start"
-                align="flex-start"
-                spacing="10px"
-                overflow="hidden"
-                height="78px"
-              >
-                <Stack
-                  direction="row"
-                  justify="flex-start"
-                  align="center"
-                  spacing="5px"
-                  overflow="hidden"
-                  height="19px"
-                >
-                  <Stack
-                    direction="row"
-                    justify="flex-start"
-                    align="center"
-                    spacing="5px"
-                  >
-                    <Text
-                      fontWeight="bold"
-                      fontSize="16px"
-                      color={black}
-                      textAlign="center"
-                    >
-                      송*혁
-                    </Text>
-                    <Icon as={BsStarFill} />
-                    <Text
-                      fontWeight="medium"
-                      fontSize="16px"
-                      color={black}
-                      textAlign="center"
-                    >
-                      5.0
-                    </Text>
-                    <Text
-                      fontWeight="medium"
-                      fontSize="14px"
-                      color={gray_600}
-                      textAlign="center"
-                    >
-                      (169)
-                    </Text>
-                  </Stack>
-                </Stack>
-                <Text
-                  lineHeight="1.42"
-                  fontWeight="medium"
-                  fontSize="12px"
-                  color={black}
-                >
-                  나이 : 30~35세 매칭 금액 : 2만원
-                </Text>
-              </Stack>
-            </Stack>
-            <Stack
-              padding="10px"
-              borderRadius="10px"
-              justify="center"
-              align="flex-start"
-              spacing="20px"
-              overflow="hidden"
-              background={white}
-              boxShadow="0px 4px 10px 0px rgba(0, 0, 0, 0.25)"
-            >
-              <Avatar name="TA" src=" " />
-              <Stack
-                justify="flex-start"
-                align="flex-start"
-                spacing="10px"
-                overflow="hidden"
-                height="78px"
-              >
-                <Stack
-                  direction="row"
-                  justify="flex-start"
-                  align="center"
-                  spacing="5px"
-                  overflow="hidden"
-                  height="19px"
-                >
-                  <Stack
-                    direction="row"
-                    justify="flex-start"
-                    align="center"
-                    spacing="5px"
-                  >
-                    <Text
-                      fontWeight="bold"
-                      fontSize="16px"
-                      color={black}
-                      textAlign="center"
-                    >
-                      송*혁
-                    </Text>
-                    <Icon as={BsStarFill} />
-                    <Text
-                      fontWeight="medium"
-                      fontSize="16px"
-                      color={black}
-                      textAlign="center"
-                    >
-                      5.0
-                    </Text>
-                    <Text
-                      fontWeight="medium"
-                      fontSize="14px"
-                      color={gray_600}
-                      textAlign="center"
-                    >
-                      (169)
-                    </Text>
-                  </Stack>
-                </Stack>
-                <Text
-                  lineHeight="1.42"
-                  fontWeight="medium"
-                  fontSize="12px"
-                  color={black}
-                >
-                  나이 : 30~35세 매칭 금액 : 2만원
-                </Text>
-              </Stack>
-            </Stack>
-            <Stack
-              padding="10px"
-              borderRadius="10px"
-              justify="center"
-              align="flex-start"
-              spacing="20px"
-              overflow="hidden"
-              background={white}
-              boxShadow="0px 4px 10px 0px rgba(0, 0, 0, 0.25)"
-            >
-              <Avatar name="TA" src=" " />
-              <Stack
-                justify="flex-start"
-                align="flex-start"
-                spacing="10px"
-                overflow="hidden"
-                height="78px"
-              >
-                <Stack
-                  direction="row"
-                  justify="flex-start"
-                  align="center"
-                  spacing="5px"
-                  overflow="hidden"
-                  height="19px"
-                >
-                  <Stack
-                    direction="row"
-                    justify="flex-start"
-                    align="center"
-                    spacing="5px"
-                  >
-                    <Text
-                      fontWeight="bold"
-                      fontSize="16px"
-                      color={black}
-                      textAlign="center"
-                    >
-                      송*혁
-                    </Text>
-                    <Icon as={BsStarFill} />
-                    <Text
-                      fontWeight="medium"
-                      fontSize="16px"
-                      color={black}
-                      textAlign="center"
-                    >
-                      5.0
-                    </Text>
-                    <Text
-                      fontWeight="medium"
-                      fontSize="14px"
-                      color={gray_600}
-                      textAlign="center"
-                    >
-                      (169)
-                    </Text>
-                  </Stack>
-                </Stack>
-                <Text
-                  lineHeight="1.42"
-                  fontWeight="medium"
-                  fontSize="12px"
-                  color={black}
-                >
-                  나이 : 30~35세 매칭 금액 : 2만원
-                </Text>
-              </Stack>
-            </Stack>
-          </Stack>
-        </Stack> */}
+        <>
+          <HorizontalScrollBox title={"추천친구"} model_list={recommend} />
+        </>
       </Stack>
 
       <Navbar />

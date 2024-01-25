@@ -48,29 +48,27 @@ export const User = ({ data }) => {
           </Text>
         </Stack>
         <VStack>
-          {!window.location.pathname.includes("mypage") &&
-            !window.location.pathname.includes("matching") && (
-              <Text color={theme_primary_color}>
-                {isNaN(parseFloat(data.distance).toFixed(1))
-                  ? ""
-                  : parseFloat(data.distance).toFixed(1) + "km"}
-              </Text>
-            )}
-          {!window.location.pathname.includes("mypage") &&
-            !window.location.pathname.includes("matching") && (
-              <CustomButton
-                code={theme_bright_color}
-                w="100px"
-                text={data.user_type === "개인" ? "식사매칭" : "멘토매칭"}
-                onClick={() => {
-                  if (!window.location.pathname.includes("matching")) {
-                    navigate("/matching", {
-                      state: { data: data },
-                    });
-                  }
-                }}
-              />
-            )}
+          {window.location.pathname === "/" && (
+            <Text color={theme_primary_color}>
+              {isNaN(parseFloat(data.distance).toFixed(1))
+                ? ""
+                : parseFloat(data.distance).toFixed(1) + "km"}
+            </Text>
+          )}
+          {window.location.pathname === "/" && (
+            <CustomButton
+              code={theme_bright_color}
+              w="100px"
+              text={data.user_type === "개인" ? "식사매칭" : "멘토매칭"}
+              onClick={() => {
+                if (!window.location.pathname.includes("matching")) {
+                  navigate("/matching", {
+                    state: { data: data },
+                  });
+                }
+              }}
+            />
+          )}
         </VStack>
       </HStack>
     </Flex>

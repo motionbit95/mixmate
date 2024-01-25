@@ -23,6 +23,7 @@ import {
   gray_700,
   gray_800,
   gray_900,
+  theme_bright_color,
   theme_primary_color,
   white,
 } from "../App";
@@ -30,11 +31,12 @@ import { TopHeader } from "../component/TopHeader";
 import { User } from "../component/User";
 import { getSatuation } from "../js/API";
 import { Navbar } from "../component/Navbar";
+import { CustomButton } from "../component/Buttons";
 
 export const Matching = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const data = location.state?.data;
+  const data = location.state?.data; // 지금 보고있는 유저
 
   return (
     <Container py="50px" minH={"100vh"}>
@@ -125,18 +127,20 @@ export const Matching = () => {
                         식사권 금액에서 매칭 수수료를 제외한 금액이 정산됨.
                       </Text>
                     </Stack>
-                    <Button
-                      colorScheme={getSatuation(theme_primary_color)}
+                    <CustomButton
+                      code={theme_bright_color}
                       height="40px"
                       alignSelf="stretch"
                       onClick={() =>
                         navigate("/payment", {
-                          state: { price: data.user_price },
+                          state: {
+                            price: data.user_price,
+                            reciever: data,
+                          },
                         })
                       }
-                    >
-                      매칭 신청하기
-                    </Button>
+                      text={"매칭 신청하기"}
+                    />
                   </Stack>
                 </TabPanel>
                 <TabPanel px={0}>
@@ -299,19 +303,20 @@ export const Matching = () => {
                         감사합니다.
                       </Text>
                     </Stack>
-                    <Button
-                      my={"10px"}
-                      colorScheme={getSatuation(theme_primary_color)}
+                    <CustomButton
+                      code={theme_bright_color}
                       height="40px"
                       alignSelf="stretch"
                       onClick={() =>
                         navigate("/payment", {
-                          state: { price: data.user_price },
+                          state: {
+                            price: data.user_price,
+                            reciever: data,
+                          },
                         })
                       }
-                    >
-                      매칭 신청하기
-                    </Button>
+                      text={"매칭 신청하기"}
+                    />
                   </Stack>
                 </TabPanel>
               </TabPanels>

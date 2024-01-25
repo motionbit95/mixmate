@@ -55,7 +55,7 @@ export function setData(_state, _key, _value) {
  * @returns {string} 실명 맨 끝의 값을 *로 처리(3글자 초과는 2개 지움)
  */
 export function getDisplayName(name) {
-  if (name === "") return "";
+  if (name === "" || !name) return "";
 
   if (name.length > 3) return name.slice(0, -2) + "*";
   else return name.slice(0, -1) + "*";

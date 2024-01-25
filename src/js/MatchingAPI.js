@@ -67,12 +67,16 @@ export const matching_get_list = async (type) => {
   let matching_list = []; // 매칭 리스트
   if (type === 0) {
     // 본인이 매칭 신청자라면 -> 매칭 보낸 사람의 uid로 매칭 검색
-    matching_list = await get_doc_list("matching", "matching_sender", user_uid);
+    matching_list = await get_doc_list(
+      "matching",
+      "matching_sender.user_id",
+      user_uid
+    );
   } else {
     // 본인이 매칭 수신자라면 -> 매칭 받은 사람의 uid로 매칭 검색
     matching_list = await get_doc_list(
       "matching",
-      "matching_reciever",
+      "matching_reciever.user_id",
       user_uid
     );
   }

@@ -34,7 +34,7 @@ import {
   white,
 } from "../App";
 import { matching_add } from "../js/MatchingAPI";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { auth } from "../db/firebase_config";
 import { FullButton } from "../component/Buttons";
 import { formatCurrency, getSatuation } from "../js/API";
@@ -42,8 +42,9 @@ import { TopHeader } from "../component/TopHeader";
 import { Navbar } from "../component/Navbar";
 import axios from "axios";
 import { uuidv4 } from "@firebase/util";
-import { db_add, db_set } from "../js/Database";
+import { db_add, db_set, get_doc_list } from "../js/Database";
 import { serverTimestamp } from "@firebase/firestore";
+import { AppContext, _gCurrentUser } from "./Home";
 
 // head에 작성한 Kakao API 불러오기
 const { AUTHNICE, kakao } = window;
@@ -67,11 +68,15 @@ export const Payment = () => {
     "bank",
   ];
 
+  const { userInfo } = "";
   const price = location.state?.price * 10000;
+  const recieverUser = location.state?.reciever;
   const [pay_method, setPayMethod] = useState("card");
+
   async function onClickPayment() {
     // 현재 회원 uid 가지고 오기
     auth.onAuthStateChanged(async function (user) {
+      let userList = await get_doc_list("user", "user_id", user.uid);
       /* 결제 메소드
       card : 신용카드
       bank : 계좌이체
@@ -93,19 +98,19 @@ export const Payment = () => {
         //# 여기에 결제 API 추가
         // 결제창 띄우기
         const orderId = uuidv4();
-        AUTHNICE.requestPay({
-          clientId: clientId,
-          appScheme: `nicepaysample://`,
-          method: pay_method,
-          orderId: orderId,
-          amount: price,
-          goodsName: "매칭 서비스 결제",
-          returnUrl: "http://localhost:3001/serverAuth",
-          fnError: function (result) {
-            console.log(result);
-            // alert("개발자확인용 : " + result.errorMsg + "");
-          },
-        });
+        // AUTHNICE.requestPay({
+        //   clientId: clientId,
+        //   appScheme: `nicepaysample://`,
+        //   method: pay_method,
+        //   orderId: orderId,
+        //   amount: price,
+        //   goodsName: "매칭 서비스 결제",
+        //   returnUrl: "http://localhost:3001/serverAuth",
+        //   fnError: function (result) {
+        //     console.log(result);
+        //     // alert("개발자확인용 : " + result.errorMsg + "");
+        //   },
+        // });
 
         // navigate("/payresult", {
         //   state: {
@@ -119,21 +124,39 @@ export const Payment = () => {
         //   },
         // });
 
-        // await db_set(`messages-${orderId}`, "chat_info", {
+        // console.log({
         //   orderId: orderId,
-        //   timestamp: serverTimestamp(),
+        //   timestamp: null,
         //   sender: user.uid,
-        //   reciever: test_uid,
-        //   lastmessage: "마지막 메세지입니다.",
+        //   reciever: recieverUser.user_id,
+        //   lastmessage: "",
         // });
 
-        // // 매칭 정보 추가
-        // let matching_id = await matching_add({
+        // console.log({
         //   matching_sender: user.uid, // 매칭 신청자 (본인)
-        //   matching_reciever: test_uid, // 현재 보고있는 페이지 유저(매칭 수신자)
+        //   matching_reciever: recieverUser.user_id, // 현재 보고있는 페이지 유저(매칭 수신자)
         //   matching_state: 0, // default 신청 상태
         //   matching_payment: orderId, // 결제 정보 id
         // });
+
+        // 채팅 정보 추가
+        await db_set(`messages-${orderId}`, "chat_info", {
+          orderId: orderId,
+          timestamp: null,
+          sender: userList[0],
+          reciever: recieverUser,
+          lastmessage: "",
+        });
+
+        // 매칭 정보 추가
+        await matching_add({
+          matching_sender: userList[0], // 매칭 신청자 (본인)
+          matching_reciever: recieverUser, // 현재 보고있는 페이지 유저(매칭 수신자)
+          matching_state: 0, // default 신청 상태
+          matching_payment: orderId, // 결제 정보 id
+        });
+
+        // navigate("/");
       }
     });
   }
@@ -526,8 +549,9 @@ export const Payment = () => {
               </HStack>
 
               <FullButton
+                my={"2vh"}
+                code={theme_bright_color}
                 onClick={onClickPayment}
-                code={theme_primary_color}
                 text={`${formatCurrency(price)} 결제`}
               />
             </Stack>
