@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container } from "@chakra-ui/react";
+import { Button, Center, Container } from "@chakra-ui/react";
 import { TopHeader } from "../component/TopHeader";
 import { Stack, Avatar, Text } from "@chakra-ui/react";
 import { Navbar } from "../component/Navbar";
@@ -9,6 +9,7 @@ import { auth } from "../db/firebase_config";
 import { matching_get_list } from "../js/MatchingAPI";
 import { get_doc_data, get_doc_list } from "../js/Database";
 import { compareTimestampWithCurrentTime, getDisplayName } from "../js/API";
+import { gray_600 } from "../App";
 
 export const ChatList = () => {
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ export const ChatList = () => {
           alignSelf="stretch"
           background="#FFFFFF"
         >
-          {chatList &&
+          {chatList ? (
             machingList?.map((value, index) => (
               <Stack w={"100%"} key={index}>
                 <Stack
@@ -164,7 +165,20 @@ export const ChatList = () => {
                 </Stack>
                 <HorizonLine />
               </Stack>
-            ))}
+            ))
+          ) : (
+            <Center w={"100%"} minH={"80vh"}>
+              <Text
+                textAlign={"center"}
+                fontSize={"sm"}
+                whiteSpace={"pre-wrap"}
+                color={gray_600}
+                lineHeight={"4vh"}
+              >
+                {"매칭 신청을 하시면\n상대방과 자동으로 채팅방이 생성됩니다."}
+              </Text>
+            </Center>
+          )}
         </Stack>
       </Stack>
 

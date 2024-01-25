@@ -16,7 +16,7 @@ export const HorizontalScrollBox = ({ title, model_list }) => {
     //component
     <Box w="100%">
       <HorizonLine />
-      <Box py={"4vh"} w="100%" bgColor={gray_300}>
+      <Box py={"2vh"} w="100%" bgColor={gray_300}>
         {model_list && (
           <Stack>
             <Text mx={"4vh"} fontSize={"larger"} fontWeight={"bold"}>
@@ -24,7 +24,7 @@ export const HorizontalScrollBox = ({ title, model_list }) => {
             </Text>
 
             <Box
-              p={"4vh"}
+              p={"2vh"}
               className="scroll_view"
               overflowX={"scroll"}
               whiteSpace={"nowrap"}
