@@ -35,7 +35,7 @@ export const TextLogo = ({ ...props }) => {
 export const Logo = ({ ...props }) => {
   return (
     <Stack direction={props.direction} spacing={props.spacing}>
-      <Text fontSize={"xxx-large"} fontWeight={"black"} my={"8vh"}>
+      <Text fontSize={"xxx-large"} fontWeight={"black"} my={"4vh"}>
         {"식사회"}
       </Text>
       {/* <Image

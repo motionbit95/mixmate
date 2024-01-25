@@ -38,8 +38,17 @@ import {
 } from "../js/UserAPI";
 import { db_update } from "../js/Database";
 import { terms } from "../assets/terms";
-import { black, gray_500, gray_600, theme_primary_color, white } from "../App";
+import {
+  black,
+  gray_500,
+  gray_600,
+  theme_bright_color,
+  theme_primary_color,
+  white,
+} from "../App";
 import { getSatuation } from "../js/API";
+import { TopHeader } from "../component/TopHeader";
+import { CustomButton } from "../component/Buttons";
 
 export const Information = () => {
   const navigate = useNavigate();
@@ -447,8 +456,10 @@ export const Information = () => {
       display={"flex"}
       justifyContent={"center"}
       w={"100%"}
+      pt={"50px"}
       // alignItems={"center"}
     >
+      <TopHeader title={"회원정보"} />
       <Stack
         justify="flex-start"
         align="center"
@@ -466,7 +477,7 @@ export const Information = () => {
           flex="1"
           alignSelf="stretch"
           w={"100%"}
-          p={"4vh 2vh"}
+          p={"4vw"}
         >
           <Stack
             justify="flex-start"
@@ -590,9 +601,9 @@ export const Information = () => {
                   }
                 />
               </HStack>
-              {formData.user_type === "개인" && (
+              {formData.user_type === "사업 전문가" && (
                 <HStack justify="flex-start" align="center" w="100%">
-                  <Text w="100px">{"멘토 전문 분야"}</Text>
+                  <Text w="150px">{"멘토 전문 분야"}</Text>
                   <Input
                     type="text"
                     onChange={(e) =>
@@ -781,7 +792,7 @@ export const Information = () => {
                   fontWeight="regular"
                   fontSize="16px"
                   color={black}
-                  width="90px"
+                  width="100%"
                 >
                   식사권 부수입 정산 받을 계좌
                 </Text>
@@ -865,7 +876,7 @@ export const Information = () => {
                 <AlertDescription>{isValid.message}</AlertDescription>
               </Alert>
             )}
-            <Button
+            <CustomButton
               colorScheme={getSatuation(theme_primary_color)}
               height="40px"
               alignSelf="stretch"
@@ -923,11 +934,13 @@ export const Information = () => {
                   }
                 }
               }}
-            >
-              {window.location.pathname.includes("info")
-                ? "회원가입하기"
-                : "회원정보수정"}
-            </Button>
+              text={
+                window.location.pathname.includes("info")
+                  ? "회원가입하기"
+                  : "회원정보수정"
+              }
+              code={theme_bright_color}
+            />
           </Stack>
         </Stack>
       </Stack>
@@ -935,15 +948,15 @@ export const Information = () => {
       <Modal isCentered onClose={onClose} size={"md"} isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>이용약관</ModalHeader>
-          <ModalCloseButton />
+          <ModalHeader mt="50px">이용약관</ModalHeader>
+          <ModalCloseButton mt="50px" />
           <ModalBody>
             <Text fontSize={"small"} whiteSpace={"pre-wrap"}>
               {terms}
             </Text>
           </ModalBody>
           <ModalFooter>
-            <Button onClick={onClose}></Button>
+            <CustomButton onClick={onClose} text={"확인했습니다."} />
           </ModalFooter>
         </ModalContent>
       </Modal>

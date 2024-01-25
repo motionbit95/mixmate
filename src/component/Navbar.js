@@ -10,6 +10,7 @@ import { get_page_num } from "../js/UserAPI";
 import { theme_primary_color } from "../App";
 
 export const Navbar = () => {
+  const navigate = useNavigate();
   const page = get_page_num();
   return (
     <Box w="100%" className="nav">
@@ -31,7 +32,7 @@ export const Navbar = () => {
               overflow="hidden"
               flex="1"
               onClick={() => {
-                window.location.replace("/");
+                navigate("/");
               }}
             >
               <Icon
@@ -54,7 +55,7 @@ export const Navbar = () => {
               overflow="hidden"
               flex="1"
               onClick={() => {
-                window.location.replace("/details");
+                navigate("/details");
               }}
             >
               <Icon
@@ -77,7 +78,7 @@ export const Navbar = () => {
               overflow="hidden"
               flex="1"
               onClick={() => {
-                window.location.replace("/chat");
+                navigate("/chat");
               }}
             >
               <Icon
@@ -100,7 +101,7 @@ export const Navbar = () => {
               overflow="hidden"
               flex="1"
               onClick={() => {
-                window.location.replace("/mypage");
+                navigate("/mypage");
               }}
             >
               <Icon

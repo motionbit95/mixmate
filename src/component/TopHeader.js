@@ -32,7 +32,7 @@ export const TopHeader = ({ title }) => {
           >
             {title}
           </Text>
-          <Box height="26px"></Box>
+          <Box boxSize={"24px"}></Box>
         </Stack>
       </Container>
     </Stack>

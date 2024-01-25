@@ -35,7 +35,7 @@ import HorizonLine from "../component/HorizontalLine";
 import { black, gray_300, gray_600, gray_800, gray_900, white } from "../App";
 import { useEffect, useState } from "react";
 import { auth } from "../db/firebase_config";
-import { get_doc_list } from "../js/Database";
+import { arrange_distance, get_doc_list } from "../js/Database";
 import {
   matching_add,
   matching_get_list,
@@ -43,6 +43,7 @@ import {
 } from "../js/MatchingAPI";
 import { HorizontalScrollBox } from "../component/HorizontalScrollBox";
 import { useAuthState } from "../js/Hooks";
+import { Navbar } from "../component/Navbar";
 
 export const Details = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -59,18 +60,27 @@ export const Details = () => {
   // 테스트용 매칭 id 저장 변수
   const [test_matching_id, setMatchingId] = useState();
 
+  // 추천친구 리스트
+  const [recommend, setRecommend] = useState();
+
   useEffect(() => {
     console.log(user);
     get_matching_list();
-  });
+  }, []);
 
   async function get_matching_list() {
     // 현재 로그인 한 고객의 계정을 가지고 옵니다.
     auth.onAuthStateChanged(async function (user) {
       if (user) {
         console.log(user.uid);
-        let user_info = await get_doc_list("user", "user_id", user.uid)[0];
-        console.log(user_info);
+        let user_info = await get_doc_list("user", "user_id", user.uid);
+        console.log(user_info[0]);
+
+        if (user_info[0]) {
+          let array = await arrange_distance(user_info[0].user_location, "all");
+          console.log(array);
+          setRecommend(array);
+        }
 
         // uid를 저장합니다.
         if (!my_uid) {
@@ -117,7 +127,7 @@ export const Details = () => {
         justify="flex-start"
         align="center"
         spacing="40px"
-        width="393px"
+        // width="393px"
         maxWidth="100%"
       >
         <Text
@@ -211,12 +221,12 @@ export const Details = () => {
   }
 
   return (
-    <Container py={"50px"}>
-      <Box>
+    <Container py={"50px"} px={0}>
+      {/* <Box>
         <Button>후기작성</Button>
         <Button>채팅하기</Button>
         <Button>다시신청하기</Button>
-      </Box>
+      </Box> */}
       <Stack
         justify="flex-start"
         align="center"
@@ -1047,7 +1057,7 @@ export const Details = () => {
           <HorizonLine />
         </Stack>
         <HorizonLine />
-        <HorizontalScrollBox title={"추천친구"} />
+        <HorizontalScrollBox title={"추천친구"} model_list={recommend} />
         {/* <Stack
           padding="20px"
           justify="flex-start"
@@ -1282,6 +1292,8 @@ export const Details = () => {
           </Stack>
         </Stack> */}
       </Stack>
+
+      <Navbar />
 
       <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
         <ModalOverlay />

@@ -124,7 +124,7 @@ export const get_doc_list = async (col, property, value) => {
 
 /** 거리순 정렬
  * @function arrange_distance
- * @param {string} user_location 유저 위치
+ * @param {object} user_location 유저 위치
  * @param {string} user_type 유저 타입
  * @return {Array} 거리순 정렬을 한 목록 반환
  */
@@ -132,8 +132,10 @@ export async function arrange_distance(user_location, user_type) {
   // 현재 위치 좌표 (예시)
   const currentLocation = user_location;
 
-  const q = query(collection(db, "user"), where("user_type", "==", user_type));
-  const querySnapshot = await getDocs(q);
+  const q = query(collection(db, "user"));
+
+  const _q = query(collection(db, "user"), where("user_type", "==", user_type));
+  const querySnapshot = await getDocs(user_type === "all" ? q : _q);
   const places = [];
   // Firestore에서 데이터 가져오기 및 거리순 정렬
   querySnapshot.forEach((doc) => {

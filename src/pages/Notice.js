@@ -15,6 +15,7 @@ export const Notice = () => {
         // height="852px"
         maxWidth="100%"
         background={white}
+        minH={"100vh"}
       >
         <TopHeader title={"알림"} />
         <Stack

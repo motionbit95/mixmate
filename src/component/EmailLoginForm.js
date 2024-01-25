@@ -1,7 +1,7 @@
 import { Checkbox, FormControl, Input, Stack } from "@chakra-ui/react";
 import { FullButton } from "./Buttons";
 import { useState } from "react";
-import { theme_primary_color } from "../App";
+import { theme_bright_color, theme_primary_color } from "../App";
 import { getSatuation, setData } from "../js/API";
 import { signInPassword } from "../js/Auth";
 import { useNavigate } from "react-router-dom";
@@ -62,7 +62,7 @@ const EmailLoginForm = ({ ...props }) => {
           }
         }}
         text={"로그인하기"}
-        code={"orange.600"}
+        code={theme_bright_color}
       />
     </Stack>
   );

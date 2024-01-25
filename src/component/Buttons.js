@@ -17,6 +17,7 @@ function getBrightness(code) {
 export const TextButton = ({ text, ...props }) => {
   return (
     <Text
+      {...props}
       onClick={props.onClick}
       fontSize={"small"}
       color={"gray.500"}
@@ -31,8 +32,10 @@ export const CustomButton = ({ ...props }) => {
   const brightness = getBrightness(checkNull(props.code, "gray.100"));
   return (
     <Button
+      {...props}
+      borderRadius={"full"}
       w={checkNull(props.w, "100%")}
-      colorScheme={getSatuation(checkNull(props.code, "gray.100"))}
+      colorScheme={getSatuation(checkNull(props.code, "gray"))}
       color={brightness < 500 ? "black" : "white"}
       border={"1px solid"}
       borderColor={brightness < 300 ? "gray.300" : "white"}
@@ -46,7 +49,7 @@ export const CustomButton = ({ ...props }) => {
 
 export const FullButton = ({ ...props }) => {
   return (
-    <Flex>
+    <Flex w={"100%"}>
       <CustomButton {...props} w="100%" />
     </Flex>
   );

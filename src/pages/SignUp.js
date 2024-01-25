@@ -22,10 +22,17 @@ import {
   step1_confirm_blank,
 } from "../js/UserAPI";
 import { signUpPassword, signInPassword } from "../js/Auth";
-import { gray_300, theme_primary_color, white } from "../App";
+import {
+  gray_300,
+  theme_bright_color,
+  theme_primary_color,
+  white,
+} from "../App";
 import { useAuthState } from "../js/Hooks";
 import { auth } from "../db/firebase_config";
 import { getSatuation } from "../js/API";
+import { CustomButton, FullButton } from "../component/Buttons";
+import { TopHeader } from "../component/TopHeader";
 
 export const SignUp = () => {
   const navigate = useNavigate();
@@ -136,17 +143,9 @@ export const SignUp = () => {
 
   return (
     <Container>
+      <TopHeader title={"회원가입"} />
       {loading ? (
         <Box>
-          <Box
-            position={"fixed"}
-            left={0}
-            zIndex={9999}
-            bgColor={"black"}
-            opacity={0.2}
-            w="100vw"
-            h="100vh"
-          />
           <Center w="100vw" h="100vh" position={"fixed"} left={0}>
             <CircularProgress
               zIndex={9999}
@@ -190,14 +189,17 @@ export const SignUp = () => {
           flex="1"
           alignSelf="stretch"
         >
-          <Stack justify="flex-start" align="center" spacing="50px">
+          <Stack justify="flex-start" align="center" spacing="50px" w="100%">
             <VStack>
               <Avatar
-                name={formData.user_name}
+                // name={formData.user_name}
                 src={formData.user_profile}
                 size="2xl"
               />
-              <Button onClick={onClickProfileButton}>프로필 업로드</Button>
+              <CustomButton
+                text="프로필 업로드"
+                onClick={onClickProfileButton}
+              />
               <Input
                 display={"none"}
                 ref={profileRef}
@@ -280,8 +282,9 @@ export const SignUp = () => {
                 </Alert>
               )}
             </Stack>
-            <Button
-              colorScheme={getSatuation(theme_primary_color)}
+            <FullButton
+              code={theme_bright_color}
+              text={"본인인증하고 가입 완료하기"}
               width="313px"
               height="40px"
               maxWidth="100%"
@@ -300,9 +303,7 @@ export const SignUp = () => {
                   onClickApprove();
                 }
               }}
-            >
-              가입 완료하기
-            </Button>
+            />
           </Stack>
         </Stack>
       </Stack>

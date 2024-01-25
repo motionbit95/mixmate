@@ -24,7 +24,7 @@ import {
 import { BsStarFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { auth } from "../db/firebase_config";
-import { db_update, get_doc_list } from "../js/Database";
+import { db_delete, db_update, get_doc_list } from "../js/Database";
 import { TopHeader } from "../component/TopHeader";
 import { useNavigate } from "react-router-dom";
 import { display_age_range } from "../js/UserAPI";
@@ -35,6 +35,7 @@ import { black, gray_600, gray_800, gray_900, white } from "../App";
 import { logout } from "../js/Auth";
 import { User } from "../component/User";
 import { Navbar } from "../component/Navbar";
+import { CustomButton } from "../component/Buttons";
 
 export const MyPage = () => {
   const navigate = useNavigate();
@@ -55,6 +56,15 @@ export const MyPage = () => {
       });
     }
   });
+
+  const deleteUser = async () => {
+    if (window.confirm("정말 회원 탈퇴를 하시겠습니까?")) {
+      await db_delete("user", user.doc_id);
+
+      logout();
+      navigate("login");
+    }
+  };
 
   return (
     <Container py={"60px"} px={0} minH={"100vh"}>
@@ -166,6 +176,9 @@ export const MyPage = () => {
             fontSize="18px"
             color={black}
             textAlign="center"
+            onClick={() =>
+              window.location.replace("http://pf.kakao.com/_pRxoBG")
+            }
           >
             문의하기
           </Text>
@@ -179,21 +192,32 @@ export const MyPage = () => {
           >
             로그아웃
           </Text>
+          <HorizonLine />
+          <Text
+            fontWeight="semibold"
+            fontSize="18px"
+            color={black}
+            textAlign="center"
+            onClick={deleteUser}
+          >
+            탈퇴하기
+          </Text>
+          <HorizonLine />
 
           <Navbar />
 
           <Modal isCentered onClose={onClose} size={"md"} isOpen={isOpen}>
             <ModalOverlay />
-            <ModalContent pt={"50px"}>
-              <ModalHeader>이용약관</ModalHeader>
-              <ModalCloseButton mt={"50px"} />
+            <ModalContent>
+              <ModalHeader mt="50px">이용약관</ModalHeader>
+              <ModalCloseButton mt="50px" />
               <ModalBody>
                 <Text fontSize={"small"} whiteSpace={"pre-wrap"}>
                   {terms}
                 </Text>
               </ModalBody>
               <ModalFooter>
-                <Button onClick={onClose}></Button>
+                <CustomButton onClick={onClose} text={"확인했습니다."} />
               </ModalFooter>
             </ModalContent>
           </Modal>

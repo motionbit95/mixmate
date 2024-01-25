@@ -26,7 +26,14 @@ import { get_update_location } from "../js/UserAPI";
 import { auth } from "../db/firebase_config";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
-import { black, gray_200, gray_600, theme_primary_color } from "../App";
+import {
+  black,
+  gray_100,
+  gray_200,
+  gray_600,
+  theme_bright_color,
+  theme_primary_color,
+} from "../App";
 import { Navbar } from "../component/Navbar";
 import { TextLogo } from "../component/Logo";
 import { Footer } from "../component/Footer";
@@ -140,7 +147,7 @@ export const Home = () => {
           height: "auto",
           borderRadius: "10px",
           objectFit: "cover",
-          marginBottom: "40px",
+          // marginBottom: "40px"
         }}
       />
     </div>
@@ -164,7 +171,7 @@ export const Home = () => {
           <CustomButton
             w="90px"
             text={"더보기"}
-            code={theme_primary_color}
+            code={theme_bright_color}
             onClick={handleLoadMore}
           />
         )}
@@ -184,9 +191,9 @@ export const Home = () => {
             >
               <HStack w={"100%"}>
                 <TextLogo h={"2vh"} />
-                {userInfo && userInfo.user_location && (
+                {/* {userInfo && userInfo.user_location && (
                   <TextAddress user={userInfo} />
-                )}
+                )} */}
               </HStack>
 
               <IconButton
@@ -327,7 +334,7 @@ export const Home = () => {
                               </Text>
                             </Stack>
                           }
-                          bg={gray_200}
+                          bg={gray_100}
                           color={black}
                         >
                           <IconButton
@@ -401,7 +408,7 @@ export const Home = () => {
                               </Text>
                             </Stack>
                           }
-                          bg={gray_200}
+                          bg={gray_100}
                           color={black}
                         >
                           <IconButton
