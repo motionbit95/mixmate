@@ -17,9 +17,18 @@ import {
 import { CustomButton } from "./Buttons";
 import { useNavigate } from "react-router-dom";
 import { theme_bright_color, theme_primary_color } from "../App";
+import { useEffect } from "react";
+import { get_avg_user_score } from "../js/UserAPI";
 
 export const User = ({ data }) => {
   const navigate = useNavigate();
+  useEffect(() => {
+    get_avg_score();
+  }, []);
+
+  const get_avg_score = async () => {
+    let score = await get_avg_user_score(data.user_id);
+  };
   return (
     <Flex
       p={"1vh"}
@@ -45,12 +54,13 @@ export const User = ({ data }) => {
                 {getDisplayName(data.user_name)}
               </Text>
             </HStack>
-            <Text fontSize={"12px"}>
-              {`나이 : ${getDisplayAge(data.user_birth)}, 매칭 금액 : 
-            ${data.user_price}만원, 식사 가능 지역 : ${data.user_place}`}
+            <Text fontSize={"12px"} whiteSpace={"pre-wrap"}>
               {data.user_type === "개인"
+                ? `성별 :${data.user_gender}, 매칭 금액 : ${data.user_price}만원,\n식사 가능 동네 : ${data.user_place},\n좋아하는 음식 : ${data.user_food}`
+                : `성별 :${data.user_gender}, 매칭 금액 : ${data.user_price}만원,\코칭 가능 동네 : ${data.user_place},\n멘토 분야 : ${data.user_category}`}
+              {/* {data.user_type === "개인"
                 ? ""
-                : `, 멘토 전문 분야 : ${data.user_category}`}
+                : `, 멘토 전문 분야 : ${data.user_category}`} */}
             </Text>
           </Stack>
           <VStack>

@@ -685,7 +685,7 @@ export const Details = () => {
 
       <Navbar />
 
-      <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
+      <Modal isCentered onClose={onClose} size={"md"} isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader mt={"50px"}></ModalHeader>

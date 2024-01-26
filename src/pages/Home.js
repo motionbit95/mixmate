@@ -103,31 +103,13 @@ export const Home = () => {
     {
       label: "Image 1",
       alt: "image1",
-      url: require("../assets/banner.png"),
+      url: require("../assets/banner1.jpg"),
     },
 
     {
       label: "Image 2",
       alt: "image2",
-      url: require("../assets/banner.png"),
-    },
-
-    {
-      label: "Image 3",
-      alt: "image3",
-      url: require("../assets/banner.png"),
-    },
-
-    {
-      label: "Image 4",
-      alt: "image4",
-      url: require("../assets/banner.png"),
-    },
-
-    {
-      label: "Image 5",
-      alt: "image5",
-      url: require("../assets/banner.png"),
+      url: require("../assets/banner2.png"),
     },
   ];
 

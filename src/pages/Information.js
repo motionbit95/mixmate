@@ -685,7 +685,7 @@ export const Information = () => {
                       size="md"
                       colorScheme={getSatuation(theme_primary_color)}
                     >
-                      <TagLabel>{value.split(",")[1]}</TagLabel>
+                      <TagLabel>{value.split(" ")[1]}</TagLabel>
                       <TagCloseButton
                         onClick={() =>
                           setFormData({

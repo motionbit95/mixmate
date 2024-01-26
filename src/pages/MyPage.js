@@ -47,7 +47,7 @@ export const MyPage = () => {
       // 고객의 계정을 가지고 옵니다.
       auth.onAuthStateChanged(async function (user) {
         if (user) {
-          let user_info = await get_doc_list("user", "user_id", user.uid);
+          let user_info = await get_doc_list("user", "user_id", user?.uid);
           setUser(user_info[0]);
         } else {
           navigate("/login");

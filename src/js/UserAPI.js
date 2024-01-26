@@ -1,6 +1,6 @@
 import { auth } from "../db/firebase_config";
 import { deg2rad } from "./API";
-import { db_update } from "./Database";
+import { db_update, get_doc_list } from "./Database";
 
 /**
  * @namespace User
@@ -126,11 +126,11 @@ export function step2_confirm_blank(
  * @returns {array} 태그 항목이 추가 된 배열 반환
  */
 export function add_place_tag(array, city, district) {
-  if (array.length > 2) {
-    alert("식사가능 동네는 3개 까지 선택할 수 있습니다.");
+  if (array.length > 0) {
+    alert("식사가능 동네는 1개 까지 선택할 수 있습니다.");
   }
   let tag_list = array;
-  let str_place = city + "," + district;
+  let str_place = city + " " + district;
   // 배열에 항목이 존재하지 않으면 추가
   if (!tag_list.includes(str_place)) {
     tag_list.push(str_place);
@@ -148,8 +148,8 @@ export function add_place_tag(array, city, district) {
  * @returns {array} 태그 항목이 추가 된 배열 반환
  */
 export function add_food_tag(array, food) {
-  if (array.length > 2) {
-    alert("좋아하는 음식은 3개 까지 선택할 수 있습니다.");
+  if (array.length > 0) {
+    alert("좋아하는 음식은 1개 까지 선택할 수 있습니다.");
   }
   let tag_list = array;
   // 배열에 항목이 존재하지 않으면 추가
@@ -248,3 +248,13 @@ export function calculateDistance(coord1, coord2) {
   const distance = R * c;
   return distance;
 }
+
+/** 유저 후기 평점 계산
+ * @function get_avg_user_score
+ * @memberof User
+ * @param {string} user_id 유저 id
+ * @returns {number} 평균 계산
+ */
+export const get_avg_user_score = async (user_id) => {
+  console.log(user_id);
+};
