@@ -15,24 +15,19 @@ import {
 import { useNavigate } from "react-router-dom";
 import { upload_image } from "../js/Storage";
 import { useRef, useState } from "react";
-import { db_add, db_update, get_doc_data, get_doc_list } from "../js/Database";
+import { db_add, db_update, get_doc_list } from "../js/Database";
 import {
   check_password_valid,
   compare_password,
   step1_confirm_blank,
 } from "../js/UserAPI";
-import { signUpPassword, signInPassword } from "../js/Auth";
-import {
-  gray_300,
-  theme_bright_color,
-  theme_primary_color,
-  white,
-} from "../App";
+import { signUpPassword } from "../js/Auth";
+import { gray_300, theme_bright_color, white } from "../App";
 import { useAuthState } from "../js/Hooks";
 import { auth } from "../db/firebase_config";
-import { getSatuation } from "../js/API";
 import { CustomButton, FullButton } from "../component/Buttons";
 import { TopHeader } from "../component/TopHeader";
+import axios from "axios";
 
 export const SignUp = () => {
   const navigate = useNavigate();
@@ -87,6 +82,8 @@ export const SignUp = () => {
 
   // 본인인증 버튼 눌렀을 때 수행
   const onClickApprove = async () => {
+    //# 여기에 휴대폰 인증(API) 추가
+
     if (!isValid.state) return;
     setLoading(true);
 
@@ -134,10 +131,23 @@ export const SignUp = () => {
 
       setLoading(false);
 
-      //# 여기에 휴대폰 인증(API) 추가
-
       // 페이지 이동
       navigate("/info", { state: { user_id: docId } });
+    }
+  };
+
+  const req_up_hash = async () => {
+    try {
+      // Axios를 사용하여 서버에 POST 요청 보내기
+      const response = await axios.post("http://localhost:3001/api/postData", {
+        user_id: "test1234",
+      });
+
+      // 서버로부터 받은 응답 로그
+      console.log("서버 응답:", response.data);
+    } catch (error) {
+      // 오류 처리
+      console.error("서버 요청 오류:", error.message);
     }
   };
 
@@ -192,7 +202,6 @@ export const SignUp = () => {
           <Stack justify="flex-start" align="center" spacing="50px" w="100%">
             <VStack>
               <Avatar
-                bg={formData.user_gender === "남" ? "teal.500" : "red.500"}
                 // name={formData.user_name}
                 src={formData.user_profile}
                 size="2xl"
@@ -290,6 +299,9 @@ export const SignUp = () => {
               height="40px"
               maxWidth="100%"
               onClick={() => {
+                // 테스트 코드
+                req_up_hash();
+
                 let ret = step1_confirm_blank(
                   formData.user_profile,
                   formData.user_name,

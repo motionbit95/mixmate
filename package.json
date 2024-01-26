@@ -22,6 +22,7 @@
     "gh-pages": "^6.1.1",
     "got": "^11.8.2",
     "http-errors": "~1.6.3",
+    "http-proxy-middleware": "^2.0.6",
     "jsdoc": "^4.0.2",
     "morgan": "~1.9.1",
     "react": "^18.2.0",
