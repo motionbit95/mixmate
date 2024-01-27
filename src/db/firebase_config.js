@@ -35,13 +35,15 @@ const firebaseConfig = {
 
 // Initialize Firebase
 // 초기화 되어있는 경우 기존 app을 사용하도록 코드 수정
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+export const firebaseApp = !getApps().length
+  ? initializeApp(firebaseConfig)
+  : getApp();
 
 export const auth = getAuth();
 
 // Initialize Cloud Firestore and get a reference to the service
-export const db = getFirestore(app);
+export const db = getFirestore(firebaseApp);
 
 // firebase의 firestore 인스턴스를 변수에 저장
-export const storage = getStorage(app);
+export const storage = getStorage(firebaseApp);
 // const analytics = getAnalytics(app);

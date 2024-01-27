@@ -11,6 +11,11 @@ import {
   Alert,
   AlertIcon,
   AlertDescription,
+  FormControl,
+  FormLabel,
+  HStack,
+  Flex,
+  Text,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { upload_image } from "../js/Storage";
@@ -22,12 +27,113 @@ import {
   step1_confirm_blank,
 } from "../js/UserAPI";
 import { signUpPassword } from "../js/Auth";
-import { gray_300, theme_bright_color, white } from "../App";
+import {
+  gray_100,
+  gray_300,
+  theme_bright_color,
+  theme_primary_color,
+  white,
+} from "../App";
 import { useAuthState } from "../js/Hooks";
 import { auth } from "../db/firebase_config";
 import { CustomButton, FullButton } from "../component/Buttons";
 import { TopHeader } from "../component/TopHeader";
 import axios from "axios";
+import { format } from "date-fns";
+import firebase from "firebase/compat/app";
+import { CheckCircleIcon } from "@chakra-ui/icons";
+import { isAdult } from "../js/API";
+
+export const PhoneCert = ({ ...props }) => {
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
+  const [confirmationResult, setConfirmationResult] = useState(null);
+  const [verificationResult, setVerificationResult] = useState("");
+  const [confirm, setConfirm] = useState(false);
+
+  const sendOTP = async () => {
+    const req_number = "+82" + phoneNumber.substring(1).replace("-", "");
+
+    try {
+      const appVerifier = new firebase.auth.RecaptchaVerifier(
+        "recaptcha-container",
+        {
+          size: "invisible",
+        }
+      );
+      console.log(1);
+
+      const confirmation = await firebase
+        .auth()
+        .signInWithPhoneNumber(req_number, appVerifier);
+      setConfirmationResult(confirmation);
+      setVerificationResult("인증 코드가 전송되었습니다.");
+      console.log(2);
+    } catch (error) {
+      console.error("인증 코드 전송 실패:", error.message);
+    }
+  };
+
+  const verifyOTP = async () => {
+    try {
+      const result = await confirmationResult.confirm(verificationCode);
+      console.log("휴대폰 번호 인증 성공", result.user);
+      setVerificationResult("휴대폰 번호가 인증되었습니다.");
+      setConfirm(true);
+      props.onConfirm(phoneNumber);
+    } catch (error) {
+      console.error("휴대폰 번호 인증 실패:", error.message);
+      setVerificationResult("휴대폰 번호 인증 실패");
+      setConfirm(false);
+    }
+  };
+
+  return (
+    <Stack w={"100%"}>
+      <FormControl>
+        {/* <FormLabel>휴대폰 번호:</FormLabel> */}
+        <HStack>
+          <Input
+            isDisabled={confirm}
+            type="tel"
+            id="phoneNumber"
+            value={phoneNumber.replace("-", "")}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            placeholder="휴대폰번호"
+            maxLength={11}
+            _disabled={{ bgColor: gray_100 }}
+          />
+          <Button
+            w="50%"
+            onClick={sendOTP}
+            rightIcon={confirm ? <CheckCircleIcon color={"green.500"} /> : null}
+          >
+            {confirm ? "인증 완료" : "인증 코드 전송"}
+          </Button>
+        </HStack>
+      </FormControl>
+      {verificationResult === "인증 코드가 전송되었습니다." && (
+        <FormControl>
+          {/* <FormLabel>인증코드 :</FormLabel> */}
+          <HStack>
+            <Input
+              type="text"
+              id="verificationCode"
+              value={verificationCode}
+              onChange={(e) => setVerificationCode(e.target.value)}
+              placeholder="인증코드 입력"
+            />
+            <Button w="50%" onClick={verifyOTP}>
+              인증 코드 확인
+            </Button>
+          </HStack>
+        </FormControl>
+      )}
+      <div id="recaptcha-container"></div>
+      {/* <p>{verificationResult}</p> */}
+    </Stack>
+  );
+};
 
 export const SignUp = () => {
   const navigate = useNavigate();
@@ -44,6 +150,8 @@ export const SignUp = () => {
     user_email: user?.email,
     user_name: user?.displayName,
     user_password: "",
+    user_phone: "",
+    user_birth: "",
   });
 
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -136,15 +244,22 @@ export const SignUp = () => {
     }
   };
 
-  const req_up_hash = async () => {
+  const kcp_cert_open = async () => {
     try {
       // Axios를 사용하여 서버에 POST 요청 보내기
       const response = await axios.post("http://localhost:3001/api/postData", {
         user_id: "test1234",
       });
 
-      // 서버로부터 받은 응답 로그
-      console.log("서버 응답:", response.data);
+      if (response) {
+        // 서버로부터 받은 응답 로그
+        console.log("서버 응답:", response.data);
+        const data = response.data;
+        const res = await axios.post(
+          "http://localhost:3001/api/requireCert",
+          data
+        );
+      }
     } catch (error) {
       // 오류 처리
       console.error("서버 요청 오류:", error.message);
@@ -285,6 +400,32 @@ export const SignUp = () => {
                   }
                 }}
               />
+
+              {/* 테스트코드 */}
+              <PhoneCert
+                onConfirm={(phone) =>
+                  setFormData({ ...formData, user_phone: phone })
+                }
+              />
+              <HStack w={"100%"}>
+                <Input
+                  type="number"
+                  maxLength={8}
+                  placeholder="생년월일(YYYYMMDD)"
+                  onChange={(e) =>
+                    setFormData({ ...formData, user_birth: e.target.value })
+                  }
+                />
+                {/* <Button
+                  onClick={() =>
+                    console.log(
+                      isAdult(formData.user_birth) ? "성인" : "미성년자"
+                    )
+                  }
+                >
+                  확인
+                </Button> */}
+              </HStack>
               {isValid.message === "" ? null : (
                 <Alert fontSize={"small"} status="error">
                   <AlertIcon />
@@ -294,19 +435,21 @@ export const SignUp = () => {
             </Stack>
             <FullButton
               code={theme_bright_color}
-              text={"본인인증하고 가입 완료하기"}
+              text={"회원가입 완료"}
               width="313px"
               height="40px"
               maxWidth="100%"
               onClick={() => {
                 // 테스트 코드
-                req_up_hash();
+                // kcp_cert_open();
 
                 let ret = step1_confirm_blank(
                   formData.user_profile,
                   formData.user_name,
                   formData.user_email,
                   formData.user_password,
+                  formData.user_phone,
+                  formData.user_birth,
                   confirmPassword
                 );
 

@@ -7,8 +7,12 @@ var cors = require("cors");
 const bodyParser = require("body-parser");
 const crypto = require("crypto");
 const fs = require("fs");
+const querystring = require("querystring");
 
 var indexRouter = require("./routes/index");
+const { default: got } = require("got");
+const { default: axios } = require("axios");
+const opn = require("opn");
 
 var app = express();
 
@@ -76,8 +80,58 @@ app.post("/api/postData", (req, res) => {
     })
     .then((data) => {
       // 변환된 JSON 데이터 사용
-      console.log(data.up_hash);
       console.log("POST 성공:", data);
+      const post_data = {
+        site_cd: SITE_CODE,
+        web_siteid: WEB_CODE,
+        ordr_idxx: order_id,
+        req_tx: "CERT",
+        cert_method: "01",
+        up_hash: data.up_hash,
+        cert_opt_use: "Y",
+        Ret_URL: "localhost:3000/login",
+        cert_enc_use_ext: "Y",
+        kcp_merchant_time: data.kcp_merchant_time,
+        kcp_cert_lib_ver: data.kcp_cert_lib_ver,
+      };
+
+      res.send(post_data);
+    })
+    .catch((error) => {
+      console.error("POST 오류:", error);
+    });
+});
+
+app.post("/api/requireCert", (req, res) => {
+  const kcpCertUrl = "https://testcert.kcp.co.kr/kcp_cert/cert_view.jsp";
+
+  // POST할 데이터 예시 (Ret_URL 추가)
+  const postData = req.body;
+
+  const urlWithQuery = `${kcpCertUrl}?${querystring.stringify(postData)}`;
+
+  fetch(kcpCertUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(postData),
+  })
+    .then((response) => {
+      console.log(response);
+      // 응답 데이터를 JSON으로 변환
+      // return response.json();
+    })
+    .then((data) => {
+      // 변환된 JSON 데이터 사용
+      console.log("POST 성공!", postData);
+      opn(urlWithQuery)
+        .then(() => {
+          console.log("웹 브라우저가 열렸습니다.");
+        })
+        .catch((err) => {
+          console.error("오류 발생:", err);
+        });
     })
     .catch((error) => {
       console.error("POST 오류:", error);

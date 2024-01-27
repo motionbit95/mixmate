@@ -160,3 +160,24 @@ export function compareTimestampWithCurrentTime(firestoreTimestamp) {
     return firestoreDate.toLocaleDateString("ko-Kr", options);
   }
 }
+
+/** 생년월일 8자리를 입력받아 성인 여부를 판단하는 함수를 작성. 일반적으로 만 19세 이상의 사람을 성인으로 간주합니다.
+ * @function isAdult
+ * @memberof API
+ * @param {string} birthdate 생년월일
+ * @returns {boolean} 만 19세 이상의 사람을 성인으로 간주합니다.
+ */
+export function isAdult(birthdate) {
+  // birthdate는 "YYYYMMDD" 형식의 문자열이라고 가정
+  const year = parseInt(birthdate.substr(0, 4), 10);
+
+  // 현재 날짜 구하기
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+
+  // 만 나이 계산 (한국 나이)
+  const age = currentYear - year;
+
+  // 만 19세 이상이면 성인으로 판단
+  return age >= 19;
+}
