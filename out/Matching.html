@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Auth - Documentation</title>
+    <title>Matching - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -35,7 +35,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Auth</h1>
+    <h1 class="page-title">Matching</h1>
     
 
     
@@ -65,7 +65,7 @@
 
     
 
-    <h4 class="name" id="Auth">Auth</h4>
+    <h4 class="name" id="Matching">Matching</h4>
 
     
 
@@ -78,7 +78,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Auth.js.html">Auth.js</a>, <a href="Auth.js.html#line26">line 26</a>
+        <a href="MatchingAPI.js.html">MatchingAPI.js</a>, <a href="MatchingAPI.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -168,7 +168,7 @@
 
     
 
-    <h4 class="name" id=".logout"><span class="type-signature type-signature-static">(static) </span>logout<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".matching_add"><span class="type-signature type-signature-static">(static) </span>matching_add<span class="signature">(data)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
 
@@ -178,206 +178,13 @@
 <dl class="details">
     
     <dt class="tag-description">Description:</dt>
-    <dd class="tag-description"><ul class="dummy"><li>로그아웃</li></ul></dd>
+    <dd class="tag-description"><ul class="dummy"><li>doc 생성 확인 완료</li></ul></dd>
     
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Auth.js.html">Auth.js</a>, <a href="Auth.js.html#line108">line 108</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".signInGoogle"><span class="type-signature type-signature-static">(static) </span>signInGoogle<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-    
-    <dt class="tag-description">Description:</dt>
-    <dd class="tag-description"><ul class="dummy"><li>구글 로그인</li></ul></dd>
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Auth.js.html">Auth.js</a>, <a href="Auth.js.html#line85">line 85</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5 class="h5-returns">Returns:</h5>
-
-        
-<div class="param-desc">
-    로그인 성공 여부
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">boolean</span>
-
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".signInPassword"><span class="type-signature type-signature-static">(static) </span>signInPassword<span class="signature">(email, password)</span><span class="type-signature"> &rarr; {string}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-    
-    <dt class="tag-description">Description:</dt>
-    <dd class="tag-description"><ul class="dummy"><li>이메일 주소와 비밀번호로 사용자 로그인</li></ul></dd>
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Auth.js.html">Auth.js</a>, <a href="Auth.js.html#line58">line 58</a>
+        <a href="MatchingAPI.js.html">MatchingAPI.js</a>, <a href="MatchingAPI.js.html#line14">line 14</a>
     </li></ul></dd>
     
 
@@ -449,13 +256,13 @@
 
         <tr>
             
-                <td class="name"><code>email</code></td>
+                <td class="name"><code>data</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">object</span>
 
 
 
@@ -466,31 +273,7 @@
 
             
 
-            <td class="description last">유저 이메일</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>password</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">유저 패스워드</td>
+            <td class="description last">추가할 데이터</td>
         </tr>
 
     
@@ -516,7 +299,7 @@
 
         
 <div class="param-desc">
-    유저 uid
+    doc id
 </div>
 
 
@@ -543,7 +326,7 @@
 
     
 
-    <h4 class="name" id=".signUpPassword"><span class="type-signature type-signature-static">(static) </span>signUpPassword<span class="signature">(email, password)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".matching_get_item"><span class="type-signature type-signature-static">(static) </span>matching_get_item<span class="signature">(doc_id)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
@@ -553,13 +336,13 @@
 <dl class="details">
     
     <dt class="tag-description">Description:</dt>
-    <dd class="tag-description"><ul class="dummy"><li>비밀번호 기반 계정 만들기</li></ul></dd>
+    <dd class="tag-description"><ul class="dummy"><li>특정 문서의 매칭 정보를 조회합니다.</li></ul></dd>
     
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Auth.js.html">Auth.js</a>, <a href="Auth.js.html#line30">line 30</a>
+        <a href="MatchingAPI.js.html">MatchingAPI.js</a>, <a href="MatchingAPI.js.html#line43">line 43</a>
     </li></ul></dd>
     
 
@@ -631,7 +414,7 @@
 
         <tr>
             
-                <td class="name"><code>email</code></td>
+                <td class="name"><code>doc_id</code></td>
             
 
             <td class="type">
@@ -648,31 +431,7 @@
 
             
 
-            <td class="description last">유저 이메일</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>password</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">유저 패스워드</td>
+            <td class="description last">문서 번호</td>
         </tr>
 
     
@@ -698,7 +457,7 @@
 
         
 <div class="param-desc">
-    에러 메세지
+    문서의 데이터
 </div>
 
 
@@ -709,7 +468,7 @@
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">object</span>
 
 
 
@@ -717,6 +476,458 @@
 </dl>
 
     
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".matching_get_item"><span class="type-signature type-signature-static">(static) </span>matching_get_item<span class="signature">(doc_id)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>매칭을 삭제합니다. (Danger)</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MatchingAPI.js.html">MatchingAPI.js</a>, <a href="MatchingAPI.js.html#line85">line 85</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>doc_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">문서 번호</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".matching_get_list"><span class="type-signature type-signature-static">(static) </span>matching_get_list<span class="signature">(type)</span><span class="type-signature"> &rarr; {array}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>list 조회 동작 확인 완료</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MatchingAPI.js.html">MatchingAPI.js</a>, <a href="MatchingAPI.js.html#line53">line 53</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">본인이 매칭 신청자인지, 수신자인지 구분</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    조회 된 메칭 리스트 반환
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">array</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".matching_set"><span class="type-signature type-signature-static">(static) </span>matching_set<span class="signature">(doc_id, data)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>doc 수정 확인 완료</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MatchingAPI.js.html">MatchingAPI.js</a>, <a href="MatchingAPI.js.html#line32">line 32</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>doc_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">문서 번호</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">추가할 데이터</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

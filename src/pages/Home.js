@@ -210,6 +210,7 @@ export const Home = () => {
             showThumbs={false}
             selectedItem={imageData[currentIndex]}
             onChange={handleChange}
+            showStatus={false}
           >
             {renderSlides}
           </Carousel>

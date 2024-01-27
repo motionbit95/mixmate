@@ -17,19 +17,19 @@ export const SymbolLogo = ({ ...props }) => {
 
 export const TextLogo = ({ ...props }) => {
   return (
-    // <Text
-    //   fontSize={"x-large"}
-    //   fontWeight={"black"}
-    //   whiteSpace={"nowrap"}
-    //   px={"1vw"}
-    // >
-    //   {"식사회"}
-    // </Text>
-    <Image
-      w={checkNull(props.w, "auto")}
-      h={checkNull(props.h, "auto")}
-      src={text_logo}
-    />
+    <Text
+      fontSize={"x-large"}
+      fontWeight={"black"}
+      whiteSpace={"nowrap"}
+      px={"20px"}
+    >
+      {"식사회"}
+    </Text>
+    // <Image
+    //   w={checkNull(props.w, "auto")}
+    //   h={checkNull(props.h, "auto")}
+    //   src={text_logo}
+    // />
   );
 };
 

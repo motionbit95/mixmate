@@ -1,4 +1,4 @@
-import { Timestamp, serverTimestamp } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 import { white } from "../App";
 
 /**
@@ -180,4 +180,33 @@ export function isAdult(birthdate) {
 
   // 만 19세 이상이면 성인으로 판단
   return age >= 19;
+}
+
+export function addToDesktop() {
+  var userAgent = navigator.userAgent;
+
+  // if ("nclk" in window) {
+  //   // 네이버 addshortcut API 호출
+  //   nclk("addshortcut", "https://www.naver.com", "네이버");
+  //   console.log("네이버 바로가기가 추가되었습니다.");
+  // } else {
+  //   console.error("네이버 addshortcut API를 지원하지 않습니다.");
+  // }
+
+  if (userAgent.indexOf("Chrome") !== -1) {
+    return "현재 브라우저는 Chrome입니다.";
+  } else if (userAgent.indexOf("Firefox") !== -1) {
+    return "현재 브라우저는 Firefox입니다.";
+  } else if (userAgent.indexOf("Safari") !== -1) {
+    return "현재 브라우저는 Safari입니다.";
+  } else if (
+    userAgent.indexOf("MSIE") !== -1 ||
+    userAgent.indexOf("Trident") !== -1
+  ) {
+    return "현재 브라우저는 Internet Explorer입니다.";
+  } else if (userAgent.indexOf("Edge") !== -1) {
+    return "현재 브라우저는 Microsoft Edge입니다.";
+  } else {
+    return "브라우저를 확인할 수 없습니다.";
+  }
 }

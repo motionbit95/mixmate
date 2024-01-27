@@ -8,12 +8,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import {
-  checkNull,
-  getDisplayAge,
-  getDisplayName,
-  getSatuation,
-} from "../js/API";
+import { getDisplayName } from "../js/API";
 import { CustomButton } from "./Buttons";
 import { useNavigate } from "react-router-dom";
 import { theme_bright_color, theme_primary_color } from "../App";
@@ -75,7 +70,7 @@ export const User = ({ data }) => {
               <CustomButton
                 code={theme_bright_color}
                 w="100px"
-                text={data.user_type === "개인" ? "식사매칭" : "멘토매칭"}
+                text={data.user_type === "개인" ? "매칭신청" : "코칭신청"}
                 onClick={() => {
                   if (!window.location.pathname.includes("matching")) {
                     navigate("/matching", {

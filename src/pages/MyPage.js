@@ -19,6 +19,7 @@ import {
   Container,
   HStack,
   Flex,
+  useToast,
 } from "@chakra-ui/react";
 import { BsStarFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
@@ -35,6 +36,7 @@ import { logout } from "../js/Auth";
 import { User } from "../component/User";
 import { Navbar } from "../component/Navbar";
 import { CustomButton } from "../component/Buttons";
+import { addToDesktop } from "../js/API";
 
 export const MyPage = () => {
   const navigate = useNavigate();
@@ -42,6 +44,7 @@ export const MyPage = () => {
   const [user, setUser] = useState();
   const [info_text, setInfoText] = useState();
   const [info_edit_mode, setInfoEditMode] = useState(false);
+  const toast = useToast();
   useEffect(() => {
     if (!user) {
       // 고객의 계정을 가지고 옵니다.
@@ -202,6 +205,24 @@ export const MyPage = () => {
             탈퇴하기
           </Text>
           <HorizonLine />
+          {/* <Text
+            fontWeight="semibold"
+            fontSize="18px"
+            color={black}
+            textAlign="center"
+            onClick={() =>
+              toast({
+                // title: "Account created.",
+                description: addToDesktop(),
+                status: "info",
+                duration: 9000,
+                isClosable: true,
+              })
+            }
+          >
+            웹사이트 바탕화면에 추가
+          </Text>
+          <HorizonLine /> */}
 
           <Navbar />
 
