@@ -261,5 +261,16 @@ export function calculateDistance(coord1, coord2) {
  * @returns {number} 평균 계산
  */
 export const get_avg_user_score = async (user_id) => {
-  console.log(user_id);
+  // console.log(user_id);
+};
+
+export const get_default_avartar = (gender, profile) => {
+  if (profile) {
+    return profile;
+  }
+
+  if (gender === "남")
+    return "https://firebasestorage.googleapis.com/v0/b/dinnermate-database.appspot.com/o/assets%2FMale.png?alt=media&token=b82a2957-545d-4b68-901f-7cbaadb0a42c";
+  else
+    return "https://firebasestorage.googleapis.com/v0/b/dinnermate-database.appspot.com/o/assets%2FFemale.png?alt=media&token=58e5f88b-0954-432b-bd69-6f774b5b3a61";
 };

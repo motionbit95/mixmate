@@ -13,7 +13,7 @@ import { CustomButton } from "./Buttons";
 import { useNavigate } from "react-router-dom";
 import { theme_bright_color, theme_primary_color } from "../App";
 import { useEffect } from "react";
-import { get_avg_user_score } from "../js/UserAPI";
+import { get_avg_user_score, get_default_avartar } from "../js/UserAPI";
 
 export const User = ({ data }) => {
   const navigate = useNavigate();
@@ -37,9 +37,8 @@ export const User = ({ data }) => {
         <HStack spacing={"2vw"} w={"100%"}>
           <Skeleton isLoaded={data}>
             <Avatar
-              bg={data.user_gender === "남" ? "teal.500" : "red.500"}
               alignSelf={"flex-start"}
-              src={data.user_profile}
+              src={get_default_avartar(data.user_gender, data.user_profile)}
               mr={"2vw"}
             />
           </Skeleton>
@@ -69,7 +68,7 @@ export const User = ({ data }) => {
             {window.location.pathname === "/" && (
               <CustomButton
                 code={theme_bright_color}
-                w="100px"
+                // w="90px"
                 text={data.user_type === "개인" ? "매칭신청" : "코칭신청"}
                 onClick={() => {
                   if (!window.location.pathname.includes("matching")) {

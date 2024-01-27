@@ -1,13 +1,13 @@
-import { Button, HStack, IconButton, Text } from "@chakra-ui/react";
+import { HStack, IconButton, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { MdLocationPin, MdLocationSearching } from "react-icons/md";
-import { gray_600, gray_700 } from "../App";
+import { MdLocationPin } from "react-icons/md";
+import { gray_700 } from "../App";
 import { db_update } from "../js/Database";
 
 export const TextAddress = ({ user }) => {
   // head에 작성한 Kakao API 불러오기
   const { kakao } = window;
-  const [dong, setDong] = useState();
+  const [dong, setDong] = useState(user.dong ? user.dong : "");
 
   useEffect(() => {
     handleMapClick();

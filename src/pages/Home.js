@@ -14,7 +14,7 @@ import {
   IconButton,
   Tooltip,
 } from "@chakra-ui/react";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import {
   BsBell,
   BsPeopleFill,
@@ -57,7 +57,6 @@ export const Home = () => {
 
     auth.onAuthStateChanged(async function (user) {
       if (!user) {
-        console.log("이동!");
         navigate("/login");
       }
     });
@@ -114,9 +113,11 @@ export const Home = () => {
   ];
 
   const [currentIndex, setCurrentIndex] = useState();
+  const [tabIndex, setTabIndex] = useState();
 
   function handleChange(index) {
     setCurrentIndex(index);
+    setTabIndex(index);
   }
 
   const renderSlides = imageData.map((image) => (
@@ -208,7 +209,7 @@ export const Home = () => {
             autoPlay={false}
             infiniteLoop={true}
             showThumbs={false}
-            selectedItem={imageData[currentIndex]}
+            selectedItem={currentIndex}
             onChange={handleChange}
             showStatus={false}
           >
@@ -228,7 +229,12 @@ export const Home = () => {
               align="center"
               spacing="10px"
             >
-              <Tabs w="100%" colorScheme={getSatuation(theme_primary_color)}>
+              <Tabs
+                w="100%"
+                colorScheme={getSatuation(theme_primary_color)}
+                onChange={handleChange}
+                index={currentIndex}
+              >
                 <TabList>
                   <Tab w="100%">
                     <HStack>

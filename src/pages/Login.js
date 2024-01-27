@@ -27,7 +27,7 @@ import { theme_bright_color, white } from "../App";
 import { useAuthState } from "../js/Hooks";
 
 import HorizonLine from "../component/HorizontalLine";
-import { Logo } from "../component/Logo";
+import SymbolLogo, { Logo } from "../component/Logo";
 import { CustomButton, FullButton, TextButton } from "../component/Buttons";
 import EmailLoginForm from "../component/EmailLoginForm";
 import { get_doc_list } from "../js/Database";
@@ -116,7 +116,8 @@ export const Login = () => {
               align="center"
               spacing="4vh"
             >
-              <Logo w={"20vh"} />
+              <SymbolLogo w={"15vh"} />
+              <Text fontSize={"x-large"}>식사회, 밥친구 매칭 플랫폼</Text>
               <Stack w="100%" spacing={"4vh"}>
                 <Stack w="100%">
                   <Flex w={"100%"} align={"center"}>

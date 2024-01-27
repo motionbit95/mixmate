@@ -4,6 +4,7 @@ import { gray_200, gray_300, gray_50, white } from "../App";
 import { getDisplayAge, getDisplayName } from "../js/API";
 import HorizonLine from "./HorizontalLine";
 import { useNavigate } from "react-router-dom";
+import { get_default_avartar } from "../js/UserAPI";
 
 export const HorizontalScrollBox = ({ title, model_list }) => {
   // code(javascript)
@@ -50,18 +51,21 @@ export const HorizontalScrollBox = ({ title, model_list }) => {
                           }}
                         >
                           <Avatar
-                            bg={
-                              value?.user_gender === "남"
-                                ? "teal.500"
-                                : "red.500"
-                            }
-                            src={value.user_profile}
+                            src={get_default_avartar(
+                              value?.user_gender,
+                              value?.user_profile
+                            )}
                           />
                           <Text fontSize={"large"} fontWeight={"bold"}>
                             {getDisplayName(value.user_name)}
+                            {"("}
+                            {value.user_gender}
+                            {")"}
                           </Text>
                           <Text>나이 : {getDisplayAge(value.user_birth)}</Text>
-                          <Text>매칭금액 :{value.user_price}만원</Text>
+                          <Text>매칭금액 : {value.user_price}만원</Text>
+                          <Text>동네 : {value.user_place}</Text>
+                          <Text>음식 : {value.user_food}</Text>
                         </Stack>
                       </Box>
                     )

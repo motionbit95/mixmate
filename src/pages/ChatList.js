@@ -10,6 +10,7 @@ import { matching_get_list } from "../js/MatchingAPI";
 import { get_doc_data, get_doc_list } from "../js/Database";
 import { compareTimestampWithCurrentTime, getDisplayName } from "../js/API";
 import { gray_600 } from "../App";
+import { get_default_avartar } from "../js/UserAPI";
 
 export const ChatList = () => {
   const navigate = useNavigate(); // 채팅방 이동 시 사용
@@ -101,12 +102,14 @@ export const ChatList = () => {
                   <Avatar
                     bg={
                       value.isSender
-                        ? value.matching_sender.user_gender === "남"
-                          ? "teal.500"
-                          : "red.500"
-                        : value.matching_receiver.user_gender === "남"
-                        ? "teal.500"
-                        : "red.500"
+                        ? get_default_avartar(
+                            value?.matching_sender?.user_gender,
+                            value?.matching_sender?.user_profile
+                          )
+                        : get_default_avartar(
+                            value.matching_receiver.user_gender,
+                            value?.matching_receiver?.user_profile
+                          )
                     }
                     src={
                       value.isSender

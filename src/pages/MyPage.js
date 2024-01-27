@@ -42,7 +42,7 @@ export const MyPage = () => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [user, setUser] = useState();
-  const [info_text, setInfoText] = useState();
+  const [info_text, setInfoText] = useState("");
   const [info_edit_mode, setInfoEditMode] = useState(false);
   const toast = useToast();
   useEffect(() => {
@@ -117,6 +117,10 @@ export const MyPage = () => {
               size="sm"
               onClick={() => {
                 if (info_edit_mode) {
+                  if (!info_text && info_text?.length < 20) {
+                    alert("소개글은 20자 이상 작성해주세요.");
+                    return;
+                  }
                   // 문서 업데이트
                   console.log(user.doc_id, info_text);
                   db_update("user", user.doc_id, {
@@ -132,7 +136,12 @@ export const MyPage = () => {
           {info_edit_mode ? (
             <Textarea
               defaultValue={user?.user_info}
-              placeholder="소개글을 작성해주세요."
+              minLength={20}
+              placeholder={
+                user?.user_type === "개인"
+                  ? "내 주변 밥 친구들에게 노출되는 문구이며 자신만의 소개로 어필해주세요!"
+                  : "본인의 커리어, 이력, 코칭 분야 등을 소개해주세요!"
+              }
               onChange={(e) => setInfoText(e.target.value)}
             />
           ) : (

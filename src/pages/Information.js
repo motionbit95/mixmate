@@ -634,19 +634,36 @@ export const Information = () => {
                     (본인의 부수입으로 입금됩니다)
                   </Text>
                 </Text>
-                <Select
-                  height="40px"
-                  flex="1"
-                  defaultValue={formData.user_price}
-                  onChange={(e) =>
-                    setFormData({ ...formData, user_price: e.target.value })
-                  }
-                >
-                  {cost.map((value, index) => (
-                    <option value={value}>{`${value}만원`}</option>
-                  ))}
-                </Select>
-                ;
+                <HStack w={"100%"}>
+                  <Select
+                    height="40px"
+                    flex="1"
+                    defaultValue={formData.user_price}
+                    onChange={(e) =>
+                      setFormData({ ...formData, user_price: e.target.value })
+                    }
+                  >
+                    <option value={""}>직접입력</option>
+                    {cost.map((value, index) => (
+                      <option value={value}>{`${value}만원`}</option>
+                    ))}
+                  </Select>
+                  {formData.user_price === "" && (
+                    <>
+                      <Input
+                        w={"50%"}
+                        type="number"
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            user_price: e.target.value,
+                          })
+                        }
+                      />
+                      <Text w={"50px"}>만원</Text>
+                    </>
+                  )}
+                </HStack>
               </Stack>
               <Stack
                 justify="center"

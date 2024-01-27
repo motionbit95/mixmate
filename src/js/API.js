@@ -56,10 +56,19 @@ export function setData(_state, _key, _value) {
  * @returns {string} 실명 맨 끝의 값을 *로 처리(3글자 초과는 2개 지움)
  */
 export function getDisplayName(name) {
-  if (name === "" || !name) return "";
+  if (name?.length < 2 || !name) return "";
 
-  if (name.length > 3) return name.slice(0, -2) + "*";
-  else return name.slice(0, -1) + "*";
+  // 문자열 길이가 3 이상인 경우
+  if (name.length >= 3) {
+    // 맨 앞과 맨 뒤를 제외한 나머지 부분을 '*'로 대체
+    const maskedPart = name[0] + "*".repeat(name.length - 2) + name.slice(-1);
+    return maskedPart;
+  }
+  // 문자열 길이가 2인 경우
+  else if (name.length === 2) {
+    // 맨 뒷글자를 '*'로 대체
+    return name.slice(0, -1) + "*";
+  }
 }
 
 /** 실명 가리기 함수
