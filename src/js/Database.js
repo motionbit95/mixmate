@@ -190,7 +190,7 @@ export async function arrange_random(user_location, user_dong, user_type) {
 
   const q = query(
     collection(db, "user"),
-    where("dong", "==", dong),
+    // where("dong", "==", dong),
     where("user_type", "==", user_type)
   );
   const querySnapshot = await getDocs(q);
@@ -198,6 +198,7 @@ export async function arrange_random(user_location, user_dong, user_type) {
   // Firestore에서 데이터 가져오기 및 거리순 정렬
   querySnapshot.forEach((doc) => {
     const place = doc.data().user_location;
+    if (!place) return;
     // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산
     place.distance = calculateDistance(currentLocation, {
       latitude: place.latitude,
@@ -205,6 +206,13 @@ export async function arrange_random(user_location, user_dong, user_type) {
     });
     places.push({ ...doc.data(), ...place });
   });
+
+  // Fisher-Yates 알고리즘 사용
+  for (let i = places.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    // 배열의 요소를 서로 교환
+    [places[i], places[j]] = [places[j], places[i]];
+  }
 
   return places;
 }
