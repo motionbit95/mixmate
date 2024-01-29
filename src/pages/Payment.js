@@ -44,6 +44,7 @@ import axios from "axios";
 import { uuidv4 } from "@firebase/util";
 import { db_add, db_set, get_doc_list } from "../js/Database";
 import { AppContext, _gCurrentUser } from "./Home";
+import { initializeMatching } from "./PayResult";
 
 // head에 작성한 Kakao API 불러오기
 const { AUTHNICE, kakao } = window;
@@ -103,7 +104,7 @@ export const Payment = () => {
           orderId: orderId,
           amount: price,
           goodsName: "매칭 서비스 결제",
-          returnUrl: "/serverAuth",
+          returnUrl: "http://localhost:3001/serverAuth",
           fnError: function (result) {
             console.log(result);
             // alert("개발자확인용 : " + result.errorMsg + "");
