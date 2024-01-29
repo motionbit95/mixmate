@@ -14,9 +14,11 @@
         var receivedData = JSON.parse(decodedData);
 
         console.log(decodedData, receivedData)
+        export const dev = "https://localhost:3000";
+        export const product = "https://dinnermate.kr";
 
         // 데이터를 가져와 URL에 추가
-        var targetUrl = 'http://localhost:3000/payresult?data=' + decodedData;
+        var targetUrl = product + '/payresult?data=' + decodedData;
 
         // 페이지 이동
         window.location.replace(targetUrl);

@@ -52,9 +52,11 @@ export const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // 테스트
   const clientId = "S2_af4543a0be4d49a98122e01ec2059a56";
   const secretKey = "9eb85607103646da9f9c02b128f2e5ee";
 
+  // 세이프바운더리
   // const clientId = "R2_c5abe31e532b4925b90d26a364362951";
   // const secretKey = "d5193cf5374e47f498d749cb82d1b880";
 
@@ -102,7 +104,7 @@ export const Payment = () => {
         const orderId = uuidv4();
         AUTHNICE.requestPay({
           clientId: clientId,
-          appScheme: `nicepaysample://`,
+          appScheme: `nicepay://`,
           method: pay_method,
           orderId: orderId,
           amount: price,

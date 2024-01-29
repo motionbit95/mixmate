@@ -86,8 +86,8 @@ export const User = ({ data }) => {
             </HStack>
             <Text fontSize={"12px"} whiteSpace={"pre-wrap"}>
               {data.user_type === "개인"
-                ? `성별 : ${data.user_gender}, 매칭 금액 : ${data.user_price}만원,\n식사 가능 동네 : ${data.user_place},\n좋아하는 음식 : ${data.user_food}`
-                : `성별 : ${data.user_gender}, 매칭 금액 : ${data.user_price}만원,\n코칭 가능 동네 : ${data.user_place},\n멘토 분야 : ${data.user_category}`}
+                ? `성별 : ${data.user_gender},\t\t매칭 금액 : ${data.user_price}만원\n식사 가능 동네 : ${data.user_place}\n좋아하는 음식 : ${data.user_food}`
+                : `성별 : ${data.user_gender},\t\t매칭 금액 : ${data.user_price}만원\n코칭 가능 동네 : ${data.user_place}\n멘토 분야 : ${data.user_category}`}
               {/* {data.user_type === "개인"
                 ? ""
                 : `, 멘토 전문 분야 : ${data.user_category}`} */}
