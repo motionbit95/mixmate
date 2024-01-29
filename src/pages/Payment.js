@@ -101,6 +101,7 @@ export const Payment = () => {
         let userList = await get_doc_list("user", "user_id", user?.uid);
         //# 여기에 결제 API 추가
         // 결제창 띄우기
+        console.log(pay_method);
         const orderId = uuidv4();
         AUTHNICE.requestPay({
           clientId: clientId,
@@ -109,7 +110,7 @@ export const Payment = () => {
           orderId: orderId,
           amount: price,
           goodsName: "매칭 서비스 결제",
-          returnUrl: product + "/serverAuth",
+          returnUrl: testUrl + "/serverAuth",
           fnError: function (result) {
             console.log(result);
             // alert("개발자확인용 : " + result.errorMsg + "");
