@@ -5,17 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Transfer Example</title>
 </head>
-<body>
+<body onload="moveResult()">
     <h1>결제가 완료되었습니다.</h1>
     <script>
+        function moveResult() {
+        
         // Server-encoded JSON data is decoded before parsing
         var encodedData = '<%= data %>';
         var decodedData = decodeURIComponent(encodedData);
         var receivedData = JSON.parse(decodedData);
 
         console.log(decodedData, receivedData)
-        export const dev = "https://localhost:3000";
-        export const product = "https://dinnermate.kr";
+        const dev = "http://localhost:3000";
+        const product = "https://dinnermate.kr";
 
         // 데이터를 가져와 URL에 추가
         var targetUrl = product + '/payresult?data=' + decodedData;
@@ -25,6 +27,7 @@
 
         console.log(receivedData);
         // Perform necessary actions with the received data
+        }
     </script>
 </body>
 </html>
