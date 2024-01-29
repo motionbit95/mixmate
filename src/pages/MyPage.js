@@ -202,7 +202,6 @@ export const MyPage = () => {
             탈퇴하기
           </Text>
           <HorizonLine />
-          <HorizonLine />
           <Text
             fontWeight="semibold"
             fontSize="18px"
@@ -214,6 +213,7 @@ export const MyPage = () => {
           >
             문의 및 신고하기
           </Text>
+          <HorizonLine />
           {/* <Text
             fontWeight="semibold"
             fontSize="18px"

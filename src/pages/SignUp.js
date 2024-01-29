@@ -188,6 +188,12 @@ export const SignUp = () => {
     setLoading(false);
   };
 
+  const onApproveButton = async () => {
+    window.location.replace(
+      "https://dinnermate-node-server-0d7d5dc74685.herokuapp.com/sample/make_hash"
+    );
+  };
+
   // 본인인증 버튼 눌렀을 때 수행
   const onClickApprove = async () => {
     //# 여기에 휴대폰 인증(API) 추가
@@ -241,28 +247,6 @@ export const SignUp = () => {
 
       // 페이지 이동
       navigate("/info", { state: { user_id: docId } });
-    }
-  };
-
-  const kcp_cert_open = async () => {
-    try {
-      // Axios를 사용하여 서버에 POST 요청 보내기
-      const response = await axios.post("http://localhost:3001/api/postData", {
-        user_id: "test1234",
-      });
-
-      if (response) {
-        // 서버로부터 받은 응답 로그
-        console.log("서버 응답:", response.data);
-        const data = response.data;
-        const res = await axios.post(
-          "http://localhost:3001/api/requireCert",
-          data
-        );
-      }
-    } catch (error) {
-      // 오류 처리
-      console.error("서버 요청 오류:", error.message);
     }
   };
 
@@ -402,7 +386,7 @@ export const SignUp = () => {
               />
 
               {/* 테스트코드 */}
-              <PhoneCert
+              {/* <PhoneCert
                 onConfirm={(phone) =>
                   setFormData({ ...formData, user_phone: phone })
                 }
@@ -416,7 +400,7 @@ export const SignUp = () => {
                     setFormData({ ...formData, user_birth: e.target.value })
                   }
                 />
-                {/* <Button
+                <Button
                   onClick={() =>
                     console.log(
                       isAdult(formData.user_birth) ? "성인" : "미성년자"
@@ -424,8 +408,8 @@ export const SignUp = () => {
                   }
                 >
                   확인
-                </Button> */}
-              </HStack>
+                </Button>
+              </HStack> */}
               {isValid.message === "" ? null : (
                 <Alert fontSize={"small"} status="error">
                   <AlertIcon />
@@ -441,16 +425,16 @@ export const SignUp = () => {
               maxWidth="100%"
               onClick={() => {
                 // 테스트 코드
-                // kcp_cert_open();
+                onApproveButton();
 
                 let ret = step1_confirm_blank(
                   formData.user_profile,
                   formData.user_name,
                   formData.user_email,
                   formData.user_password,
-                  formData.user_phone,
-                  confirmPassword,
-                  formData.user_birth
+                  confirmPassword
+                  // formData.user_phone,
+                  // formData.user_birth
                 );
 
                 setValid({ isValid: ret === "", message: ret });

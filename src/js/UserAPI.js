@@ -67,19 +67,18 @@ export function step1_confirm_blank(
   user_name,
   user_email,
   user_password,
-  confirm_password,
-  user_phone,
-  user_birth
+  confirm_password
+  // user_phone,
+  // user_birth
 ) {
-  console.log(user_birth);
-  if (!isAdult(user_birth)) return "미성년자는 가입할 수 없습니다.";
+  // if (!isAdult(user_birth)) return "미성년자는 가입할 수 없습니다.";
   if (user_profile === "") return "프로필 사진을 등록해주세요.";
   if (user_name === "") return "이름을 입력해주세요.";
   if (user_email === "") return "아이디를 입력해주세요.";
   if (user_password === "") return "패스워드를 입력해주세요.";
   if (confirm_password === "") return "패스워드를 확인해주세요.";
-  if (user_phone === "") return "휴대폰번호를 확인해주세요.";
-  if (user_birth === "") return "생년월일을 확인해주세요.";
+  // if (user_phone === "") return "휴대폰번호를 확인해주세요.";
+  // if (user_birth === "") return "생년월일을 확인해주세요.";
 
   // 모든 필드가 작성되었을 경우
   return "";

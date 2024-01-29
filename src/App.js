@@ -18,6 +18,7 @@ import { Chat } from "./pages/Chat";
 import "./index.css";
 import "./styleguide.css";
 import { PayResult } from "./pages/PayResult";
+import { Loading } from "./pages/Loading";
 
 export const theme_primary_color = "gray.500";
 export const theme_bright_color = "gray.200";
@@ -59,6 +60,7 @@ function App() {
           <Route path="/chat" element={<ChatList />} />
           <Route path="/chat/*" element={<Chat />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/loading" element={<Loading />} />
         </Routes>
       </BrowserRouter>
     </Container>
