@@ -97,7 +97,6 @@ export const Payment = () => {
       - cardCode, cardQuota, shopInterest, quotaInterest
       */
       if (user) {
-        let userList = await get_doc_list("user", "user_id", user?.uid);
         //# 여기에 결제 API 추가
         // 결제창 띄우기
         console.log(pay_method);
@@ -116,6 +115,7 @@ export const Payment = () => {
           },
         });
 
+        let userList = await get_doc_list("user", "user_id", user?.uid);
         await db_set("temp", orderId, {
           orderId: orderId,
           sender: userList[0],
