@@ -41,21 +41,10 @@ router.post("/serverAuth", function (req, res) {
       // Encode JSON data for HTML embedding
       const encodedData = encodeURIComponent(jsonData);
 
-      var decodedData = decodeURIComponent(encodedData);
-
-      const dev = "https://localhost:3000";
-      const product = "https://dinnermate.kr";
-
-      // 데이터를 가져와 URL에 추가
-      var targetUrl = product + "/payresult?data=" + decodedData;
-
-      // 페이지 이동
-      window.location.replace(targetUrl);
-
-      // // Pass the encoded data to the HTML file
-      // res.render("response", {
-      //   data: encodedData,
-      // });
+      // Pass the encoded data to the HTML file
+      res.render("response", {
+        data: encodedData,
+      });
     })
     .catch(function (error) {
       console.log(error);
