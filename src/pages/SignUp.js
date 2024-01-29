@@ -288,7 +288,7 @@ export const SignUp = () => {
         spacing="0px"
         overflow="hidden"
         // width="393px"
-        height="100vh"
+        minH="100vh"
         maxWidth="100%"
         background={white}
       >
@@ -449,8 +449,8 @@ export const SignUp = () => {
                   formData.user_email,
                   formData.user_password,
                   formData.user_phone,
-                  formData.user_birth,
-                  confirmPassword
+                  confirmPassword,
+                  formData.user_birth
                 );
 
                 setValid({ isValid: ret === "", message: ret });

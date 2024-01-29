@@ -216,14 +216,14 @@ export const Login = () => {
                   text="이용약관"
                   onClick={onOpen}
                 />
-                <Text fontSize={"small"} color={"gray.500"}>
+                {/* <Text fontSize={"small"} color={"gray.500"}>
                   및
                 </Text>
                 <TextButton
                   style={{ textDecoration: "underline" }}
                   text="개인정보 취급방침"
                   onClick={() => alert("준비중입니다.")}
-                />
+                /> */}
               </HStack>
               <Text fontSize={"sm"}>우린 더 나은 식사문화를 창조합니다.</Text>
             </Stack>

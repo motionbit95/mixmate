@@ -187,18 +187,6 @@ export const MyPage = () => {
             fontSize="18px"
             color={black}
             textAlign="center"
-            onClick={() =>
-              window.location.replace("http://pf.kakao.com/_pRxoBG")
-            }
-          >
-            문의하기
-          </Text>
-          <HorizonLine />
-          <Text
-            fontWeight="semibold"
-            fontSize="18px"
-            color={black}
-            textAlign="center"
             onClick={logout}
           >
             로그아웃
@@ -214,6 +202,18 @@ export const MyPage = () => {
             탈퇴하기
           </Text>
           <HorizonLine />
+          <HorizonLine />
+          <Text
+            fontWeight="semibold"
+            fontSize="18px"
+            color={black}
+            textAlign="center"
+            onClick={() =>
+              window.location.replace("http://pf.kakao.com/_pRxoBG")
+            }
+          >
+            문의 및 신고하기
+          </Text>
           {/* <Text
             fontWeight="semibold"
             fontSize="18px"

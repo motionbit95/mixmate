@@ -71,6 +71,7 @@ export function step1_confirm_blank(
   user_phone,
   user_birth
 ) {
+  console.log(user_birth);
   if (!isAdult(user_birth)) return "미성년자는 가입할 수 없습니다.";
   if (user_profile === "") return "프로필 사진을 등록해주세요.";
   if (user_name === "") return "이름을 입력해주세요.";
