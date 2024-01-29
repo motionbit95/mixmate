@@ -72,6 +72,9 @@ export const Payment = () => {
   const receiverUser = location.state?.receiver;
   const [pay_method, setPayMethod] = useState("card");
 
+  const testUrl = "http://localhost:3001";
+  const product = "https://dinnermate-da67b66ccbef.herokuapp.com";
+
   async function onClickPayment() {
     // 현재 회원 uid 가지고 오기
     auth.onAuthStateChanged(async function (user) {
@@ -104,7 +107,7 @@ export const Payment = () => {
           orderId: orderId,
           amount: price,
           goodsName: "매칭 서비스 결제",
-          returnUrl: "http://localhost:3001/serverAuth",
+          returnUrl: product + "/serverAuth",
           fnError: function (result) {
             console.log(result);
             // alert("개발자확인용 : " + result.errorMsg + "");

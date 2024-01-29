@@ -6,17 +6,38 @@ import {
   VStack,
   Text,
 } from "@chakra-ui/layout";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { db_add, db_set } from "../js/Database";
+import { db_add, db_set, get_doc_data } from "../js/Database";
 import { CustomButton } from "../component/Buttons";
+import { matching_add } from "../js/MatchingAPI";
 
 export const PayResult = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [order_info, setOrderInfo] = useState();
   useEffect(() => {
     getPayment();
   }, []);
+
+  async function initMatching(order_info) {
+    // 채팅 정보 추가
+    await db_set(`messages-${order_info.orderId}`, "chat_info", {
+      orderId: order_info.orderId,
+      timestamp: new Date(),
+      sender: order_info.sender,
+      receiver: order_info.receiver,
+      lastmessage: "",
+    });
+
+    // 매칭 정보 추가
+    await matching_add({
+      matching_sender: order_info.sender, // 매칭 신청자 (본인)
+      matching_receiver: order_info.receiver, // 현재 보고있는 페이지 유저(매칭 수신자)
+      matching_state: 0, // default 신청 상태
+      matching_payment: order_info.orderId, // 결제 정보 id
+    });
+  }
 
   async function getPayment() {
     // const object = {
@@ -73,6 +94,9 @@ export const PayResult = () => {
     var jsonData = JSON.parse(stringData);
     console.log(jsonData);
 
+    let order_info = await get_doc_data("temp", jsonData.orderId);
+    setOrderInfo(order_info);
+
     await db_set("payment", jsonData.orderId, jsonData);
   }
   return (
@@ -82,9 +106,18 @@ export const PayResult = () => {
           <Text fontSize={"x-large"} fontWeight={"bold"}>
             결제가 완료되었습니다.
           </Text>
-          <CustomButton onClick={() => navigate("/")} text="홈으로 이동하기" />
           <CustomButton
-            onClick={() => navigate("/details")}
+            onClick={() => {
+              initMatching(order_info);
+              navigate("/");
+            }}
+            text="홈으로 이동하기"
+          />
+          <CustomButton
+            onClick={() => {
+              initMatching(order_info);
+              navigate("/details");
+            }}
             text="신청내역으로 이동하기"
           />
         </VStack>
