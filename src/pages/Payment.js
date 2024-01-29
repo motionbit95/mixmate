@@ -44,7 +44,6 @@ import axios from "axios";
 import { uuidv4 } from "@firebase/util";
 import { db_add, db_set, get_doc_list } from "../js/Database";
 import { AppContext, _gCurrentUser } from "./Home";
-import { initializeMatching } from "./PayResult";
 
 // head에 작성한 Kakao API 불러오기
 const { AUTHNICE, kakao } = window;
@@ -53,12 +52,12 @@ export const Payment = () => {
   const location = useLocation();
 
   // 테스트
-  const clientId = "S2_af4543a0be4d49a98122e01ec2059a56";
-  const secretKey = "9eb85607103646da9f9c02b128f2e5ee";
+  // const clientId = "S2_af4543a0be4d49a98122e01ec2059a56";
+  // const secretKey = "9eb85607103646da9f9c02b128f2e5ee";
 
   // 세이프바운더리
-  // const clientId = "R2_c5abe31e532b4925b90d26a364362951";
-  // const secretKey = "d5193cf5374e47f498d749cb82d1b880";
+  const clientId = "R2_c5abe31e532b4925b90d26a364362951";
+  const secretKey = "d5193cf5374e47f498d749cb82d1b880";
 
   const payMethod = [
     "kakaopay",
@@ -74,8 +73,8 @@ export const Payment = () => {
   const receiverUser = location.state?.receiver;
   const [pay_method, setPayMethod] = useState("card");
 
-  const testUrl = "http://localhost:3001";
-  const product = "https://dinnermate-da67b66ccbef.herokuapp.com";
+  const dev = "http://localhost:3001";
+  const prod = "https://dinnermate-da67b66ccbef.herokuapp.com";
 
   async function onClickPayment() {
     // 현재 회원 uid 가지고 오기
@@ -110,7 +109,7 @@ export const Payment = () => {
           orderId: orderId,
           amount: price,
           goodsName: "매칭 서비스 결제",
-          returnUrl: testUrl + "/serverAuth",
+          returnUrl: prod + "/serverAuth",
           fnError: function (result) {
             console.log(result);
             // alert("개발자확인용 : " + result.errorMsg + "");
