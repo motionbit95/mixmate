@@ -38,16 +38,17 @@ export const TextAddress = ({ user }) => {
   };
 
   return (
-    <HStack w={"100%"}>
+    <HStack alignItems={"center"}>
       <IconButton
-        display={"none"}
+        size={"10px"}
+        // display={"none"}
         variant={"ghost"}
-        icon={<MdLocationPin color={gray_700} size={"24px"} />}
+        icon={<MdLocationPin color={gray_700} size={"16px"} />}
         onClick={handleMapClick}
       >
         찾기
       </IconButton>
-      <Text color={gray_700} fontSize={"xl"} fontWeight={"bold"}>
+      <Text color={gray_700} fontSize={"sm"}>
         {dong}
       </Text>
     </HStack>

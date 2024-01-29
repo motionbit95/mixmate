@@ -116,8 +116,12 @@ export const Login = () => {
               align="center"
               spacing="4vh"
             >
-              <SymbolLogo w={"15vh"} />
-              <Text fontSize={"x-large"}>식사회, 밥친구 매칭 플랫폼</Text>
+              <Stack alignItems={"center"}>
+                <SymbolLogo w={"10vh"} />
+                <Text fontSize={"x-large"} color={"gray.500"}>
+                  식사회, 밥친구 매칭 플랫폼
+                </Text>
+              </Stack>
               <Stack w="100%" spacing={"4vh"}>
                 <Stack w="100%">
                   <Flex w={"100%"} align={"center"}>

@@ -54,6 +54,9 @@ export const Payment = () => {
   const clientId = "S2_af4543a0be4d49a98122e01ec2059a56";
   const secretKey = "9eb85607103646da9f9c02b128f2e5ee";
 
+  // const clientId = "R2_c5abe31e532b4925b90d26a364362951";
+  // const secretKey = "d5193cf5374e47f498d749cb82d1b880";
+
   const payMethod = [
     "kakaopay",
     "naverpayCard",
@@ -100,56 +103,35 @@ export const Payment = () => {
           orderId: orderId,
           amount: price,
           goodsName: "매칭 서비스 결제",
-          returnUrl: "http://localhost:3001/serverAuth",
+          returnUrl: "/serverAuth",
           fnError: function (result) {
             console.log(result);
             // alert("개발자확인용 : " + result.errorMsg + "");
           },
         });
 
-        // navigate("/payresult", {
-        //   state: {
-        //     clientId: clientId,
-        //     appScheme: `nicepaysample://`,
-        //     method: pay_method,
-        //     orderId: orderId,
-        //     amount: price,
-        //     goodsName: "매칭 서비스 결제",
-        //     returnUrl: "/payresult",
-        //   },
-        // });
+        await db_set("temp", orderId, {
+          orderId: orderId,
+          sender: userList[0],
+          receiver: receiverUser,
+        });
 
-        // console.log({
+        // // 채팅 정보 추가
+        // await db_set(`messages-${orderId}`, "chat_info", {
         //   orderId: orderId,
-        //   timestamp: null,
-        //   sender: user.uid,
-        //   receiver: receiverUser.user_id,
+        //   timestamp: new Date(),
+        //   sender: userList[0],
+        //   receiver: receiverUser,
         //   lastmessage: "",
         // });
 
-        // console.log({
-        //   matching_sender: user.uid, // 매칭 신청자 (본인)
-        //   matching_receiver: receiverUser.user_id, // 현재 보고있는 페이지 유저(매칭 수신자)
+        // // 매칭 정보 추가
+        // await matching_add({
+        //   matching_sender: userList[0], // 매칭 신청자 (본인)
+        //   matching_receiver: receiverUser, // 현재 보고있는 페이지 유저(매칭 수신자)
         //   matching_state: 0, // default 신청 상태
         //   matching_payment: orderId, // 결제 정보 id
         // });
-
-        // 채팅 정보 추가
-        await db_set(`messages-${orderId}`, "chat_info", {
-          orderId: orderId,
-          timestamp: new Date(),
-          sender: userList[0],
-          receiver: receiverUser,
-          lastmessage: "",
-        });
-
-        // 매칭 정보 추가
-        await matching_add({
-          matching_sender: userList[0], // 매칭 신청자 (본인)
-          matching_receiver: receiverUser, // 현재 보고있는 페이지 유저(매칭 수신자)
-          matching_state: 0, // default 신청 상태
-          matching_payment: orderId, // 결제 정보 id
-        });
 
         // navigate("/");
       }

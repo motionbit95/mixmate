@@ -174,9 +174,6 @@ export const Home = () => {
             >
               <HStack w={"100%"}>
                 <TextLogo h={"4vh"} />
-                {userInfo && userInfo.user_location && (
-                  <TextAddress user={userInfo} />
-                )}
               </HStack>
 
               <IconButton
@@ -278,6 +275,9 @@ export const Home = () => {
                         align="flex-start"
                         spacing="10px"
                       >
+                        {userInfo && userInfo.user_location && (
+                          <TextAddress user={userInfo} />
+                        )}
                         <Button
                           onClick={async () => {
                             let data = await arrange_distance(

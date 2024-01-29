@@ -1,8 +1,10 @@
 import {
   Avatar,
   Box,
+  Button,
   Flex,
   HStack,
+  Input,
   Skeleton,
   Stack,
   Text,
@@ -12,18 +14,35 @@ import { getDisplayName } from "../js/API";
 import { CustomButton } from "./Buttons";
 import { useNavigate } from "react-router-dom";
 import { theme_bright_color, theme_primary_color } from "../App";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { get_avg_user_score, get_default_avartar } from "../js/UserAPI";
+import { upload_image } from "../js/Storage";
+import { db_update } from "../js/Database";
 
 export const User = ({ data }) => {
   const navigate = useNavigate();
+  const profileRef = useRef();
   useEffect(() => {
     get_avg_score();
   }, []);
 
+  const [profile_image, setProfileImage] = useState(data.user_profile);
+
   const get_avg_score = async () => {
     let score = await get_avg_user_score(data.user_id);
   };
+
+  // 이미지 업로드 함수
+  const upload_profile = async (e) => {
+    // firestore에 이미지 업로드
+    let url = await upload_image(e);
+
+    setProfileImage(url);
+
+    // 이미지 저장
+    db_update("user", data.doc_id, { user_profile: url });
+  };
+
   return (
     <Flex
       py={"1vh"}
@@ -36,11 +55,28 @@ export const User = ({ data }) => {
       {data && (
         <HStack spacing={"2vw"} w={"100%"}>
           <Skeleton isLoaded={data}>
-            <Avatar
-              alignSelf={"flex-start"}
-              src={get_default_avartar(data.user_gender, data.user_profile)}
-              mr={"2vw"}
-            />
+            <VStack alignItems={"center"} justifyContent={"center"}>
+              <Avatar
+                src={
+                  profile_image
+                    ? profile_image
+                    : get_default_avartar(data.user_gender, data.user_profile)
+                }
+              />
+              {window.location.pathname.includes("/mypage") && (
+                <Button size={"xs"} onClick={() => profileRef.current.click()}>
+                  프로필수정
+                </Button>
+              )}
+              <Input
+                display={"none"}
+                ref={profileRef}
+                type="file"
+                onChange={(e) => {
+                  upload_profile(e);
+                }}
+              />
+            </VStack>
           </Skeleton>
           <Stack w="100%">
             <HStack justifyContent={"space-between"} w="100%">

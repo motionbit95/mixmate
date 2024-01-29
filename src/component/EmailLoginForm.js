@@ -11,9 +11,10 @@ import { useAuthState } from "../js/Hooks";
 const EmailLoginForm = ({ ...props }) => {
   const { user } = useAuthState(auth);
   const navigate = useNavigate();
+  const [save, setSave] = useState(Boolean(localStorage.getItem("id_save")));
   const [account, setAccount] = useState({
-    user_email: "",
-    user_password: "",
+    user_email: localStorage.getItem("user_email"),
+    user_password: localStorage.getItem("user_password"),
   });
   return (
     <Stack spacing={"1vh"} w={"100%"}>
@@ -23,7 +24,7 @@ const EmailLoginForm = ({ ...props }) => {
           id="user_email"
           type="email"
           placeholder="아이디"
-          defaultValue={localStorage.getItem("user_id")}
+          defaultValue={localStorage.getItem("user_email")}
           onChange={(e) =>
             setAccount(setData(account, "user_email", e.target.value))
           }
@@ -35,16 +36,18 @@ const EmailLoginForm = ({ ...props }) => {
           id="user_password"
           type="password"
           placeholder="패스워드"
+          defaultValue={localStorage.getItem("user_password")}
           onChange={(e) =>
             setAccount(setData(account, "user_password", e.target.value))
           }
         />
       </FormControl>
       <Checkbox
-        defaultChecked={true}
+        defaultChecked={save}
         colorScheme={getSatuation(theme_primary_color)}
+        onChange={(e) => setSave(e.target.checked)}
       >
-        자동 로그인
+        아이디 / 비밀번호 저장하기
       </Checkbox>
       <FullButton
         onClick={async () => {
@@ -55,6 +58,13 @@ const EmailLoginForm = ({ ...props }) => {
           if (success) {
             // 로그인 성공
             navigate("/");
+            if (save) {
+              localStorage.setItem("user_email", account.user_email);
+              localStorage.setItem("user_password", account.user_password);
+              localStorage.setItem("id_save", save);
+            } else {
+              localStorage.clear();
+            }
           } else {
             // 로그인 실패
             alert("로그인에 실패했습니다. 계정을 확인하세요");

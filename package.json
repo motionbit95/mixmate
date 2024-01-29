@@ -41,7 +41,8 @@
     "docs": "jsdoc src README.md -r -t ./node_modules/jsdoc/node_modules/docdash",
     "predeploy": "npm run docs",
     "deploy": "gh-pages -d out",
-    "start": "concurrently \"node server\" \"react-scripts start\"",
+    "start": "react-scripts start",
+    "server": "node server",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
