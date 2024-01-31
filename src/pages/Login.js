@@ -127,7 +127,7 @@ export const Login = () => {
                   <Flex w={"100%"} align={"center"}>
                     <Image
                       position={"absolute"}
-                      mx={"8vw"}
+                      mx={"2vw"}
                       w="auto"
                       h="24px"
                       src={require("../assets/kakao_icon.png")}
@@ -151,7 +151,7 @@ export const Login = () => {
                   <Flex w={"100%"} align={"center"}>
                     <Image
                       position={"absolute"}
-                      mx={"8vw"}
+                      mx={"2vw"}
                       w="auto"
                       h="24px"
                       src={require("../assets/google_icon.png")}
@@ -173,7 +173,7 @@ export const Login = () => {
                     <Image
                       zIndex={9}
                       position={"absolute"}
-                      mx={"8vw"}
+                      mx={"2vw"}
                       w="auto"
                       h="24px"
                       color={"black"}

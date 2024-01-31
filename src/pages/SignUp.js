@@ -155,6 +155,7 @@ export const SignUp = () => {
   });
 
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isCert, setIsCert] = useState(false);
 
   // 프로필 업로드 버튼 클릭 시 ref 클릭 이벤트 발생
   const onClickProfileButton = () => {
@@ -246,147 +247,151 @@ export const SignUp = () => {
       setLoading(false);
 
       // 페이지 이동
-      navigate("/info", { state: { user_id: docId } });
+      // navigate("/info", { state: { user_id: docId } });
     }
   };
 
   return (
-    <Container>
-      <TopHeader title={"회원가입"} />
-      {loading ? (
-        <Box>
-          <Center w="100vw" h="100vh" position={"fixed"} left={0}>
-            <CircularProgress
-              zIndex={9999}
-              isIndeterminate
-              color="blue.300"
-              trackColor={gray_300}
-            />
-          </Center>
-        </Box>
-      ) : null}
-      <Stack
-        paddingY="10px"
-        justify="flex-start"
-        align="center"
-        spacing="0px"
-        overflow="hidden"
-        // width="393px"
-        minH="100vh"
-        maxWidth="100%"
-        background={white}
-      >
+    <>
+      <Container>
+        <TopHeader title={"회원가입"} />
+        {loading ? (
+          <Box>
+            <Center w="100vw" h="100vh" position={"fixed"} left={0}>
+              <CircularProgress
+                zIndex={9999}
+                isIndeterminate
+                color="blue.300"
+                trackColor={gray_300}
+              />
+            </Center>
+          </Box>
+        ) : null}
         <Stack
-          paddingX="10px"
-          direction="row"
+          paddingY="10px"
           justify="flex-start"
-          align="flex-start"
+          align="center"
           spacing="0px"
           overflow="hidden"
-          alignSelf="stretch"
+          // width="393px"
+          minH="100vh"
+          maxWidth="100%"
+          background={white}
         >
-          <Stack size="lg" width="40px" height="40px" />
-        </Stack>
-        <Stack
-          padding="10px"
-          direction="row"
-          justify="center"
-          // align="center"
-          mt={"4vh"}
-          spacing="10px"
-          overflow="hidden"
-          flex="1"
-          alignSelf="stretch"
-        >
-          <Stack justify="flex-start" align="center" spacing="50px" w="100%">
-            <VStack>
-              <Avatar
-                // name={formData.user_name}
-                src={formData.user_profile}
-                size="2xl"
-              />
-              <CustomButton
-                text="프로필 업로드"
-                onClick={onClickProfileButton}
-              />
-              <Input
-                display={"none"}
-                ref={profileRef}
-                type="file"
-                onChange={(e) => {
-                  upload_profile(e);
-                }}
-              />
-            </VStack>
-            <Stack
-              justify="flex-start"
-              align="flex-start"
-              spacing="10px"
-              w={"100%"}
-            >
-              <Input
-                type="text"
-                placeholder="실명"
-                height="40px"
-                alignSelf="stretch"
-                value={formData.user_name}
-                onChange={(e) =>
-                  setFormData({ ...formData, user_name: e.target.value })
-                }
-              />
-              <Input
-                type="email"
-                placeholder="이메일"
-                height="40px"
-                alignSelf="stretch"
-                value={formData.user_email}
-                onChange={(e) => {
-                  setFormData({ ...formData, user_email: e.target.value });
-                }}
-              />
-              <Input
-                type="password"
-                placeholder="패스워드"
-                height="40px"
-                alignSelf="stretch"
-                onChange={(e) => {
-                  let ret = check_password_valid(e.target.value);
-
-                  if (ret === "") {
-                    setFormData({ ...formData, user_password: e.target.value });
+          <Stack
+            paddingX="10px"
+            direction="row"
+            justify="flex-start"
+            align="flex-start"
+            spacing="0px"
+            overflow="hidden"
+            alignSelf="stretch"
+          >
+            <Stack size="lg" width="40px" height="40px" />
+          </Stack>
+          <Stack
+            padding="10px"
+            direction="row"
+            justify="center"
+            // align="center"
+            mt={"4vh"}
+            spacing="10px"
+            overflow="hidden"
+            flex="1"
+            alignSelf="stretch"
+          >
+            <Stack justify="flex-start" align="center" spacing="50px" w="100%">
+              <VStack>
+                <Avatar
+                  // name={formData.user_name}
+                  src={formData.user_profile}
+                  size="2xl"
+                />
+                <CustomButton
+                  text="프로필 업로드"
+                  onClick={onClickProfileButton}
+                />
+                <Input
+                  display={"none"}
+                  ref={profileRef}
+                  type="file"
+                  onChange={(e) => {
+                    upload_profile(e);
+                  }}
+                />
+              </VStack>
+              <Stack
+                justify="flex-start"
+                align="flex-start"
+                spacing="10px"
+                w={"100%"}
+              >
+                <Input
+                  type="text"
+                  placeholder="실명"
+                  height="40px"
+                  alignSelf="stretch"
+                  value={formData.user_name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, user_name: e.target.value })
                   }
+                />
+                <Input
+                  type="email"
+                  placeholder="이메일"
+                  height="40px"
+                  alignSelf="stretch"
+                  value={formData.user_email}
+                  onChange={(e) => {
+                    setFormData({ ...formData, user_email: e.target.value });
+                  }}
+                />
+                <Input
+                  type="password"
+                  placeholder="패스워드"
+                  height="40px"
+                  alignSelf="stretch"
+                  onChange={(e) => {
+                    let ret = check_password_valid(e.target.value);
 
-                  setValid({
-                    state: ret === "",
-                    message: ret,
-                  });
-                }}
-              />
-              <Input
-                type="password"
-                placeholder="패스워드 확인"
-                height="40px"
-                alignSelf="stretch"
-                onChange={(e) => {
-                  setConfirmPassword(e.target.value);
-                  if (
-                    compare_password(formData.user_password, e.target.value)
-                  ) {
-                    setValid({
-                      state: true,
-                      message: "",
-                    });
-                  } else {
-                    setValid({
-                      state: false,
-                      message: "비밀번호가 일치하지 않습니다.",
-                    });
-                  }
-                }}
-              />
+                    if (ret === "") {
+                      setFormData({
+                        ...formData,
+                        user_password: e.target.value,
+                      });
+                    }
 
-              {/* 테스트코드 */}
-              {/* <PhoneCert
+                    setValid({
+                      state: ret === "",
+                      message: ret,
+                    });
+                  }}
+                />
+                <Input
+                  type="password"
+                  placeholder="패스워드 확인"
+                  height="40px"
+                  alignSelf="stretch"
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                    if (
+                      compare_password(formData.user_password, e.target.value)
+                    ) {
+                      setValid({
+                        state: true,
+                        message: "",
+                      });
+                    } else {
+                      setValid({
+                        state: false,
+                        message: "비밀번호가 일치하지 않습니다.",
+                      });
+                    }
+                  }}
+                />
+
+                {/* 테스트코드 */}
+                {/* <PhoneCert
                 onConfirm={(phone) =>
                   setFormData({ ...formData, user_phone: phone })
                 }
@@ -410,42 +415,49 @@ export const SignUp = () => {
                   확인
                 </Button>
               </HStack> */}
-              {isValid.message === "" ? null : (
-                <Alert fontSize={"small"} status="error">
-                  <AlertIcon />
-                  <AlertDescription>{isValid.message}</AlertDescription>
-                </Alert>
-              )}
-            </Stack>
-            <FullButton
-              code={theme_bright_color}
-              text={"회원가입 완료"}
-              width="313px"
-              height="40px"
-              maxWidth="100%"
-              onClick={() => {
-                // 테스트 코드
-                let ret = step1_confirm_blank(
-                  formData.user_profile,
-                  formData.user_name,
-                  formData.user_email,
-                  formData.user_password,
-                  confirmPassword
-                  // formData.user_phone,
-                  // formData.user_birth
-                );
+                {isValid.message === "" ? null : (
+                  <Alert fontSize={"small"} status="error">
+                    <AlertIcon />
+                    <AlertDescription>{isValid.message}</AlertDescription>
+                  </Alert>
+                )}
+              </Stack>
 
-                setValid({ isValid: ret === "", message: ret });
-
-                if (ret === "") {
-                  onClickApprove();
+              <Button
+                // code={theme_bright_color}
+                color={"white"}
+                bgColor={"red"}
+                width="313px"
+                height="40px"
+                maxWidth="100%"
+                onClick={() => {
+                  // 테스트 코드
                   // onApproveButton();
-                }
-              }}
-            />
+
+                  let ret = step1_confirm_blank(
+                    formData.user_profile,
+                    formData.user_name,
+                    formData.user_email,
+                    formData.user_password,
+                    confirmPassword
+                    // formData.user_phone,
+                    // formData.user_birth
+                  );
+
+                  setValid({ isValid: ret === "", message: ret });
+
+                  if (ret === "") {
+                    onClickApprove();
+                    onApproveButton();
+                  }
+                }}
+              >
+                회원가입 완료
+              </Button>
+            </Stack>
           </Stack>
         </Stack>
-      </Stack>
-    </Container>
+      </Container>
+    </>
   );
 };
