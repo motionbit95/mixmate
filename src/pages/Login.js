@@ -33,6 +33,7 @@ import EmailLoginForm from "../component/EmailLoginForm";
 import { get_doc_list } from "../js/Database";
 import KakaoLogin from "react-kakao-login";
 import { terms } from "../assets/terms";
+import { useState } from "react";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -112,13 +113,20 @@ export const Login = () => {
               spacing="4vh"
             >
               <Stack alignItems={"center"}>
-                <SymbolLogo w={"10vh"} />
+                {/* <SymbolLogo w={"10vh"} /> */}
                 <Text
-                  fontSize={"18px"}
+                  fontSize={"x-large"}
                   color={"gray.500"}
                   fontFamily={"GapyeongHanseokbong-Light"}
                 >
-                  식사회, 밥친구 매칭 플랫폼
+                  밥친구가 필요한 순간,
+                </Text>
+                <Text
+                  fontSize={"xx-large"}
+                  color={"gray.800"}
+                  fontFamily={"GapyeongHanseokbong-Bold"}
+                >
+                  식사회
                 </Text>
               </Stack>
               <Stack w="100%" spacing={"4vh"}>
@@ -168,11 +176,8 @@ export const Login = () => {
                       code={"white.100"}
                     />
                   </Flex>
+                  <EmailLoginForm />
                 </Stack>
-
-                <HorizonLine text={"회원정보로 로그인하기"} />
-
-                <EmailLoginForm />
               </Stack>
               <HStack w="100%" justifyContent={"space-between"}>
                 <TextButton
