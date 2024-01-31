@@ -219,3 +219,13 @@ export function addToDesktop() {
     return "브라우저를 확인할 수 없습니다.";
   }
 }
+
+/** 정규식을 사용하여 특수문자 제외한 문자열 반환
+ * @function removeSpecialCharacters
+ * @memberof API
+ * @param {string} inputString 특수문자 포함된 문자열
+ * @returns {string} 특수문자 제외한 문자열 반환
+ */
+export function removeSpecialCharacters(inputString) {
+  return inputString.replace(/[^\w\s]/gi, "");
+}

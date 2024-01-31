@@ -37,7 +37,7 @@ import { User } from "../component/User";
 import { Navbar } from "../component/Navbar";
 import { CustomButton } from "../component/Buttons";
 import { addToDesktop } from "../js/API";
-import { getAuth } from "firebase/auth";
+import { deleteUser, getAuth } from "firebase/auth";
 
 export const MyPage = () => {
   const navigate = useNavigate();
@@ -60,22 +60,23 @@ export const MyPage = () => {
     }
   });
 
-  const deleteUser = async () => {
+  const onDeleteUser = async () => {
     if (window.confirm("정말 회원 탈퇴를 하시겠습니까?")) {
-      await db_delete("user", user.doc_id);
-
-      const auth = getAuth();
-      const currentUser = auth.currentUser;
-
-      deleteUser(currentUser)
-        .then(() => {
-          logout();
-          navigate("/login");
-        })
-        .catch((error) => {
-          // An error ocurred
-          // ...
-        });
+      auth.onAuthStateChanged(async (currentUser) => {
+        console.log(currentUser);
+        if (currentUser) {
+          await db_delete("user", user.doc_id);
+          deleteUser(currentUser)
+            .then(() => {
+              logout();
+              navigate("/login");
+            })
+            .catch((error) => {
+              // An error ocurred
+              // ...
+            });
+        }
+      });
     }
   };
 
@@ -208,7 +209,7 @@ export const MyPage = () => {
             fontSize="18px"
             color={black}
             textAlign="center"
-            onClick={deleteUser}
+            onClick={onDeleteUser}
           >
             탈퇴하기
           </Text>

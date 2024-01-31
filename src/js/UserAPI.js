@@ -109,6 +109,8 @@ export function step2_confirm_blank(
   //   user_bank.bank_name,
   //   user_gender
   // );
+  if (parseInt(user_price) < 2)
+    return "식사권 금액은 2만원 이상으로 설정해주세요.";
   if (user_price === "") return "식사권 금액을 설정해주세요.";
   if (user_place.length === 0) return "식사 가능 동네를 1개 이상 선택해주세요.";
   if (user_food.length === 0) return "좋아하는 음식을 1개 이상 선택해주세요.";

@@ -46,7 +46,7 @@ import {
   theme_primary_color,
   white,
 } from "../App";
-import { getSatuation } from "../js/API";
+import { getSatuation, removeSpecialCharacters } from "../js/API";
 import { TopHeader } from "../component/TopHeader";
 import { CustomButton } from "../component/Buttons";
 
@@ -635,7 +635,7 @@ export const Information = () => {
                   </Text>
                 </Text>
                 <HStack w={"100%"}>
-                  <Select
+                  {/* <Select
                     height="40px"
                     flex="1"
                     defaultValue={formData.user_price}
@@ -647,7 +647,18 @@ export const Information = () => {
                     {cost.map((value, index) => (
                       <option value={value}>{`${value}만원`}</option>
                     ))}
-                  </Select>
+                  </Select> */}
+                  <HStack>
+                    <Input
+                      type="number"
+                      defaultValue={2}
+                      textAlign={"right"}
+                      onChange={(e) =>
+                        setFormData({ ...formData, user_price: e.target.value })
+                      }
+                    />
+                    <Text w={"50px"}>만원</Text>
+                  </HStack>
                   {formData.user_price === "" && (
                     <>
                       <Input
@@ -847,7 +858,9 @@ export const Information = () => {
                         ...formData,
                         user_bank: {
                           ...formData.user_bank,
-                          accout_number: e.target.value,
+                          accout_number: removeSpecialCharacters(
+                            e.target.value
+                          ),
                         },
                       })
                     }

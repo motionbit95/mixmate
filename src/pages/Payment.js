@@ -73,7 +73,7 @@ export const Payment = () => {
   const receiverUser = location.state?.receiver;
   const [pay_method, setPayMethod] = useState("card");
 
-  const dev = "http://localhost:3001";
+  const dev = "http://localhost:3002";
   const prod = "https://dinnermate-da67b66ccbef.herokuapp.com";
 
   async function onClickPayment() {

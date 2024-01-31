@@ -23,8 +23,9 @@ app.use(
     origin: [
       "https://dinnermate-node-server-0d7d5dc74685.herokuapp.com/",
       "https://dinnermate.kr",
-      "http://localhost:3001",
-      "http://localhost:3000",
+      "http://localhost:3002", // pg
+      "http://localhost:3001", // kcp
+      "http://localhost:3000", // front
     ],
     credentials: true,
     optionsSuccessStatus: 200,

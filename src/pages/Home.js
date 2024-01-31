@@ -71,13 +71,16 @@ export const Home = () => {
     auth.onAuthStateChanged(async function (user) {
       if (user) {
         let userList = await get_doc_list("user", "user_id", user?.uid);
-        let userInfo = userList[0];
-        setUserInfo(userInfo);
+        // 로그인 된 유저가 있을 때만, 고객의 위치 업데이트
+        if (userList.length > 0) {
+          let userInfo = userList[0];
+          setUserInfo(userInfo);
 
-        // 사용자의 위치 정보를 업데이트 합니다.
-        await get_update_location(userInfo.doc_id);
+          // 사용자의 위치 정보를 업데이트 합니다.
+          await get_update_location(userInfo?.doc_id);
 
-        await getUserList(userInfo);
+          await getUserList(userInfo);
+        }
       }
     });
   };

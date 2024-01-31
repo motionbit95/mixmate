@@ -439,7 +439,7 @@ export const SignUp = () => {
 
                 if (ret === "") {
                   onClickApprove();
-                  onApproveButton();
+                  // onApproveButton();
                 }
               }}
             />
