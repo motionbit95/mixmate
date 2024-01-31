@@ -32,11 +32,25 @@ import { User } from "../component/User";
 import { getSatuation } from "../js/API";
 import { Navbar } from "../component/Navbar";
 import { CustomButton } from "../component/Buttons";
+import { useEffect, useState } from "react";
+import { get_doc_list } from "../js/Database";
 
 export const Matching = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const data = location.state?.data; // 지금 보고있는 유저
+  const [reviewList, setReviewList] = useState();
+
+  useEffect(() => {
+    getReviewList();
+  }, []);
+
+  const getReviewList = async () => {
+    console.log(data?.user_id);
+    let reviewList = await get_doc_list("review", "user_id", data?.user_id);
+    setReviewList(reviewList);
+    console.log(reviewList);
+  };
 
   return (
     <Container py="50px" minH={"100vh"}>
@@ -66,7 +80,7 @@ export const Matching = () => {
                   밥친구 소개
                 </Tab>
                 <Tab height="52px" flex="1">
-                  후기(53)
+                  후기({reviewList?.length})
                 </Tab>
               </TabList>
               <TabPanels>
@@ -171,157 +185,45 @@ export const Matching = () => {
                     overflow="hidden"
                     alignSelf="stretch"
                   >
-                    <Stack
-                      padding="10px"
-                      justify="flex-start"
-                      align="flex-start"
-                      spacing="10px"
-                      overflow="hidden"
-                      alignSelf="stretch"
-                    >
-                      <Stack
-                        direction="row"
-                        justify="flex-start"
-                        align="flex-start"
-                        spacing="10px"
-                      >
-                        <Icon as={BsStarFill} />
-                        <Text
-                          fontWeight="medium"
-                          fontSize="16px"
-                          color={black}
-                          textAlign="center"
+                    {reviewList?.map((value, index) => (
+                      <>
+                        <Stack
+                          padding="10px"
+                          justify="flex-start"
+                          align="flex-start"
+                          spacing="10px"
+                          overflow="hidden"
+                          alignSelf="stretch"
                         >
-                          5.0
-                        </Text>
-                      </Stack>
-                      <Text
-                        lineHeight="1.43"
-                        fontWeight="medium"
-                        fontSize="14px"
-                        color={gray_700}
-                        alignSelf="stretch"
-                      >
-                        친구 매칭 서비스 덕분에 우연히 만난 친구가 있어서 너무
-                        행복해요. 서로의 취향과 성향이 꽤 일치해서 처음 만났을
-                        때부터 편안한 느낌이었어요. 이제는 함께 많은 추억을
-                        쌓아가고 있습니다.
-                      </Text>
-                    </Stack>
-                    <HorizonLine />
-                    <Stack
-                      padding="10px"
-                      justify="flex-start"
-                      align="flex-start"
-                      spacing="10px"
-                      overflow="hidden"
-                      alignSelf="stretch"
-                    >
-                      <Stack
-                        direction="row"
-                        justify="flex-start"
-                        align="flex-start"
-                        spacing="10px"
-                      >
-                        <Icon as={BsStarFill} />
-                        <Text
-                          fontWeight="medium"
-                          fontSize="16px"
-                          color={black}
-                          textAlign="center"
-                        >
-                          5.0
-                        </Text>
-                      </Stack>
-                      <Text
-                        lineHeight="1.43"
-                        fontWeight="medium"
-                        fontSize="14px"
-                        color={gray_700}
-                        alignSelf="stretch"
-                      >
-                        서비스를 통해 만난 친구는 정말로 나를 이해해주는
-                        사람이에요. 채팅을 통해 서로에게 열린 마음을 보여주고,
-                        이해하며 존중하는 관계를 쌓아가고 있어서 더욱
-                        뜻깊습니다.
-                      </Text>
-                    </Stack>
-                    <HorizonLine />
-                    <Stack
-                      padding="10px"
-                      justify="flex-start"
-                      align="flex-start"
-                      spacing="10px"
-                      overflow="hidden"
-                      alignSelf="stretch"
-                    >
-                      <Stack
-                        direction="row"
-                        justify="flex-start"
-                        align="flex-start"
-                        spacing="10px"
-                      >
-                        <Icon as={BsStarFill} />
-                        <Text
-                          fontWeight="medium"
-                          fontSize="16px"
-                          color={black}
-                          textAlign="center"
-                        >
-                          5.0
-                        </Text>
-                      </Stack>
-                      <Text
-                        lineHeight="1.43"
-                        fontWeight="medium"
-                        fontSize="14px"
-                        color={gray_700}
-                        alignSelf="stretch"
-                      >
-                        이 서비스 덕분에 소소한 일상을 함께 즐길 수 있는 친구를
-                        만났어요. 함께 커피 마시러 가거나 산책하는 것도 즐겁고,
-                        서로의 관심사에 대해 이야기 나누면서 더 친해지고
-                        있습니다.
-                      </Text>
-                    </Stack>
-                    <HorizonLine />
-                    <Stack
-                      padding="10px"
-                      justify="flex-start"
-                      align="flex-start"
-                      spacing="10px"
-                      overflow="hidden"
-                      alignSelf="stretch"
-                    >
-                      <Stack
-                        direction="row"
-                        justify="flex-start"
-                        align="flex-start"
-                        spacing="10px"
-                      >
-                        <Icon as={BsStarFill} />
-                        <Text
-                          fontWeight="medium"
-                          fontSize="16px"
-                          color={black}
-                          textAlign="center"
-                        >
-                          5.0
-                        </Text>
-                      </Stack>
-                      <Text
-                        lineHeight="1.43"
-                        fontWeight="medium"
-                        fontSize="14px"
-                        color={gray_700}
-                        alignSelf="stretch"
-                      >
-                        처음 만났을 때부터 서로에게 열린 마음을 가지고 있어,
-                        신뢰와 이해가 깊어지고 있습니다. 이 서비스는 정말로
-                        특별한 우정을 찾을 수 있는 좋은 기회를 제공해준 것 같아
-                        감사합니다.
-                      </Text>
-                    </Stack>
+                          <Stack
+                            direction="row"
+                            justify="center"
+                            align="center"
+                            spacing="10px"
+                          >
+                            <Icon color={"yellow.500"} as={BsStarFill} />
+                            <Text
+                              fontWeight="medium"
+                              fontSize="16px"
+                              color={black}
+                              textAlign="center"
+                            >
+                              {value.review_score.toFixed(1)}
+                            </Text>
+                          </Stack>
+                          <Text
+                            lineHeight="1.43"
+                            fontWeight="medium"
+                            fontSize="14px"
+                            color={gray_700}
+                            alignSelf="stretch"
+                          >
+                            {value.review_comment}
+                          </Text>
+                        </Stack>
+                        <HorizonLine />
+                      </>
+                    ))}
                     <CustomButton
                       code={theme_bright_color}
                       height="40px"

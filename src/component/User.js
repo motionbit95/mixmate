@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   HStack,
+  Icon,
   Input,
   Skeleton,
   Stack,
@@ -13,11 +14,12 @@ import {
 import { getDisplayName } from "../js/API";
 import { CustomButton } from "./Buttons";
 import { useNavigate } from "react-router-dom";
-import { theme_bright_color, theme_primary_color } from "../App";
+import { black, theme_bright_color, theme_primary_color } from "../App";
 import { useEffect, useRef, useState } from "react";
 import { get_avg_user_score, get_default_avartar } from "../js/UserAPI";
 import { upload_image } from "../js/Storage";
 import { db_update } from "../js/Database";
+import { BsStarFill } from "react-icons/bs";
 
 export const User = ({ data }) => {
   const navigate = useNavigate();
@@ -79,10 +81,31 @@ export const User = ({ data }) => {
             </VStack>
           </Skeleton>
           <Stack w="100%">
-            <HStack justifyContent={"space-between"} w="100%">
+            <HStack w="100%">
               <Text fontSize={"lg"} fontWeight={"bold"}>
                 {getDisplayName(data.user_name)}
               </Text>
+              <Stack
+                direction="row"
+                justify="center"
+                align="center"
+                spacing={"2px"}
+              >
+                <Icon color={"yellow.500"} as={BsStarFill} />
+                <Text
+                  fontWeight="medium"
+                  fontSize="14px"
+                  color={black}
+                  textAlign="center"
+                >
+                  {isNaN(data.review_score / data.review_count)
+                    ? "0.0"
+                    : (data.review_score / data.review_count).toFixed(1)}
+                </Text>
+                <Text color={"#8c8c8c"} fontSize={"12px"}>
+                  ({data.review_count ? data.review_count : 0})
+                </Text>
+              </Stack>
             </HStack>
             <Text fontSize={"12px"} whiteSpace={"pre-wrap"}>
               {data.user_type === "개인"

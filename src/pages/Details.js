@@ -173,6 +173,7 @@ export const Details = () => {
           review_matching: matching_id,
           review_score: score,
           review_comment: message,
+          user_id: reviewMatching.matching_receiver.user_id,
         });
 
         // 매칭 상태 후기등록 상태(2)로 변경
@@ -187,7 +188,21 @@ export const Details = () => {
           },
         });
 
-        console.log("log", score);
+        let userList = await get_doc_list(
+          "user",
+          "user_id",
+          reviewMatching.matching_receiver.user_id
+        );
+        let reciever = userList[0];
+
+        var totalScore = reciever.review_score ? reciever.review_score : 0;
+        var totalCount = reciever.review_count ? reciever.review_count : 0;
+        console.log(totalScore, totalCount, reciever.doc_id);
+
+        await db_update("user", reciever.doc_id, {
+          review_score: totalScore + score,
+          review_count: totalCount + 1,
+        });
 
         // window.location.reload();
         onClose();
