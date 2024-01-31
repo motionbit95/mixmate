@@ -11,7 +11,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { db } from "../db/firebase_config";
+import { auth, db } from "../db/firebase_config";
 import { calculateDistance } from "./UserAPI";
 import { checkNull } from "./API";
 
@@ -152,21 +152,25 @@ export async function arrange_distance(user_location, user_type) {
 
   const q = query(collection(db, "user"));
 
+  console.log(auth.currentUser.uid);
+
   const _q = query(collection(db, "user"), where("user_type", "==", user_type));
   const querySnapshot = await getDocs(user_type === "all" ? q : _q);
   const places = [];
   // Firestore에서 데이터 가져오기 및 거리순 정렬
   querySnapshot.forEach((doc) => {
-    const place = checkNull(doc.data().user_location, {
-      latitude: 37.5664056,
-      longitude: 126.9778222,
-    });
-    // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산
-    place.distance = calculateDistance(currentLocation, {
-      latitude: place.latitude,
-      longitude: place.longitude,
-    });
-    places.push({ ...doc.data(), ...place });
+    if (auth.currentUser.uid !== doc.data().user_id) {
+      const place = checkNull(doc.data().user_location, {
+        latitude: 37.5664056,
+        longitude: 126.9778222,
+      });
+      // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산
+      place.distance = calculateDistance(currentLocation, {
+        latitude: place.latitude,
+        longitude: place.longitude,
+      });
+      places.push({ ...doc.data(), ...place });
+    }
   });
 
   // 거리순으로 정렬
@@ -197,14 +201,16 @@ export async function arrange_random(user_location, user_dong, user_type) {
   const places = [];
   // Firestore에서 데이터 가져오기 및 거리순 정렬
   querySnapshot.forEach((doc) => {
-    const place = doc.data().user_location;
-    if (!place) return;
-    // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산
-    place.distance = calculateDistance(currentLocation, {
-      latitude: place.latitude,
-      longitude: place.longitude,
-    });
-    places.push({ ...doc.data(), ...place });
+    if (auth.currentUser.uid !== doc.data().user_id) {
+      const place = doc.data().user_location;
+      if (!place) return;
+      // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산
+      place.distance = calculateDistance(currentLocation, {
+        latitude: place.latitude,
+        longitude: place.longitude,
+      });
+      places.push({ ...doc.data(), ...place });
+    }
   });
 
   // Fisher-Yates 알고리즘 사용

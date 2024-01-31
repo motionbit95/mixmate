@@ -452,7 +452,7 @@ export const SignUp = () => {
                   }
                 }}
               >
-                회원가입 완료
+                본인인증하기
               </Button>
             </Stack>
           </Stack>

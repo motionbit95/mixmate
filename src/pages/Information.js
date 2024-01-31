@@ -36,7 +36,7 @@ import {
   del_tag,
   step2_confirm_blank,
 } from "../js/UserAPI";
-import { db_update } from "../js/Database";
+import { db_update, get_doc_list } from "../js/Database";
 import { terms } from "../assets/terms";
 import {
   black,
@@ -49,12 +49,14 @@ import {
 import { getSatuation, removeSpecialCharacters } from "../js/API";
 import { TopHeader } from "../component/TopHeader";
 import { CustomButton } from "../component/Buttons";
+import { auth } from "../db/firebase_config";
 
 export const Information = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const user_id = location.state?.user_id;
+  const [doc_id, setDocId] = useState(location.state?.doc_id);
   const cost = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
   const category = ["관심분야1", "관심분야2", "관심분야3"];
   const bank = [
@@ -109,6 +111,19 @@ export const Information = () => {
 
     setUserFood(tag);
   }
+
+  useEffect(() => {
+    auth.onAuthStateChanged(async function (user) {
+      console.log(user?.uid);
+      if (user) {
+        let userList = await get_doc_list("user", "user_id", user?.uid);
+        if (userList.length > 0) {
+          let userInfo = userList[0];
+          setDocId(userInfo?.doc_id);
+        }
+      }
+    });
+  }, []);
 
   const LocationSelector = () => {
     const [selectedCity, setSelectedCity] = useState("");
@@ -634,46 +649,16 @@ export const Information = () => {
                     (본인의 부수입으로 입금됩니다)
                   </Text>
                 </Text>
-                <HStack w={"100%"}>
-                  {/* <Select
-                    height="40px"
-                    flex="1"
-                    defaultValue={formData.user_price}
+                <HStack>
+                  <Input
+                    type="number"
+                    defaultValue={2}
+                    textAlign={"right"}
                     onChange={(e) =>
                       setFormData({ ...formData, user_price: e.target.value })
                     }
-                  >
-                    <option value={""}>직접입력</option>
-                    {cost.map((value, index) => (
-                      <option value={value}>{`${value}만원`}</option>
-                    ))}
-                  </Select> */}
-                  <HStack>
-                    <Input
-                      type="number"
-                      defaultValue={2}
-                      textAlign={"right"}
-                      onChange={(e) =>
-                        setFormData({ ...formData, user_price: e.target.value })
-                      }
-                    />
-                    <Text w={"50px"}>만원</Text>
-                  </HStack>
-                  {formData.user_price === "" && (
-                    <>
-                      <Input
-                        w={"50%"}
-                        type="number"
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            user_price: e.target.value,
-                          })
-                        }
-                      />
-                      <Text w={"50px"}>만원</Text>
-                    </>
-                  )}
+                  />
+                  <Text w={"50px"}>만원</Text>
                 </HStack>
               </Stack>
               <Stack
@@ -946,7 +931,7 @@ export const Information = () => {
                 if (ret === "" || check_terms) {
                   // 정보 추가
                   if (window.location.pathname.includes("info")) {
-                    await db_update("user", user_id, formData);
+                    await db_update("user", doc_id, formData);
                     alert(
                       "회원가입을 완료하였습니다. 로그인 화면으로 이동합니다."
                     );

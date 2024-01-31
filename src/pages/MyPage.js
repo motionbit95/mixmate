@@ -68,7 +68,6 @@ export const MyPage = () => {
           await db_delete("user", user.doc_id);
           deleteUser(currentUser)
             .then(() => {
-              logout();
               navigate("/login");
             })
             .catch((error) => {

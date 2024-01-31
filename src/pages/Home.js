@@ -355,6 +355,9 @@ export const Home = () => {
                         align="flex-start"
                         spacing="10px"
                       >
+                        {userInfo && userInfo.user_location && (
+                          <TextAddress user={userInfo} />
+                        )}
                         <Button
                           onClick={async () => {
                             let data = await arrange_distance(
