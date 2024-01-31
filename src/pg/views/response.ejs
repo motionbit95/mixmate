@@ -15,7 +15,6 @@
         var decodedData = decodeURIComponent(encodedData);
         var receivedData = JSON.parse(decodedData);
 
-        console.log(decodedData, receivedData)
         const dev = "http://localhost:3000";
         const prod = "https://dinnermate.kr";
 
@@ -25,7 +24,6 @@
         // 페이지 이동
         window.location.replace(targetUrl);
 
-        console.log(receivedData);
         // Perform necessary actions with the received data
         }
     </script>

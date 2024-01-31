@@ -42,17 +42,25 @@ import { getSatuation } from "../js/API";
 import { CustomButton } from "../component/Buttons";
 import { arrange_distance, arrange_random, get_doc_list } from "../js/Database";
 import { TextAddress } from "../component/KakaoMap";
-import { useAuthState } from "../js/Hooks";
 
 export const Home = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState();
   const [businessList, setBusinessList] = useState([]);
   const [customerList, setCustomerList] = useState([]);
-  const { user, initializing } = useAuthState(auth);
 
   // 초기 로딩시 한번만 실행되는 로직(초기화)
   useEffect(() => {
+    auth.onAuthStateChanged(async function (user) {
+      if (!user) {
+        if (
+          window.confirm(
+            "회원 정보를 찾을 수 없습니다. 로그인 페이지로 이동하시겠습니까?"
+          )
+        )
+          navigate("/login");
+      }
+    });
     initialize();
   }, []);
 
@@ -188,6 +196,8 @@ export const Home = () => {
         spacing="0px"
         overflow="hidden"
         maxWidth="100%"
+        d
+        minH={"100vh"}
       >
         <Stack
           pt={"10px"}

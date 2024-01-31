@@ -102,13 +102,6 @@ export function step2_confirm_blank(
   user_gender,
   user_birth
 ) {
-  // console.log(
-  //   user_price,
-  //   user_place.length,
-  //   user_food.length,
-  //   user_bank.bank_name,
-  //   user_gender
-  // );
   if (parseInt(user_price) < 2)
     return "식사권 금액은 2만원 이상으로 설정해주세요.";
   if (user_price === "") return "식사권 금액을 설정해주세요.";
@@ -143,7 +136,6 @@ export function add_place_tag(array, city, district) {
     tag_list.push(str_place);
   }
 
-  // console.log(tag_list);
   return tag_list;
 }
 
@@ -164,7 +156,6 @@ export function add_food_tag(array, food) {
     tag_list.push(food);
   }
 
-  // console.log(tag_list);
   return tag_list;
 }
 
@@ -176,7 +167,6 @@ export function add_food_tag(array, food) {
  * @returns {array} 태그 항목이 삭제 된 배열 반환
  */
 export function del_tag(array, tag) {
-  // console.log(array, tag);
   // 배열에서 특정 항목을 제외한 새로운 배열을 생성
   const tag_list = array.filter((item) => item !== tag);
   return tag_list;
@@ -221,7 +211,6 @@ export async function get_update_location(doc_id) {
         pos.longitude = position.coords.longitude;
 
         await db_update("user", doc_id, { user_location: pos });
-        console.log("위치 정보를 DB에 업데이트하였습니다.");
       },
       // 실패 시 호출되는 콜백 함수
       async function (error) {
@@ -255,16 +244,6 @@ export function calculateDistance(coord1, coord2) {
   const distance = R * c;
   return distance;
 }
-
-/** 유저 후기 평점 계산
- * @function get_avg_user_score
- * @memberof User
- * @param {string} user_id 유저 id
- * @returns {number} 평균 계산
- */
-export const get_avg_user_score = async (user_id) => {
-  // console.log(user_id);
-};
 
 export const get_default_avartar = (gender, profile) => {
   if (profile) {

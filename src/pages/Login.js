@@ -40,8 +40,6 @@ export const Login = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const responseKaKao = (response) => {
-    console.log(response);
-
     alert("준비중입니다.");
     // 카카오톡 로그인 성공 시 처리 로직을 여기에 추가합니다.
   };
@@ -49,8 +47,6 @@ export const Login = () => {
   const responseGoogle = async () => {
     // 구글 로그인 성공 시 처리 로직을 여기에 추가합니다.
     if (await signInGoogle()) {
-      console.log("구글 로그인 성공 : ", auth.currentUser?.uid);
-
       // user_id 와 user.uid가 일치하는 문서 검색(가입이 된 유저인지)
 
       let userlist = await get_doc_list(
@@ -59,7 +55,6 @@ export const Login = () => {
         auth.currentUser?.uid
       );
 
-      console.log(userlist);
       if (userlist[0]) {
         // 가입된 유저가 있다면
         // 홈으로 이동
@@ -118,7 +113,11 @@ export const Login = () => {
             >
               <Stack alignItems={"center"}>
                 <SymbolLogo w={"10vh"} />
-                <Text fontSize={"x-large"} color={"gray.500"}>
+                <Text
+                  fontSize={"18px"}
+                  color={"gray.500"}
+                  fontFamily={"GapyeongHanseokbong-Light"}
+                >
                   식사회, 밥친구 매칭 플랫폼
                 </Text>
               </Stack>
@@ -169,42 +168,23 @@ export const Login = () => {
                       code={"white.100"}
                     />
                   </Flex>
-                  <Flex w={"100%"} align={"center"}>
-                    <Image
-                      zIndex={9}
-                      position={"absolute"}
-                      mx={"2vw"}
-                      w="auto"
-                      h="24px"
-                      color={"black"}
-                      src={require("../assets/user_icon.png")}
-                    />
-                    <FullButton
-                      onClick={async () => {
-                        // 로그인 한 유저가 있을 경우 로그아웃을 합니다.
-                        if (user) {
-                          await logout();
-                        }
-                        navigate("/signup");
-                      }}
-                      text="회원가입하고 로그인하기"
-                      code={"gray.100"}
-                    />
-                  </Flex>
                 </Stack>
 
                 <HorizonLine text={"회원정보로 로그인하기"} />
 
                 <EmailLoginForm />
               </Stack>
-              <HStack w="100%" justifyContent={"flex-end"}>
-                {/* <TextButton
+              <HStack w="100%" justifyContent={"space-between"}>
+                <TextButton
                   text={"회원가입"}
                   onClick={async () => {
-                    await logout();
+                    // 로그인 한 유저가 있을 경우 로그아웃을 합니다.
+                    if (user) {
+                      await logout();
+                    }
                     navigate("/signup");
                   }}
-                /> */}
+                />
                 <TextButton
                   text={"아이디 / 비밀번호 찾기"}
                   onClick={() => alert("준비중입니다.")}

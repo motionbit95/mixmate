@@ -21,7 +21,6 @@ import { auth } from "../db/firebase_config";
 export const matching_add = async (data) => {
   // matching collection에 data를 추가합니다
   let doc_id = await db_add("matching", data);
-  console.log("매칭 doc이 생성되었습니다. : ", doc_id);
 
   // matching id를 필드에 업데이트합니다.
   await db_update("matching", doc_id, { matching_id: doc_id });

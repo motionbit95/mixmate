@@ -46,10 +46,8 @@ export const Matching = () => {
   }, []);
 
   const getReviewList = async () => {
-    console.log(data?.user_id);
     let reviewList = await get_doc_list("review", "user_id", data?.user_id);
     setReviewList(reviewList);
-    console.log(reviewList);
   };
 
   return (

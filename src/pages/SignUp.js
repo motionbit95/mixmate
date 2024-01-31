@@ -61,14 +61,12 @@ export const PhoneCert = ({ ...props }) => {
           size: "invisible",
         }
       );
-      console.log(1);
 
       const confirmation = await firebase
         .auth()
         .signInWithPhoneNumber(req_number, appVerifier);
       setConfirmationResult(confirmation);
       setVerificationResult("인증 코드가 전송되었습니다.");
-      console.log(2);
     } catch (error) {
       console.error("인증 코드 전송 실패:", error.message);
     }
@@ -182,7 +180,6 @@ export const SignUp = () => {
       });
     }
 
-    // console.log(url);
     setFormData({ ...formData, user_profile: url });
 
     // 이미지 로딩 완료 시 프로그레스바를 지운다
@@ -228,17 +225,9 @@ export const SignUp = () => {
       if (userList.length === 0) {
         // 입력 정보로 파이어베이스에 저장
         docId = await db_add("user", formData);
-        // console.log("doc", docId);
-
-        //# 로그인 처리
-        //uid = await signInPassword(formData.user_email, formData.user_password);
-        // 사용자의 uid 정보를 user_id로 저장
-        // console.log("uid", uid);
         await db_update("user", docId, { user_id: auth.currentUser?.uid });
       } else {
-        // console.log(await get_doc_list("user", "user_id", user.uid));
         docId = userList[0].doc_id;
-        console.log("doc!", docId);
         await db_update("user", docId, {
           user_password: formData.user_password,
         });
@@ -389,32 +378,6 @@ export const SignUp = () => {
                     }
                   }}
                 />
-
-                {/* 테스트코드 */}
-                {/* <PhoneCert
-                onConfirm={(phone) =>
-                  setFormData({ ...formData, user_phone: phone })
-                }
-              />
-              <HStack w={"100%"}>
-                <Input
-                  type="number"
-                  maxLength={8}
-                  placeholder="생년월일(YYYYMMDD)"
-                  onChange={(e) =>
-                    setFormData({ ...formData, user_birth: e.target.value })
-                  }
-                />
-                <Button
-                  onClick={() =>
-                    console.log(
-                      isAdult(formData.user_birth) ? "성인" : "미성년자"
-                    )
-                  }
-                >
-                  확인
-                </Button>
-              </HStack> */}
                 {isValid.message === "" ? null : (
                   <Alert fontSize={"small"} status="error">
                     <AlertIcon />

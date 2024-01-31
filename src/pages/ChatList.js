@@ -47,7 +47,7 @@ export const ChatList = () => {
           // chatList에 채팅 데이터를 담는다. 현재 본인이 sender인지, 아닌지 flag도 함께 저장한다.
           chatList.push({
             ...chat,
-            isSender: user?.uid === chat.sender.user_id,
+            isSender: user?.uid === chat?.sender?.user_id,
           });
 
           // 상태 변수에 저장

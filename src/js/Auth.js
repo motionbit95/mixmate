@@ -75,9 +75,6 @@ export const signInPassword = async (email, password) => {
     .catch(async (error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-
-      // 에러메세지 출력
-      console.log(errorMessage);
     });
 
   return uid;
@@ -113,7 +110,6 @@ export const signInGoogle = async () => {
 export const logout = async () => {
   try {
     await firebase.auth().signOut();
-    console.log("로그아웃");
   } catch (error) {
     console.log(error.message);
   }

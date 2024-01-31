@@ -114,7 +114,6 @@ export const Information = () => {
 
   useEffect(() => {
     auth.onAuthStateChanged(async function (user) {
-      console.log(user?.uid);
       if (user) {
         let userList = await get_doc_list("user", "user_id", user?.uid);
         if (userList.length > 0) {
@@ -896,7 +895,6 @@ export const Information = () => {
               height="40px"
               alignSelf="stretch"
               onClick={async () => {
-                console.log(formData);
                 // 데이터 빈 곳 없는지 확인
                 let ret = step2_confirm_blank(
                   formData.user_price,

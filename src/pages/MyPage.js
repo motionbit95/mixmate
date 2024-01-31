@@ -53,15 +53,21 @@ export const MyPage = () => {
         if (user) {
           let user_info = await get_doc_list("user", "user_id", user?.uid);
           setUser(user_info[0]);
+        } else {
+          if (
+            window.confirm(
+              "회원 정보를 찾을 수 없습니다. 로그인 페이지로 이동하시겠습니까?"
+            )
+          )
+            navigate("/login");
         }
       });
     }
-  });
+  }, []);
 
   const onDeleteUser = async () => {
     if (window.confirm("정말 회원 탈퇴를 하시겠습니까?")) {
       auth.onAuthStateChanged(async (currentUser) => {
-        console.log(currentUser);
         if (currentUser) {
           await db_delete("user", user.doc_id);
           deleteUser(currentUser)
@@ -131,7 +137,6 @@ export const MyPage = () => {
                     return;
                   }
                   // 문서 업데이트
-                  console.log(user.doc_id, info_text);
                   db_update("user", user.doc_id, {
                     user_info: info_text,
                   });

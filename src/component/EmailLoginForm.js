@@ -71,7 +71,7 @@ const EmailLoginForm = ({ ...props }) => {
             setAccount({ user_email: "", user_password: "" });
           }
         }}
-        text={"로그인하기"}
+        text={"회원정보로 로그인하기"}
         code={theme_bright_color}
       />
     </Stack>

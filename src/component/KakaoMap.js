@@ -14,7 +14,6 @@ export const TextAddress = ({ user }) => {
   });
 
   const handleMapClick = async () => {
-    console.log("user", user);
     if (!user?.user_location) return;
     // if (!dong) {
     const location = user?.user_location;
@@ -25,7 +24,6 @@ export const TextAddress = ({ user }) => {
       location.latitude,
       (result, status) => {
         if (status) {
-          //   console.log(result[0].address.region_3depth_name);
           const address = result[0].address.region_3depth_name;
           setDong(address);
 

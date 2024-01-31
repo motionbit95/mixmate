@@ -38,7 +38,7 @@ export const HorizontalScrollBox = ({ title, model_list }) => {
                       <Box
                         boxShadow={`1px 1px 10px rgba(170, 170, 170, 0.5)`}
                         borderRadius={"16px"}
-                        // w={"40%"}
+                        w={"25vh"}
                         p={"2vh"}
                         bgColor={white}
                       >

@@ -7,19 +7,27 @@ import { checkNull } from "../js/API";
 
 export const SymbolLogo = ({ ...props }) => {
   return (
-    <Image
-      w={checkNull(props.w, "auto")}
-      h={checkNull(props.h, "auto")}
-      src={symbol_logo}
-    />
+    <Text
+      fontSize={"48px"}
+      fontWeight={"900"}
+      fontFamily={"GapyeongHanseokbong-Bold"}
+    >
+      식사회
+    </Text>
+    // <Image
+    //   w={checkNull(props.w, "auto")}
+    //   h={checkNull(props.h, "auto")}
+    //   src={symbol_logo}
+    // />
   );
 };
 
 export const TextLogo = ({ ...props }) => {
   return (
     <Text
-      fontSize={"x-large"}
-      fontWeight={"black"}
+      fontSize={"20px"}
+      fontWeight={"900"}
+      fontFamily={"GapyeongHanseokbong-Bold"}
       whiteSpace={"nowrap"}
       px={"20px"}
     >

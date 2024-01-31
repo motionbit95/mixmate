@@ -16,7 +16,7 @@ import { CustomButton } from "./Buttons";
 import { useNavigate } from "react-router-dom";
 import { black, theme_bright_color, theme_primary_color } from "../App";
 import { useEffect, useRef, useState } from "react";
-import { get_avg_user_score, get_default_avartar } from "../js/UserAPI";
+import { get_default_avartar } from "../js/UserAPI";
 import { upload_image } from "../js/Storage";
 import { db_update } from "../js/Database";
 import { BsStarFill } from "react-icons/bs";
@@ -24,15 +24,8 @@ import { BsStarFill } from "react-icons/bs";
 export const User = ({ data }) => {
   const navigate = useNavigate();
   const profileRef = useRef();
-  useEffect(() => {
-    get_avg_score();
-  }, []);
 
   const [profile_image, setProfileImage] = useState(data.user_profile);
-
-  const get_avg_score = async () => {
-    let score = await get_avg_user_score(data.user_id);
-  };
 
   // 이미지 업로드 함수
   const upload_profile = async (e) => {

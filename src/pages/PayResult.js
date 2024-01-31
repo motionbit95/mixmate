@@ -25,14 +25,14 @@ export const PayResult = () => {
     await db_set(`messages-${order_info.orderId}`, "chat_info", {
       orderId: order_info.orderId,
       timestamp: new Date(),
-      sender: order_info.sender,
-      receiver: order_info.receiver,
+      sender: order_info?.sender,
+      receiver: order_info?.receiver,
       lastmessage: "",
     });
 
     // 매칭 정보 추가
     await matching_add({
-      matching_sender: order_info.sender, // 매칭 신청자 (본인)
+      matching_sender: order_info?.sender, // 매칭 신청자 (본인)
       matching_receiver: order_info.receiver, // 현재 보고있는 페이지 유저(매칭 수신자)
       matching_state: 0, // default 신청 상태
       matching_payment: order_info.orderId, // 결제 정보 id
@@ -92,7 +92,6 @@ export const PayResult = () => {
     var decodedData = decodeURIComponent(window.location.search);
     var stringData = decodedData.split("?data=")[1];
     var jsonData = JSON.parse(stringData);
-    console.log(jsonData);
 
     let order_info = await get_doc_data("temp", jsonData.orderId);
     setOrderInfo(order_info);

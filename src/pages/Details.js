@@ -87,30 +87,20 @@ export const Details = () => {
     get_matching_list();
   }, []);
 
-  function get_review(value) {
-    console.log(value.matcing_id);
-    // let reviews = get_doc_list("review", "review_matching", value.matcing_id);
-    // return reviews[0];
-  }
-
   async function get_matching_list() {
     // 현재 로그인 한 고객의 계정을 가지고 옵니다.
     auth.onAuthStateChanged(async function (user) {
       if (user) {
-        console.log(user?.uid);
         let user_info = await get_doc_list("user", "user_id", user?.uid);
-        console.log(user_info[0]);
 
         if (user_info[0]) {
           let array = await arrange_distance(user_info[0].user_location, "all");
-          console.log(array);
           setRecommend(array);
         }
 
         // 매칭 리스트에서 내가 받은 신청인지 보낸 신청인지 구분해서 저장해둡니다.
         let send_list = await matching_get_list(0);
         let receive_list = await matching_get_list(1);
-        console.log("send_list", send_list, "recieve_list", receive_list);
 
         setSendList(send_list);
         setRecieveList(receive_list);
@@ -197,7 +187,6 @@ export const Details = () => {
 
         var totalScore = reciever.review_score ? reciever.review_score : 0;
         var totalCount = reciever.review_count ? reciever.review_count : 0;
-        console.log(totalScore, totalCount, reciever.doc_id);
 
         await db_update("user", reciever.doc_id, {
           review_score: totalScore + score,
@@ -532,7 +521,8 @@ export const Details = () => {
                                 <HStack>
                                   <CustomButton
                                     onClick={() => {
-                                      if (value.matching_state === 1) {
+                                      console.log("click");
+                                      if (value.matching_state > 0) {
                                         navigate("/matching", {
                                           state: {
                                             data: value.matching_receiver,
@@ -614,29 +604,7 @@ export const Details = () => {
                               </Text>
                               <User data={value.matching_sender} />
                               {value.matching_state < 400 ? (
-                                <HStack>
-                                  <CustomButton
-                                    onClick={() =>
-                                      console.log(value.matching_state)
-                                    }
-                                    text={
-                                      value.matching_state === 0
-                                        ? "채팅하기"
-                                        : ""
-                                    }
-                                  />
-                                  <CustomButton
-                                    code={theme_bright_color}
-                                    onClick={() =>
-                                      setMatchingId(value.matching_id)
-                                    }
-                                    text={
-                                      value.matching_state === 0
-                                        ? "거절하기"
-                                        : ""
-                                    }
-                                  />
-                                </HStack>
+                                <></>
                               ) : (
                                 <>
                                   <Text

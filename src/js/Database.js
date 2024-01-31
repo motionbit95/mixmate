@@ -27,13 +27,11 @@ import { checkNull } from "./API";
  * @returns {string} 추가된 document의 id
  */
 export const db_add = async (col, data) => {
-  console.log(col, " 추가");
   // Add a new document with a generated id.
   const docRef = await addDoc(collection(db, col), {
     ...data,
     timestamp: serverTimestamp(),
   });
-  // console.log("doc add! ", docRef.id);
 
   return docRef.id;
 };
@@ -46,7 +44,6 @@ export const db_add = async (col, data) => {
  * @param {object} data 추가할 데이터
  */
 export const db_set = async (col, doc_id, data) => {
-  console.log(col, " 추가");
   // 데이터 id 지정해서 추가
   await setDoc(doc(db, col, doc_id), data);
 };
@@ -71,7 +68,6 @@ export const db_update = async (col, doc_id, data) => {
  */
 
 export const db_delete = async (col, doc_id) => {
-  console.log(col, " 삭제");
   await deleteDoc(doc(db, col, doc_id));
 };
 
@@ -82,7 +78,6 @@ export const db_delete = async (col, doc_id) => {
  * @return {object} property 값이 value 와 일치하는 데이터 반환
  */
 export const get_doc_all = async (col) => {
-  console.log(col, " 모두 조회");
   const q = query(collection(db, col));
   const querySnapshot = await getDocs(q);
 
@@ -102,17 +97,8 @@ export const get_doc_all = async (col) => {
  * @return {object} 단일 문서의 내용
  */
 export const get_doc_data = async (col, doc_id) => {
-  console.log(col, " 조회");
   const docRef = doc(db, col, doc_id);
   const docSnap = await getDoc(docRef);
-
-  // if (docSnap.exists()) {
-  //   console.log("Document data:", { ...docSnap.data(), doc_id: doc.id });
-  // } else {
-  //   // docSnap.data() will be undefined in this case
-  //   console.log("No such document!");
-  // }
-
   return docSnap.data();
 };
 
@@ -125,8 +111,6 @@ export const get_doc_data = async (col, doc_id) => {
  * @return {object} property 값이 value 와 일치하는 데이터 반환
  */
 export const get_doc_list = async (col, property, value) => {
-  console.log("[", col.toUpperCase(), "]", property, "조회");
-  // console.log(col, property, value, "조회");
   const q = query(collection(db, col), where(property, "==", value));
   const querySnapshot = await getDocs(q);
 
@@ -151,8 +135,6 @@ export async function arrange_distance(user_location, user_type) {
   const currentLocation = user_location;
 
   const q = query(collection(db, "user"));
-
-  console.log(auth.currentUser.uid);
 
   const _q = query(collection(db, "user"), where("user_type", "==", user_type));
   const querySnapshot = await getDocs(user_type === "all" ? q : _q);
