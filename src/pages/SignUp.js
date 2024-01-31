@@ -20,7 +20,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { upload_image } from "../js/Storage";
 import { useRef, useState } from "react";
-import { db_add, db_set, db_update, get_doc_list } from "../js/Database";
+import { db_add, db_update, get_doc_list } from "../js/Database";
 import {
   check_password_valid,
   compare_password,
@@ -226,7 +226,7 @@ export const SignUp = () => {
       let docId = "";
       if (userList.length === 0) {
         // 입력 정보로 파이어베이스에 저장
-        docId = await db_set("user", auth.currentUser?.uid, formData);
+        docId = await db_add("user", formData);
         // console.log("doc", docId);
 
         //# 로그인 처리
