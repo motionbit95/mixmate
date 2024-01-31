@@ -53,8 +53,6 @@ export const MyPage = () => {
         if (user) {
           let user_info = await get_doc_list("user", "user_id", user?.uid);
           setUser(user_info[0]);
-        } else {
-          navigate("/login");
         }
       });
     }

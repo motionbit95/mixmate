@@ -9,6 +9,7 @@ import { auth } from "../db/firebase_config";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+import { useNavigation } from "react-router-dom";
 
 // firebase 초기화
 firebase.initializeApp({

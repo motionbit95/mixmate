@@ -54,12 +54,6 @@ export const Home = () => {
   // 초기 로딩시 한번만 실행되는 로직(초기화)
   useEffect(() => {
     initialize();
-
-    auth.onAuthStateChanged(async function (user) {
-      if (!user) {
-        navigate("/login");
-      }
-    });
   }, []);
 
   const initialize = async () => {

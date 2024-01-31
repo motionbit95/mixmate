@@ -14,9 +14,10 @@ export const TextAddress = ({ user }) => {
   });
 
   const handleMapClick = async () => {
-    if (!user) return;
+    console.log("user", user);
+    if (!user?.user_location) return;
     // if (!dong) {
-    const location = user.user_location;
+    const location = user?.user_location;
     const geolocation = new kakao.maps.services.Geocoder();
     //좌표로 행정동 정보 가져오기
     geolocation.coord2Address(

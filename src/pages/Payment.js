@@ -52,12 +52,12 @@ export const Payment = () => {
   const location = useLocation();
 
   // 테스트
-  const clientId = "S2_af4543a0be4d49a98122e01ec2059a56";
-  const secretKey = "9eb85607103646da9f9c02b128f2e5ee";
+  // const clientId = "S2_af4543a0be4d49a98122e01ec2059a56";
+  // const secretKey = "9eb85607103646da9f9c02b128f2e5ee";
 
   // 세이프바운더리
-  // const clientId = "R2_c5abe31e532b4925b90d26a364362951";
-  // const secretKey = "d5193cf5374e47f498d749cb82d1b880";
+  const clientId = "R2_c5abe31e532b4925b90d26a364362951";
+  const secretKey = "d5193cf5374e47f498d749cb82d1b880";
 
   const payMethod = [
     "kakaopay",
@@ -77,6 +77,10 @@ export const Payment = () => {
   const prod = "https://dinnermate-da67b66ccbef.herokuapp.com";
 
   async function onClickPayment() {
+    if (pay_method !== "card") {
+      alert("현재 카드결제만 가능합니다.");
+      return;
+    }
     // 현재 회원 uid 가지고 오기
     auth.onAuthStateChanged(async function (user) {
       /* 결제 메소드
