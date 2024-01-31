@@ -187,7 +187,9 @@ export const Details = () => {
           },
         });
 
-        window.location.reload();
+        console.log("log", score);
+
+        // window.location.reload();
         onClose();
       }
     }

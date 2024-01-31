@@ -909,8 +909,6 @@ export const Information = () => {
                   formData.user_birth
                 );
 
-                console.log(ret);
-
                 // 데이터가 비어있는 경우
                 if (ret !== "") {
                   setValid({
@@ -934,7 +932,6 @@ export const Information = () => {
                 // 모든 정보 입력 & 이용약관 동의 시
                 if (ret === "" || check_terms) {
                   // 정보 추가
-
                   if (window.location.pathname.includes("info")) {
                     await db_update("user", user_id, formData);
                     alert(

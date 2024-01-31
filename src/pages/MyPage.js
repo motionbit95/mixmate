@@ -37,6 +37,7 @@ import { User } from "../component/User";
 import { Navbar } from "../component/Navbar";
 import { CustomButton } from "../component/Buttons";
 import { addToDesktop } from "../js/API";
+import { getAuth } from "firebase/auth";
 
 export const MyPage = () => {
   const navigate = useNavigate();
@@ -63,8 +64,18 @@ export const MyPage = () => {
     if (window.confirm("정말 회원 탈퇴를 하시겠습니까?")) {
       await db_delete("user", user.doc_id);
 
-      logout();
-      navigate("/login");
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+      deleteUser(currentUser)
+        .then(() => {
+          logout();
+          navigate("/login");
+        })
+        .catch((error) => {
+          // An error ocurred
+          // ...
+        });
     }
   };
 
