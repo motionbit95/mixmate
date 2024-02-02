@@ -1,7 +1,7 @@
-const defaultMale =
+export const defaultMale =
   "https://firebasestorage.googleapis.com/v0/b/dinnermate-database.appspot.com/o/assets%2FMale.png?alt=media&token=b82a2957-545d-4b68-901f-7cbaadb0a42c";
 
-const defaultFemale =
+export const defaultFemale =
   "https://firebasestorage.googleapis.com/v0/b/dinnermate-database.appspot.com/o/assets%2FFemale.png?alt=media&token=58e5f88b-0954-432b-bd69-6f774b5b3a61";
 
 export const defaultUser = [

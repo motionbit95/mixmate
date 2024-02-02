@@ -26,6 +26,10 @@ import {
   useDisclosure,
   ModalContent,
   ModalBody,
+  FormControl,
+  FormLabel,
+  InputGroup,
+  InputRightAddon,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
@@ -36,7 +40,7 @@ import {
   del_tag,
   step2_confirm_blank,
 } from "../js/UserAPI";
-import { db_update, get_doc_list } from "../js/Database";
+import { db_add, db_delete, db_update, get_doc_list } from "../js/Database";
 import { terms } from "../assets/terms";
 import {
   black,
@@ -46,17 +50,18 @@ import {
   theme_primary_color,
   white,
 } from "../App";
-import { getSatuation, removeSpecialCharacters } from "../js/API";
+import { getSatuation, isAdult, removeSpecialCharacters } from "../js/API";
 import { TopHeader } from "../component/TopHeader";
 import { CustomButton } from "../component/Buttons";
 import { auth } from "../db/firebase_config";
+import { deleteUser } from "firebase/auth";
+import { logout } from "../js/Auth";
 
 export const Information = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const user_id = location.state?.user_id;
-  const [doc_id, setDocId] = useState(location.state?.doc_id);
   const cost = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
   const category = ["관심분야1", "관심분야2", "관심분야3"];
   const bank = [
@@ -76,6 +81,8 @@ export const Information = () => {
     "신협",
     "기타",
   ];
+  const [userInfo, setUserInfo] = useState();
+  const [user, setUser] = useState();
   const [user_food, setUserFood] = useState("선택");
   const [input_food, setInputFood] = useState("");
   const [input_place, setInputPlace] = useState("");
@@ -103,6 +110,54 @@ export const Information = () => {
         }
   );
 
+  function extractQueryParameters() {
+    // 현재 URL에서 쿼리 문자열 추출
+    var queryString = window.location.search.substring(1);
+
+    // URL 쿼리 문자열을 객체로 변환
+    var queryParams = new URLSearchParams(queryString);
+
+    // 객체에 값을 담기
+    var user = {
+      name: queryParams.get("name"),
+      phoneNumber: queryParams.get("phoneNumber"),
+      birthdate: queryParams.get("birthdate"),
+      gender: queryParams.get("gender") === "01" ? "남" : "여",
+    };
+
+    setUser(user);
+    console.log(user);
+
+    if (isAdult(user.birthdate)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  useEffect(() => {
+    // 미성년자 여부 확인
+    if (!userInfo) {
+      // 고객의 계정을 가지고 옵니다.
+      auth.onAuthStateChanged(async function (user) {
+        if (user) {
+          let user_list = await get_doc_list("user", "user_id", user?.uid);
+          setUserInfo(user_list[0]);
+
+          if (!extractQueryParameters()) {
+            alert("미성년자는 가입할 수 없습니다. 로그인 화면으로 돌아갑니다.");
+
+            // 회원 탈퇴 처리
+            db_delete("user", user_list[0].doc_id);
+            deleteUser(user);
+            navigate("/login");
+            return;
+          }
+        }
+      });
+    }
+  }, []);
+
   // 음식 태그 추가하는 함수
   function add_food(tag) {
     if (tag !== "직접입력" && tag !== "선택") {
@@ -111,18 +166,6 @@ export const Information = () => {
 
     setUserFood(tag);
   }
-
-  useEffect(() => {
-    auth.onAuthStateChanged(async function (user) {
-      if (user) {
-        let userList = await get_doc_list("user", "user_id", user?.uid);
-        if (userList.length > 0) {
-          let userInfo = userList[0];
-          setDocId(userInfo?.doc_id);
-        }
-      }
-    });
-  }, []);
 
   const LocationSelector = () => {
     const [selectedCity, setSelectedCity] = useState("");
@@ -491,7 +534,7 @@ export const Information = () => {
           flex="1"
           alignSelf="stretch"
           w={"100%"}
-          p={"4vw"}
+          p={"2vw"}
         >
           <Stack
             justify="flex-start"
@@ -514,110 +557,123 @@ export const Information = () => {
                 alignSelf="stretch"
                 w={"100%"}
               >
-                <Stack
-                  direction="row"
-                  justify="flex-start"
-                  align="flex-start"
-                  alignSelf="stretch"
-                  w={"100%"}
+                <FormControl
+                  isRequired
+                  display="flex"
+                  flexDirection="row"
+                  alignItems={"center"}
                 >
-                  <Text
-                    lineHeight="1.43"
-                    fontWeight="regular"
-                    fontSize="16px"
-                    color={black}
-                    w="100px"
-                  >
-                    유저 구분
-                  </Text>
+                  <FormLabel w={"100px"}>실명</FormLabel>
+                  <Input
+                    type="text"
+                    placeholder="실명"
+                    height="40px"
+                    alignSelf="stretch"
+                    value={user?.name}
+                    onChange={(e) =>
+                      setFormData({ ...formData, user_name: user?.name })
+                    }
+                    isDisabled
+                  />
+                </FormControl>
+                <FormControl
+                  isRequired
+                  display="flex"
+                  flexDirection="row"
+                  alignItems={"center"}
+                >
+                  <FormLabel w={"100px"}>휴대번호</FormLabel>
+                  <Input
+                    type="text"
+                    placeholder="휴대폰번호"
+                    height="40px"
+                    alignSelf="stretch"
+                    value={user?.phoneNumber}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        user_phone: user?.phoneNumber,
+                      })
+                    }
+                    isDisabled
+                  />
+                </FormControl>
+                <FormControl
+                  isRequired
+                  display="flex"
+                  flexDirection="row"
+                  alignItems={"center"}
+                >
+                  <FormLabel w={"100px"}>생년월일</FormLabel>
+                  <Input
+                    type="text"
+                    placeholder="생년월일"
+                    height="40px"
+                    alignSelf="stretch"
+                    value={user?.birthdate}
+                    onChange={(e) =>
+                      setFormData({ ...formData, user_birth: user?.birthdate })
+                    }
+                    isDisabled
+                  />
+                </FormControl>
+                <FormControl
+                  isRequired
+                  display="flex"
+                  flexDirection="row"
+                  alignItems={"center"}
+                >
+                  <FormLabel w={"100px"}>성별</FormLabel>
+                  <Input
+                    type="text"
+                    placeholder="성별"
+                    height="40px"
+                    alignSelf="stretch"
+                    value={user?.gender}
+                    onChange={(e) =>
+                      setFormData({ ...formData, user_birth: user?.gender })
+                    }
+                    isDisabled
+                  />
+                </FormControl>
+                <FormControl
+                  isRequired
+                  display="flex"
+                  flexDirection="row"
+                  alignItems={"center"}
+                >
+                  <FormLabel>유저구분</FormLabel>
                   <RadioGroup
                     defaultValue={formData.user_type}
                     onChange={(value) =>
                       setFormData({ ...formData, user_type: value })
                     }
                   >
-                    <HStack w="100%">
-                      <Radio
-                        colorScheme={getSatuation(theme_primary_color)}
-                        value={"개인"}
-                        w="100px"
-                      >
-                        개인
-                      </Radio>
-                      <Radio
-                        colorScheme={getSatuation(theme_primary_color)}
-                        value={"사업 전문가"}
-                        w="100px"
-                      >
-                        멘토
-                      </Radio>
-                    </HStack>
+                    <Radio
+                      colorScheme={getSatuation(theme_primary_color)}
+                      value={"개인"}
+                      w="100px"
+                    >
+                      개인
+                    </Radio>
+                    <Radio
+                      colorScheme={getSatuation(theme_primary_color)}
+                      value={"사업 전문가"}
+                      w="100px"
+                    >
+                      멘토
+                    </Radio>
                   </RadioGroup>
-                </Stack>
+                </FormControl>
               </Stack>
-              <Stack
-                justify="flex-start"
-                align="flex-start"
-                spacing="10px"
-                alignSelf="stretch"
-              >
-                <Stack
-                  direction="row"
-                  justify="flex-start"
-                  align="flex-start"
-                  alignSelf="stretch"
-                  w={"100%"}
-                >
-                  <Text
-                    lineHeight="1.43"
-                    fontWeight="regular"
-                    fontSize="16px"
-                    color={black}
-                    w="100px"
-                  >
-                    성별
-                  </Text>
-                  <RadioGroup
-                    defaultValue={formData.user_gender}
-                    onChange={(value) =>
-                      setFormData({ ...formData, user_gender: value })
-                    }
-                  >
-                    <HStack w="100%">
-                      <Radio
-                        colorScheme={getSatuation(theme_primary_color)}
-                        value={"남"}
-                        w="100px"
-                      >
-                        남
-                      </Radio>
-                      <Radio
-                        colorScheme={getSatuation(theme_primary_color)}
-                        value={"여"}
-                        w="100px"
-                      >
-                        여
-                      </Radio>
-                    </HStack>
-                  </RadioGroup>
-                </Stack>
-              </Stack>
-              <HStack w="100%">
-                <Text w="100px">생년월일</Text>
-                <Input
-                  type="date"
-                  defaultValue={formData.user_birth}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      user_birth: e.target.value,
-                    })
-                  }
-                />
-              </HStack>
               {formData.user_type === "사업 전문가" && (
-                <HStack justify="flex-start" align="center" w="100%">
-                  <Text w="150px">{"멘토 전문 분야"}</Text>
+                <FormControl
+                  isRequired
+                  display="flex"
+                  flexDirection="row"
+                  alignItems={"center"}
+                >
+                  <FormLabel w={"100px"}>전문분야</FormLabel>
                   <Input
                     type="text"
                     onChange={(e) =>
@@ -627,64 +683,41 @@ export const Information = () => {
                       })
                     }
                   />
-                </HStack>
+                </FormControl>
               )}
-              <Stack
-                direction="column"
-                justify="flex-start"
-                align="flex-start"
-                spacing="10px"
-                alignSelf="stretch"
-              >
-                <Text
-                  lineHeight="1.43"
-                  fontWeight="regular"
-                  fontSize="16px"
-                  color={black}
-                  // width="90px"
-                >
-                  나와 식사하려면 상대방이 지불해야하는 금액은?{" "}
-                  <Text fontSize={"sm"} color={gray_600}>
-                    (본인의 부수입으로 입금됩니다)
-                  </Text>
+
+              <FormControl isRequired>
+                <FormLabel>
+                  나와 식사하려면 상대방이 지불해야하는 금액은?
+                </FormLabel>
+                <Text fontSize={"sm"} color={gray_600} mt={"-10px"}>
+                  (본인의 부수입으로 입금됩니다)
                 </Text>
-                <HStack>
+                <InputGroup mt={"1vh"}>
                   <Input
+                    // w={"70px"}
                     type="number"
                     defaultValue={2}
                     textAlign={"right"}
-                    onChange={(e) =>
-                      setFormData({ ...formData, user_price: e.target.value })
-                    }
+                    onBlur={(e) => {
+                      if (parseInt(e.target.value) < 2) {
+                        alert("식사권 금액은 2만원 이상으로 설정해주세요!");
+                      } else {
+                        setFormData({
+                          ...formData,
+                          user_price: e.target.value,
+                        });
+                      }
+                    }}
                   />
-                  <Text w={"50px"}>만원</Text>
-                </HStack>
-              </Stack>
-              <Stack
-                justify="center"
-                align="center"
-                spacing="10px"
-                alignSelf="stretch"
-              >
-                <Stack
-                  direction="column"
-                  justify="flex-start"
-                  align="flex-start"
-                  spacing="10px"
-                  alignSelf="stretch"
-                >
-                  <Text
-                    lineHeight="1.43"
-                    fontWeight="regular"
-                    fontSize="16px"
-                    color={black}
-                    // width="90px"
-                  >
-                    식사 가능 동네
-                  </Text>
-                  <LocationSelector />
-                </Stack>
+                  <InputRightAddon>만원</InputRightAddon>
+                </InputGroup>
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>식사 가능 동네</FormLabel>
+                <LocationSelector />
                 <Wrap
+                  mt={1}
                   direction="row"
                   justify="flex-start"
                   align="flex-start"
@@ -709,71 +742,44 @@ export const Information = () => {
                     </Tag>
                   ))}
                 </Wrap>
-              </Stack>
-              <Stack
-                justify="center"
-                align="center"
-                spacing="10px"
-                alignSelf="stretch"
-              >
-                <Stack
-                  direction="column"
-                  justify="flex-start"
-                  align="flex-start"
-                  spacing="10px"
-                  alignSelf="stretch"
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>좋아하는 음식</FormLabel>
+                <Select
+                  height="40px"
+                  flex="1"
+                  defaultValue={"선택"}
+                  onChange={(e) => add_food(e.target.value)}
                 >
-                  <Text
-                    lineHeight="1.43"
-                    fontWeight="regular"
-                    fontSize="16px"
-                    color={black}
-                  >
-                    좋아하는 음식
-                  </Text>
-                  <Select
-                    height="40px"
-                    flex="1"
-                    defaultValue={"선택"}
-                    onChange={(e) => add_food(e.target.value)}
-                  >
-                    <option value={"선택"}>{"선택"}</option>
-                    <option value={"한식"}>{"한식"}</option>
-                    <option value={"일식"}>{"일식"}</option>
-                    <option value={"중식"}>{"중식"}</option>
-                    <option value={"양식"}>{"양식"}</option>
-                    <option value={"직접입력"}>{"직접입력"}</option>
-                  </Select>
-                  {user_food === "직접입력" && (
-                    <HStack w="100%">
-                      <Input
-                        placeholder={"좋아하는 음식을 입력해보세요."}
-                        onChange={(e) => setInputFood(e.target.value)}
-                      />
-                      <IconButton
-                        onClick={() =>
-                          setFormData({
-                            ...formData,
-                            user_food: add_food_tag(
-                              formData.user_food,
-                              input_food
-                            ),
-                          })
-                        }
-                        icon={<MdAdd />}
-                        size={"md"}
-                      />
-                    </HStack>
-                  )}
-                </Stack>
-                <Wrap
-                  direction="row"
-                  justify="flex-start"
-                  align="flex-start"
-                  spacing="10px"
-                  overflow="hidden"
-                  alignSelf="stretch"
-                >
+                  <option value={"선택"}>{"선택"}</option>
+                  <option value={"한식"}>{"한식"}</option>
+                  <option value={"일식"}>{"일식"}</option>
+                  <option value={"중식"}>{"중식"}</option>
+                  <option value={"양식"}>{"양식"}</option>
+                  <option value={"직접입력"}>{"직접입력"}</option>
+                </Select>
+                {user_food === "직접입력" && (
+                  <HStack w="100%">
+                    <Input
+                      placeholder={"좋아하는 음식을 입력해보세요."}
+                      onChange={(e) => setInputFood(e.target.value)}
+                    />
+                    <IconButton
+                      onClick={() =>
+                        setFormData({
+                          ...formData,
+                          user_food: add_food_tag(
+                            formData.user_food,
+                            input_food
+                          ),
+                        })
+                      }
+                      icon={<MdAdd />}
+                      size={"md"}
+                    />
+                  </HStack>
+                )}
+                <Wrap mt={1}>
                   {formData.user_food.map((value) => (
                     <Tag
                       size="md"
@@ -791,8 +797,8 @@ export const Information = () => {
                     </Tag>
                   ))}
                 </Wrap>
-              </Stack>
-              <Stack
+              </FormControl>
+              {/* <Stack
                 justify="center"
                 align="flex-start"
                 spacing="10px"
@@ -854,7 +860,7 @@ export const Information = () => {
                     alignSelf="stretch"
                   />
                 </Stack>
-              </Stack>
+              </Stack> */}
             </Stack>
             {window.location.pathname.includes("info") && (
               <Flex
@@ -929,7 +935,9 @@ export const Information = () => {
                 if (ret === "" || check_terms) {
                   // 정보 추가
                   if (window.location.pathname.includes("info")) {
-                    await db_update("user", doc_id, formData);
+                    // doc_id 가지고 오기
+                    console.log(userInfo.doc_id);
+                    await db_update("user", userInfo.doc_id, formData);
                     alert(
                       "회원가입을 완료하였습니다. 로그인 화면으로 이동합니다."
                     );

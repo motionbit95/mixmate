@@ -144,9 +144,10 @@ export const SignUp = () => {
 
   const { user } = useAuthState(auth);
   const [formData, setFormData] = useState({
-    user_profile: user?.photoURL,
+    user_profile: user?.photoURL
+      ? user?.photoURL
+      : "https://firebasestorage.googleapis.com/v0/b/dinnermate-database.appspot.com/o/assets%2FMale.png?alt=media&token=b82a2957-545d-4b68-901f-7cbaadb0a42c",
     user_email: user?.email,
-    user_name: user?.displayName,
     user_password: "",
     user_phone: "",
     user_birth: "",
@@ -188,6 +189,7 @@ export const SignUp = () => {
 
   const onApproveButton = async () => {
     window.location.replace(
+      //"http://localhost:3001/sample/make_hash"
       "https://dinnermate-node-server-0d7d5dc74685.herokuapp.com/sample/make_hash"
     );
   };
@@ -212,7 +214,7 @@ export const SignUp = () => {
 
     if (ret !== "") return;
 
-    console.log(auth.currentUser);
+    console.log("Current User!!", auth.currentUser);
 
     if (auth.currentUser) {
       let userList = await get_doc_list(
@@ -235,6 +237,7 @@ export const SignUp = () => {
 
       setLoading(false);
 
+      onApproveButton(); // 본인인증을 진행합니다.
       // 페이지 이동
       // navigate("/info", { state: { user_id: docId } });
     }
@@ -291,11 +294,7 @@ export const SignUp = () => {
           >
             <Stack justify="flex-start" align="center" spacing="50px" w="100%">
               <VStack>
-                <Avatar
-                  // name={formData.user_name}
-                  src={formData.user_profile}
-                  size="2xl"
-                />
+                <Avatar src={formData.user_profile} size="2xl" />
                 <CustomButton
                   text="프로필 업로드"
                   onClick={onClickProfileButton}
@@ -315,16 +314,6 @@ export const SignUp = () => {
                 spacing="10px"
                 w={"100%"}
               >
-                <Input
-                  type="text"
-                  placeholder="실명"
-                  height="40px"
-                  alignSelf="stretch"
-                  value={formData.user_name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, user_name: e.target.value })
-                  }
-                />
                 <Input
                   type="email"
                   placeholder="이메일"
@@ -399,7 +388,6 @@ export const SignUp = () => {
 
                   let ret = step1_confirm_blank(
                     formData.user_profile,
-                    formData.user_name,
                     formData.user_email,
                     formData.user_password,
                     confirmPassword
@@ -410,8 +398,7 @@ export const SignUp = () => {
                   setValid({ isValid: ret === "", message: ret });
 
                   if (ret === "") {
-                    onClickApprove();
-                    onApproveButton();
+                    onClickApprove(); // 계정을 등록합니다.
                   }
                 }}
               >

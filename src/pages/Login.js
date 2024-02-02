@@ -85,7 +85,7 @@ export const Login = () => {
           // maxWidth="360px"
           background={white}
           // p={"4vw"}
-          px={"4vw"}
+          px={"6vw"}
         >
           <Stack
             paddingX="10px"
@@ -106,7 +106,7 @@ export const Login = () => {
             alignSelf="stretch"
           >
             <Stack
-              mt="5vh"
+              mt="10vh"
               w="100%"
               justify="center"
               align="center"
@@ -219,8 +219,8 @@ export const Login = () => {
       <Modal isCentered onClose={onClose} size={"md"} isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader mt="50px">이용약관</ModalHeader>
-          <ModalCloseButton mt="50px" />
+          <ModalHeader>이용약관</ModalHeader>
+          <ModalCloseButton />
           <ModalBody>
             <Text fontSize={"small"} whiteSpace={"pre-wrap"}>
               {terms}

@@ -222,20 +222,36 @@ export const Matching = () => {
                         <HorizonLine />
                       </>
                     ))}
-                    <CustomButton
-                      code={theme_bright_color}
-                      height="40px"
-                      alignSelf="stretch"
-                      onClick={() =>
-                        navigate("/payment", {
-                          state: {
-                            price: data.user_price,
-                            receiver: data,
-                          },
-                        })
-                      }
-                      text={"매칭 신청하기"}
-                    />
+                    <HStack w="100%">
+                      <CustomButton
+                        code={theme_bright_color}
+                        height="40px"
+                        alignSelf="stretch"
+                        onClick={() =>
+                          navigate("/payment", {
+                            state: {
+                              price: data.user_price,
+                              receiver: data,
+                            },
+                          })
+                        }
+                        text={"🍛 식사 매칭 신청"}
+                      />
+                      <CustomButton
+                        code={theme_bright_color}
+                        height="40px"
+                        alignSelf="stretch"
+                        onClick={() =>
+                          navigate("/payment", {
+                            state: {
+                              price: data.user_price,
+                              receiver: data,
+                            },
+                          })
+                        }
+                        text={"☕️ 커피 매칭 신청"}
+                      />
+                    </HStack>
                   </Stack>
                 </TabPanel>
               </TabPanels>

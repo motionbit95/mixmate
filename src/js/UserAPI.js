@@ -64,21 +64,14 @@ export function compare_password(user_password, confirm_password) {
  */
 export function step1_confirm_blank(
   user_profile,
-  user_name,
   user_email,
   user_password,
   confirm_password
-  // user_phone,
-  // user_birth
 ) {
-  // if (!isAdult(user_birth)) return "미성년자는 가입할 수 없습니다.";
   if (user_profile === "") return "프로필 사진을 등록해주세요.";
-  if (user_name === "") return "이름을 입력해주세요.";
   if (user_email === "") return "아이디를 입력해주세요.";
   if (user_password === "") return "패스워드를 입력해주세요.";
   if (confirm_password === "") return "패스워드를 확인해주세요.";
-  // if (user_phone === "") return "휴대폰번호를 확인해주세요.";
-  // if (user_birth === "") return "생년월일을 확인해주세요.";
 
   // 모든 필드가 작성되었을 경우
   return "";
@@ -107,8 +100,8 @@ export function step2_confirm_blank(
   if (user_price === "") return "식사권 금액을 설정해주세요.";
   if (user_place.length === 0) return "식사 가능 동네를 1개 이상 선택해주세요.";
   if (user_food.length === 0) return "좋아하는 음식을 1개 이상 선택해주세요.";
-  if (user_bank.bank_name === "" || user_bank.accout_number === "")
-    return "계좌 정보를 입력해주세요.";
+  // if (user_bank.bank_name === "" || user_bank.accout_number === "")
+  // return "계좌 정보를 입력해주세요.";
   if (user_gender === "") return "성별을 선택해주세요.";
   if (user_birth === "") return "생년월일을 선택해주세요.";
 
@@ -128,6 +121,7 @@ export function step2_confirm_blank(
 export function add_place_tag(array, city, district) {
   if (array.length > 0) {
     alert("식사가능 동네는 1개 까지 선택할 수 있습니다.");
+    return array;
   }
   let tag_list = array;
   let str_place = city + " " + district;
@@ -149,6 +143,7 @@ export function add_place_tag(array, city, district) {
 export function add_food_tag(array, food) {
   if (array.length > 0) {
     alert("좋아하는 음식은 1개 까지 선택할 수 있습니다.");
+    return array;
   }
   let tag_list = array;
   // 배열에 항목이 존재하지 않으면 추가
