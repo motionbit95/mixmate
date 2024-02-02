@@ -19,6 +19,8 @@ import "./index.css";
 import "./styleguide.css";
 import { PayResult } from "./pages/PayResult";
 import { Loading } from "./pages/Loading";
+import Find from "./pages/Find";
+import CertSuccess from "./pages/CertSuccess";
 
 export const theme_primary_color = "gray.500";
 export const theme_bright_color = "gray.200";
@@ -50,7 +52,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/info" element={<Information />} />
+          <Route path="/information" element={<Information />} />
           <Route path="/modify" element={<Information />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/matching" element={<Matching />} />
@@ -61,6 +63,8 @@ function App() {
           <Route path="/chat/*" element={<Chat />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/loading" element={<Loading />} />
+          <Route path="/find" element={<Find />} />
+          <Route path="/info" element={<CertSuccess />} />
         </Routes>
       </BrowserRouter>
     </Container>

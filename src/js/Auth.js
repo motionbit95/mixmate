@@ -52,6 +52,8 @@ export async function signUpPassword(email, password) {
       const errorCode = error.code;
       const errorMessage = error.message;
 
+      console.log(errorCode, errorMessage);
+
       if (errorCode == "auth/invalid-email") {
         err_msg = "이메일 형식 틀림";
       }

@@ -19,14 +19,14 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { upload_image } from "../js/Storage";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { db_set } from "../js/Database";
 import {
   check_password_valid,
   compare_password,
   step1_confirm_blank,
 } from "../js/UserAPI";
-import { signUpPassword } from "../js/Auth";
+import { signInPassword, signUpPassword } from "../js/Auth";
 import {
   gray_100,
   gray_300,
@@ -134,6 +134,9 @@ export const PhoneCert = ({ ...props }) => {
 };
 
 export const SignUp = () => {
+  useEffect(() => {
+    localStorage.setItem("ret_page", "/information");
+  }, []);
   const navigate = useNavigate();
   const profileRef = useRef();
   const [loading, setLoading] = useState(false);
@@ -187,8 +190,8 @@ export const SignUp = () => {
 
   const onApproveButton = async () => {
     window.location.replace(
-      //"http://localhost:3001/sample/make_hash"
-      "https://dinnermate-node-server-0d7d5dc74685.herokuapp.com/sample/make_hash"
+      "http://localhost:3001/sample/make_hash"
+      //"https://dinnermate-node-server-0d7d5dc74685.herokuapp.com/sample/make_hash"
     );
   };
 
@@ -209,9 +212,10 @@ export const SignUp = () => {
         // 계정 생성에 성공했을 경우
         console.log("계정 생성 성공!", result);
         await db_set("user", result.uid, formData);
-        await signUpPassword(formData.user_email, formData.user_password);
+        await signInPassword(formData.user_email, formData.user_password);
 
         setLoading(false);
+        onApproveButton();
       } else {
         alert(result.err_msg);
         setLoading(false);

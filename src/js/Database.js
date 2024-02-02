@@ -212,3 +212,25 @@ export async function arrange_random(user_location, user_dong, user_type) {
 
   return places;
 }
+
+// 데이터 검색
+export const findUser = async (user_name, user_phone) => {
+  const nameToSearch = user_name;
+  const phoneNumberToSearch = user_phone;
+
+  const q = query(
+    collection(db, "user"),
+    where("user_name", "==", nameToSearch)
+  );
+
+  const querySnapshot = await getDocs(q);
+
+  var findUser = null;
+  querySnapshot.forEach((doc) => {
+    if (doc.data().user_phone === phoneNumberToSearch) {
+      findUser = doc.data();
+    }
+  });
+
+  return findUser;
+};
