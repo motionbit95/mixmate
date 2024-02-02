@@ -55,13 +55,10 @@ import { TopHeader } from "../component/TopHeader";
 import { CustomButton } from "../component/Buttons";
 import { auth } from "../db/firebase_config";
 import { deleteUser } from "firebase/auth";
-import { logout } from "../js/Auth";
-
 export const Information = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const user_id = location.state?.user_id;
   const cost = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
   const category = ["관심분야1", "관심분야2", "관심분야3"];
   const bank = [
@@ -82,7 +79,6 @@ export const Information = () => {
     "기타",
   ];
   const [userInfo, setUserInfo] = useState();
-  const [user, setUser] = useState();
   const [user_food, setUserFood] = useState("선택");
   const [input_food, setInputFood] = useState("");
   const [input_place, setInputPlace] = useState("");
@@ -99,18 +95,17 @@ export const Information = () => {
           user_price: 2,
           user_place: [],
           user_food: [],
-          user_bank: {
-            bank_name: "",
-            accout_number: "",
-          },
-          user_gender: "남",
           user_category: "관심분야1",
           user_type: "개인",
+          user_gender: "남",
           user_birth: "",
+          user_name: "",
+          user_phone: "",
         }
   );
 
   function extractQueryParameters() {
+    if (!window.location.search.includes("?")) return;
     // 현재 URL에서 쿼리 문자열 추출
     var queryString = window.location.search.substring(1);
 
@@ -125,8 +120,13 @@ export const Information = () => {
       gender: queryParams.get("gender") === "01" ? "남" : "여",
     };
 
-    setUser(user);
-    console.log(user);
+    setFormData({
+      ...formData,
+      user_name: user.name,
+      user_phone: user.phoneNumber,
+      user_birth: user.birthdate,
+      user_gender: user.gender,
+    });
 
     if (isAdult(user.birthdate)) {
       return true;
@@ -136,25 +136,19 @@ export const Information = () => {
   }
 
   useEffect(() => {
-    // 미성년자 여부 확인
-    if (!userInfo) {
-      // 고객의 계정을 가지고 옵니다.
-      auth.onAuthStateChanged(async function (user) {
-        if (user) {
-          let user_list = await get_doc_list("user", "user_id", user?.uid);
-          setUserInfo(user_list[0]);
+    // 고객의 계정을 가지고 옵니다.
+    if (window.location.pathname.includes("info")) {
+      console.log("????");
+      // 미성년자 여부 확인
+      if (!extractQueryParameters()) {
+        alert("미성년자는 가입할 수 없습니다. 로그인 화면으로 돌아갑니다.");
 
-          if (!extractQueryParameters()) {
-            alert("미성년자는 가입할 수 없습니다. 로그인 화면으로 돌아갑니다.");
-
-            // 회원 탈퇴 처리
-            db_delete("user", user_list[0].doc_id);
-            deleteUser(user);
-            navigate("/login");
-            return;
-          }
-        }
-      });
+        // 회원 탈퇴 처리
+        db_delete("user", auth.currentUser.uid);
+        deleteUser(auth.currentUser);
+        navigate("/login");
+        return;
+      }
     }
   }, []);
 
@@ -569,10 +563,7 @@ export const Information = () => {
                     placeholder="실명"
                     height="40px"
                     alignSelf="stretch"
-                    value={user?.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, user_name: user?.name })
-                    }
+                    value={formData?.user_name}
                     isDisabled
                   />
                 </FormControl>
@@ -588,13 +579,7 @@ export const Information = () => {
                     placeholder="휴대폰번호"
                     height="40px"
                     alignSelf="stretch"
-                    value={user?.phoneNumber}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        user_phone: user?.phoneNumber,
-                      })
-                    }
+                    value={formData.user_phone}
                     isDisabled
                   />
                 </FormControl>
@@ -610,10 +595,7 @@ export const Information = () => {
                     placeholder="생년월일"
                     height="40px"
                     alignSelf="stretch"
-                    value={user?.birthdate}
-                    onChange={(e) =>
-                      setFormData({ ...formData, user_birth: user?.birthdate })
-                    }
+                    value={formData?.user_birth}
                     isDisabled
                   />
                 </FormControl>
@@ -629,10 +611,7 @@ export const Information = () => {
                     placeholder="성별"
                     height="40px"
                     alignSelf="stretch"
-                    value={user?.gender}
-                    onChange={(e) =>
-                      setFormData({ ...formData, user_birth: user?.gender })
-                    }
+                    value={formData?.user_gender}
                     isDisabled
                   />
                 </FormControl>
@@ -658,7 +637,7 @@ export const Information = () => {
                     </Radio>
                     <Radio
                       colorScheme={getSatuation(theme_primary_color)}
-                      value={"사업 전문가"}
+                      value={"멘토"}
                       w="100px"
                     >
                       멘토
@@ -666,7 +645,7 @@ export const Information = () => {
                   </RadioGroup>
                 </FormControl>
               </Stack>
-              {formData.user_type === "사업 전문가" && (
+              {formData.user_type === "멘토" && (
                 <FormControl
                   isRequired
                   display="flex"
@@ -905,10 +884,7 @@ export const Information = () => {
                 let ret = step2_confirm_blank(
                   formData.user_price,
                   formData.user_place,
-                  formData.user_food,
-                  formData.user_bank,
-                  formData.user_gender,
-                  formData.user_birth
+                  formData.user_food
                 );
 
                 // 데이터가 비어있는 경우
@@ -935,16 +911,15 @@ export const Information = () => {
                 if (ret === "" || check_terms) {
                   // 정보 추가
                   if (window.location.pathname.includes("info")) {
-                    // doc_id 가지고 오기
-                    console.log(userInfo.doc_id);
-                    await db_update("user", userInfo.doc_id, formData);
+                    console.log(formData);
+                    await db_update("user", auth.currentUser.uid, formData);
                     alert(
                       "회원가입을 완료하였습니다. 로그인 화면으로 이동합니다."
                     );
                     // 로그인 화면으로 이동
                     navigate("/login");
                   } else {
-                    await db_update("user", formData.doc_id, formData);
+                    await db_update("user", auth.currentUser.uid, formData);
                     alert(
                       "회원가입을 정보가 수정되었습니다. 이전 화면으로 이동합니다."
                     );

@@ -20,7 +20,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { upload_image } from "../js/Storage";
 import { useRef, useState } from "react";
-import { db_add, db_update, get_doc_list } from "../js/Database";
+import { db_set } from "../js/Database";
 import {
   check_password_valid,
   compare_password,
@@ -149,8 +149,6 @@ export const SignUp = () => {
       : "https://firebasestorage.googleapis.com/v0/b/dinnermate-database.appspot.com/o/assets%2FMale.png?alt=media&token=b82a2957-545d-4b68-901f-7cbaadb0a42c",
     user_email: user?.email,
     user_password: "",
-    user_phone: "",
-    user_birth: "",
   });
 
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -201,45 +199,29 @@ export const SignUp = () => {
     if (!isValid.state) return;
     setLoading(true);
 
-    let ret = "";
     if (!user) {
-      // 파이어베이스 Authentication에 계정 추가
-      ret = await signUpPassword(formData.user_email, formData.user_password);
-    }
-
-    setValid({
-      state: ret === "",
-      message: ret,
-    });
-
-    if (ret !== "") return;
-
-    console.log("Current User!!", auth.currentUser);
-
-    if (auth.currentUser) {
-      let userList = await get_doc_list(
-        "user",
-        "user_id",
-        auth.currentUser?.uid
+      // 계정생성
+      let result = await signUpPassword(
+        formData.user_email,
+        formData.user_password
       );
-      let uid = "";
-      let docId = "";
-      if (userList.length === 0) {
-        // 입력 정보로 파이어베이스에 저장
-        docId = await db_add("user", formData);
-        await db_update("user", docId, { user_id: auth.currentUser?.uid });
+      if (result.err_msg === "") {
+        // 계정 생성에 성공했을 경우
+        console.log("계정 생성 성공!", result);
+        await db_set("user", result.uid, formData);
+        await signUpPassword(formData.user_email, formData.user_password);
+
+        setLoading(false);
       } else {
-        docId = userList[0].doc_id;
-        await db_update("user", docId, {
-          user_password: formData.user_password,
-        });
+        alert(result.err_msg);
+        setLoading(false);
+        return;
       }
-
+    } else {
+      await db_set("user", auth.currentUser.uid, formData);
       setLoading(false);
-
-      onApproveButton(); // 본인인증을 진행합니다.
-      // 페이지 이동
-      // navigate("/info", { state: { user_id: docId } });
+      // 인증 페이지로 이동
+      onApproveButton();
     }
   };
 

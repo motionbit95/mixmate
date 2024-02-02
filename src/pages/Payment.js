@@ -77,72 +77,23 @@ export const Payment = () => {
   const prod = "https://dinnermate-da67b66ccbef.herokuapp.com";
 
   async function onClickPayment() {
-    if (pay_method !== "card") {
-      alert("현재 카드결제만 가능합니다.");
-      return;
-    }
+    // if (pay_method !== "card") {
+    //   alert("현재 카드결제만 가능합니다.");
+    //   return;
+    // }
     // 현재 회원 uid 가지고 오기
     auth.onAuthStateChanged(async function (user) {
-      /* 결제 메소드
-      card : 신용카드
-      bank : 계좌이체
-      directCard : 결제창 없이 카드사 바로 노출
-      vbank : 가상계좌
-      cellphone : 휴대폰
-      naverpayCard : 네이버페이-신용카드 전액결제(포인트 이용불가)
-      kakaopay : 카카오페이(카드전액 또는 포인트전액)
-      kakaopayCard : 카카오페이-신용카드 전액결제
-      kakaopayMoney : 카카오페이-머니 전액결제
-      samsungpayCard : 삼성페이 카드전액 결제
-      payco : 페이코
-      ssgpay : SSGPAY
-      cardAndEasyPay : 신용카드와 간편결제 노출
-      cardAndEasyPay인 경우, 아래 파라미터와 함께 사용불가
-      - cardCode, cardQuota, shopInterest, quotaInterest
-      */
       if (user) {
         //# 여기에 결제 API 추가
         // 결제창 띄우기
         const orderId = uuidv4();
-        AUTHNICE.requestPay({
-          clientId: clientId,
-          appScheme: `nicepay://`,
-          method: pay_method,
-          orderId: orderId,
-          amount: price,
-          goodsName: "매칭 서비스 결제",
-          returnUrl: prod + "/serverAuth",
-          fnError: function (result) {
-            console.log(result);
-            // alert("개발자확인용 : " + result.errorMsg + "");
-          },
-        });
 
-        let userList = await get_doc_list("user", "user_id", user?.uid);
-        await db_set("temp", orderId, {
-          orderId: orderId,
-          sender: userList[0],
-          receiver: receiverUser,
-        });
-
-        // // 채팅 정보 추가
-        // await db_set(`messages-${orderId}`, "chat_info", {
+        // let userList = await get_doc_list("user", "user_id", user?.uid);
+        // await db_set("temp", orderId, {
         //   orderId: orderId,
-        //   timestamp: new Date(),
         //   sender: userList[0],
         //   receiver: receiverUser,
-        //   lastmessage: "",
         // });
-
-        // // 매칭 정보 추가
-        // await matching_add({
-        //   matching_sender: userList[0], // 매칭 신청자 (본인)
-        //   matching_receiver: receiverUser, // 현재 보고있는 페이지 유저(매칭 수신자)
-        //   matching_state: 0, // default 신청 상태
-        //   matching_payment: orderId, // 결제 정보 id
-        // });
-
-        // navigate("/");
       }
     });
   }

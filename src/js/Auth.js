@@ -2,7 +2,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth } from "../db/firebase_config";
+import { auth, db } from "../db/firebase_config";
 
 // Firebase deps
 // v9에서 v8 호환 API
@@ -10,6 +10,9 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { useNavigation } from "react-router-dom";
+import { defaultUser } from "../db/dummy";
+import { db_add, db_set } from "./Database";
+import { doc, setDoc } from "firebase/firestore";
 
 // firebase 초기화
 firebase.initializeApp({
@@ -37,23 +40,41 @@ firebase.initializeApp({
  */
 export async function signUpPassword(email, password) {
   let err_msg = "";
+  let uid = "";
   await createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
+      uid = user.uid;
       // ...
     })
-    .catch((error) => {
+    .catch(async (error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
 
-      // 동일한 이메일로는 가입할 수 없습니다.
-      if (errorMessage.includes("already-in-use"))
-        err_msg = "이미 존재하는 이메일입니다.";
-      // ..
+      if (errorCode == "auth/invalid-email") {
+        err_msg = "이메일 형식 틀림";
+      }
+      // if (errorCode == "auth/user-not-found") {
+      //   err_msg("없는 아이디");
+      // }
+      if (errorCode == "auth/wrong-password") {
+        err_msg = "비밀번호를 다시 확인해주세요";
+      }
+      if (errorCode == "auth/too-many-requests") {
+        err_msg = "잠시 후 다시 시도해 주세요";
+      }
+      if (errorCode == "auth/too-many-requests") {
+        err_msg = "잠시 후 다시 시도해 주세요";
+      }
+      if (errorCode == "auth/already-in-use") {
+        err_msg = "이미 존재하는 아이디입니다.";
+        // 로그인 진행
+        uid = await signInPassword(email, password);
+      }
     });
 
-  return err_msg;
+  return { err_msg, uid };
 }
 
 /** 이메일 주소와 비밀번호로 사용자 로그인
@@ -113,4 +134,20 @@ export const logout = async () => {
   } catch (error) {
     console.log(error.message);
   }
+};
+
+export const importDefaultUser = () => {
+  defaultUser.map(async (value, index) => {
+    // 계정생성
+    let result = await signUpPassword(value.user_email, value.user_password);
+    if (result.err_msg === "") {
+      // 계정 생성에 성공했을 경우
+      console.log("계정 생성 성공!", result.uid);
+    } else {
+      // 이미 계정이 있을 경우
+      console.log("이미 있는 계정! ", result.uid);
+    }
+
+    await db_set("user", result.uid, value);
+  });
 };

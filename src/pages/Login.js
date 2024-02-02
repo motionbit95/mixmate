@@ -30,7 +30,7 @@ import HorizonLine from "../component/HorizontalLine";
 import SymbolLogo, { Logo } from "../component/Logo";
 import { CustomButton, FullButton, TextButton } from "../component/Buttons";
 import EmailLoginForm from "../component/EmailLoginForm";
-import { get_doc_list } from "../js/Database";
+import { get_doc_data, get_doc_list } from "../js/Database";
 import KakaoLogin from "react-kakao-login";
 import { terms } from "../assets/terms";
 import { useState } from "react";
@@ -50,13 +50,9 @@ export const Login = () => {
     if (await signInGoogle()) {
       // user_id 와 user.uid가 일치하는 문서 검색(가입이 된 유저인지)
 
-      let userlist = await get_doc_list(
-        "user",
-        "user_id",
-        auth.currentUser?.uid
-      );
+      let currentUser = await get_doc_data("user", auth.currentUser?.uid);
 
-      if (userlist[0]) {
+      if (currentUser) {
         // 가입된 유저가 있다면
         // 홈으로 이동
         navigate("/");

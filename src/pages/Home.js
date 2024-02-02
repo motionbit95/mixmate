@@ -40,7 +40,12 @@ import { Footer } from "../component/Footer";
 import { User } from "../component/User";
 import { getSatuation } from "../js/API";
 import { CustomButton } from "../component/Buttons";
-import { arrange_distance, arrange_random, get_doc_list } from "../js/Database";
+import {
+  arrange_distance,
+  arrange_random,
+  get_doc_data,
+  get_doc_list,
+} from "../js/Database";
 import { TextAddress } from "../component/KakaoMap";
 
 export const Home = () => {
@@ -53,12 +58,12 @@ export const Home = () => {
   useEffect(() => {
     auth.onAuthStateChanged(async function (user) {
       if (!user) {
-        if (
-          window.confirm(
-            "회원 정보를 찾을 수 없습니다. 로그인 페이지로 이동하시겠습니까?"
-          )
-        )
-          navigate("/login");
+        // if (
+        //   window.confirm(
+        //     "회원 정보를 찾을 수 없습니다. 로그인 페이지로 이동하시겠습니까?"
+        //   )
+        // )
+        navigate("/login");
       }
     });
     initialize();
@@ -72,16 +77,15 @@ export const Home = () => {
     // 1. 현재 로그인 된 고객의 uid로 고객 문서를 조회합니다.
     auth.onAuthStateChanged(async function (user) {
       if (user) {
-        let userList = await get_doc_list("user", "user_id", user?.uid);
+        let userData = await get_doc_data("user", user?.uid);
         // 로그인 된 유저가 있을 때만, 고객의 위치 업데이트
-        if (userList.length > 0) {
-          let userInfo = userList[0];
-          setUserInfo(userInfo);
+        if (user) {
+          setUserInfo(userData);
 
           // 사용자의 위치 정보를 업데이트 합니다.
-          await get_update_location(userInfo?.doc_id);
+          await get_update_location(user?.uid);
 
-          await getUserList(userInfo);
+          await getUserList(userData);
         }
       }
     });
@@ -93,10 +97,10 @@ export const Home = () => {
     let customer = [];
 
     if (userInfo?.user_location) {
-      business = await arrange_distance(userInfo.user_location, "사업 전문가");
+      business = await arrange_distance(userInfo.user_location, "멘토");
       customer = await arrange_distance(userInfo.user_location, "개인");
     } else {
-      business = await get_doc_list("user", "user_type", "사업 전문가");
+      business = await get_doc_list("user", "user_type", "멘토");
       customer = await get_doc_list("user", "user_type", "개인");
     }
     setBusinessList(business);
@@ -366,7 +370,7 @@ export const Home = () => {
                           onClick={async () => {
                             let data = await arrange_distance(
                               userInfo.user_location,
-                              "사업 전문가"
+                              "멘토"
                             );
                             setBusinessList(data);
                           }}
@@ -381,7 +385,7 @@ export const Home = () => {
                             let data = await arrange_random(
                               userInfo.user_location,
                               userInfo.dong,
-                              "사업 전문가"
+                              "멘토"
                             );
                             setBusinessList(data);
                           }}

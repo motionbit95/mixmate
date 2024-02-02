@@ -33,6 +33,8 @@ export const db_add = async (col, data) => {
     timestamp: serverTimestamp(),
   });
 
+  await setDoc(col, docRef.id, { doc_id: docRef.id });
+
   return docRef.id;
 };
 
@@ -45,7 +47,7 @@ export const db_add = async (col, data) => {
  */
 export const db_set = async (col, doc_id, data) => {
   // 데이터 id 지정해서 추가
-  await setDoc(doc(db, col, doc_id), data);
+  await setDoc(doc(db, col, doc_id), { ...data, doc_id: doc_id });
 };
 
 /** collection에 이미 생성된 문서에 data field를 추가합니다.
@@ -116,8 +118,10 @@ export const get_doc_list = async (col, property, value) => {
 
   const doc_list = [];
   querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    doc_list.push({ ...doc.data(), doc_id: doc.id });
+    if (doc.data().user_id !== "aDmCtCPffOaIruYHbsn9NzuFZlQ2") {
+      // doc.data() is never undefined for query doc snapshots
+      doc_list.push({ ...doc.data(), doc_id: doc.id });
+    }
   });
 
   return doc_list;
@@ -141,17 +145,19 @@ export async function arrange_distance(user_location, user_type) {
   const places = [];
   // Firestore에서 데이터 가져오기 및 거리순 정렬
   querySnapshot.forEach((doc) => {
-    if (auth.currentUser.uid !== doc.data().user_id) {
-      const place = checkNull(doc.data().user_location, {
-        latitude: 37.5664056,
-        longitude: 126.9778222,
-      });
-      // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산
-      place.distance = calculateDistance(currentLocation, {
-        latitude: place.latitude,
-        longitude: place.longitude,
-      });
-      places.push({ ...doc.data(), ...place });
+    if (doc.data().user_id !== "aDmCtCPffOaIruYHbsn9NzuFZlQ2") {
+      if (auth.currentUser.uid !== doc.data().user_id) {
+        const place = checkNull(doc.data().user_location, {
+          latitude: 37.5664056,
+          longitude: 126.9778222,
+        });
+        // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산
+        place.distance = calculateDistance(currentLocation, {
+          latitude: place.latitude,
+          longitude: place.longitude,
+        });
+        places.push({ ...doc.data(), ...place });
+      }
     }
   });
 
@@ -183,15 +189,17 @@ export async function arrange_random(user_location, user_dong, user_type) {
   const places = [];
   // Firestore에서 데이터 가져오기 및 거리순 정렬
   querySnapshot.forEach((doc) => {
-    if (auth.currentUser.uid !== doc.data().user_id) {
-      const place = doc.data().user_location;
-      if (!place) return;
-      // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산
-      place.distance = calculateDistance(currentLocation, {
-        latitude: place.latitude,
-        longitude: place.longitude,
-      });
-      places.push({ ...doc.data(), ...place });
+    if (doc.data().user_id !== "aDmCtCPffOaIruYHbsn9NzuFZlQ2") {
+      if (auth.currentUser.uid !== doc.data().user_id) {
+        const place = doc.data().user_location;
+        if (!place) return;
+        // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산
+        place.distance = calculateDistance(currentLocation, {
+          latitude: place.latitude,
+          longitude: place.longitude,
+        });
+        places.push({ ...doc.data(), ...place });
+      }
     }
   });
 

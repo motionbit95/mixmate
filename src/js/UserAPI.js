@@ -87,14 +87,7 @@ export function step1_confirm_blank(
  * @param {string} user_gender 패스워드 확인
  * @returns {string} 에러 메세지
  */
-export function step2_confirm_blank(
-  user_price,
-  user_place,
-  user_food,
-  user_bank,
-  user_gender,
-  user_birth
-) {
+export function step2_confirm_blank(user_price, user_place, user_food) {
   if (parseInt(user_price) < 2)
     return "식사권 금액은 2만원 이상으로 설정해주세요.";
   if (user_price === "") return "식사권 금액을 설정해주세요.";
@@ -102,8 +95,8 @@ export function step2_confirm_blank(
   if (user_food.length === 0) return "좋아하는 음식을 1개 이상 선택해주세요.";
   // if (user_bank.bank_name === "" || user_bank.accout_number === "")
   // return "계좌 정보를 입력해주세요.";
-  if (user_gender === "") return "성별을 선택해주세요.";
-  if (user_birth === "") return "생년월일을 선택해주세요.";
+  // if (user_gender === "") return "성별을 선택해주세요.";
+  // if (user_birth === "") return "생년월일을 선택해주세요.";
 
   // 모든 필드가 작성되었을 경우
   return "";
