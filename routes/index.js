@@ -8,6 +8,7 @@ const router = express.Router();
  * ref: https://developer.payple.kr/service/faq
  */
 router.post("/", (req, res) => {
+  console.log("api call!!!");
   const data = {
     PCD_PAY_RST: req.body.PCD_PAY_RST, // 결제요청 결과(success|error)
     PCD_PAY_MSG: req.body.PCD_PAY_MSG, // 결제요청 결과 메시지
