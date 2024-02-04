@@ -17,11 +17,12 @@ import { Chat } from "./pages/Chat";
 // import "./reset.css";
 import "./index.css";
 import "./styleguide.css";
-import { PayResult } from "./pages/PayResult";
 import { Loading } from "./pages/Loading";
 import Find from "./pages/Find";
 import CertSuccess from "./pages/CertSuccess";
 import EmailLogin from "./pages/EmailLogin";
+import OrderConfirm from "./pages/OrderConfirm";
+import OrderResult from "./pages/OrderResult";
 
 export const theme_primary_color = "gray.500";
 export const theme_bright_color = "gray.200";
@@ -59,7 +60,6 @@ function App() {
           <Route path="/matching" element={<Matching />} />
           <Route path="/details" element={<Details />} />
           <Route path="/payment" element={<Payment />} />
-          <Route path="/payresult" element={<PayResult />} />
           <Route path="/chat" element={<ChatList />} />
           <Route path="/chat/*" element={<Chat />} />
           <Route path="/mypage" element={<MyPage />} />
@@ -67,6 +67,8 @@ function App() {
           <Route path="/find" element={<Find />} />
           <Route path="/info" element={<CertSuccess />} />
           <Route path="/email_login" element={<EmailLogin />} />
+          <Route path="/order_confirm" element={<OrderConfirm />} />
+          <Route path="/order_result" element={<OrderResult />} />
         </Routes>
       </BrowserRouter>
     </Container>

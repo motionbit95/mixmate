@@ -34,7 +34,7 @@ import {
   white,
 } from "../App";
 import { matching_add } from "../js/MatchingAPI";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { auth } from "../db/firebase_config";
 import { FullButton } from "../component/Buttons";
 import { formatCurrency, getSatuation } from "../js/API";
@@ -42,8 +42,8 @@ import { TopHeader } from "../component/TopHeader";
 import { Navbar } from "../component/Navbar";
 import axios from "axios";
 import { uuidv4 } from "@firebase/util";
-import { db_add, db_set, get_doc_list } from "../js/Database";
-import { AppContext, _gCurrentUser } from "./Home";
+import { db_add, db_set, get_doc_data, get_doc_list } from "../js/Database";
+import { AppContext } from "./Home";
 
 // head에 작성한 Kakao API 불러오기
 const { AUTHNICE, kakao } = window;
@@ -51,13 +51,29 @@ export const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // 테스트
-  // const clientId = "S2_af4543a0be4d49a98122e01ec2059a56";
-  // const secretKey = "9eb85607103646da9f9c02b128f2e5ee";
-
-  // 세이프바운더리
-  const clientId = "R2_c5abe31e532b4925b90d26a364362951";
-  const secretKey = "d5193cf5374e47f498d749cb82d1b880";
+  const content = useRef({
+    // Default form set
+    is_direct: "Y", // 결제창 방식 (DIRECT: Y | POPUP: N)
+    pay_type: "card", // 결제수단
+    work_type: "CERT", // 결제요청방식
+    card_ver: "", // DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼), 카드결제 시 필수
+    payple_payer_id: "", // 결제자 고유ID (본인인증 된 결제회원 고유 KEY)
+    buyer_no: "2335", // 가맹점 회원 고유번호
+    buyer_name: "홍길동", // 결제자 이름
+    buyer_hp: "01012345678", // 결제자 휴대폰 번호
+    buyer_email: "test@payple.kr", // 결제자 Email
+    buy_goods: "매칭 식사권", // 결제 상품
+    buy_total: "1000", // 결제 금액
+    buy_istax: "Y", // 과세여부 (과세: Y | 비과세(면세): N)
+    buy_taxtotal: "", // 부가세(복합과세인 경우 필수)
+    order_num: uuidv4(), // 주문번호
+    pay_year: "", // [정기결제] 결제 구분 년도
+    pay_month: "", // [정기결제] 결제 구분 월
+    is_reguler: "N", // 정기결제 여부 (Y | N)
+    is_taxsave: "N", // 현금영수증 발행여부
+    simple_flag: "N", // 간편결제 여부
+    auth_type: "sms", // [간편결제/정기결제] 본인인증 방식 (sms : 문자인증 | pwd : 패스워드 인증)
+  });
 
   const payMethod = [
     "kakaopay",
@@ -68,34 +84,38 @@ export const Payment = () => {
     "bank",
   ];
 
-  const { userInfo } = "";
   const price = location.state?.price * 10000;
-  const receiverUser = location.state?.receiver;
   const [pay_method, setPayMethod] = useState("card");
 
-  const dev = "http://localhost:3002";
-  const prod = "https://dinnermate-da67b66ccbef.herokuapp.com";
+  const createOid = () => {
+    const now_date = new Date();
+    let now_year = now_date.getFullYear();
+    let now_month = now_date.getMonth() + 1;
+    now_month = now_month < 10 ? "0" + now_month : now_month;
+    let now_day = now_date.getDate();
+    now_day = now_day < 10 ? "0" + now_day : now_day;
+    const datetime = now_date.getTime();
+    return now_year + now_month + now_day + datetime;
+  };
 
   async function onClickPayment() {
-    // if (pay_method !== "card") {
-    //   alert("현재 카드결제만 가능합니다.");
-    //   return;
-    // }
-    // 현재 회원 uid 가지고 오기
-    auth.onAuthStateChanged(async function (user) {
-      if (user) {
-        //# 여기에 결제 API 추가
-        // 결제창 띄우기
-        const orderId = uuidv4();
+    console.log(location.state);
 
-        // let userList = await get_doc_list("user", "user_id", user?.uid);
-        // await db_set("temp", orderId, {
-        //   orderId: orderId,
-        //   sender: userList[0],
-        //   receiver: receiverUser,
-        // });
-      }
-    });
+    console.log(content.current);
+
+    // 유저정보
+    const user = await get_doc_data("user", auth.currentUser?.uid);
+    console.log(user);
+
+    // 구매정보 수정
+
+    content.current.buyer_name = user?.user_name;
+    content.current.buyer_hp = user?.user_phone;
+    content.current.buyer_email = user?.user_email;
+    content.current.buy_total = price;
+    content.current.order_num = createOid();
+
+    navigate("/order_confirm", { state: { content: content.current } });
   }
   return (
     <Container py="50px">

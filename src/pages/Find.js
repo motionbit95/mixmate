@@ -94,8 +94,8 @@ function Find(props) {
 
   const onCertButton = async () => {
     window.location.replace(
-      "http://localhost:3001/sample/make_hash"
-      //"https://dinnermate-node-server-0d7d5dc74685.herokuapp.com/sample/make_hash"
+      //"http://localhost:3001/sample/make_hash"
+      "https://dinnermate-node-server-0d7d5dc74685.herokuapp.com/sample/make_hash"
     );
   };
   return (

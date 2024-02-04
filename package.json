@@ -23,6 +23,7 @@
     "got": "^11.8.2",
     "http-errors": "~1.6.3",
     "http-proxy-middleware": "^2.0.6",
+    "jquery": "^3.7.1",
     "jsdoc": "^4.0.2",
     "morgan": "~1.9.1",
     "opn": "^6.0.0",
