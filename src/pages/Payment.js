@@ -53,7 +53,7 @@ export const Payment = () => {
 
   const content = useRef({
     // Default form set
-    is_direct: "Y", // 결제창 방식 (DIRECT: Y | POPUP: N)
+    is_direct: "N", // 결제창 방식 (DIRECT: Y | POPUP: N)
     pay_type: "card", // 결제수단
     work_type: "CERT", // 결제요청방식
     card_ver: "", // DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼), 카드결제 시 필수
