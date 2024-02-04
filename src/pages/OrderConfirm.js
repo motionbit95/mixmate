@@ -1,6 +1,17 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import axios from "axios";
+import { TopHeader } from "../component/TopHeader";
+import {
+  Button,
+  Center,
+  Container,
+  FormControl,
+  FormLabel,
+  Input,
+  Stack,
+} from "@chakra-ui/react";
+import { formatCurrency } from "../js/API";
 
 function OrderConfirm() {
   // 뒤로가기 버튼 클릭 이벤트 발생시 결제창 화면 닫음
@@ -120,61 +131,39 @@ function OrderConfirm() {
     window.PaypleCpayAuthCheck(obj);
   };
   return (
-    <div>
-      <table border="1" cellSpacing="0" cellPadding="1">
-        <tr>
-          <td>구매자 이름</td>
-          <td>{content.buyer_name}</td>
-        </tr>
-        <tr>
-          <td>구매자 휴대폰번호</td>
-          <td>{content.buyer_hp}</td>
-        </tr>
-        <tr>
-          <td>구매자 Email</td>
-          <td>{content.buyer_email}</td>
-        </tr>
-        <tr>
-          <td>구매상품</td>
-          <td>{content.buy_goods}</td>
-        </tr>
-        <tr>
-          <td>결제금액</td>
-          <td>{content.buy_total}</td>
-        </tr>
-        <tr>
-          <td>과세여부</td>
-          <td>{content.buy_istax}</td>
-        </tr>
-        <tr>
-          <td>주문번호</td>
-          <td>{content.order_num}</td>
-        </tr>
-        <tr>
-          <td>정기결제</td>
-          <td>{content.is_reguler}</td>
-        </tr>
-        <tr>
-          <td>정기결제 구분년도</td>
-          <td>{content.pay_year}</td>
-        </tr>
-        <tr>
-          <td>정기결제 구분월</td>
-          <td>{content.pay_month}</td>
-        </tr>
-        <tr>
-          <td>현금영수증</td>
-          <td>{content.is_taxsave}</td>
-        </tr>
-        <tr>
-          <td colSpan="2" align="center">
-            <button id="payAction" onClick={handleClick}>
-              결제하기
-            </button>
-          </td>
-        </tr>
-      </table>
-    </div>
+    <Container minH={"100vh"}>
+      <TopHeader title={"결제 정보 확인"} />
+
+      <Center mt={"60px"}>
+        <Stack w={"100%"} spacing={"2vh"}>
+          <FormControl>
+            <FormLabel>주문번호</FormLabel>
+            <Input value={content.order_num} readOnly />
+          </FormControl>
+          <FormControl>
+            <FormLabel>구매자 이름</FormLabel>
+            <Input value={content.buyer_name} readOnly />
+          </FormControl>
+          <FormControl>
+            <FormLabel>구매자 휴대폰번호</FormLabel>
+            <Input value={content.buyer_hp} readOnly />
+          </FormControl>
+          <FormControl>
+            <FormLabel>구매자 Email</FormLabel>
+            <Input value={content.buyer_email} readOnly />
+          </FormControl>
+          <FormControl>
+            <FormLabel>신청자 (UID)</FormLabel>
+            <Input value={content.buy_goods} readOnly />
+          </FormControl>
+          <FormControl>
+            <FormLabel>결제금액</FormLabel>
+            <Input value={formatCurrency(content.buy_total)} readOnly />
+          </FormControl>
+          <Button onClick={handleClick}>결제하기</Button>
+        </Stack>
+      </Center>
+    </Container>
   );
 }
 

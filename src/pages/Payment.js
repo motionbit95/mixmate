@@ -75,15 +75,6 @@ export const Payment = () => {
     auth_type: "sms", // [간편결제/정기결제] 본인인증 방식 (sms : 문자인증 | pwd : 패스워드 인증)
   });
 
-  const payMethod = [
-    "kakaopay",
-    "naverpayCard",
-    "samsungpayCard",
-    "card",
-    "cellphone",
-    "bank",
-  ];
-
   const price = location.state?.price * 10000;
   const [pay_method, setPayMethod] = useState("card");
 
@@ -114,6 +105,11 @@ export const Payment = () => {
     content.current.buyer_email = user?.user_email;
     content.current.buy_total = price;
     content.current.order_num = createOid();
+    content.current.buy_goods =
+      location.state.receiver.user_name +
+      "(" +
+      location.state.receiver.doc_id.substring(6) +
+      ")";
 
     navigate("/order_confirm", { state: { content: content.current } });
   }
@@ -339,7 +335,7 @@ export const Payment = () => {
               // alignSelf="stretch"
             >
               <HStack w="100%">
-                <Center
+                {/* <Center
                   borderRadius="10px"
                   borderColor={gray_500}
                   borderStartWidth="1.5px"
@@ -358,7 +354,7 @@ export const Payment = () => {
                   onClick={() => setPayMethod(payMethod[0])}
                 >
                   <Image src={require("../assets/kakao.png")} h="24px"></Image>
-                </Center>
+                </Center> */}
                 {/* <Center
                   borderRadius="10px"
                   borderColor={gray_500}
@@ -375,7 +371,7 @@ export const Payment = () => {
                 >
                   <Image src={require("../assets/toss.png")} h="50px"></Image>
                 </Center> */}
-                <Center
+                {/* <Center
                   borderRadius="10px"
                   borderColor={gray_500}
                   borderStartWidth="1.5px"
@@ -394,8 +390,8 @@ export const Payment = () => {
                   onClick={() => setPayMethod(payMethod[1])}
                 >
                   <Image src={require("../assets/naver.png")} h="24px"></Image>
-                </Center>
-                <Center
+                </Center> */}
+                {/* <Center
                   borderRadius="10px"
                   borderColor={gray_500}
                   borderStartWidth="1.5px"
@@ -417,7 +413,7 @@ export const Payment = () => {
                     src={require("../assets/samsung.png")}
                     h="24px"
                   ></Image>
-                </Center>
+                </Center> */}
               </HStack>
 
               <HStack w="100%">
@@ -431,13 +427,13 @@ export const Payment = () => {
                   width="100%"
                   height="50px"
                   backgroundColor={
-                    pay_method === payMethod[3] ? theme_bright_color : "white"
+                    pay_method === "card" ? theme_bright_color : "white"
                   }
                   _hover={{
                     backgroundColor: theme_bright_color,
                     borderColor: theme_primary_color,
                   }}
-                  onClick={() => setPayMethod(payMethod[3])}
+                  onClick={() => setPayMethod("card")}
                 >
                   <Text
                     lineHeight="1.5"
@@ -448,7 +444,7 @@ export const Payment = () => {
                     신용카드
                   </Text>
                 </Center>
-                <Center
+                {/* <Center
                   borderRadius="10px"
                   borderColor={gray_500}
                   borderStartWidth="1.5px"
@@ -474,7 +470,7 @@ export const Payment = () => {
                   >
                     휴대폰결제
                   </Text>
-                </Center>
+                </Center> */}
                 <Center
                   borderRadius="10px"
                   borderColor={gray_500}
@@ -485,13 +481,13 @@ export const Payment = () => {
                   width="100%"
                   height="50px"
                   backgroundColor={
-                    pay_method === payMethod[5] ? theme_bright_color : "white"
+                    pay_method === "transfer" ? theme_bright_color : "white"
                   }
                   _hover={{
                     backgroundColor: theme_bright_color,
                     borderColor: theme_primary_color,
                   }}
-                  onClick={() => setPayMethod(payMethod[5])}
+                  onClick={() => setPayMethod("transfer")}
                 >
                   <Text
                     lineHeight="1.25"
@@ -500,7 +496,7 @@ export const Payment = () => {
                     color={gray_700}
                     textAlign="center"
                   >
-                    실시간 계좌이체
+                    계좌이체
                   </Text>
                 </Center>
               </HStack>

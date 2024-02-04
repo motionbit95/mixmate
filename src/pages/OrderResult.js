@@ -1,21 +1,49 @@
-import React from "react";
-import { useLocation } from "react-router";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
 import $ from "jquery";
 import axios from "axios";
+import { Button, Center, Container, Text, VStack } from "@chakra-ui/react";
+import { TopHeader } from "../component/TopHeader";
+import { db_set } from "../js/Database";
+import { auth } from "../db/firebase_config";
 
 function OrderResult() {
+  const navigate = useNavigate();
   const location = useLocation();
+  const [retData, setReturnData] = useState({
+    PCD_PAY_RST: "",
+  });
   const payResult = location.search
     ? JSON.parse(decodeURIComponent(location.search.substring(1)))
     : location.state && location.state.payResult
     ? location.state.payResult
     : null;
 
+  useEffect(() => {
+    handlePayConfirm();
+  }, []);
+
+  function addPayment() {
+    // console.log(retData);
+    // console.log({
+    //   timestamp: new Date(),
+    //   lastmessage: "",
+    //   sender: auth.currentUser.uid,
+    //   reciever: retData.PCD_PAY_GOODS,
+    // });
+    db_set("payment", retData.PCD_PAY_OID, retData);
+    db_set(`message-${retData.PCD_PAY_OID}`, "chat_info", {
+      timestamp: new Date(),
+      lastmessage: "",
+      sender: auth.currentUser.uid,
+      reciever: retData.PCD_PAY_GOODS,
+    });
+  }
+
   /*
    * 결제승인요청 파라미터 세팅 ('결제승인요청' 버튼 클릭시 호출)
    */
-  const handlePayConfirm = (e) => {
-    e.preventDefault();
+  const handlePayConfirm = () => {
     console.log("payResult Value", payResult);
     // if (window.confirm("결제 승인하겠습니까?")) {
     const serializeArray = $("#payConfirm").serializeArray();
@@ -49,6 +77,8 @@ function OrderResult() {
       .then((res) => {
         console.log(res.data);
         if (res.data.PCD_PAY_MSG) {
+          setReturnData(res.data);
+
           var $_table = $("<table></table>");
           var table_data = "";
 
@@ -158,158 +188,238 @@ function OrderResult() {
   };
 
   return (
-    <div>
-      <div style={{ border: "1px solid black", width: "800px" }}>
-        PCD_PAY_RST = {payResult.PCD_PAY_RST}{" "}
-        {/* 결제요청 결과(success|error) */}
-        <br />
-        PCD_PAY_MSG = {payResult.PCD_PAY_MSG} {/* 결제요청 결과 메시지 */}
-        <br />
-        PCD_PAY_OID = {payResult.PCD_PAY_OID} {/* 주문번호 */}
-        <br />
-        PCD_PAY_TYPE = {payResult.PCD_PAY_TYPE}{" "}
-        {/* 결제 방법 (transfer | card) */}
-        <br />
-        PCD_PAY_WORK = {payResult.PCD_PAY_WORK}{" "}
-        {/* 결제요청 업무구분 (CERT: 결제정보인증등록, PAY: 결제승인요청 ) */}
-        <br />
-        PCD_PAYER_ID = {payResult.PCD_PAYER_ID}{" "}
-        {/* 결제자 고유ID (결제완료시 RETURN) */}
-        <br />
-        PCD_PAYER_NO = {payResult.PCD_PAYER_NO} {/* 가맹점 회원 고유번호 */}
-        <br />
-        {(() => {
-          if (payResult.PCD_PAY_TYPE === "transfer") {
-            return (
-              <div>
-                PCD_PAY_BANKACCTYPE = {payResult.PCD_PAY_BANKACCTYPE}{" "}
-                {/*현금영수증 발행대상 (개인:personal, 사업자:company)*/}
-              </div>
-            );
-          }
-        })()}
-        PCD_PAYER_NAME = {payResult.PCD_PAYER_NAME} {/* 결제자 이름 */}
-        <br />
-        PCD_PAYER_EMAIL = {payResult.PCD_PAYER_EMAIL}{" "}
-        {/* 결제자 Email (출금결과 수신) */}
-        <br />
-        PCD_REGULER_FLAG = {payResult.PCD_REGULER_FLAG} {/* 정기결제 (Y|N) */}
-        <br />
-        PCD_PAY_YEAR = {payResult.PCD_PAY_YEAR} {/* 정기결제 구분 년도 */}
-        <br />
-        PCD_PAY_MONTH = {payResult.PCD_PAY_MONTH} {/* 정기결제 구분 월 */}
-        <br />
-        PCD_PAY_GOODS = {payResult.PCD_PAY_GOODS} {/* 결제 상품 */}
-        <br />
-        PCD_PAY_TOTAL = {payResult.PCD_PAY_TOTAL} {/* 결제 금액*/}
-        {(() => {
-          if (payResult.PCD_PAY_TYPE === "card") {
-            return (
-              <div>
-                PCD_PAY_TAXTOTAL = {payResult.PCD_PAY_TAXTOTAL}{" "}
-                {/* 부가세 (복합과세 경우) */}
-                <br />
-                PCD_PAY_ISTAX = {payResult.PCD_PAY_ISTAX}{" "}
-                {/* 과세여부 (과세:Y 비과세(면세):N) */}
-                <br />
-                PCD_PAY_CARDNAME = {payResult.PCD_PAY_CARDNAME} {/* 카드사명 */}
-                <br />
-                PCD_PAY_CARDNUM = {payResult.PCD_PAY_CARDNUM} {/* 카드번호 */}
-                <br />
-                PCD_PAY_CARDTRADENUM = {payResult.PCD_PAY_CARDTRADENUM}{" "}
-                {/* 카드결제 거래번호 */}
-                <br />
-                PCD_PAY_CARDAUTHNO = {payResult.PCD_PAY_CARDAUTHNO}{" "}
-                {/* 카드결제 승인번호 */}
-                <br />
-                PCD_PAY_CARDRECEIPT = {payResult.PCD_PAY_CARDRECEIPT}{" "}
-                {/* 카드전표 URL */}
-              </div>
-            );
-          } else if (payResult.PCD_PAY_TYPE === "transfer") {
-            return (
-              <div>
-                PCD_PAY_BANK = {payResult.PCD_PAY_BANK} {/* 은행코드 */}
-                <br />
-                PCD_PAY_BANKNAME = {payResult.PCD_PAY_BANKNAME} {/* 은행명 */}
-                <br />
-                PCD_PAY_BANKNUM = {payResult.PCD_PAY_BANKNUM}{" "}
-                {/* 계좌번호(중간 6자리 * 처리) */}
-              </div>
-            );
-          }
-        })()}
-        PCD_PAY_TIME = {payResult.PCD_PAY_TIME}{" "}
-        {/* 결제 시간 (format: yyyyMMddHHmmss, ex: 20210610142219) */}
-        <br />
-        PCD_TAXSAVE_RST = {payResult.PCD_TAXSAVE_RST}{" "}
-        {/* 현금영수증 발행결과 Y|N */}
-      </div>
-      <div>
-        {(() => {
-          if (payResult.PCD_PAY_WORK === "CERT") {
-            return (
-              <div>
-                <button
-                  id="payConfirmAction"
-                  style={{ align: "center" }}
-                  onClick={handlePayConfirm}
+    <>
+      <Container
+        minH={"100vh"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        p={"4vh"}
+      >
+        <TopHeader title={"결제완료"} />
+        <Center mt={"50px"}>
+          <VStack>
+            <Text fontSize={"xx-large"} fontWeight={"bold"}>
+              {retData.PCD_PAY_MSG
+                ? retData.PCD_PAY_MSG
+                : "결제 승인 요청중..."}
+            </Text>
+            {(() => {
+              if (payResult.PCD_PAY_TYPE === "card") {
+                return (
+                  <div>
+                    PCD_PAY_TAXTOTAL = {payResult.PCD_PAY_TAXTOTAL}{" "}
+                    {/* 부가세 (복합과세 경우) */}
+                    <br />
+                    PCD_PAY_ISTAX = {payResult.PCD_PAY_ISTAX}{" "}
+                    {/* 과세여부 (과세:Y 비과세(면세):N) */}
+                    <br />
+                    PCD_PAY_CARDNAME = {payResult.PCD_PAY_CARDNAME}{" "}
+                    {/* 카드사명 */}
+                    <br />
+                    PCD_PAY_CARDNUM = {payResult.PCD_PAY_CARDNUM}{" "}
+                    {/* 카드번호 */}
+                    <br />
+                    PCD_PAY_CARDTRADENUM = {payResult.PCD_PAY_CARDTRADENUM}{" "}
+                    {/* 카드결제 거래번호 */}
+                    <br />
+                    PCD_PAY_CARDAUTHNO = {payResult.PCD_PAY_CARDAUTHNO}{" "}
+                    {/* 카드결제 승인번호 */}
+                    <br />
+                    PCD_PAY_CARDRECEIPT = {payResult.PCD_PAY_CARDRECEIPT}{" "}
+                    {/* 카드전표 URL */}
+                  </div>
+                );
+              } else if (payResult.PCD_PAY_TYPE === "transfer") {
+                return (
+                  <div>
+                    PCD_PAY_BANK = {payResult.PCD_PAY_BANK} {/* 은행코드 */}
+                    <br />
+                    PCD_PAY_BANKNAME = {payResult.PCD_PAY_BANKNAME}{" "}
+                    {/* 은행명 */}
+                    <br />
+                    PCD_PAY_BANKNUM = {payResult.PCD_PAY_BANKNUM}{" "}
+                    {/* 계좌번호(중간 6자리 * 처리) */}
+                  </div>
+                );
+              }
+            })()}
+            {retData.PCD_PAY_MSG && (
+              <VStack mt={"4vh"}>
+                <Button
+                  onClick={() => {
+                    addPayment();
+                    navigate("/");
+                  }}
                 >
-                  결제승인요청
-                </button>
-              </div>
-            );
-          }
-        })()}
-        <button
-          id="payConfirmCancel"
-          style={{ align: "center", display: "none" }}
-          onClick={handlePayRefund}
-        >
-          결제승인취소
-        </button>
+                  홈으로이동
+                </Button>
+                <Button
+                  onClick={() => {
+                    addPayment();
+                    navigate("/details");
+                  }}
+                >
+                  상세내역으로이동
+                </Button>
+              </VStack>
+            )}
+          </VStack>
+        </Center>
+      </Container>
+      <div style={{ display: "none" }}>
+        <div style={{ border: "1px solid black", width: "800px" }}>
+          PCD_PAY_RST = {payResult.PCD_PAY_RST}{" "}
+          {/* 결제요청 결과(success|error) */}
+          <br />
+          PCD_PAY_MSG = {payResult.PCD_PAY_MSG} {/* 결제요청 결과 메시지 */}
+          <br />
+          PCD_PAY_OID = {payResult.PCD_PAY_OID} {/* 주문번호 */}
+          <br />
+          PCD_PAY_TYPE = {payResult.PCD_PAY_TYPE}{" "}
+          {/* 결제 방법 (transfer | card) */}
+          <br />
+          PCD_PAY_WORK = {payResult.PCD_PAY_WORK}{" "}
+          {/* 결제요청 업무구분 (CERT: 결제정보인증등록, PAY: 결제승인요청 ) */}
+          <br />
+          PCD_PAYER_ID = {payResult.PCD_PAYER_ID}{" "}
+          {/* 결제자 고유ID (결제완료시 RETURN) */}
+          <br />
+          PCD_PAYER_NO = {payResult.PCD_PAYER_NO} {/* 가맹점 회원 고유번호 */}
+          <br />
+          {(() => {
+            if (payResult.PCD_PAY_TYPE === "transfer") {
+              return (
+                <div>
+                  PCD_PAY_BANKACCTYPE = {payResult.PCD_PAY_BANKACCTYPE}{" "}
+                  {/*현금영수증 발행대상 (개인:personal, 사업자:company)*/}
+                </div>
+              );
+            }
+          })()}
+          PCD_PAYER_NAME = {payResult.PCD_PAYER_NAME} {/* 결제자 이름 */}
+          <br />
+          PCD_PAYER_EMAIL = {payResult.PCD_PAYER_EMAIL}{" "}
+          {/* 결제자 Email (출금결과 수신) */}
+          <br />
+          PCD_REGULER_FLAG = {payResult.PCD_REGULER_FLAG} {/* 정기결제 (Y|N) */}
+          <br />
+          PCD_PAY_YEAR = {payResult.PCD_PAY_YEAR} {/* 정기결제 구분 년도 */}
+          <br />
+          PCD_PAY_MONTH = {payResult.PCD_PAY_MONTH} {/* 정기결제 구분 월 */}
+          <br />
+          PCD_PAY_GOODS = {payResult.PCD_PAY_GOODS} {/* 결제 상품 */}
+          <br />
+          PCD_PAY_TOTAL = {payResult.PCD_PAY_TOTAL} {/* 결제 금액*/}
+          {(() => {
+            if (payResult.PCD_PAY_TYPE === "card") {
+              return (
+                <div>
+                  PCD_PAY_TAXTOTAL = {payResult.PCD_PAY_TAXTOTAL}{" "}
+                  {/* 부가세 (복합과세 경우) */}
+                  <br />
+                  PCD_PAY_ISTAX = {payResult.PCD_PAY_ISTAX}{" "}
+                  {/* 과세여부 (과세:Y 비과세(면세):N) */}
+                  <br />
+                  PCD_PAY_CARDNAME = {payResult.PCD_PAY_CARDNAME}{" "}
+                  {/* 카드사명 */}
+                  <br />
+                  PCD_PAY_CARDNUM = {payResult.PCD_PAY_CARDNUM} {/* 카드번호 */}
+                  <br />
+                  PCD_PAY_CARDTRADENUM = {payResult.PCD_PAY_CARDTRADENUM}{" "}
+                  {/* 카드결제 거래번호 */}
+                  <br />
+                  PCD_PAY_CARDAUTHNO = {payResult.PCD_PAY_CARDAUTHNO}{" "}
+                  {/* 카드결제 승인번호 */}
+                  <br />
+                  PCD_PAY_CARDRECEIPT = {payResult.PCD_PAY_CARDRECEIPT}{" "}
+                  {/* 카드전표 URL */}
+                </div>
+              );
+            } else if (payResult.PCD_PAY_TYPE === "transfer") {
+              return (
+                <div>
+                  PCD_PAY_BANK = {payResult.PCD_PAY_BANK} {/* 은행코드 */}
+                  <br />
+                  PCD_PAY_BANKNAME = {payResult.PCD_PAY_BANKNAME} {/* 은행명 */}
+                  <br />
+                  PCD_PAY_BANKNUM = {payResult.PCD_PAY_BANKNUM}{" "}
+                  {/* 계좌번호(중간 6자리 * 처리) */}
+                </div>
+              );
+            }
+          })()}
+          PCD_PAY_TIME = {payResult.PCD_PAY_TIME}{" "}
+          {/* 결제 시간 (format: yyyyMMddHHmmss, ex: 20210610142219) */}
+          <br />
+          PCD_TAXSAVE_RST = {payResult.PCD_TAXSAVE_RST}{" "}
+          {/* 현금영수증 발행결과 Y|N */}
+        </div>
+        <div>
+          {(() => {
+            if (payResult.PCD_PAY_WORK === "CERT") {
+              return (
+                <div>
+                  <button
+                    id="payConfirmAction"
+                    style={{ align: "center" }}
+                    onClick={handlePayConfirm}
+                  >
+                    결제승인요청
+                  </button>
+                </div>
+              );
+            }
+          })()}
+          <button
+            id="payConfirmCancel"
+            style={{ align: "center", display: "none" }}
+            onClick={handlePayRefund}
+          >
+            결제승인취소
+          </button>
+        </div>
+
+        <div id="payConfirmResult"></div>
+
+        <form id="payConfirm">
+          <input
+            type="hidden"
+            name="PCD_PAY_TYPE"
+            id="PCD_PAY_TYPE"
+            value={payResult.PCD_PAY_TYPE}
+          />{" "}
+          {/*결제방법*/}
+          <input
+            type="hidden"
+            name="PCD_AUTH_KEY"
+            id="PCD_AUTH_KEY"
+            value={payResult.PCD_AUTH_KEY}
+          />{" "}
+          {/*(필수)결제용 인증키 */}
+          <input
+            type="hidden"
+            name="PCD_PAYER_ID"
+            id="PCD_PAYER_ID"
+            value={payResult.PCD_PAYER_ID}
+          />{" "}
+          {/*(transfer 일때 필수)결제자 고유ID (결제완료시 RETURN)*/}
+          <input
+            type="hidden"
+            name="PCD_PAY_REQKEY"
+            id="PCD_PAY_REQKEY"
+            value={payResult.PCD_PAY_REQKEY}
+          />{" "}
+          {/*(필수)결제요청 고유KEY */}
+          <input
+            type="hidden"
+            name="PCD_PAY_COFURL"
+            id="PCD_PAY_COFURL"
+            value={payResult.PCD_PAY_COFURL}
+          />{" "}
+          {/*(필수)결제승인요청 URL */}
+        </form>
       </div>
-
-      <div id="payConfirmResult"></div>
-
-      <form id="payConfirm">
-        <input
-          type="hidden"
-          name="PCD_PAY_TYPE"
-          id="PCD_PAY_TYPE"
-          value={payResult.PCD_PAY_TYPE}
-        />{" "}
-        {/*결제방법*/}
-        <input
-          type="hidden"
-          name="PCD_AUTH_KEY"
-          id="PCD_AUTH_KEY"
-          value={payResult.PCD_AUTH_KEY}
-        />{" "}
-        {/*(필수)결제용 인증키 */}
-        <input
-          type="hidden"
-          name="PCD_PAYER_ID"
-          id="PCD_PAYER_ID"
-          value={payResult.PCD_PAYER_ID}
-        />{" "}
-        {/*(transfer 일때 필수)결제자 고유ID (결제완료시 RETURN)*/}
-        <input
-          type="hidden"
-          name="PCD_PAY_REQKEY"
-          id="PCD_PAY_REQKEY"
-          value={payResult.PCD_PAY_REQKEY}
-        />{" "}
-        {/*(필수)결제요청 고유KEY */}
-        <input
-          type="hidden"
-          name="PCD_PAY_COFURL"
-          id="PCD_PAY_COFURL"
-          value={payResult.PCD_PAY_COFURL}
-        />{" "}
-        {/*(필수)결제승인요청 URL */}
-      </form>
-    </div>
+    </>
   );
 }
 
