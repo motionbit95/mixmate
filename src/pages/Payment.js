@@ -34,7 +34,7 @@ import {
   white,
 } from "../App";
 import { matching_add } from "../js/MatchingAPI";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { auth } from "../db/firebase_config";
 import { FullButton } from "../component/Buttons";
 import { formatCurrency, getSatuation } from "../js/API";
@@ -50,6 +50,10 @@ const { AUTHNICE, kakao } = window;
 export const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    localStorage.setItem("receiver", location.state.receiver.doc_id);
+  }, []);
 
   const content = useRef({
     // Default form set
@@ -71,7 +75,7 @@ export const Payment = () => {
     pay_month: "", // [정기결제] 결제 구분 월
     is_reguler: "N", // 정기결제 여부 (Y | N)
     is_taxsave: "N", // 현금영수증 발행여부
-    simple_flag: "N", // 간편결제 여부
+    simple_flag: "Y", // 간편결제 여부
     auth_type: "sms", // [간편결제/정기결제] 본인인증 방식 (sms : 문자인증 | pwd : 패스워드 인증)
   });
 
@@ -100,16 +104,17 @@ export const Payment = () => {
 
     // 구매정보 수정
 
+    content.current.pay_type = pay_method;
     content.current.buyer_name = user?.user_name;
     content.current.buyer_hp = user?.user_phone;
     content.current.buyer_email = user?.user_email;
     content.current.buy_total = price;
     content.current.order_num = createOid();
-    content.current.buy_goods =
-      location.state.receiver.user_name +
-      "(" +
-      location.state.receiver.doc_id.substring(6) +
-      ")";
+    // content.current.buy_goods =
+    //   location.state.receiver.user_name +
+    //   "(" +
+    //   location.state.receiver.doc_id.substring(6) +
+    //   ")";
 
     navigate("/order_confirm", { state: { content: content.current } });
   }

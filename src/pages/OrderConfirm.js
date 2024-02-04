@@ -66,7 +66,7 @@ function OrderConfirm() {
     // ref: https://developer.payple.kr/service/faq
     if (
       content.is_direct === "Y"
-        ? (obj.PCD_RST_URL = process.env.REACT_APP_REMOTE_HOSTNAME + "/api")
+        ? (obj.PCD_RST_URL = process.env.REACT_APP_REMOTE_HOSTNAME + "/pg")
         : (obj.PCD_RST_URL = "/order_result")
     );
     // obj.PCD_RST_URL = pcd_rst_url;							 // (필수) 결제(요청)결과 RETURN URL

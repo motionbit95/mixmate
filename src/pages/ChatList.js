@@ -27,34 +27,67 @@ export const ChatList = () => {
 
   const getChatList = async () => {
     auth.onAuthStateChanged(async function (user) {
-      if (user) {
-        // 본인이 sender인 매칭리스트와 본인이 receiver인 매칭리스트를 가지고 와서 배열에 담는다
-        let sender = await matching_get_list(0);
-        let receiver = await matching_get_list(1);
-        let total = [...sender, ...receiver]; // total matching 배열
-        // 상태 변수에 저장
-        setMatchingList(total);
+      console.log(user.uid);
+      // 본인이 sender인 매칭리스트와 본인이 receiver인 매칭리스트를 가지고 와서 배열에 담는다
+      let sender = await matching_get_list(0);
+      let receiver = await matching_get_list(1);
+      let total = [...sender, ...receiver]; // total matching 배열
+      // 상태 변수에 저장
+      setMatchingList(total);
+      // chat list를 담는다.
+      let chatList = []; // 초기화
+      total.forEach(async (element) => {
+        // 결제 id(orderId)에 따른 채팅방 정보를 가지고 온다. (sender, receiver 정보, 마지막 메세지, 시간 등등)
+        let chat = await get_doc_data(
+          `message-${element.matching_payment}`,
+          "chat_info"
+        );
+        // chatList에 채팅 데이터를 담는다. 현재 본인이 sender인지, 아닌지 flag도 함께 저장한다.
 
-        // chat list를 담는다.
-        let chatList = []; // 초기화
-        total.forEach(async (element) => {
-          // 결제 id(orderId)에 따른 채팅방 정보를 가지고온다. (sender, receiver 정보, 마지막 메세지, 시간 등등)
-          let chat = await get_doc_data(
-            `messages-${element.matching_payment}`,
-            "chat_info"
-          );
-
-          // chatList에 채팅 데이터를 담는다. 현재 본인이 sender인지, 아닌지 flag도 함께 저장한다.
-          chatList.push({
-            ...chat,
-            isSender: user?.uid === chat?.sender?.user_id,
-          });
-
-          // 상태 변수에 저장
-          setChatList(chatList);
+        let sender = await get_doc_data("user", element.sender);
+        let receiver = await get_doc_data("user", element.receiver);
+        chatList.push({
+          ...chat,
+          matching_payment: element.matching_payment,
+          matching_sender: sender,
+          matching_receiver: receiver,
         });
-      }
+
+        console.log({
+          ...chat,
+          matching_payment: element.matching_payment,
+          matching_sender: sender,
+          matching_receiver: receiver,
+        });
+        // 상태 변수에 저장
+        setChatList(chatList);
+      });
     });
+    //   if (user) {
+    //     // 본인이 sender인 매칭리스트와 본인이 receiver인 매칭리스트를 가지고 와서 배열에 담는다
+    //     let sender = await matching_get_list(0);
+    //     let receiver = await matching_get_list(1);
+    //     let total = [...sender, ...receiver]; // total matching 배열
+    //     // 상태 변수에 저장
+    //     setMatchingList(total);
+    //     // chat list를 담는다.
+    //     let chatList = []; // 초기화
+    //     total.forEach(async (element) => {
+    //       // 결제 id(orderId)에 따른 채팅방 정보를 가지고온다. (sender, receiver 정보, 마지막 메세지, 시간 등등)
+    //       let chat = await get_doc_data(
+    //         `messages-${element.matching_payment}`,
+    //         "chat_info"
+    //       );
+    //       // chatList에 채팅 데이터를 담는다. 현재 본인이 sender인지, 아닌지 flag도 함께 저장한다.
+    //       chatList.push({
+    //         ...chat,
+    //         isSender: user?.uid === chat?.sender?.user_id,
+    //       });
+    //       // 상태 변수에 저장
+    //       setChatList(chatList);
+    //     });
+    //   }
+    // });
   };
   return (
     <Container px={"0px"} py={"50px"} h={"100vh"}>
@@ -79,12 +112,12 @@ export const ChatList = () => {
           background="#FFFFFF"
         >
           {/* 채팅 리스트 & 매칭 리스트가 있을 때 */}
-          {chatList ? (
-            machingList?.map((value, index) => (
+          {chatList &&
+            chatList.map((value, index) => (
               <Stack w={"100%"} key={index}>
                 <Stack
                   onClick={() => {
-                    navigate(`/chat/messages-${value.matching_payment}`, {
+                    navigate(`/chat/message-${value.matching_payment}`, {
                       state: {
                         chat_id: value.matching_payment,
                         data: value,
@@ -100,21 +133,16 @@ export const ChatList = () => {
                   alignSelf="stretch"
                 >
                   <Avatar
-                    bg={
+                    src={
                       value.isSender
                         ? get_default_avartar(
-                            value?.matching_sender?.user_gender,
-                            value?.matching_sender?.user_profile
+                            value.matching_sender.user_gender,
+                            value.matching_sender.user_profile
                           )
                         : get_default_avartar(
                             value.matching_receiver.user_gender,
-                            value?.matching_receiver?.user_profile
+                            value.matching_receiver.user_profile
                           )
-                    }
-                    src={
-                      value.isSender
-                        ? value.matching_sender.user_profile
-                        : value.matching_receiver.user_profile
                     }
                     size="lg"
                   />
@@ -178,8 +206,8 @@ export const ChatList = () => {
                 </Stack>
                 <HorizonLine />
               </Stack>
-            ))
-          ) : (
+            ))}
+          {!chatList && (
             <Center w={"100%"} minH={"80vh"}>
               <Text
                 textAlign={"center"}

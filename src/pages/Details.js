@@ -52,6 +52,7 @@ import {
   arrange_distance,
   db_add,
   db_update,
+  get_doc_data,
   get_doc_list,
 } from "../js/Database";
 import {
@@ -87,11 +88,40 @@ export const Details = () => {
     get_matching_list();
   }, []);
 
+  async function moveChat(value) {
+    const sender = await getUser(value.sender);
+    const receiver = await getUser(value.receiver);
+    if (value.matching_state === 0) {
+      navigate(`/chat/message-${value.matching_payment}`, {
+        state: {
+          chat_id: value.matching_payment,
+          data: {
+            ...value,
+            matching_sender: sender,
+            matching_receiver: receiver,
+          },
+        },
+      });
+    }
+  }
+
+  async function moveMatching(value) {
+    const receiver = await getUser(value.receiver);
+    console.log("click");
+    if (value.matching_state > 0) {
+      navigate("/matching", {
+        state: {
+          data: receiver,
+        },
+      });
+    }
+  }
+
   async function get_matching_list() {
     // 현재 로그인 한 고객의 계정을 가지고 옵니다.
     auth.onAuthStateChanged(async function (user) {
       if (user) {
-        let user_info = await get_doc_list("user", "user_id", user?.uid);
+        let user_info = await get_doc_list("user", "doc_id", user?.uid);
 
         if (user_info[0]) {
           let array = await arrange_distance(user_info[0].user_location, "all");
@@ -102,14 +132,20 @@ export const Details = () => {
         let send_list = await matching_get_list(0);
         let receive_list = await matching_get_list(1);
 
+        console.log(send_list);
+
         setSendList(send_list);
         setRecieveList(receive_list);
       }
     });
   }
 
+  async function getUser(uid) {
+    return get_doc_data("user", uid);
+  }
+
   async function onClickReviewMatching(value) {
-    setMatchingId(value.matching_id);
+    setMatchingId(value.doc_id);
     setReviewMatching(value);
     // 거절 모달 띄우기
     setModalType("review");
@@ -157,43 +193,45 @@ export const Details = () => {
       timestamp	timestamp	문서생성시간	NOT NUL
    */
       if (window.confirm("후기를 등록하시겠습니까?")) {
-        let doc_id = await db_add("review", {
-          review_sender: reviewMatching.matching_sender,
-          review_receiver: reviewMatching.matching_receiver,
-          review_matching: matching_id,
+        const review_data = {
+          review_sender: reviewMatching.sender,
+          review_receiver: reviewMatching.receiver,
+          review_matching: reviewMatching.doc_id,
           review_score: score,
           review_comment: message,
-          user_id: reviewMatching.matching_receiver.user_id,
-        });
+        };
+
+        console.log(review_data);
+
+        const review_id = await db_add("review", review_data);
+
+        await db_update("review", review_id, { review_id: review_id });
 
         // 매칭 상태 후기등록 상태(2)로 변경
+        console.log(matching_id);
         await db_update("matching", matching_id, {
           matching_state: 2,
           matching_review: {
-            review_sender: reviewMatching.matching_sender,
-            review_receiver: reviewMatching.matching_receiver,
+            review_sender: reviewMatching.sender,
+            review_receiver: reviewMatching.receiver,
             review_matching: matching_id,
             review_score: score,
             review_comment: message,
           },
         });
 
-        let userList = await get_doc_list(
-          "user",
-          "user_id",
-          reviewMatching.matching_receiver.user_id
-        );
-        let reciever = userList[0];
+        let receiver = await get_doc_data("user", reviewMatching.receiver);
+        console.log(receiver);
 
-        var totalScore = reciever.review_score ? reciever.review_score : 0;
-        var totalCount = reciever.review_count ? reciever.review_count : 0;
+        var totalScore = receiver.review_score ? receiver.review_score : 0;
+        var totalCount = receiver.review_count ? receiver.review_count : 0;
 
-        await db_update("user", reciever.doc_id, {
+        await db_update("user", receiver.doc_id, {
           review_score: totalScore + score,
           review_count: totalCount + 1,
         });
 
-        // window.location.reload();
+        window.location.reload();
         onClose();
       }
     }
@@ -387,23 +425,11 @@ export const Details = () => {
                                 ? "후기작성완료"
                                 : "구매취소"}
                             </Text>
-                            <User data={value.matching_receiver} />
+                            <User uid={value.receiver} />
                             {value.matching_state < 400 && (
                               <HStack>
                                 <CustomButton
-                                  onClick={() => {
-                                    if (value.matching_state === 0) {
-                                      navigate(
-                                        `/chat/${value.matching_payment}`,
-                                        {
-                                          state: {
-                                            chat_id: value.matching_payment,
-                                            data: value,
-                                          },
-                                        }
-                                      );
-                                    }
-                                  }}
+                                  onClick={() => moveChat(value)}
                                   text={
                                     value.matching_state === 0
                                       ? "채팅하기"
@@ -416,9 +442,7 @@ export const Details = () => {
                                   code={theme_bright_color}
                                   onClick={() => {
                                     if (value.matching_state === 0)
-                                      onClickCompleteMatching(
-                                        value.matching_id
-                                      );
+                                      onClickCompleteMatching(value.doc_id);
                                   }}
                                   text={
                                     value.matching_state === 0
@@ -452,7 +476,7 @@ export const Details = () => {
                                   onClick={() => {
                                     if (value.matching_state === 0) {
                                       navigate(
-                                        `/chat/${value.matching_payment}`,
+                                        `/chat/message-${value.matching_payment}`,
                                         {
                                           state: {
                                             chat_id: value.matching_payment,
@@ -516,20 +540,11 @@ export const Details = () => {
                                   ? "후기작성완료"
                                   : "구매취소"}
                               </Text>
-                              <User data={value.matching_receiver} />
+                              <User uid={value.receiver} />
                               {value.matching_state < 3 && (
                                 <HStack>
                                   <CustomButton
-                                    onClick={() => {
-                                      console.log("click");
-                                      if (value.matching_state > 0) {
-                                        navigate("/matching", {
-                                          state: {
-                                            data: value.matching_receiver,
-                                          },
-                                        });
-                                      }
-                                    }}
+                                    onClick={() => moveMatching(value)}
                                     text={
                                       value.matching_state === 0
                                         ? "채팅하기"
@@ -672,9 +687,9 @@ export const Details = () => {
 
       <Modal isCentered onClose={onClose} size={"md"} isOpen={isOpen}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader mt={"50px"}></ModalHeader>
-          <ModalCloseButton mt={"50px"} />
+        <ModalContent py="50px">
+          <ModalHeader></ModalHeader>
+          <ModalCloseButton />
           <ModalBody>
             {modal_type && modal_type === "review" ? (
               <ReviewContent />

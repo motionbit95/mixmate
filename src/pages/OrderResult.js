@@ -4,7 +4,7 @@ import $ from "jquery";
 import axios from "axios";
 import { Button, Center, Container, Text, VStack } from "@chakra-ui/react";
 import { TopHeader } from "../component/TopHeader";
-import { db_set } from "../js/Database";
+import { db_add, db_set } from "../js/Database";
 import { auth } from "../db/firebase_config";
 
 function OrderResult() {
@@ -29,14 +29,25 @@ function OrderResult() {
     //   timestamp: new Date(),
     //   lastmessage: "",
     //   sender: auth.currentUser.uid,
-    //   reciever: retData.PCD_PAY_GOODS,
+    //   receiver: retData.PCD_PAY_GOODS,
     // });
-    db_set("payment", retData.PCD_PAY_OID, retData);
+    db_set("payment", retData.PCD_PAY_OID, {
+      ...retData,
+      sender: auth.currentUser.uid,
+      receiver: localStorage.getItem("receiver"),
+    });
+    db_set("matching", retData.PCD_PAY_OID, {
+      sender: auth.currentUser.uid,
+      receiver: localStorage.getItem("receiver"),
+      timestamp: new Date(),
+      matching_state: 1,
+      matching_payment: retData.PCD_PAY_OID,
+    });
     db_set(`message-${retData.PCD_PAY_OID}`, "chat_info", {
       timestamp: new Date(),
       lastmessage: "",
       sender: auth.currentUser.uid,
-      reciever: retData.PCD_PAY_GOODS,
+      receiver: localStorage.getItem("receiver"),
     });
   }
 
@@ -108,7 +119,13 @@ function OrderResult() {
       })
       .catch((err) => {
         console.error(err);
-        window.alert(err);
+        window.alert("결제요청실패");
+        setReturnData({
+          ...retData,
+          PCD_PAY_RST: "error",
+          PCD_PAY_MSG: "결제요청에 실패하였습니다.",
+        });
+        // window.alert(err);
       });
     // }
   };
@@ -123,7 +140,7 @@ function OrderResult() {
       window.confirm("환불(승인취소)요청을 전송합니다. \n진행하시겠습니까?")
     ) {
       axios
-        .post("/api/auth", { PCD_PAYCANCEL_FLAG: "Y" })
+        .post("/pg/auth", { PCD_PAYCANCEL_FLAG: "Y" })
         .then((res) => {
           // 토큰값 세팅
           const refundURL = res.data.return_url; // 리턴 받은 환불(승인취소) URL
@@ -199,69 +216,41 @@ function OrderResult() {
         <Center mt={"50px"}>
           <VStack>
             <Text fontSize={"xx-large"} fontWeight={"bold"}>
-              {retData.PCD_PAY_MSG
+              {retData.PCD_PAY_RST === "error"
+                ? "결제 요청 실패"
+                : retData.PCD_PAY_MSG
                 ? retData.PCD_PAY_MSG
                 : "결제 승인 요청중..."}
             </Text>
-            {(() => {
-              if (payResult.PCD_PAY_TYPE === "card") {
-                return (
-                  <div>
-                    PCD_PAY_TAXTOTAL = {payResult.PCD_PAY_TAXTOTAL}{" "}
-                    {/* 부가세 (복합과세 경우) */}
-                    <br />
-                    PCD_PAY_ISTAX = {payResult.PCD_PAY_ISTAX}{" "}
-                    {/* 과세여부 (과세:Y 비과세(면세):N) */}
-                    <br />
-                    PCD_PAY_CARDNAME = {payResult.PCD_PAY_CARDNAME}{" "}
-                    {/* 카드사명 */}
-                    <br />
-                    PCD_PAY_CARDNUM = {payResult.PCD_PAY_CARDNUM}{" "}
-                    {/* 카드번호 */}
-                    <br />
-                    PCD_PAY_CARDTRADENUM = {payResult.PCD_PAY_CARDTRADENUM}{" "}
-                    {/* 카드결제 거래번호 */}
-                    <br />
-                    PCD_PAY_CARDAUTHNO = {payResult.PCD_PAY_CARDAUTHNO}{" "}
-                    {/* 카드결제 승인번호 */}
-                    <br />
-                    PCD_PAY_CARDRECEIPT = {payResult.PCD_PAY_CARDRECEIPT}{" "}
-                    {/* 카드전표 URL */}
-                  </div>
-                );
-              } else if (payResult.PCD_PAY_TYPE === "transfer") {
-                return (
-                  <div>
-                    PCD_PAY_BANK = {payResult.PCD_PAY_BANK} {/* 은행코드 */}
-                    <br />
-                    PCD_PAY_BANKNAME = {payResult.PCD_PAY_BANKNAME}{" "}
-                    {/* 은행명 */}
-                    <br />
-                    PCD_PAY_BANKNUM = {payResult.PCD_PAY_BANKNUM}{" "}
-                    {/* 계좌번호(중간 6자리 * 처리) */}
-                  </div>
-                );
-              }
-            })()}
-            {retData.PCD_PAY_MSG && (
-              <VStack mt={"4vh"}>
-                <Button
-                  onClick={() => {
-                    addPayment();
-                    navigate("/");
-                  }}
-                >
-                  홈으로이동
-                </Button>
-                <Button
-                  onClick={() => {
-                    addPayment();
-                    navigate("/details");
-                  }}
-                >
-                  상세내역으로이동
-                </Button>
-              </VStack>
+            {retData.PCD_PAY_RST === "error" ? (
+              <Button
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                홈으로이동
+              </Button>
+            ) : (
+              retData.PCD_PAY_RST === "success" && (
+                <VStack mt={"4vh"}>
+                  <Button
+                    onClick={() => {
+                      addPayment();
+                      navigate("/");
+                    }}
+                  >
+                    홈으로이동
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      addPayment();
+                      navigate("/details");
+                    }}
+                  >
+                    상세내역으로이동
+                  </Button>
+                </VStack>
+              )
             )}
           </VStack>
         </Center>

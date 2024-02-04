@@ -18,14 +18,25 @@ import { black, theme_bright_color, theme_primary_color } from "../App";
 import { useEffect, useRef, useState } from "react";
 import { get_default_avartar } from "../js/UserAPI";
 import { upload_image } from "../js/Storage";
-import { db_update } from "../js/Database";
+import { db_update, get_doc_data } from "../js/Database";
 import { BsStarFill } from "react-icons/bs";
 
-export const User = ({ data }) => {
+export const User = ({ data, ...props }) => {
   const navigate = useNavigate();
   const profileRef = useRef();
+  const [value, setValue] = useState(data);
 
-  const [profile_image, setProfileImage] = useState(data.user_profile);
+  const [profile_image, setProfileImage] = useState(data?.user_profile);
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  async function getUser() {
+    if (!data) {
+      const user = await get_doc_data("user", props.uid);
+      setValue(user);
+    }
+  }
 
   // 이미지 업로드 함수
   const upload_profile = async (e) => {
@@ -35,7 +46,7 @@ export const User = ({ data }) => {
     setProfileImage(url);
 
     // 이미지 저장
-    db_update("user", data.doc_id, { user_profile: url });
+    db_update("user", value.doc_id, { user_profile: url });
   };
 
   return (
@@ -47,15 +58,15 @@ export const User = ({ data }) => {
       // border={"1px solid #f1f1f1"}
       //   maxW={"400px"}
     >
-      {data && (
+      {value && (
         <HStack spacing={"2vw"} w={"100%"}>
-          <Skeleton isLoaded={data}>
+          <Skeleton isLoaded={value}>
             <VStack alignItems={"center"} justifyContent={"center"}>
               <Avatar
                 src={
                   profile_image
                     ? profile_image
-                    : get_default_avartar(data.user_gender, data.user_profile)
+                    : get_default_avartar(value.user_gender, value.user_profile)
                 }
               />
               {window.location.pathname.includes("/mypage") && (
@@ -76,7 +87,7 @@ export const User = ({ data }) => {
           <Stack w="100%">
             <HStack w="100%">
               <Text fontSize={"lg"} fontWeight={"bold"}>
-                {getDisplayName(data.user_name)}
+                {getDisplayName(value.user_name)}
               </Text>
               <Stack
                 direction="row"
@@ -91,41 +102,41 @@ export const User = ({ data }) => {
                   color={black}
                   textAlign="center"
                 >
-                  {isNaN(data.review_score / data.review_count)
+                  {isNaN(value.review_score / value.review_count)
                     ? "0.0"
-                    : (data.review_score / data.review_count).toFixed(1)}
+                    : (value.review_score / value.review_count).toFixed(1)}
                 </Text>
                 <Text color={"#8c8c8c"} fontSize={"12px"}>
-                  ({data.review_count ? data.review_count : 0})
+                  ({value.review_count ? value.review_count : 0})
                 </Text>
               </Stack>
             </HStack>
             <Text fontSize={"12px"} whiteSpace={"pre-wrap"}>
-              {data.user_type === "개인"
-                ? `성별 : ${data.user_gender},\t\t매칭 금액 : ${data.user_price}만원\n식사 가능 동네 : ${data.user_place}\n좋아하는 음식 : ${data.user_food}`
-                : `성별 : ${data.user_gender},\t\t매칭 금액 : ${data.user_price}만원\n코칭 가능 동네 : ${data.user_place}\n멘토 분야 : ${data.user_category}`}
-              {/* {data.user_type === "개인"
+              {value.user_type === "개인"
+                ? `성별 : ${value.user_gender},\t\t매칭 금액 : ${value.user_price}만원\n식사 가능 동네 : ${value.user_place}\n좋아하는 음식 : ${value.user_food}`
+                : `성별 : ${value.user_gender},\t\t매칭 금액 : ${value.user_price}만원\n코칭 가능 동네 : ${value.user_place}\n멘토 분야 : ${value.user_category}`}
+              {/* {value.user_type === "개인"
                 ? ""
-                : `, 멘토 전문 분야 : ${data.user_category}`} */}
+                : `, 멘토 전문 분야 : ${value.user_category}`} */}
             </Text>
           </Stack>
           <VStack>
             {window.location.pathname === "/" && (
               <Text color={theme_primary_color}>
-                {isNaN(parseFloat(data.distance).toFixed(1))
+                {isNaN(parseFloat(value.distance).toFixed(1))
                   ? ""
-                  : parseFloat(data.distance).toFixed(1) + "km"}
+                  : parseFloat(value.distance).toFixed(1) + "km"}
               </Text>
             )}
             {window.location.pathname === "/" && (
               <CustomButton
                 code={theme_bright_color}
                 w="80px"
-                text={data.user_type === "개인" ? "매칭신청" : "코칭신청"}
+                text={value.user_type === "개인" ? "매칭신청" : "코칭신청"}
                 onClick={() => {
                   if (!window.location.pathname.includes("matching")) {
                     navigate("/matching", {
-                      state: { data: data },
+                      state: { data: value },
                     });
                   }
                 }}

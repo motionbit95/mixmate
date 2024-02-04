@@ -24,7 +24,7 @@ const Channel = ({ user = null }) => {
 
   const db = firebase.firestore();
 
-  const messagesRef = db.collection(`messages-${chat_id}`);
+  const messagesRef = db.collection(`message-${chat_id}`);
   const messages = useFirestoreQuery(
     messagesRef.orderBy("createdAt", "desc").limit(100)
   );
@@ -83,7 +83,7 @@ const Channel = ({ user = null }) => {
     }
 
     //# 채팅 정보 업데이트
-    await db_update(`messages-${chat_id}`, "chat_info", {
+    await db_update(`message-${chat_id}`, "chat_info", {
       timestamp: new Date(),
       lastmessage: trimmedMessage,
     });
@@ -94,7 +94,7 @@ const Channel = ({ user = null }) => {
     <Box w={"100%"}>
       <TopHeader
         title={
-          auth.currentUser?.uid === matchingInfo.matching_sender.user_id
+          auth.currentUser?.uid === matchingInfo.matching_sender.doc_id
             ? getDisplayName(matchingInfo.matching_receiver.user_name)
             : getDisplayName(matchingInfo.matching_sender.user_name)
         }

@@ -33,7 +33,7 @@ export const db_add = async (col, data) => {
     timestamp: serverTimestamp(),
   });
 
-  await setDoc(col, docRef.id, { doc_id: docRef.id });
+  // await setDoc(col, docRef.id, { doc_id: docRef.id });
 
   return docRef.id;
 };
