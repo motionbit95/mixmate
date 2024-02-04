@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
 
-app.set("port", process.env.NODE_ENV || 8080);
+app.set("port", process.env.NODE_ENV || 3001);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
