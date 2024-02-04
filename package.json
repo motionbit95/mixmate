@@ -44,7 +44,7 @@
     "predeploy": "npm run docs",
     "deploy": "gh-pages -d out",
     "start": "react-scripts start",
-    "server": "node ./server/server.js",
+    "server": "node ./server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
