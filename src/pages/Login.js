@@ -96,7 +96,7 @@ export const Login = () => {
               justify="center"
               align="center"
               spacing="4vh"
-              p={"4vh"}
+              p={"2vh"}
               minH={"100vh"}
               justifyContent={"space-between"}
             >
@@ -129,61 +129,59 @@ export const Login = () => {
                 </Stack>
 
                 {/* 버튼 */}
-                <Stack w="100%" spacing={"4vh"}>
-                  <Stack w="100%">
-                    <Flex w={"100%"} align={"center"}>
-                      <Image
-                        position={"absolute"}
-                        mx={"4vw"}
-                        w="auto"
-                        h="24px"
-                        src={require("../assets/kakao_icon.png")}
-                      />
-                      <KakaoLogin
-                        token="f0b9cea901481ede3c202e108f61ef3e" // 카카오 개발자 사이트에서 발급받은 API 키를 입력하세요.
-                        onSuccess={responseKaKao}
-                        onFail={(error) => console.log(error)}
-                        onLogout={() => console.log("로그아웃")}
-                        style={{
-                          height: "50px",
-                          width: "100%",
-                          padding: "10px",
-                          backgroundColor: "#FEE500",
-                          color: "#000000",
-                          fontSize: "16px",
-                          borderRadius: "50px",
-                          fontWeight: 500,
-                        }}
-                      ></KakaoLogin>
-                    </Flex>
-                    <Flex w={"100%"} align={"center"}>
-                      <Image
-                        position={"absolute"}
-                        mx={"4vw"}
-                        w="auto"
-                        h="24px"
-                        src={require("../assets/google_icon.png")}
-                      />
-                      <FullButton
-                        height={"50px"}
-                        onClick={async () => {
-                          // 로그인 한 유저가 있을 경우 로그아웃을 합니다.
-                          if (user) {
-                            await logout();
-                          }
-
-                          await responseGoogle();
-                        }}
-                        text="구글로 로그인하기"
-                        code={"white.100"}
-                      />
-                    </Flex>
-                    <FullButton
-                      text={"회원정보로 로그인하기"}
-                      height={"50px"}
-                      onClick={() => navigate("/email_login")}
+                <Stack w="100%" spacing={"1.5vh"}>
+                  <Flex w={"100%"} align={"center"}>
+                    <Image
+                      position={"absolute"}
+                      mx={"4vw"}
+                      w="auto"
+                      h="24px"
+                      src={require("../assets/kakao_icon.png")}
                     />
-                  </Stack>
+                    <KakaoLogin
+                      token="f0b9cea901481ede3c202e108f61ef3e" // 카카오 개발자 사이트에서 발급받은 API 키를 입력하세요.
+                      onSuccess={responseKaKao}
+                      onFail={(error) => console.log(error)}
+                      onLogout={() => console.log("로그아웃")}
+                      style={{
+                        height: "50px",
+                        width: "100%",
+                        padding: "10px",
+                        backgroundColor: "#FEE500",
+                        color: "#000000",
+                        fontSize: "16px",
+                        borderRadius: "50px",
+                        fontWeight: 500,
+                      }}
+                    ></KakaoLogin>
+                  </Flex>
+                  <Flex w={"100%"} align={"center"}>
+                    <Image
+                      position={"absolute"}
+                      mx={"4vw"}
+                      w="auto"
+                      h="24px"
+                      src={require("../assets/google_icon.png")}
+                    />
+                    <FullButton
+                      height={"50px"}
+                      onClick={async () => {
+                        // 로그인 한 유저가 있을 경우 로그아웃을 합니다.
+                        if (user) {
+                          await logout();
+                        }
+
+                        await responseGoogle();
+                      }}
+                      text="구글로 로그인하기"
+                      code={"white.100"}
+                    />
+                  </Flex>
+                  <FullButton
+                    text={"회원정보로 로그인하기"}
+                    height={"50px"}
+                    onClick={() => navigate("/email_login")}
+                  />
                 </Stack>
               </Stack>
 

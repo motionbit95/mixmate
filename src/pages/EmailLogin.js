@@ -14,13 +14,35 @@ const EmailLogin = () => {
       alignItems={"center"}
       p={"4vh"}
     >
-      <Stack mt={"4vh"}>
-        <Flex alignItems={"center"} justifyContent={"space-between"}>
-          <Text fontSize={"xx-large"} fontWeight={"bold"}>
+      <Stack mt={"10vh"}>
+        <Flex alignItems={"center"} justifyContent={"flex-end"}>
+          {/* <Text fontSize={"xx-large"} fontWeight={"bold"}>
             이메일 로그인
-          </Text>
+          </Text> */}
           <CloseIcon onClick={() => navigate(-1)} />
         </Flex>
+        <Stack
+          alignItems={"center"}
+          justifyContent={"center"}
+          direction={"row"}
+          py={"4vh"}
+        >
+          {/* <SymbolLogo w={"10vh"} /> */}
+          <Text
+            fontSize={"large"}
+            color={"gray.500"}
+            fontFamily={"GapyeongHanseokbong-Light"}
+          >
+            밥친구가 필요한 순간,
+          </Text>
+          <Text
+            fontSize={"x-large"}
+            color={"gray.800"}
+            fontFamily={"GapyeongHanseokbong-Bold"}
+          >
+            식사회
+          </Text>
+        </Stack>
         <EmailLoginForm />
         <HStack mt={"4vh"} w="100%" justifyContent={"space-between"}>
           <TextButton
