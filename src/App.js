@@ -21,6 +21,7 @@ import { PayResult } from "./pages/PayResult";
 import { Loading } from "./pages/Loading";
 import Find from "./pages/Find";
 import CertSuccess from "./pages/CertSuccess";
+import EmailLogin from "./pages/EmailLogin";
 
 export const theme_primary_color = "gray.500";
 export const theme_bright_color = "gray.200";
@@ -65,6 +66,7 @@ function App() {
           <Route path="/loading" element={<Loading />} />
           <Route path="/find" element={<Find />} />
           <Route path="/info" element={<CertSuccess />} />
+          <Route path="/email_login" element={<EmailLogin />} />
         </Routes>
       </BrowserRouter>
     </Container>

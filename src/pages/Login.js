@@ -69,7 +69,7 @@ export const Login = () => {
   };
 
   return (
-    <Container p={0} h={"100vh"} bgColor={white}>
+    <Container p={0} minH={"100vh"} bgColor={white}>
       <Center w="100%">
         <Stack
           justify="flex-start"
@@ -80,17 +80,8 @@ export const Login = () => {
           height="100%"
           // maxWidth="360px"
           // p={"4vw"}
-          px={"6vw"}
+          px={"2vh"}
         >
-          <Stack
-            paddingX="10px"
-            direction="row"
-            justify="flex-start"
-            align="flex-start"
-            spacing="0px"
-            overflow="hidden"
-            alignSelf="stretch"
-          ></Stack>
           <Stack
             direction="row"
             justify="center"
@@ -105,18 +96,21 @@ export const Login = () => {
               justify="center"
               align="center"
               spacing="4vh"
-              minH={"90vh"}
               p={"4vh"}
+              minH={"100vh"}
               justifyContent={"space-between"}
             >
               <Stack
                 w={"100%"}
-                spacing={"4vh"}
+                spacing={"6vh"}
                 alignItems={"center"}
-                py={"10vh"}
+                py={"4vh"}
+                display={"flex"}
+                flex={1}
+                justifyContent={"center"}
               >
                 {/** 로고 **/}
-                <Stack alignItems={"center"} direction={"row"}>
+                <Stack alignItems={"center"} direction={"row"} py={"4vh"}>
                   {/* <SymbolLogo w={"10vh"} /> */}
                   <Text
                     fontSize={"large"}
@@ -140,7 +134,7 @@ export const Login = () => {
                     <Flex w={"100%"} align={"center"}>
                       <Image
                         position={"absolute"}
-                        mx={"2vw"}
+                        mx={"4vw"}
                         w="auto"
                         h="24px"
                         src={require("../assets/kakao_icon.png")}
@@ -151,6 +145,7 @@ export const Login = () => {
                         onFail={(error) => console.log(error)}
                         onLogout={() => console.log("로그아웃")}
                         style={{
+                          height: "50px",
                           width: "100%",
                           padding: "10px",
                           backgroundColor: "#FEE500",
@@ -164,12 +159,13 @@ export const Login = () => {
                     <Flex w={"100%"} align={"center"}>
                       <Image
                         position={"absolute"}
-                        mx={"2vw"}
+                        mx={"4vw"}
                         w="auto"
                         h="24px"
                         src={require("../assets/google_icon.png")}
                       />
                       <FullButton
+                        height={"50px"}
                         onClick={async () => {
                           // 로그인 한 유저가 있을 경우 로그아웃을 합니다.
                           if (user) {
@@ -182,29 +178,22 @@ export const Login = () => {
                         code={"white.100"}
                       />
                     </Flex>
-                    <EmailLoginForm />
+                    <FullButton
+                      text={"회원정보로 로그인하기"}
+                      height={"50px"}
+                      onClick={() => navigate("/email_login")}
+                    />
                   </Stack>
                 </Stack>
               </Stack>
 
               {/* footer */}
-              <Stack w={"100%"} alignItems={"center"}>
-                <HStack w="100%" justifyContent={"space-between"}>
-                  <TextButton
-                    text={"회원가입"}
-                    onClick={async () => {
-                      // 로그인 한 유저가 있을 경우 로그아웃을 합니다.
-                      if (user) {
-                        await logout();
-                      }
-                      navigate("/signup");
-                    }}
-                  />
-                  <TextButton
-                    text={"아이디 / 비밀번호 찾기"}
-                    onClick={() => navigate("/find")}
-                  />
-                </HStack>
+              <Stack
+                w={"100%"}
+                alignItems={"center"}
+                mb={"4vh"}
+                spacing={"2vh"}
+              >
                 <HStack>
                   <TextButton
                     style={{ textDecoration: "underline" }}
