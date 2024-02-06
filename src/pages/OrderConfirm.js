@@ -57,7 +57,7 @@ function OrderConfirm() {
     obj.PCD_PAY_TYPE = content.pay_type; // (필수) 결제 방법 (transfer | card)
     obj.PCD_PAY_WORK = content.work_type; // (필수) 결제요청 업무구분 (AUTH : 본인인증+계좌등록, CERT: 본인인증+계좌등록+결제요청등록(최종 결제승인요청 필요), PAY: 본인인증+계좌등록+결제완료)
     if (content.pay_type === "card")
-      obj.PCD_CARD_VER = content.card_ver || "01"; // DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼), 카드결제 시 필수
+      obj.PCD_CARD_VER = content.card_ver || "02"; // DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼), 카드결제 시 필수
     obj.PCD_PAYER_AUTHTYPE = content.auth_type; // (선택) [간편결제/정기결제] 본인인증 방식 (sms : 문자인증 | pwd : 패스워드 인증)
 
     // IOS, AOS앱 및 인앱브라우저에서는 결제창 호출 방식을 다이렉트로 연결해 주세요.

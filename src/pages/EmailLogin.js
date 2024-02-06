@@ -29,18 +29,19 @@ const EmailLogin = () => {
         >
           {/* <SymbolLogo w={"10vh"} /> */}
           <Text
-            fontSize={"large"}
+            fontSize={"x-large"}
             color={"gray.500"}
-            fontFamily={"GapyeongHanseokbong-Light"}
+            fontFamily={"omyu_pretty"}
           >
             밥친구가 필요한 순간,
           </Text>
           <Text
-            fontSize={"x-large"}
+            fontSize={"xx-large"}
             color={"gray.800"}
-            fontFamily={"GapyeongHanseokbong-Bold"}
+            fontFamily={"omyu_pretty"}
+            fontWeight={"bold"}
           >
-            식사회
+            디너메이트
           </Text>
         </Stack>
         <EmailLoginForm />
