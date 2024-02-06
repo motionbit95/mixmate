@@ -67,6 +67,7 @@ import { getSatuation } from "../js/API";
 import { User } from "../component/User";
 import { CustomButton } from "../component/Buttons";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const Details = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -158,7 +159,47 @@ export const Details = () => {
     onOpen();
   }
 
+  const handlePayRefund = async (matching_id) => {
+    const payResult = await get_doc_data("payment", matching_id);
+
+    axios
+      .post("/pg/auth", { PCD_PAYCANCEL_FLAG: "Y" })
+      .then((res) => {
+        // 토큰값 세팅
+        const refundURL = res.data.return_url; // 리턴 받은 환불(승인취소) URL
+        const params = {
+          PCD_CST_ID: res.data.cst_id, // 리턴 받은 cst_id Token
+          PCD_CUST_KEY: res.data.custKey, // 리턴 받은 custKey Token
+          PCD_AUTH_KEY: res.data.AuthKey, // 결제용 인증키
+          PCD_REFUND_KEY: process.env.REACT_APP_PCD_REFUND_KEY, // 환불서비스 Key (관리자페이지 상점정보 > 기본정보에서 확인하실 수 있습니다.)
+          PCD_PAYCANCEL_FLAG: "Y", // 'Y' – 고정 값
+          PCD_PAY_OID: payResult.PCD_PAY_OID, // 주문번호
+          PCD_PAY_DATE: payResult.PCD_PAY_TIME.substring(0, 8), // 취소할 원거래일자
+          PCD_REFUND_TOTAL: payResult.PCD_REFUND_TOTAL, // 환불 요청금액 (기존 결제금액보다 적은 금액 입력 시 부분취소로 진행)
+          PCD_REGULER_FLAG: payResult.PCD_REGULER_FLAG, // 월 중복결제 방지 Y(사용) | N(그 외)
+          PCD_PAY_YEAR: payResult.PCD_PAY_YEAR, // 결제 구분 년도
+          PCD_PAY_MONTH: payResult.PCD_PAY_MONTH, // 결제 구분 월
+        };
+
+        axios
+          .post(refundURL, JSON.stringify(params), {
+            header: {
+              "content-type": "application/json",
+              referer: process.env.REACT_APP_HOSTNAME, //API 서버를 따로 두고 있는 경우, Referer 에 가맹점의 도메인 고정
+            },
+          })
+          .then((res) => {
+            window.alert(res.data.PCD_PAY_MSG);
+          });
+      })
+      .catch((err) => {
+        console.error(err);
+        window.alert(err);
+      });
+  };
+
   async function onClickRefundMessage(message) {
+    handlePayRefund(matching_id);
     if (window.confirm("매칭을 거절하시겠습니까?")) {
       await matching_set(matching_id, {
         matching_state: 400, // 매칭 거절 코드
@@ -306,6 +347,7 @@ export const Details = () => {
 
   function RefundContent() {
     const [message, setMessage] = useState("매칭 신청 폭주");
+
     return (
       <Stack maxWidth="100%" background="#FFFFFF">
         <Stack size="lg" width="40px" height="40px" />
