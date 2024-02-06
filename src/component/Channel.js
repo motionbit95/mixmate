@@ -11,7 +11,7 @@ import { Box, Button, Container, Input } from "@chakra-ui/react";
 // hook
 import { useLocation } from "react-router-dom";
 import { auth } from "../db/firebase_config";
-import { db_update } from "../js/Database";
+import { db_update, get_doc_data } from "../js/Database";
 import { serverTimestamp } from "firebase/firestore";
 
 // mixmate - 이름 끝 부분 숨김 처리
@@ -20,7 +20,22 @@ import { getDisplayName } from "../js/API";
 const Channel = ({ user = null }) => {
   const location = useLocation();
   const chat_id = location.state?.chat_id;
-  const matchingInfo = location.state?.data;
+  const [matchingInfo, setMatchingInfo] = useState(location.state?.data);
+  const [titleName, setTitleName] = useState("");
+
+  const getUser = async () => {
+    console.log(location.state?.data, auth.currentUser?.uid);
+    if (auth.currentUser?.uid === location.state?.data.receiver) {
+      const user = await get_doc_data("user", location.state?.data.sender);
+      setTitleName(getDisplayName(user.user_name));
+    } else {
+      const user = await get_doc_data("user", location.state?.data.receiver);
+      setTitleName(getDisplayName(user.user_name));
+    }
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const db = firebase.firestore();
 
@@ -92,13 +107,7 @@ const Channel = ({ user = null }) => {
 
   return (
     <Box w={"100%"}>
-      <TopHeader
-        title={
-          auth.currentUser?.uid === matchingInfo.matching_sender.doc_id
-            ? getDisplayName(matchingInfo.matching_receiver.user_name)
-            : getDisplayName(matchingInfo.matching_sender.user_name)
-        }
-      />
+      <TopHeader title={titleName} />
       <Container>
         <Box id="chat-container">
           <Box className="scroll_view" mt={"50px"} mb={"120px"}>

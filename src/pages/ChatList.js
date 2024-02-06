@@ -51,6 +51,7 @@ export const ChatList = () => {
           matching_payment: element.matching_payment,
           matching_sender: sender,
           matching_receiver: receiver,
+          isSender: user?.uid === sender?.doc_id,
         });
 
         console.log({
@@ -58,6 +59,7 @@ export const ChatList = () => {
           matching_payment: element.matching_payment,
           matching_sender: sender,
           matching_receiver: receiver,
+          isSender: user?.uid === sender?.doc_id,
         });
         // 상태 변수에 저장
         setChatList(chatList);
@@ -136,12 +138,12 @@ export const ChatList = () => {
                     src={
                       value.isSender
                         ? get_default_avartar(
-                            value.matching_sender.user_gender,
-                            value.matching_sender.user_profile
-                          )
-                        : get_default_avartar(
                             value.matching_receiver.user_gender,
                             value.matching_receiver.user_profile
+                          )
+                        : get_default_avartar(
+                            value.matching_sender.user_gender,
+                            value.matching_sender.user_profile
                           )
                     }
                     size="lg"
@@ -178,8 +180,8 @@ export const ChatList = () => {
                         >
                           {getDisplayName(
                             value.isSender
-                              ? value.matching_sender.user_name
-                              : value.matching_receiver.user_name
+                              ? value.matching_receiver.user_name
+                              : value.matching_sender.user_name
                           )}
                         </Text>
                         <Text

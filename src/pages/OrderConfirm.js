@@ -153,7 +153,7 @@ function OrderConfirm() {
             <Input value={content.buyer_email} readOnly />
           </FormControl>
           <FormControl>
-            <FormLabel>신청자 (UID)</FormLabel>
+            <FormLabel>구매 상품</FormLabel>
             <Input value={content.buy_goods} readOnly />
           </FormControl>
           <FormControl>

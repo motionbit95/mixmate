@@ -30,12 +30,13 @@ const Message = ({
     <div className={isSender ? "message-reverse" : "message"}>
       <div
         style={{
+          width: "100%",
           display: "flex",
           alignItems: "flex-end",
           flexDirection: isSender ? "row-reverse" : "row",
         }}
       >
-        {photoURL ? (
+        {/* {photoURL ? (
           <img
             src={photoURL}
             alt="Avatar"
@@ -43,8 +44,13 @@ const Message = ({
             width={45}
             height={45}
           />
-        ) : null}
-        <div className={isSender ? "sender" : "receiver"}>
+        ) : null} */}
+        <div
+          style={{
+            width: "fit-content",
+          }}
+          className={isSender ? "sender" : "receiver"}
+        >
           <p>{text}</p>
         </div>
         <div>

@@ -159,11 +159,21 @@ export const Details = () => {
     onOpen();
   }
 
+  const testAPI = async () => {
+    console.log("TEST!");
+    axios.post("/api/test", { test: "test" }).then((res) => {
+      console.log(res.data);
+    });
+  };
   const handlePayRefund = async (matching_id) => {
     const payResult = await get_doc_data("payment", matching_id);
 
-    axios
-      .post("/pg/auth", { PCD_PAYCANCEL_FLAG: "Y" })
+    console.log(payResult, process.env.REACT_APP_REMOTE_HOSTNAME);
+
+    await axios
+      .post(process.env.REACT_APP_REMOTE_HOSTNAME + "/api/auth", {
+        PCD_PAYCANCEL_FLAG: "Y",
+      })
       .then((res) => {
         // 토큰값 세팅
         const refundURL = res.data.return_url; // 리턴 받은 환불(승인취소) URL
@@ -191,22 +201,29 @@ export const Details = () => {
           .then((res) => {
             window.alert(res.data.PCD_PAY_MSG);
           });
+
+        return true;
       })
       .catch((err) => {
         console.error(err);
         window.alert(err);
+
+        return false;
       });
   };
 
   async function onClickRefundMessage(message) {
-    handlePayRefund(matching_id);
     if (window.confirm("매칭을 거절하시겠습니까?")) {
-      await matching_set(matching_id, {
-        matching_state: 400, // 매칭 거절 코드
-        matching_refund_message: message,
-      });
-      onClose();
-      window.location.reload();
+      // await testAPI();
+      let ret = await handlePayRefund(matching_id);
+      if (ret) {
+        await matching_set(matching_id, {
+          matching_state: 400, // 매칭 거절 코드
+          matching_refund_message: message,
+        });
+        onClose();
+        window.location.reload();
+      }
     }
   }
 
@@ -511,7 +528,7 @@ export const Details = () => {
                                 ? "매칭완료"
                                 : "매칭거절"}
                             </Text>
-                            <User data={value.matching_sender} />
+                            <User uid={value.sender} />
                             {value.matching_state < 400 && (
                               <HStack>
                                 <CustomButton
@@ -535,7 +552,7 @@ export const Details = () => {
                                 <CustomButton
                                   code={theme_bright_color}
                                   onClick={() => {
-                                    setMatchingId(value.matching_id);
+                                    setMatchingId(value.doc_id);
                                     onClickRefundMatching();
                                   }}
                                   text={
@@ -601,9 +618,7 @@ export const Details = () => {
                                     disabled={value.matching_state > 1}
                                     onClick={() => {
                                       if (value.matching_state === 0)
-                                        onClickCompleteMatching(
-                                          value.matching_id
-                                        );
+                                        onClickCompleteMatching(value.doc_id);
                                       if (value.matching_state === 1)
                                         onClickReviewMatching(value);
                                     }}
@@ -655,11 +670,37 @@ export const Details = () => {
                               <Text fontSize={"large"} fontWeight={"bold"}>
                                 {value.matching_state === 0
                                   ? "매칭신청"
-                                  : value.matching_state === 1
+                                  : value.matching_state === 1 ||
+                                    value.matching_state === 2
                                   ? "매칭완료"
                                   : "매칭거절"}
                               </Text>
-                              <User data={value.matching_sender} />
+                              <User uid={value.sender} />
+                              {value.matching_state === 2 && (
+                                <Stack
+                                  fontSize={"sm"}
+                                  w="100%"
+                                  bgColor={gray_100}
+                                  p="2vh"
+                                  borderRadius={"8px"}
+                                >
+                                  <HStack alignItems={"center"}>
+                                    <Icon
+                                      as={BsFillStarFill}
+                                      boxSize={"24px"}
+                                      color={"yellow.400"}
+                                    />
+                                    <Text fontSize={"lg"} fontWeight={"bold"}>
+                                      {value.matching_review?.review_score.toFixed(
+                                        1
+                                      )}
+                                    </Text>
+                                  </HStack>
+                                  <Text>
+                                    {value.matching_review?.review_comment}
+                                  </Text>
+                                </Stack>
+                              )}
                               {value.matching_state < 400 ? (
                                 <></>
                               ) : (

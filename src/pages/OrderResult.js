@@ -23,7 +23,7 @@ function OrderResult() {
     handlePayConfirm();
   }, []);
 
-  function addPayment() {
+  function addPayment(retData) {
     // console.log(retData);
     // console.log({
     //   timestamp: new Date(),
@@ -40,7 +40,7 @@ function OrderResult() {
       sender: auth.currentUser.uid,
       receiver: localStorage.getItem("receiver"),
       timestamp: new Date(),
-      matching_state: 1,
+      matching_state: 0,
       matching_payment: retData.PCD_PAY_OID,
     });
     db_set(`message-${retData.PCD_PAY_OID}`, "chat_info", {
@@ -109,6 +109,8 @@ function OrderResult() {
           if (res.data.PCD_PAY_RST === "success") {
             $("#payConfirmAction").css("display", "none");
             $("#payConfirmCancel").css("display", "");
+
+            addPayment(res.data);
           } else {
             window.alert(res.data.PCD_PAY_MSG);
           }
@@ -140,7 +142,9 @@ function OrderResult() {
       window.confirm("환불(승인취소)요청을 전송합니다. \n진행하시겠습니까?")
     ) {
       axios
-        .post("/pg/auth", { PCD_PAYCANCEL_FLAG: "Y" })
+        .post(process.env.REACT_APP_REMOTE_HOSTNAME + "/pg/auth", {
+          PCD_PAYCANCEL_FLAG: "Y",
+        })
         .then((res) => {
           // 토큰값 세팅
           const refundURL = res.data.return_url; // 리턴 받은 환불(승인취소) URL
@@ -235,7 +239,7 @@ function OrderResult() {
                 <VStack mt={"4vh"}>
                   <Button
                     onClick={() => {
-                      addPayment();
+                      // addPayment();
                       navigate("/");
                     }}
                   >
@@ -243,7 +247,7 @@ function OrderResult() {
                   </Button>
                   <Button
                     onClick={() => {
-                      addPayment();
+                      // addPayment();
                       navigate("/details");
                     }}
                   >

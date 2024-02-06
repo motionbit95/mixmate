@@ -7,6 +7,10 @@ const router = express.Router();
  * 다이렉트 호출 방식은 결제 페이지로 이동 후, 결제가 완료되면 POST를 통해 결제 결과 파라미터를 보내줍니다.
  * ref: https://developer.payple.kr/service/faq
  */
+router.post("/test", (req, res) => {
+  console.log("TEST!!!!!!!");
+});
+
 router.post("/", (req, res) => {
   console.log("api call!!!");
   const data = {
@@ -50,6 +54,7 @@ router.post("/", (req, res) => {
    파트너 인증
  */
 router.post("/auth", async (req, res, next) => {
+  console.log("api call!!!");
   try {
     const caseParams = req.body; // 상황별 파트너 인증 파라미터
     const params = {
@@ -67,6 +72,7 @@ router.post("/auth", async (req, res, next) => {
     const { data } = await axios.post(process.env.REACT_APP_AUTH_URL, params, {
       headers: {
         "content-type": "application/json",
+        "Access-Control-Allow-Origin": "*",
         referer: process.env.REACT_APP_HOSTNAME,
       },
     });

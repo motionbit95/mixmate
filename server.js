@@ -11,6 +11,13 @@ const indexRouter = require("./routes/index");
 
 dotenv.config();
 
+// 또는 특정 출처의 요청만 허용
+app.use(
+  cors({
+    origin: "https://dinnermate-node-server-0d7d5dc74685.herokuapp.com",
+  })
+);
+
 // /api 로 들어오는 요청에 대한 라우터
 app.use("/api", indexRouter);
 

@@ -40,13 +40,23 @@ export const User = ({ data, ...props }) => {
 
   // 이미지 업로드 함수
   const upload_profile = async (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      // FileReader 객체 생성
+      const reader = new FileReader();
+
+      // 파일을 읽었을 때의 이벤트 핸들러 등록
+      reader.onload = (e) => {
+        // 읽은 데이터를 파일 상태로 설정하여 미리보기 업데이트
+        setProfileImage(e.target.result);
+      };
+    }
+
     // firestore에 이미지 업로드
     let url = await upload_image(e);
 
-    setProfileImage(url);
-
     // 이미지 저장
-    db_update("user", value.doc_id, { user_profile: url });
+    await db_update("user", value.doc_id, { user_profile: url });
   };
 
   return (
@@ -65,7 +75,7 @@ export const User = ({ data, ...props }) => {
               <Avatar
                 src={
                   profile_image
-                    ? profile_image
+                    ? "profile_image"
                     : get_default_avartar(value.user_gender, value.user_profile)
                 }
               />
