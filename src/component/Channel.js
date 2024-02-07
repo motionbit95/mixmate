@@ -11,7 +11,7 @@ import { Box, Button, Container, Input } from "@chakra-ui/react";
 // hook
 import { useLocation } from "react-router-dom";
 import { auth } from "../db/firebase_config";
-import { db_update, get_doc_data } from "../js/Database";
+import { db_set, db_update, get_doc_data } from "../js/Database";
 import { serverTimestamp } from "firebase/firestore";
 
 // mixmate - 이름 끝 부분 숨김 처리
@@ -64,6 +64,7 @@ const Channel = ({ user = null }) => {
   }
 
   useEffect(() => {
+    readAllMessage();
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -93,6 +94,18 @@ const Channel = ({ user = null }) => {
       });
       // Clear input field
       setNewMessage("");
+
+      let docRef = await get_doc_data(`message-${chat_id}`, "chat_info");
+
+      await db_update(
+        `message-${chat_id}`,
+        "chat_info",
+        auth.currentUser?.uid === location.state?.data.receiver
+          ? {
+              sender_isRead: docRef.sender_isRead + 1,
+            }
+          : { receiver_isRead: docRef.receiver_isRead + 1 }
+      );
       // Scroll down to the bottom of the list
       bottomListRef.current.scrollIntoView({ behavior: "smooth" });
     }
@@ -104,6 +117,13 @@ const Channel = ({ user = null }) => {
     });
     scrollToBottom("chat-container");
   };
+
+  function readAllMessage() {
+    db_update(`message-${chat_id}`, "chat_info", {
+      sender_isRead: 0,
+      receiver_isRead: 0,
+    });
+  }
 
   return (
     <Box w={"100%"}>

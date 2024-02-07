@@ -2,8 +2,29 @@ import { Stack, Text, Container } from "@chakra-ui/react";
 import HorizonLine from "../component/HorizontalLine";
 import { TopHeader } from "../component/TopHeader";
 import { black, gray_600, white } from "../App";
+import { useEffect, useState } from "react";
+import { db_update, get_doc_list } from "../js/Database";
+import { auth } from "../db/firebase_config";
+import { formatDate } from "../component/Message";
 
 export const Notice = () => {
+  const [alarmList, setAlarmList] = useState([]);
+  useEffect(() => {
+    getAlarmList();
+  }, []);
+
+  const getAlarmList = async () => {
+    auth.onAuthStateChanged(async (currentUser) => {
+      console.log(currentUser.uid);
+      await get_doc_list("alarm", "user_id", currentUser.uid).then(
+        async (data) => {
+          await db_update("alarm", data[0].doc_id, { isRead: true });
+          console.log(data);
+          setAlarmList(data);
+        }
+      );
+    });
+  };
   return (
     <Container py="60px">
       <Stack
@@ -28,114 +49,35 @@ export const Notice = () => {
           alignSelf="stretch"
         >
           {/* <HorizonLine /> */}
-          <Text
-            fontWeight="semibold"
-            fontSize="18px"
-            color={black}
-            textAlign="center"
-          >
-            01.15(월)
-          </Text>
-          <Stack
-            direction="row"
-            justify="space-between"
-            align="flex-end"
-            spacing="16px"
-            alignSelf="stretch"
-          >
-            <Text
-              fontWeight="medium"
-              fontSize="16px"
-              color={black}
-              textAlign="center"
-            >
-              매칭신청이 결제되었습니다.
-            </Text>
-            <Text
-              fontWeight="medium"
-              fontSize="12px"
-              color={gray_600}
-              textAlign="center"
-            >
-              오후 8시 14분
-            </Text>
-          </Stack>
-          <HorizonLine />
-          <Stack
-            direction="row"
-            justify="space-between"
-            align="flex-end"
-            spacing="16px"
-            alignSelf="stretch"
-          >
-            <Text
-              fontWeight="medium"
-              fontSize="16px"
-              color={black}
-              textAlign="center"
-            >
-              [공지] 고객센터 운영시간 안내
-            </Text>
-            <Text
-              fontWeight="medium"
-              fontSize="12px"
-              color={gray_600}
-              textAlign="center"
-            >
-              24.01.16
-            </Text>
-          </Stack>
-          <HorizonLine />
-          <Stack
-            direction="row"
-            justify="space-between"
-            align="flex-end"
-            spacing="16px"
-            alignSelf="stretch"
-          >
-            <Text
-              fontWeight="medium"
-              fontSize="16px"
-              color={black}
-              textAlign="center"
-            >
-              매칭신청이 거절되었습니다.
-            </Text>
-            <Text
-              fontWeight="medium"
-              fontSize="12px"
-              color={gray_600}
-              textAlign="center"
-            >
-              24.01.16
-            </Text>
-          </Stack>
-          <HorizonLine />
-          <Stack
-            direction="row"
-            justify="space-between"
-            align="flex-end"
-            spacing="16px"
-            alignSelf="stretch"
-          >
-            <Text
-              fontWeight="medium"
-              fontSize="16px"
-              color={black}
-              textAlign="center"
-            >
-              매칭신청이 결제되었습니다.
-            </Text>
-            <Text
-              fontWeight="medium"
-              fontSize="12px"
-              color={gray_600}
-              textAlign="center"
-            >
-              24.01.16
-            </Text>
-          </Stack>
-          <HorizonLine />
+          {alarmList.map((value, index) => (
+            <>
+              <Stack
+                direction="row"
+                justify="space-between"
+                align="flex-end"
+                spacing="16px"
+                alignSelf="stretch"
+              >
+                <Text
+                  fontWeight="medium"
+                  fontSize="16px"
+                  color={black}
+                  textAlign="center"
+                >
+                  {value.alarm_message}
+                </Text>
+                <Text
+                  fontWeight="medium"
+                  fontSize="12px"
+                  color={gray_600}
+                  textAlign="center"
+                >
+                  {formatDate(new Date(value.timestamp.seconds * 1000))}
+                </Text>
+              </Stack>
+              <HorizonLine />
+            </>
+          ))}
         </Stack>
       </Stack>
     </Container>

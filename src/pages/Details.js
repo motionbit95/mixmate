@@ -63,7 +63,7 @@ import {
 import { HorizontalScrollBox } from "../component/HorizontalScrollBox";
 import { useAuthState } from "../js/Hooks";
 import { Navbar } from "../component/Navbar";
-import { getSatuation } from "../js/API";
+import { getDisplayName, getSatuation } from "../js/API";
 import { User } from "../component/User";
 import { CustomButton } from "../component/Buttons";
 import { useNavigate } from "react-router-dom";
@@ -235,6 +235,32 @@ export const Details = () => {
         matching_state: 1, // 매칭 완료 코드
       });
     }
+
+    let matchingDoc = await get_doc_data("matching", matching_id);
+
+    let sender = await get_doc_data("user", matchingDoc.sender);
+    let receiver = await get_doc_data("user", matchingDoc.receiver);
+
+    await db_add("alarm", {
+      createAt: new Date(),
+      user_id: sender.doc_id,
+      alarm_type: "matching-complete",
+      alarm_message: `${getDisplayName(
+        receiver.user_name
+      )} 과의 매칭을 확정하였습니다.`,
+      isRead: false,
+    });
+
+    await db_add("alarm", {
+      createAt: new Date(),
+      user_id: receiver.doc_id,
+      alarm_type: "matching-recieve",
+      alarm_message: `${getDisplayName(
+        sender.name
+      )} 님과의 매칭이 확정되었습니다.`,
+      isRead: false,
+    });
+
     window.location.reload();
   }
 
@@ -280,6 +306,7 @@ export const Details = () => {
           },
         });
 
+        let sender = await get_doc_data("user", reviewMatching.sender);
         let receiver = await get_doc_data("user", reviewMatching.receiver);
         console.log(receiver);
 
@@ -289,6 +316,26 @@ export const Details = () => {
         await db_update("user", receiver.doc_id, {
           review_score: totalScore + score,
           review_count: totalCount + 1,
+        });
+
+        await db_add("alarm", {
+          createAt: new Date(),
+          user_id: receiver.doc_id,
+          alarm_type: "matching-review",
+          alarm_message: `${getDisplayName(
+            sender.user_name
+          )} 님에게 매칭 후기가 도착하였습니다.`,
+          isRead: false,
+        });
+
+        await db_add("alarm", {
+          createAt: new Date(),
+          user_id: sender.doc_id,
+          alarm_type: "matching-review",
+          alarm_message: `${getDisplayName(
+            receiver.user_name
+          )} 님에게 매칭 후기를 작성하였습니다.`,
+          isRead: false,
         });
 
         window.location.reload();

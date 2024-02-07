@@ -35,7 +35,7 @@ import { SettingsIcon } from "@chakra-ui/icons";
 import HorizonLine from "../component/HorizontalLine";
 import { terms } from "../assets/terms";
 import { black, gray_600, gray_800, gray_900, white } from "../App";
-import { logout } from "../js/Auth";
+import { importDefaultUser, logout } from "../js/Auth";
 import { User } from "../component/User";
 import { Navbar } from "../component/Navbar";
 import { CustomButton } from "../component/Buttons";

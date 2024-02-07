@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Center, Container } from "@chakra-ui/react";
+import { Button, Center, Container, HStack, VStack } from "@chakra-ui/react";
 import { TopHeader } from "../component/TopHeader";
 import { Stack, Avatar, Text } from "@chakra-ui/react";
 import { Navbar } from "../component/Navbar";
@@ -27,7 +27,6 @@ export const ChatList = () => {
 
   const getChatList = async () => {
     auth.onAuthStateChanged(async function (user) {
-      console.log(user.uid);
       // 본인이 sender인 매칭리스트와 본인이 receiver인 매칭리스트를 가지고 와서 배열에 담는다
       let sender = await matching_get_list(0);
       let receiver = await matching_get_list(1);
@@ -54,13 +53,6 @@ export const ChatList = () => {
           isSender: user?.uid === sender?.doc_id,
         });
 
-        console.log({
-          ...chat,
-          matching_payment: element.matching_payment,
-          matching_sender: sender,
-          matching_receiver: receiver,
-          isSender: user?.uid === sender?.doc_id,
-        });
         // 상태 변수에 저장
         setChatList(chatList);
       });
@@ -184,6 +176,7 @@ export const ChatList = () => {
                               : value.matching_sender.user_name
                           )}
                         </Text>
+
                         <Text
                           fontWeight="regular"
                           fontSize="14px"
@@ -196,14 +189,33 @@ export const ChatList = () => {
                         </Text>
                       </Stack>
                     </Stack>
-                    <Text
-                      fontWeight="regular"
-                      fontSize="14px"
-                      color="#000000"
-                      textAlign="center"
-                    >
-                      {chatList[index]?.lastmessage}
-                    </Text>
+                    <HStack w={"100%"} justify="space-between">
+                      <Text
+                        fontWeight="regular"
+                        fontSize="14px"
+                        color="#000000"
+                        textAlign="center"
+                      >
+                        {chatList[index]?.lastmessage}
+                      </Text>
+                      {((value.isSender &&
+                        chatList[index]?.sender_isRead !== 0) ||
+                        (!value.isSender &&
+                          chatList[index]?.receiver_isRead !== 0)) && (
+                        <Center
+                          bgColor={"red"}
+                          w={"24px"}
+                          h={"24px"}
+                          borderRadius={"full"}
+                        >
+                          <Text color={"white"}>
+                            {value.isSender
+                              ? chatList[index]?.sender_isRead
+                              : chatList[index]?.receiver_isRead}
+                          </Text>
+                        </Center>
+                      )}
+                    </HStack>
                   </Stack>
                 </Stack>
                 <HorizonLine />

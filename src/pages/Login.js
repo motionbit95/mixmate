@@ -52,7 +52,7 @@ export const Login = () => {
 
       let currentUser = await get_doc_data("user", auth.currentUser?.uid);
 
-      if (currentUser) {
+      if (currentUser.user_price) {
         // 가입된 유저가 있다면
         // 홈으로 이동
         navigate("/");

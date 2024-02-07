@@ -13,6 +13,7 @@ import {
   TabPanel,
   IconButton,
   Tooltip,
+  Center,
 } from "@chakra-ui/react";
 import { createContext, useEffect, useRef, useState } from "react";
 import {
@@ -53,6 +54,26 @@ export const Home = () => {
   const [userInfo, setUserInfo] = useState();
   const [businessList, setBusinessList] = useState([]);
   const [customerList, setCustomerList] = useState([]);
+  const [alarmCnt, setAlarmCnt] = useState(0);
+
+  useEffect(() => {
+    getAlarmList();
+  }, []);
+
+  const getAlarmList = async () => {
+    const count = 0;
+    auth.onAuthStateChanged(async (currentUser) => {
+      console.log(currentUser.uid);
+      await get_doc_list("alarm", "user_id", currentUser.uid).then(
+        async (data) => {
+          if (!data.isRead) {
+            count++;
+            setAlarmCnt(count);
+          }
+        }
+      );
+    });
+  };
 
   // 초기 로딩시 한번만 실행되는 로직(초기화)
   useEffect(() => {
@@ -185,11 +206,25 @@ export const Home = () => {
                 <TextLogo h={"4vh"} />
               </HStack>
 
-              {/* <IconButton
-                onClick={() => navigate("/notice")}
-                variant={"unstyled"}
-                icon={<BsBell size={"24px"} />}
-              /> */}
+              <HStack alignItems={"flex-end"}>
+                <IconButton
+                  onClick={() => navigate("/notice")}
+                  variant={"unstyled"}
+                  icon={<BsBell size={"24px"} />}
+                />
+                {alarmCnt > 0 && (
+                  <Center
+                    zIndex={999}
+                    ml={"-32px"}
+                    h={"20px"}
+                    w={"20px"}
+                    bgColor={"red"}
+                    rounded={"full"}
+                  >
+                    <Text color={"white"}>{alarmCnt}</Text>
+                  </Center>
+                )}
+              </HStack>
             </HStack>
           </Stack>
         </Container>

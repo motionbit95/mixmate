@@ -4,12 +4,14 @@ import $ from "jquery";
 import axios from "axios";
 import { Button, Center, Container, Text, VStack } from "@chakra-ui/react";
 import { TopHeader } from "../component/TopHeader";
-import { db_add, db_set } from "../js/Database";
+import { db_add, db_set, get_doc_data } from "../js/Database";
 import { auth } from "../db/firebase_config";
+import { getDisplayName } from "../js/API";
 
 function OrderResult() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [receiver, setReceiver] = useState();
   const [retData, setReturnData] = useState({
     PCD_PAY_RST: "",
   });
@@ -21,9 +23,15 @@ function OrderResult() {
 
   useEffect(() => {
     handlePayConfirm();
+    getReciever();
   }, []);
 
-  function addPayment(retData) {
+  function getReciever() {
+    get_doc_data("user", localStorage.getItem("receiver")).then((data) => {
+      setReceiver(data);
+    });
+  }
+  async function addPayment(retData) {
     // console.log(retData);
     // console.log({
     //   timestamp: new Date(),
@@ -48,6 +56,33 @@ function OrderResult() {
       lastmessage: "",
       sender: auth.currentUser.uid,
       receiver: localStorage.getItem("receiver"),
+      sender_isRead: 0,
+      receiver_isRead: 0,
+    });
+
+    let sender = await get_doc_data("user", auth.currentUser.uid);
+    let receiver = await get_doc_data("user", localStorage.getItem("receiver"));
+
+    console.log(sender, receiver);
+
+    await db_add("alarm", {
+      createAt: new Date(),
+      user_id: sender.doc_id,
+      alarm_type: "matching-send",
+      alarm_message: `${getDisplayName(
+        receiver.user_name
+      )} 님에게 매칭을 신청하였습니다.`,
+      isRead: false,
+    });
+
+    await db_add("alarm", {
+      createAt: new Date(),
+      user_id: receiver.doc_id,
+      alarm_type: "matching-recieve",
+      alarm_message: `${getDisplayName(
+        sender.user_name
+      )} 님에게 매칭 신청이 도착하였습니다.`,
+      isRead: false,
     });
   }
 
@@ -229,31 +264,36 @@ function OrderResult() {
             {retData.PCD_PAY_RST === "error" ? (
               <Button
                 onClick={() => {
-                  navigate("/");
+                  navigate("/matching", {
+                    state: {
+                      data: receiver,
+                    },
+                  });
                 }}
               >
-                홈으로이동
+                다시 매칭 신청하기
               </Button>
             ) : (
               retData.PCD_PAY_RST === "success" && (
-                <VStack mt={"4vh"}>
-                  <Button
-                    onClick={() => {
-                      // addPayment();
-                      navigate("/");
-                    }}
-                  >
-                    홈으로이동
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      // addPayment();
-                      navigate("/details");
-                    }}
-                  >
-                    상세내역으로이동
-                  </Button>
-                </VStack>
+                <Button
+                  onClick={() => {
+                    navigate(`/chat/message-${payResult.PCD_PAY_OID}`, {
+                      state: {
+                        chat_id: payResult.PCD_PAY_OID,
+                        data: {
+                          timestamp: new Date(),
+                          lastmessage: "",
+                          sender: auth.currentUser.uid,
+                          receiver: localStorage.getItem("receiver"),
+                          sender_isRead: 0,
+                          receiver_isRead: 0,
+                        },
+                      },
+                    });
+                  }}
+                >
+                  상대방과 채팅하기
+                </Button>
               )
             )}
           </VStack>

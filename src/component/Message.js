@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { useAuthState } from "../js/Hooks";
 import firebase from "firebase/compat/app";
 
-const formatDate = (date) => {
+export const formatDate = (date) => {
   let formattedDate = "";
   if (date) {
     // Convert the date in words relative to the current date
