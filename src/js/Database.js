@@ -118,7 +118,7 @@ export const get_doc_list = async (col, property, value) => {
 
   const doc_list = [];
   querySnapshot.forEach((doc) => {
-    if (doc.data().user_id !== "aDmCtCPffOaIruYHbsn9NzuFZlQ2") {
+    if (doc.id !== "F6ARV5KdgEXyYCenZvmrENzlOx72") {
       // doc.data() is never undefined for query doc snapshots
       doc_list.push({ ...doc.data(), doc_id: doc.id });
     }
@@ -145,8 +145,8 @@ export async function arrange_distance(user_location, user_type) {
   const places = [];
   // Firestore에서 데이터 가져오기 및 거리순 정렬
   querySnapshot.forEach((doc) => {
-    if (doc.data().user_id !== "aDmCtCPffOaIruYHbsn9NzuFZlQ2") {
-      if (auth.currentUser.uid !== doc.data().user_id) {
+    if (doc.id !== "F6ARV5KdgEXyYCenZvmrENzlOx72") {
+      if (auth.currentUser.uid !== doc.id) {
         const place = checkNull(doc.data().user_location, {
           latitude: 37.5664056,
           longitude: 126.9778222,
@@ -189,8 +189,8 @@ export async function arrange_random(user_location, user_dong, user_type) {
   const places = [];
   // Firestore에서 데이터 가져오기 및 거리순 정렬
   querySnapshot.forEach((doc) => {
-    if (doc.data().user_id !== "aDmCtCPffOaIruYHbsn9NzuFZlQ2") {
-      if (auth.currentUser.uid !== doc.data().user_id) {
+    if (doc.id !== "F6ARV5KdgEXyYCenZvmrENzlOx72") {
+      if (auth.currentUser.uid !== doc.id) {
         const place = doc.data().user_location;
         if (!place) return;
         // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산

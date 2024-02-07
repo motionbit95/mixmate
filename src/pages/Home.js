@@ -185,11 +185,11 @@ export const Home = () => {
                 <TextLogo h={"4vh"} />
               </HStack>
 
-              <IconButton
+              {/* <IconButton
                 onClick={() => navigate("/notice")}
                 variant={"unstyled"}
                 icon={<BsBell size={"24px"} />}
-              />
+              /> */}
             </HStack>
           </Stack>
         </Container>

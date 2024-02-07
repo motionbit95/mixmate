@@ -492,7 +492,10 @@ export const Payment = () => {
                     backgroundColor: theme_bright_color,
                     borderColor: theme_primary_color,
                   }}
-                  onClick={() => setPayMethod("transfer")}
+                  onClick={
+                    () => alert("준비중입니다!")
+                    // setPayMethod("transfer")
+                  }
                 >
                   <Text
                     lineHeight="1.25"

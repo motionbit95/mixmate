@@ -78,8 +78,15 @@ export function getDisplayName(name) {
  * @returns {string} 생년월일을 나이로 변환한 후 5살 범위로 반환
  */
 export function getDisplayAge(birthdate) {
+  if (!birthdate) return "";
+  // 입력된 8자리 문자열을 연, 월, 일로 분리
+  const year = birthdate.slice(0, 4);
+  const month = birthdate.slice(4, 6);
+  const day = birthdate.slice(6, 8);
+
+  // 날짜 객체 생성
+  const birthdateObj = new Date(year, month - 1, day); // 월은 0부터 시작하므로 -1 해줍니다.
   var currentDate = new Date();
-  var birthdateObj = new Date(birthdate);
   var age = currentDate.getFullYear() - birthdateObj.getFullYear();
 
   if (

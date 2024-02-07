@@ -2,19 +2,33 @@ import {
   Avatar,
   Box,
   Button,
+  Center,
+  CircularProgress,
   Flex,
   HStack,
   Icon,
+  Image,
   Input,
+  Modal,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
   Skeleton,
   Stack,
   Text,
   VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { getDisplayName } from "../js/API";
 import { CustomButton } from "./Buttons";
 import { useNavigate } from "react-router-dom";
-import { black, theme_bright_color, theme_primary_color } from "../App";
+import {
+  black,
+  gray_300,
+  gray_500,
+  theme_bright_color,
+  theme_primary_color,
+} from "../App";
 import { useEffect, useRef, useState } from "react";
 import { get_default_avartar } from "../js/UserAPI";
 import { upload_image } from "../js/Storage";
@@ -25,8 +39,11 @@ export const User = ({ data, ...props }) => {
   const navigate = useNavigate();
   const profileRef = useRef();
   const [value, setValue] = useState(data);
+  const [loading, setLoading] = useState(false);
 
   const [profile_image, setProfileImage] = useState(data?.user_profile);
+  const { onOpen, isOpen, onClose } = useDisclosure();
+
   useEffect(() => {
     getUser();
   }, []);
@@ -40,23 +57,17 @@ export const User = ({ data, ...props }) => {
 
   // 이미지 업로드 함수
   const upload_profile = async (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      // FileReader 객체 생성
-      const reader = new FileReader();
-
-      // 파일을 읽었을 때의 이벤트 핸들러 등록
-      reader.onload = (e) => {
-        // 읽은 데이터를 파일 상태로 설정하여 미리보기 업데이트
-        setProfileImage(e.target.result);
-      };
-    }
-
+    setLoading(true);
     // firestore에 이미지 업로드
     let url = await upload_image(e);
+    setProfileImage(url);
 
     // 이미지 저장
     await db_update("user", value.doc_id, { user_profile: url });
+
+    setLoading(false);
+
+    // window.location.reload();
   };
 
   return (
@@ -68,14 +79,28 @@ export const User = ({ data, ...props }) => {
       // border={"1px solid #f1f1f1"}
       //   maxW={"400px"}
     >
+      {" "}
+      {loading ? (
+        <Box bgColor={black} opacity={0.2}>
+          <Center w="100vw" h="100vh" position={"fixed"} left={0}>
+            <CircularProgress
+              zIndex={9999}
+              isIndeterminate
+              color="blue.300"
+              trackColor={gray_300}
+            />
+          </Center>
+        </Box>
+      ) : null}
       {value && (
         <HStack spacing={"2vw"} w={"100%"}>
           <Skeleton isLoaded={value}>
             <VStack alignItems={"center"} justifyContent={"center"}>
               <Avatar
+                onClick={onOpen}
                 src={
                   profile_image
-                    ? "profile_image"
+                    ? profile_image
                     : get_default_avartar(value.user_gender, value.user_profile)
                 }
               />
@@ -155,6 +180,13 @@ export const User = ({ data, ...props }) => {
           </VStack>
         </HStack>
       )}
+      <Modal isCentered onClose={onClose} size={"md"} isOpen={isOpen}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalCloseButton />
+          <Image src={profile_image} />
+        </ModalContent>
+      </Modal>
     </Flex>
   );
 };

@@ -191,7 +191,7 @@ export const MyPage = () => {
             fontSize="18px"
             color={black}
             textAlign="center"
-            onClick={() => navigate("/notice")}
+            // onClick={() => navigate("/notice")}
           >
             공지사항
           </Text>

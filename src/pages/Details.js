@@ -122,10 +122,10 @@ export const Details = () => {
     // 현재 로그인 한 고객의 계정을 가지고 옵니다.
     auth.onAuthStateChanged(async function (user) {
       if (user) {
-        let user_info = await get_doc_list("user", "doc_id", user?.uid);
+        let user_info = await get_doc_data("user", user?.uid);
 
-        if (user_info[0]) {
-          let array = await arrange_distance(user_info[0].user_location, "all");
+        if (user_info) {
+          let array = await arrange_distance(user_info.user_location, "all");
           setRecommend(array);
         }
 
@@ -154,6 +154,8 @@ export const Details = () => {
   }
 
   async function onClickRefundMatching() {
+    alert("준비중입니다.");
+    return;
     // 거절 모달 띄우기
     setModalType("refund");
     onOpen();
@@ -171,7 +173,7 @@ export const Details = () => {
     console.log(payResult, process.env.REACT_APP_REMOTE_HOSTNAME);
 
     await axios
-      .post(process.env.REACT_APP_REMOTE_HOSTNAME + "/api/auth", {
+      .post(process.env.REACT_APP_REMOTE_HOSTNAME + "/pg/auth", {
         PCD_PAYCANCEL_FLAG: "Y",
       })
       .then((res) => {
@@ -520,7 +522,7 @@ export const Details = () => {
                     {recieveList?.map(
                       (value, index) =>
                         value.matching_state < 1 && (
-                          <>
+                          <Stack>
                             <Text fontSize={"large"} fontWeight={"bold"}>
                               {value.matching_state === 0
                                 ? "매칭신청"
@@ -562,7 +564,7 @@ export const Details = () => {
                               </HStack>
                             )}
                             {/* <HorizonLine /> */}
-                          </>
+                          </Stack>
                         )
                     )}
                   </Stack>
