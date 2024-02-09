@@ -256,7 +256,7 @@ export const Details = () => {
       user_id: receiver.doc_id,
       alarm_type: "matching-recieve",
       alarm_message: `${getDisplayName(
-        sender.name
+        sender.user_name
       )} 님과의 매칭이 확정되었습니다.`,
       isRead: false,
     });

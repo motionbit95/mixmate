@@ -64,14 +64,13 @@ export const Home = () => {
     const count = 0;
     auth.onAuthStateChanged(async (currentUser) => {
       console.log(currentUser.uid);
-      await get_doc_list("alarm", "user_id", currentUser.uid).then(
-        async (data) => {
-          if (!data.isRead) {
-            count++;
-            setAlarmCnt(count);
-          }
+      let alarmList = await get_doc_list("alarm", "user_id", currentUser.uid);
+
+      alarmList.map((value, index) => {
+        if (!value.isRead) {
+          setAlarmCnt(alarmCnt + 1);
         }
-      );
+      });
     });
   };
 

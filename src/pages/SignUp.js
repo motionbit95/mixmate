@@ -279,21 +279,6 @@ export const SignUp = () => {
             alignSelf="stretch"
           >
             <Stack justify="flex-start" align="center" spacing="50px" w="100%">
-              <VStack>
-                <Avatar src={formData.user_profile} size="2xl" />
-                <CustomButton
-                  text="프로필 업로드"
-                  onClick={onClickProfileButton}
-                />
-                <Input
-                  display={"none"}
-                  ref={profileRef}
-                  type="file"
-                  onChange={(e) => {
-                    upload_profile(e);
-                  }}
-                />
-              </VStack>
               <Stack
                 justify="flex-start"
                 align="flex-start"

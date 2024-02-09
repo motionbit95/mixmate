@@ -19,7 +19,7 @@ import {
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
-import { getDisplayName } from "../js/API";
+import { getDisplayAge, getDisplayName } from "../js/API";
 import { CustomButton } from "./Buttons";
 import { useNavigate } from "react-router-dom";
 import {
@@ -148,8 +148,20 @@ export const User = ({ data, ...props }) => {
             </HStack>
             <Text fontSize={"12px"} whiteSpace={"pre-wrap"}>
               {value.user_type === "개인"
-                ? `성별 : ${value.user_gender},\t\t매칭 금액 : ${value.user_price}만원\n식사 가능 동네 : ${value.user_place}\n좋아하는 음식 : ${value.user_food}`
-                : `성별 : ${value.user_gender},\t\t매칭 금액 : ${value.user_price}만원\n코칭 가능 동네 : ${value.user_place}\n멘토 분야 : ${value.user_category}`}
+                ? `성별 : ${value.user_gender},\t\t매칭 금액 : ${
+                    value.user_price
+                  }만원\n식사 가능 동네 : ${
+                    value.user_place
+                  }\n나이: ${getDisplayAge(
+                    value.user_birth
+                  )}\n좋아하는 음식 : ${value.user_food}`
+                : `성별 : ${value.user_gender},\t\t매칭 금액 : ${
+                    value.user_price
+                  }만원\n코칭 가능 동네 : ${
+                    value.user_place
+                  }\n나이: ${getDisplayAge(value.user_birth)}\n멘토 분야 : ${
+                    value.user_category
+                  }`}
               {/* {value.user_type === "개인"
                 ? ""
                 : `, 멘토 전문 분야 : ${value.user_category}`} */}

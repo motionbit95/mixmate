@@ -30,8 +30,13 @@ import {
   FormLabel,
   InputGroup,
   InputRightAddon,
+  VStack,
+  Avatar,
+  Center,
+  Box,
+  CircularProgress,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -44,6 +49,7 @@ import { db_add, db_delete, db_update, get_doc_list } from "../js/Database";
 import { terms } from "../assets/terms";
 import {
   black,
+  gray_300,
   gray_500,
   gray_600,
   theme_bright_color,
@@ -55,6 +61,8 @@ import { TopHeader } from "../component/TopHeader";
 import { CustomButton } from "../component/Buttons";
 import { auth } from "../db/firebase_config";
 import { deleteUser } from "firebase/auth";
+import { upload_image } from "../js/Storage";
+import { defaultFemale, defaultMale } from "../db/dummy";
 export const Information = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -92,6 +100,7 @@ export const Information = () => {
     location.state?.user
       ? location.state?.user
       : {
+          user_profile: "",
           user_price: 2,
           user_place: [],
           user_food: [],
@@ -103,6 +112,8 @@ export const Information = () => {
           user_phone: "",
         }
   );
+
+  const profileRef = useRef();
 
   function extractQueryParameters() {
     if (!window.location.search.includes("?")) return;
@@ -126,6 +137,7 @@ export const Information = () => {
       user_phone: user.phoneNumber,
       user_birth: user.birthdate,
       user_gender: user.gender,
+      user_profile: user.gender === "남" ? defaultMale : defaultFemale,
     });
 
     if (isAdult(user.birthdate)) {
@@ -135,10 +147,42 @@ export const Information = () => {
     }
   }
 
+  // 프로필 업로드 버튼 클릭 시 ref 클릭 이벤트 발생
+  const onClickProfileButton = () => {
+    profileRef.current.click();
+  };
+
+  const [loading, setLoading] = useState(false);
+
+  // 이미지 업로드 함수
+  const upload_profile = async (e) => {
+    // 이미지 로딩 중에는 프로그레스바를 띄운다
+    setLoading(true);
+
+    // firestore에 이미지 업로드
+    let url = await upload_image(e);
+
+    if (url && url !== "") {
+      setValid({
+        state: true,
+        message: "",
+      });
+    } else {
+      setValid({
+        state: false,
+        message: "이미지를 다시 선택해주세요.",
+      });
+    }
+
+    setFormData({ ...formData, user_profile: url });
+
+    // 이미지 로딩 완료 시 프로그레스바를 지운다
+    setLoading(false);
+  };
+
   useEffect(() => {
     // 고객의 계정을 가지고 옵니다.
     if (window.location.pathname.includes("info")) {
-      console.log("????");
       // 미성년자 여부 확인
       if (!extractQueryParameters()) {
         alert("미성년자는 가입할 수 없습니다. 로그인 화면으로 돌아갑니다.");
@@ -511,6 +555,18 @@ export const Information = () => {
       // alignItems={"center"}
     >
       <TopHeader title={"회원정보"} />
+      {loading ? (
+        <Box>
+          <Center w="100vw" h="100vh" position={"fixed"} left={0}>
+            <CircularProgress
+              zIndex={9999}
+              isIndeterminate
+              color="blue.300"
+              trackColor={gray_300}
+            />
+          </Center>
+        </Box>
+      ) : null}
       <Stack
         justify="flex-start"
         align="center"
@@ -551,6 +607,23 @@ export const Information = () => {
                 alignSelf="stretch"
                 w={"100%"}
               >
+                <Center w={"100%"}>
+                  <VStack>
+                    <Avatar src={formData.user_profile} size="2xl" />
+                    <CustomButton
+                      text="프로필 업로드"
+                      onClick={onClickProfileButton}
+                    />
+                    <Input
+                      display={"none"}
+                      ref={profileRef}
+                      type="file"
+                      onChange={(e) => {
+                        upload_profile(e);
+                      }}
+                    />
+                  </VStack>
+                </Center>
                 <FormControl
                   isRequired
                   display="flex"

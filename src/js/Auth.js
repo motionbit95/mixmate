@@ -16,13 +16,15 @@ import { doc, setDoc } from "firebase/firestore";
 
 // firebase 초기화
 firebase.initializeApp({
-  apiKey: "AIzaSyBwCYJaEn1Ey5rU8Le5Adu_JvdJodQAOe8",
-  authDomain: "dinnermate-8d37b.firebaseapp.com",
-  projectId: "dinnermate-8d37b",
-  storageBucket: "dinnermate-8d37b.appspot.com",
-  messagingSenderId: "698586027961",
-  appId: "1:698586027961:web:bfacf1423d3c895397c868",
-  measurementId: "G-YJSWYJ83RK",
+  apiKey: "AIzaSyA6_ETeOdnsf9rI_OGZ9vyg2TYQ1jxRBA8",
+  authDomain: "dinnermate-database.firebaseapp.com",
+  databaseURL:
+    "https://dinnermate-database-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "dinnermate-database",
+  storageBucket: "dinnermate-database.appspot.com",
+  messagingSenderId: "266027037200",
+  appId: "1:266027037200:web:8c09ec93d5e28965ddd095",
+  measurementId: "G-SST92XMXJH",
 });
 
 /**
@@ -69,8 +71,6 @@ export async function signUpPassword(email, password) {
       }
       if (errorCode == "auth/already-in-use") {
         err_msg = "이미 존재하는 아이디입니다.";
-        // 로그인 진행
-        uid = await signInPassword(email, password);
       }
     });
 
@@ -142,12 +142,10 @@ export const importDefaultUser = () => {
     let result = await signUpPassword(value.user_email, value.user_password);
     if (result.err_msg === "") {
       // 계정 생성에 성공했을 경우
-      console.log("계정 생성 성공!", result.uid);
+      console.log("계정 생성 성공!");
     } else {
       // 이미 계정이 있을 경우
-      console.log("이미 있는 계정! ", result.uid);
+      console.log("이미 있는 계정! ");
     }
-
-    await db_set("user", result.uid, value);
   });
 };
