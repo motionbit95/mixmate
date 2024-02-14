@@ -87,12 +87,20 @@ export function step1_confirm_blank(
  * @param {string} user_gender 패스워드 확인
  * @returns {string} 에러 메세지
  */
-export function step2_confirm_blank(user_price, user_place, user_food) {
+export function step2_confirm_blank(
+  user_price,
+  user_place,
+  user_food,
+  user_profile,
+  user_info
+) {
   if (parseInt(user_price) < 2)
     return "식사권 금액은 2만원 이상으로 설정해주세요.";
   if (user_price === "") return "식사권 금액을 설정해주세요.";
   if (user_place.length === 0) return "식사 가능 동네를 1개 이상 선택해주세요.";
   if (user_food.length === 0) return "좋아하는 음식을 1개 이상 선택해주세요.";
+  if (user_profile === "") return "프로필 사진을 설정해주세요.";
+  if (user_info === "") return "프로필 소개말을 작성해주세요.";
   // if (user_bank.bank_name === "" || user_bank.accout_number === "")
   // return "계좌 정보를 입력해주세요.";
   // if (user_gender === "") return "성별을 선택해주세요.";

@@ -151,28 +151,30 @@ export const Matching = () => {
                         code={theme_bright_color}
                         height="40px"
                         alignSelf="stretch"
-                        onClick={() =>
+                        onClick={() => {
+                          localStorage.setItem("matching_type", "식사");
                           navigate("/payment", {
                             state: {
                               price: data.user_price,
                               receiver: data,
                             },
-                          })
-                        }
+                          });
+                        }}
                         text={"🍛 식사 매칭 신청"}
                       />
                       <CustomButton
                         code={theme_bright_color}
                         height="40px"
                         alignSelf="stretch"
-                        onClick={() =>
+                        onClick={() => {
+                          localStorage.setItem("matching_type", "커피");
                           navigate("/payment", {
                             state: {
                               price: data.user_price,
                               receiver: data,
                             },
-                          })
-                        }
+                          });
+                        }}
                         text={"☕️ 커피 매칭 신청"}
                       />
                     </HStack>
@@ -231,28 +233,30 @@ export const Matching = () => {
                         code={theme_bright_color}
                         height="40px"
                         alignSelf="stretch"
-                        onClick={() =>
+                        onClick={() => {
+                          localStorage.setItem("matching_type", "식사");
                           navigate("/payment", {
                             state: {
                               price: data.user_price,
                               receiver: data,
                             },
-                          })
-                        }
+                          });
+                        }}
                         text={"🍛 식사 매칭 신청"}
                       />
                       <CustomButton
                         code={theme_bright_color}
                         height="40px"
                         alignSelf="stretch"
-                        onClick={() =>
+                        onClick={() => {
+                          localStorage.setItem("matching_type", "커피");
                           navigate("/payment", {
                             state: {
                               price: data.user_price,
                               receiver: data,
                             },
-                          })
-                        }
+                          });
+                        }}
                         text={"☕️ 커피 매칭 신청"}
                       />
                     </HStack>

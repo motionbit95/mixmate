@@ -63,11 +63,12 @@ import {
 import { HorizontalScrollBox } from "../component/HorizontalScrollBox";
 import { useAuthState } from "../js/Hooks";
 import { Navbar } from "../component/Navbar";
-import { getDisplayName, getSatuation } from "../js/API";
+import { formatCurrency, getDisplayName, getSatuation } from "../js/API";
 import { User } from "../component/User";
 import { CustomButton } from "../component/Buttons";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { post } from "jquery";
 
 export const Details = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -88,6 +89,43 @@ export const Details = () => {
   useEffect(() => {
     get_matching_list();
   }, []);
+
+  function RefundMessage({ doc_id }) {
+    const [payment, setPayment] = useState({});
+    useEffect(() => {
+      getPayment(doc_id);
+    }, []);
+
+    const getPayment = async (doc_id) => {
+      setPayment(await get_doc_data("payment", doc_id));
+    };
+    return (
+      <Text
+        whiteSpace={"pre-wrap"}
+        maxWidth={"100%"}
+        lineHeight="1.67"
+        fontWeight={"regular"}
+        fontSize={"12px"}
+        color={gray_900}
+        flex={"1"}
+      >
+        {`
+안녕하세요, 디너메이트입니다.
+고객님의 결제 취소에 관한 안내드립니다.
+결제 취소 요청이 정상적으로 접수되었습니다. 아래는 취소에 관한 상세 정보입니다.
+주문번호: ${doc_id}
+취소 금액: ${formatCurrency(payment.PCD_PAY_TOTAL)}
+취소 일시: ${payment.PCD_PAY_TIME?.substr(0, 4)}.${payment.PCD_PAY_TIME?.substr(
+          4,
+          2
+        )}.${payment.PCD_PAY_TIME?.substr(6, 2)}
+취소된 금액은 최대 3 영업일 이내에 원래 결제 수단으로 환불될 예정입니다.
+추가적인 궁금한 사항이나 도움이 필요하신 경우, 언제든지 고객센터로 문의해 주세요.
+감사합니다. 디너메이트 드림`}
+        {/* {get_refund_message(value.matching_payment)} */}
+      </Text>
+    );
+  }
 
   async function moveChat(value) {
     const sender = await getUser(value.sender);
@@ -154,8 +192,8 @@ export const Details = () => {
   }
 
   async function onClickRefundMatching() {
-    alert("준비중입니다.");
-    return;
+    // alert("준비중입니다.");
+    // return;
     // 거절 모달 띄우기
     setModalType("refund");
     onOpen();
@@ -167,65 +205,84 @@ export const Details = () => {
       console.log(res.data);
     });
   };
-  const handlePayRefund = async (matching_id) => {
+
+  function sleep(ms) {
+    return new Promise((r) => setTimeout(r, ms));
+  }
+
+  const handlePayRefund = async (matching_id, message) => {
     const payResult = await get_doc_data("payment", matching_id);
 
-    console.log(payResult, process.env.REACT_APP_REMOTE_HOSTNAME);
+    console.log(payResult);
 
-    await axios
-      .post(process.env.REACT_APP_REMOTE_HOSTNAME + "/pg/auth", {
-        PCD_PAYCANCEL_FLAG: "Y",
-      })
-      .then((res) => {
-        // 토큰값 세팅
-        const refundURL = res.data.return_url; // 리턴 받은 환불(승인취소) URL
-        const params = {
-          PCD_CST_ID: res.data.cst_id, // 리턴 받은 cst_id Token
-          PCD_CUST_KEY: res.data.custKey, // 리턴 받은 custKey Token
-          PCD_AUTH_KEY: res.data.AuthKey, // 결제용 인증키
-          PCD_REFUND_KEY: process.env.REACT_APP_PCD_REFUND_KEY, // 환불서비스 Key (관리자페이지 상점정보 > 기본정보에서 확인하실 수 있습니다.)
-          PCD_PAYCANCEL_FLAG: "Y", // 'Y' – 고정 값
-          PCD_PAY_OID: payResult.PCD_PAY_OID, // 주문번호
-          PCD_PAY_DATE: payResult.PCD_PAY_TIME.substring(0, 8), // 취소할 원거래일자
-          PCD_REFUND_TOTAL: payResult.PCD_REFUND_TOTAL, // 환불 요청금액 (기존 결제금액보다 적은 금액 입력 시 부분취소로 진행)
-          PCD_REGULER_FLAG: payResult.PCD_REGULER_FLAG, // 월 중복결제 방지 Y(사용) | N(그 외)
-          PCD_PAY_YEAR: payResult.PCD_PAY_YEAR, // 결제 구분 년도
-          PCD_PAY_MONTH: payResult.PCD_PAY_MONTH, // 결제 구분 월
-        };
+    const params = {
+      cst_id: process.env.REACT_APP_CST_ID, // 파트너 ID (실결제시 발급받은 운영ID를 작성하시기 바랍니다.)
+      custKey: process.env.REACT_APP_CUST_KEY, // 파트너 인증키 (실결제시 발급받은 운영Key를 작성하시기 바랍니다.)
+      PCD_PAYCANCEL_FLAG: "Y", // 상황별 파트너 인증 파라미터
+    };
 
-        axios
-          .post(refundURL, JSON.stringify(params), {
-            header: {
-              "content-type": "application/json",
-              referer: process.env.REACT_APP_HOSTNAME, //API 서버를 따로 두고 있는 경우, Referer 에 가맹점의 도메인 고정
-            },
-          })
-          .then((res) => {
-            window.alert(res.data.PCD_PAY_MSG);
+    post(process.env.REACT_APP_AUTH_URL, JSON.stringify(params), {
+      headers: {
+        "content-type": "application/json",
+        referer: process.env.REACT_APP_HOSTNAME, // Referer 필수
+      },
+    }).then((r) => {
+      console.log(r);
+      // 토큰값 세팅
+      const refundURL = r.return_url; // 리턴 받은 환불(승인취소) URL
+      const params = {
+        PCD_CST_ID: r.cst_id, // 리턴 받은 cst_id Token
+        PCD_CUST_KEY: r.custKey, // 리턴 받은 custKey Token
+        PCD_AUTH_KEY: r.AuthKey, // 결제용 인증키
+        PCD_REFUND_KEY: process.env.REACT_APP_PCD_REFUND_KEY, // 환불서비스 Key (관리자페이지 상점정보 > 기본정보에서 확인하실 수 있습니다.)
+        PCD_PAYCANCEL_FLAG: "Y", // 'Y' – 고정 값
+        PCD_PAY_OID: payResult.PCD_PAY_OID, // 주문번호
+        PCD_PAY_DATE: payResult.PCD_PAY_TIME.substring(0, 8), // 취소할 원거래일자
+        PCD_REFUND_TOTAL: payResult.PCD_PAY_AMOUNT, // 환불 요청금액 (기존 결제금액보다 적은 금액 입력 시 부분취소로 진행)
+        PCD_REGULER_FLAG: payResult.PCD_REGULER_FLAG, // 월 중복결제 방지 Y(사용) | N(그 외)
+        PCD_PAY_YEAR: payResult.PCD_PAY_YEAR, // 결제 구분 년도
+        PCD_PAY_MONTH: payResult.PCD_PAY_MONTH, // 결제 구분 월
+      };
+
+      console.log(refundURL, params);
+
+      // 파트너 인증이 성공하면 결제 취소 요청을 수행합니다.
+      post(refundURL, JSON.stringify(params), {
+        headers: {
+          "content-type": "application/json",
+          referer: process.env.REACT_APP_HOSTNAME, // Referer 필수
+        },
+      }).then(async (r) => {
+        console.log(r);
+        if (r.PCD_PAY_RST == "success") {
+          console.log("취소 성공");
+          // 승인 취소 성공 시 수행
+          // payment 데이터를 업데이트 합니다.
+          onClose();
+          await db_update("payment", matching_id, r);
+          await db_update("matching", matching_id, {
+            matching_state: 400, // 매칭 거절 코드
+            matching_refund_message: message,
           });
+          window.location.reload();
 
-        return true;
-      })
-      .catch((err) => {
-        console.error(err);
-        window.alert(err);
-
-        return false;
+          // await matching_set(matching_id, {
+          //   matching_state: 400, // 매칭 거절 코드
+          //   matching_refund_message: message,
+          // });
+        } else {
+          alert(r.PCD_PAY_MSG);
+          onClose();
+          window.location.reload();
+        }
       });
+    });
   };
 
   async function onClickRefundMessage(message) {
     if (window.confirm("매칭을 거절하시겠습니까?")) {
       // await testAPI();
-      let ret = await handlePayRefund(matching_id);
-      if (ret) {
-        await matching_set(matching_id, {
-          matching_state: 400, // 매칭 거절 코드
-          matching_refund_message: message,
-        });
-        onClose();
-        window.location.reload();
-      }
+      let ret = await handlePayRefund(matching_id, message);
     }
   }
 
@@ -782,18 +839,7 @@ export const Details = () => {
                                         <AccordionIcon />
                                       </AccordionButton>
                                       <AccordionPanel>
-                                        <Text
-                                          whiteSpace={"pre-wrap"}
-                                          maxWidth={"100%"}
-                                          lineHeight="1.67"
-                                          fontWeight={"regular"}
-                                          fontSize={"12px"}
-                                          color={gray_900}
-                                          flex={"1"}
-                                        >
-                                          {"여기에 메세지 가지고 오도록 수정"}
-                                          {/* {get_refund_message(value.matching_payment)} */}
-                                        </Text>
+                                        <RefundMessage doc_id={value.doc_id} />
                                       </AccordionPanel>
                                     </AccordionItem>
                                   </Accordion>

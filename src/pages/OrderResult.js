@@ -71,7 +71,9 @@ function OrderResult() {
       alarm_type: "matching-send",
       alarm_message: `${getDisplayName(
         receiver.user_name
-      )} 님에게 매칭을 신청하였습니다.`,
+      )} 님에게 ${localStorage.getItem(
+        "matching_type"
+      )} 매칭을 신청하였습니다.`,
       isRead: false,
     });
 
@@ -81,7 +83,9 @@ function OrderResult() {
       alarm_type: "matching-recieve",
       alarm_message: `${getDisplayName(
         sender.user_name
-      )} 님에게 매칭 신청이 도착하였습니다.`,
+      )} 님에게 ${localStorage.getItem(
+        "matching_type"
+      )} 매칭 신청이 도착하였습니다.`,
       isRead: false,
     });
   }
@@ -171,7 +175,7 @@ function OrderResult() {
    * 환불(승인취소) 파라미터 세팅 ('결제승인취소' 버튼 클릭시 호출)
    * ref: https://developer.payple.kr/etc-api/cancel-payment
    */
-  const handlePayRefund = (e) => {
+  const handlePayRefund = async (e) => {
     e.preventDefault();
     if (
       window.confirm("환불(승인취소)요청을 전송합니다. \n진행하시겠습니까?")

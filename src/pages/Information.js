@@ -35,6 +35,7 @@ import {
   Center,
   Box,
   CircularProgress,
+  Textarea,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { MdAdd } from "react-icons/md";
@@ -110,6 +111,7 @@ export const Information = () => {
           user_birth: "",
           user_name: "",
           user_phone: "",
+          user_info: "",
         }
   );
 
@@ -137,7 +139,7 @@ export const Information = () => {
       user_phone: user.phoneNumber,
       user_birth: user.birthdate,
       user_gender: user.gender,
-      user_profile: user.gender === "남" ? defaultMale : defaultFemale,
+      user_profile: "",
     });
 
     if (isAdult(user.birthdate)) {
@@ -609,7 +611,16 @@ export const Information = () => {
               >
                 <Center w={"100%"}>
                   <VStack>
-                    <Avatar src={formData.user_profile} size="2xl" />
+                    <Avatar
+                      src={
+                        formData.user_profile === ""
+                          ? formData.user_gender === "남"
+                            ? defaultMale
+                            : defaultFemale
+                          : formData.user_profile
+                      }
+                      size="2xl"
+                    />
                     <CustomButton
                       text="프로필 업로드"
                       onClick={onClickProfileButton}
@@ -850,6 +861,25 @@ export const Information = () => {
                   ))}
                 </Wrap>
               </FormControl>
+              {window.location.pathname.includes("info") && (
+                <FormControl isRequired>
+                  <FormLabel>프로필 소개말</FormLabel>
+                  <Textarea
+                    minLength={20}
+                    placeholder={
+                      formData?.user_type === "개인"
+                        ? "내 주변 밥 친구들에게 노출되는 문구이며 자신만의 소개로 어필해주세요!"
+                        : "본인의 커리어, 이력, 코칭 분야 등을 소개해주세요!"
+                    }
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        user_info: e.target.value,
+                      })
+                    }
+                  />
+                </FormControl>
+              )}
               {/* <Stack
                 justify="center"
                 align="flex-start"
@@ -957,7 +987,9 @@ export const Information = () => {
                 let ret = step2_confirm_blank(
                   formData.user_price,
                   formData.user_place,
-                  formData.user_food
+                  formData.user_food,
+                  formData.user_profile,
+                  formData.user_info
                 );
 
                 // 데이터가 비어있는 경우
