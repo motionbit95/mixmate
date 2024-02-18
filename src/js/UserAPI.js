@@ -100,7 +100,7 @@ export function step2_confirm_blank(
   if (user_place.length === 0) return "식사 가능 동네를 1개 이상 선택해주세요.";
   if (user_food.length === 0) return "좋아하는 음식을 1개 이상 선택해주세요.";
   if (user_profile === "") return "프로필 사진을 설정해주세요.";
-  if (user_info === "") return "프로필 소개말을 작성해주세요.";
+  if (user_info.length < 20) return "프로필 소개말은 20자 이상 작성해주세요.";
   // if (user_bank.bank_name === "" || user_bank.accout_number === "")
   // return "계좌 정보를 입력해주세요.";
   // if (user_gender === "") return "성별을 선택해주세요.";

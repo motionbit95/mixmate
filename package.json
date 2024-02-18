@@ -19,8 +19,10 @@
     "express": "^4.18.2",
     "firebase": "^10.7.1",
     "framer-motion": "^10.18.0",
+    "fs": "^0.0.1-security",
     "gh-pages": "^6.1.1",
     "got": "^11.8.2",
+    "html-react-parser": "^5.1.5",
     "http-errors": "~1.6.3",
     "http-proxy-middleware": "^2.0.6",
     "jquery": "^3.7.1",
@@ -70,10 +72,5 @@
   "devDependencies": {
     "concurrently": "^8.2.2"
   },
-  "proxy": [
-    "https://cpay.payple.kr/php/auth.php",
-    "https://dinnermate-node-server-0d7d5dc74685.herokuapp.com",
-    "http://localhost:3000",
-    "http://localhost:3001"
-  ]
+  "proxy": "https://dinnermate-node-server-0d7d5dc74685.herokuapp.com"
 }

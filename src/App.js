@@ -52,7 +52,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          {/*<Route path="/login" element={<Login />} />*/}
           <Route path="/signup" element={<SignUp />} />
           <Route path="/information" element={<Information />} />
           <Route path="/modify" element={<Information />} />
@@ -66,7 +66,7 @@ function App() {
           <Route path="/loading" element={<Loading />} />
           <Route path="/find" element={<Find />} />
           <Route path="/info" element={<CertSuccess />} />
-          <Route path="/email_login" element={<EmailLogin />} />
+          <Route path="/login" element={<EmailLogin />} />
           <Route path="/order_confirm" element={<OrderConfirm />} />
           <Route path="/order_result" element={<OrderResult />} />
         </Routes>

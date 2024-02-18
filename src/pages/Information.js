@@ -36,6 +36,8 @@ import {
   Box,
   CircularProgress,
   Textarea,
+  FormHelperText,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { MdAdd } from "react-icons/md";
@@ -50,6 +52,7 @@ import { db_add, db_delete, db_update, get_doc_list } from "../js/Database";
 import { terms } from "../assets/terms";
 import {
   black,
+  gray_100,
   gray_300,
   gray_500,
   gray_600,
@@ -64,6 +67,7 @@ import { auth } from "../db/firebase_config";
 import { deleteUser } from "firebase/auth";
 import { upload_image } from "../js/Storage";
 import { defaultFemale, defaultMale } from "../db/dummy";
+import { BsQuestionCircle } from "react-icons/bs";
 export const Information = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -521,7 +525,7 @@ export const Information = () => {
           {/* <label>시/도:</label> */}
           <Select value={selectedCity} onChange={handleCityChange}>
             <option value="">시/도</option>
-            {cities.map((city) => (
+            {cities?.map((city) => (
               <option key={city} value={city}>
                 {city}
               </option>
@@ -536,7 +540,7 @@ export const Information = () => {
           >
             <option value="">군/구</option>
             {selectedCity &&
-              districts[selectedCity].map((district) => (
+              districts[selectedCity]?.map((district) => (
                 <option key={district} value={district}>
                   {district}
                 </option>
@@ -650,6 +654,14 @@ export const Information = () => {
                     value={formData?.user_name}
                     isDisabled
                   />
+                  <FormHelperText
+                    position={"absolute"}
+                    right={"10px"}
+                    fontSize={"xs"}
+                    color={"gray.400"}
+                  >
+                    실명 가운데 글자 미노출 후 프로필 노출됩니다.
+                  </FormHelperText>
                 </FormControl>
                 <FormControl
                   isRequired
@@ -700,33 +712,62 @@ export const Information = () => {
                   />
                 </FormControl>
                 <FormControl
+                  zIndex={99999}
                   isRequired
                   display="flex"
                   flexDirection="row"
                   alignItems={"center"}
+                  overflow={"visible"}
                 >
-                  <FormLabel>유저구분</FormLabel>
-                  <RadioGroup
-                    defaultValue={formData.user_type}
-                    onChange={(value) =>
-                      setFormData({ ...formData, user_type: value })
-                    }
-                  >
-                    <Radio
-                      colorScheme={getSatuation(theme_primary_color)}
-                      value={"개인"}
-                      w="100px"
+                  <FormLabel w={"100px"}>유저구분</FormLabel>
+                  <HStack w={"100%"} justifyContent={"space-between"}>
+                    <RadioGroup
+                      defaultValue={formData.user_type}
+                      onChange={(value) =>
+                        setFormData({ ...formData, user_type: value })
+                      }
                     >
-                      개인
-                    </Radio>
-                    <Radio
-                      colorScheme={getSatuation(theme_primary_color)}
-                      value={"멘토"}
-                      w="100px"
+                      <Radio
+                        colorScheme={getSatuation(theme_primary_color)}
+                        value={"개인"}
+                        w="100px"
+                      >
+                        밥친구
+                      </Radio>
+                      <Radio
+                        colorScheme={getSatuation(theme_primary_color)}
+                        value={"멘토"}
+                        w="100px"
+                      >
+                        밥멘토
+                      </Radio>
+                    </RadioGroup>
+                    <Tooltip
+                      hasArrow
+                      whiteSpace={"pre-wrap"}
+                      placement="bottom-end"
+                      label={
+                        <Stack>
+                          <Text fontWeight={"bold"}>밥친구</Text>
+                          <Text color={gray_600} fontSize={"small"}>
+                            {`동네 근처 이성 친구와 밥친구 매칭`}
+                          </Text>
+                          <Text fontWeight={"bold"}>밥멘토</Text>
+                          <Text color={gray_600} fontSize={"small"}>
+                            {`전문 분야 코칭으로 멘토,멘티 매칭`}
+                          </Text>
+                        </Stack>
+                      }
+                      bg={gray_100}
+                      color={black}
                     >
-                      멘토
-                    </Radio>
-                  </RadioGroup>
+                      <IconButton
+                        variant={"ghost"}
+                        size={"xs"}
+                        icon={<BsQuestionCircle />}
+                      />
+                    </Tooltip>
+                  </HStack>
                 </FormControl>
               </Stack>
               {formData.user_type === "멘토" && (
@@ -788,7 +829,7 @@ export const Information = () => {
                   overflow="hidden"
                   alignSelf="stretch"
                 >
-                  {formData.user_place.map((value) => (
+                  {formData.user_place?.map((value) => (
                     <Tag
                       size="md"
                       colorScheme={getSatuation(theme_primary_color)}
@@ -843,7 +884,7 @@ export const Information = () => {
                   </HStack>
                 )}
                 <Wrap mt={1}>
-                  {formData.user_food.map((value) => (
+                  {formData.user_food?.map((value) => (
                     <Tag
                       size="md"
                       colorScheme={getSatuation(theme_primary_color)}

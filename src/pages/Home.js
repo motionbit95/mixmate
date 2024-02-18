@@ -476,7 +476,7 @@ export const Home = () => {
           companyName="(주)세이프바운더리"
           ceoName="김지훈"
           businessNumber="817-88-02796"
-          address="06627 서울 서초구 강남대로51길 10 비1층 103-26호(서초동, 강남효성해링턴타워)"
+          address="서울특별시 서초구 서초동 1337-6 강남효성해링턴타워 103"
           commNumber="2023-서울서초-1772"
           tel="02-3471-8197"
           mail="safeboundary@naver.com"

@@ -1,12 +1,32 @@
 import { CloseIcon } from "@chakra-ui/icons";
-import { Container, Flex, HStack, Stack, Text } from "@chakra-ui/react";
-import React from "react";
+import {
+  Container,
+  Flex,
+  HStack,
+  Stack,
+  Text,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalHeader,
+  ModalCloseButton,
+  ModalFooter,
+  ModalContent,
+  ModalBody,
+  Center,
+} from "@chakra-ui/react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { TextButton } from "../component/Buttons";
+import { CustomButton, TextButton } from "../component/Buttons";
 import EmailLoginForm from "../component/EmailLoginForm";
+import { privacy, terms } from "../assets/terms";
+import HTMLReactParser from "html-react-parser";
 
 const EmailLogin = () => {
   const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [modalType, setModalType] = useState(0);
+
   return (
     <Container
       minH={"100vh"}
@@ -57,8 +77,81 @@ const EmailLogin = () => {
             onClick={() => navigate("/find")}
           />
         </HStack>
-        <Stack></Stack>
+        {/* footer */}
+        <Stack
+          w={"100%"}
+          alignItems={"center"}
+          mb={"4vh"}
+          spacing={"2vh"}
+          mt={"4vh"}
+        >
+          <HStack>
+            <TextButton
+              style={{ textDecoration: "underline" }}
+              text="이용약관"
+              onClick={() => {
+                setModalType(0);
+                onOpen();
+              }}
+            />
+            <Text fontSize={"small"} color={"gray.500"}>
+              및
+            </Text>
+            <TextButton
+              style={{ textDecoration: "underline" }}
+              text="개인정보 취급방침"
+              onClick={() => {
+                setModalType(1);
+                onOpen();
+              }}
+            />
+          </HStack>
+          <Text fontSize={"sm"}>우린 더 나은 식사문화를 창조합니다.</Text>
+        </Stack>
       </Stack>
+
+      <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
+        <ModalOverlay />
+        <ModalContent>
+          {/* <ModalHeader>이용약관</ModalHeader> */}
+          <ModalCloseButton zIndex={9999} />
+          <ModalBody
+            display={"flex"}
+            // bgColor={"red"}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            {modalType === 0 ? (
+              <Stack>
+                <Text mt={"4vh"} fontSize={"x-large"} fontWeight={"bold"}>
+                  이용약관
+                </Text>
+                <Text fontSize={"small"} whiteSpace={"pre-wrap"}>
+                  {terms}
+                </Text>
+              </Stack>
+            ) : (
+              <Center>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    // overflow: "hidden",
+                    padding: "10px",
+                    width: "100%",
+                  }}
+                >
+                  <div>{HTMLReactParser(privacy)}</div>
+                </div>
+              </Center>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <CustomButton onClick={onClose} text={"확인했습니다."} />
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 };

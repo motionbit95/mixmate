@@ -17,6 +17,7 @@ export const TextAddress = ({ user }) => {
     if (!user?.user_location) return;
     // if (!dong) {
     const location = user?.user_location;
+    console.log("test", user?.user_location);
     const geolocation = new kakao.maps.services.Geocoder();
     //좌표로 행정동 정보 가져오기
     geolocation.coord2Address(
@@ -27,9 +28,11 @@ export const TextAddress = ({ user }) => {
           const address = result[0].address.region_3depth_name;
           setDong(address);
 
+          console.log(address);
+
           db_update("user", user.doc_id, { dong: address });
         } else {
-          alert("주소를 가져오지 못했습니다.");
+          // alert("주소를 가져오지 못했습니다.");
         }
       }
     );
