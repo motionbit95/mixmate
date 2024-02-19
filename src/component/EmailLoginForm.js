@@ -58,7 +58,7 @@ const EmailLoginForm = ({ ...props }) => {
             value={account.user_email}
             id="user_email"
             type="email"
-            placeholder="아이디"
+            placeholder="이메일"
             defaultValue={localStorage.getItem("user_email")}
             onChange={(e) =>
               setAccount(setData(account, "user_email", e.target.value))

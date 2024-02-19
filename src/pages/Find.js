@@ -50,21 +50,22 @@ function Find(props) {
         gender: queryParams.get("gender") === "01" ? "남" : "여",
       };
 
-      //   console.log(user)
+      // console.log(user);
       onFindUser(user);
     }
   }, []);
 
   const onFindUser = async (user) => {
     const result = await findUser(user.name, user.phoneNumber);
+    console.log(result);
 
     if (!result) {
-      //   alert("가입된 회원 정보가 없습니다!");
+      alert("가입된 회원 정보가 없습니다!");
       return;
     }
 
     setFindUser(result);
-    if (localStorage.getItem("find") == "0") {
+    if (localStorage.getItem("find") == "0" || !localStorage.getItem("find")) {
       setUserEmail(result?.user_email);
     }
     if (localStorage.getItem("find") == "1") {
@@ -101,7 +102,7 @@ function Find(props) {
   return (
     <Container minH={"100vh"} p={"4vh"}>
       <Flex justifyContent={"flex-end"}>
-        <CloseButton onClick={() => navigate(-1)} />
+        <CloseButton onClick={() => navigate("/login")} />
       </Flex>
       <Flex w={"100%"}>
         <Tabs
