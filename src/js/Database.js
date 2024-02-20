@@ -118,7 +118,8 @@ export const get_doc_list = async (col, property, value) => {
 
   const doc_list = [];
   querySnapshot.forEach((doc) => {
-    if (doc.id !== "F6ARV5KdgEXyYCenZvmrENzlOx72") {
+    if (doc.data().user_phone) {
+      // 휴대폰 번호가 인증된 사람만 나타남
       // doc.data() is never undefined for query doc snapshots
       doc_list.push({ ...doc.data(), doc_id: doc.id });
     }
@@ -145,7 +146,8 @@ export async function arrange_distance(user_location, user_type) {
   const places = [];
   // Firestore에서 데이터 가져오기 및 거리순 정렬
   querySnapshot.forEach((doc) => {
-    if (doc.id !== "F6ARV5KdgEXyYCenZvmrENzlOx72") {
+    if (doc.data().user_phone) {
+      // 휴대폰 번호가 인증된 사람만 나타남
       if (auth.currentUser.uid !== doc.id) {
         const place = checkNull(doc.data().user_location, {
           latitude: 37.5664056,
@@ -189,7 +191,8 @@ export async function arrange_random(user_location, user_dong, user_type) {
   const places = [];
   // Firestore에서 데이터 가져오기 및 거리순 정렬
   querySnapshot.forEach((doc) => {
-    if (doc.id !== "F6ARV5KdgEXyYCenZvmrENzlOx72") {
+    if (doc.data().user_phone) {
+      // 휴대폰 번호가 인증된 사람만 나타남
       if (auth.currentUser.uid !== doc.id) {
         const place = doc.data().user_location;
         if (!place) return;

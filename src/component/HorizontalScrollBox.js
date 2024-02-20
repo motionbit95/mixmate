@@ -38,7 +38,8 @@ export const HorizontalScrollBox = ({ title, model_list }) => {
                       <Box
                         boxShadow={`1px 1px 10px rgba(170, 170, 170, 0.5)`}
                         borderRadius={"16px"}
-                        w={"25vh"}
+                        minW={"30vh"}
+                        w={"30%"}
                         p={"2vh"}
                         bgColor={white}
                       >
@@ -62,10 +63,18 @@ export const HorizontalScrollBox = ({ title, model_list }) => {
                             {value.user_gender}
                             {")"}
                           </Text>
-                          <Text>나이 : {getDisplayAge(value.user_birth)}</Text>
-                          <Text>매칭금액 : {value.user_price}만원</Text>
-                          <Text>동네 : {value.user_place}</Text>
-                          <Text>음식 : {value.user_food}</Text>
+                          <Text fontSize={"small"}>
+                            나이 : {getDisplayAge(value.user_birth)}
+                          </Text>
+                          <Text fontSize={"small"}>
+                            매칭금액 : {value.user_price}만원
+                          </Text>
+                          <Text fontSize={"small"}>
+                            동네 : {value.user_place}
+                          </Text>
+                          <Text fontSize={"small"}>
+                            음식 : {value.user_food}
+                          </Text>
                         </Stack>
                       </Box>
                     )

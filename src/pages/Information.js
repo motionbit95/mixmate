@@ -116,6 +116,10 @@ export const Information = () => {
           user_name: "",
           user_phone: "",
           user_info: "",
+          user_bank: {
+            bank_name: "",
+            accout_number: "",
+          },
         }
   );
 
@@ -657,7 +661,7 @@ export const Information = () => {
                   <FormHelperText
                     position={"absolute"}
                     right={"10px"}
-                    fontSize={"xs"}
+                    fontSize={"xx-small"}
                     color={"gray.400"}
                   >
                     실명 가운데 글자 미노출 후 프로필 노출됩니다.
@@ -921,7 +925,7 @@ export const Information = () => {
                   />
                 </FormControl>
               )}
-              {/* <Stack
+              <Stack
                 justify="center"
                 align="flex-start"
                 spacing="10px"
@@ -983,7 +987,7 @@ export const Information = () => {
                     alignSelf="stretch"
                   />
                 </Stack>
-              </Stack> */}
+              </Stack>
             </Stack>
             {window.location.pathname.includes("info") && (
               <Flex

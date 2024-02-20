@@ -1,5 +1,6 @@
 import {
   createUserWithEmailAndPassword,
+  deleteUser,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth, db } from "../db/firebase_config";
@@ -11,7 +12,7 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { useNavigation } from "react-router-dom";
 import { defaultUser } from "../db/dummy";
-import { db_add, db_set } from "./Database";
+import { db_add, db_delete, db_set } from "./Database";
 import { doc, setDoc } from "firebase/firestore";
 
 // firebase 초기화
@@ -67,9 +68,11 @@ export async function signUpPassword(email, password) {
       if (errorCode == "auth/too-many-requests") {
         err_msg = "잠시 후 다시 시도해 주세요";
       }
-      if (errorCode == "auth/already-in-use") {
+      if (errorCode == "auth/email-already-in-use") {
         err_msg = "이미 존재하는 아이디입니다.";
       }
+      console.log(err_msg);
+      return { err_msg, uid };
     });
 
   return { err_msg, uid };

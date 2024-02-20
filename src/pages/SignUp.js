@@ -20,7 +20,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { upload_image } from "../js/Storage";
 import { useEffect, useRef, useState } from "react";
-import { db_set } from "../js/Database";
+import { db_delete, db_set } from "../js/Database";
 import {
   check_password_valid,
   compare_password,
@@ -43,6 +43,7 @@ import { format } from "date-fns";
 import firebase from "firebase/compat/app";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import { isAdult } from "../js/API";
+import { deleteUser } from "firebase/auth";
 
 export const PhoneCert = ({ ...props }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -199,6 +200,8 @@ export const SignUp = () => {
   const onClickApprove = async () => {
     //# 여기에 휴대폰 인증(API) 추가
 
+    // 이미 있는 이메일의 경우
+
     if (!isValid.state) return;
     setLoading(true);
 
@@ -208,6 +211,8 @@ export const SignUp = () => {
         formData.user_email,
         formData.user_password
       );
+
+      console.log("result", result);
       if (result.err_msg === "") {
         // 계정 생성에 성공했을 경우
         console.log("계정 생성 성공!", result);
@@ -217,6 +222,20 @@ export const SignUp = () => {
         setLoading(false);
         onApproveButton();
       } else {
+        if (result.err_msg === "이미 존재하는 아이디입니다.") {
+          let currentUser = await signInPassword(
+            formData.user_email,
+            formData.user_password
+          );
+          console.log("회원 탈퇴", currentUser);
+          db_delete("user", currentUser.uid);
+          deleteUser(currentUser);
+          setLoading(false);
+
+          alert("일시적인 오류가 발생하였습니다. 다시 시도해주세요.");
+          window.location.reload();
+          return;
+        }
         alert(result.err_msg);
         setLoading(false);
         return;
