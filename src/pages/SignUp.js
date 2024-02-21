@@ -20,13 +20,18 @@ import {
 import { useNavigate } from "react-router-dom";
 import { upload_image } from "../js/Storage";
 import { useEffect, useRef, useState } from "react";
-import { db_delete, db_set } from "../js/Database";
+import {
+  db_delete,
+  db_set,
+  get_doc_list,
+  get_doc_list_2,
+} from "../js/Database";
 import {
   check_password_valid,
   compare_password,
   step1_confirm_blank,
 } from "../js/UserAPI";
-import { signInPassword, signUpPassword } from "../js/Auth";
+import { logout, signInPassword, signUpPassword } from "../js/Auth";
 import {
   gray_100,
   gray_300,
@@ -223,13 +228,28 @@ export const SignUp = () => {
         onApproveButton();
       } else {
         if (result.err_msg === "이미 존재하는 아이디입니다.") {
-          let currentUser = await signInPassword(
-            formData.user_email,
-            formData.user_password
+          const currentUser = await get_doc_list_2(
+            "user",
+            "user_email",
+            formData.user_email
           );
-          console.log("회원 탈퇴", currentUser);
-          db_delete("user", currentUser.uid);
-          deleteUser(currentUser);
+          const userInfo = currentUser[0];
+
+          if (userInfo.user_phone) {
+            alert("이미 존재하는 아이디입니다.");
+            return;
+          }
+
+          let loginUser = await signInPassword(
+            userInfo.user_email,
+            userInfo.user_password
+          );
+
+          console.log("1", formData.user_email, "2", userInfo, "3", loginUser);
+
+          // console.log("회원 탈퇴", userInfo);
+          db_delete("user", userInfo.doc_id);
+          deleteUser(loginUser);
           setLoading(false);
 
           alert("일시적인 오류가 발생하였습니다. 다시 시도해주세요.");

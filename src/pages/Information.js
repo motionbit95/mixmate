@@ -716,7 +716,7 @@ export const Information = () => {
                   />
                 </FormControl>
                 <FormControl
-                  zIndex={99999}
+                  // zIndex={99999}
                   isRequired
                   display="flex"
                   flexDirection="row"
@@ -962,14 +962,14 @@ export const Information = () => {
                     placeholder="선택"
                     size="md"
                     width="90px"
-                    defaultValue={formData.user_bank.bank_name}
+                    defaultValue={formData.user_bank?.bank_name}
                   >
                     {bank.map((value) => (
                       <option value={value}>{value}</option>
                     ))}
                   </Select>
                   <Input
-                    defaultValue={formData.user_bank.accout_number}
+                    defaultValue={formData.user_bank?.accout_number}
                     onChange={(e) =>
                       setFormData({
                         ...formData,
@@ -1088,7 +1088,13 @@ export const Information = () => {
         </Stack>
       </Stack>
 
-      <Modal isCentered onClose={onClose} size={"md"} isOpen={isOpen}>
+      <Modal
+        zIndex={999999}
+        isCentered
+        onClose={onClose}
+        size={"md"}
+        isOpen={isOpen}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader mt="50px">이용약관</ModalHeader>

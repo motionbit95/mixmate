@@ -15,17 +15,22 @@ import {
   ModalBody,
   Center,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CustomButton, TextButton } from "../component/Buttons";
 import EmailLoginForm from "../component/EmailLoginForm";
 import { privacy, terms } from "../assets/terms";
 import HTMLReactParser from "html-react-parser";
+import { logout } from "../js/Auth";
 
 const EmailLogin = () => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalType, setModalType] = useState(0);
+
+  useEffect(() => {
+    logout();
+  }, []);
 
   return (
     <Container
@@ -110,7 +115,7 @@ const EmailLogin = () => {
         </Stack>
       </Stack>
 
-      <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
+      <Modal zIndex={9999} onClose={onClose} size={"full"} isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent>
           {/* <ModalHeader>이용약관</ModalHeader> */}

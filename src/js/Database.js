@@ -128,6 +128,19 @@ export const get_doc_list = async (col, property, value) => {
   return doc_list;
 };
 
+export const get_doc_list_2 = async (col, property, value) => {
+  const q = query(collection(db, col), where(property, "==", value));
+  const querySnapshot = await getDocs(q);
+
+  const doc_list = [];
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    doc_list.push({ ...doc.data(), doc_id: doc.id });
+  });
+
+  return doc_list;
+};
+
 /** 거리순 정렬
  * @function arrange_distance
  * @memberof DB
