@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../db/firebase_config";
 import { useAuthState } from "../js/Hooks";
 import { motion, useAnimation } from "framer-motion";
+import { setPersistence } from "firebase/auth";
 
 const EmailLoginForm = ({ ...props }) => {
   const { user } = useAuthState(auth);
@@ -36,6 +37,7 @@ const EmailLoginForm = ({ ...props }) => {
     if (success) {
       // 로그인 성공
       navigate("/");
+      auth.setPersistence("local");
       if (save) {
         localStorage.setItem("user_email", account.user_email);
         localStorage.setItem("user_password", account.user_password);

@@ -55,10 +55,35 @@ export const Home = () => {
   const [businessList, setBusinessList] = useState([]);
   const [customerList, setCustomerList] = useState([]);
   const [alarmCnt, setAlarmCnt] = useState(0);
+  const [gender, setGender] = useState("남자");
+  const [tab, setTab] = useState(0);
 
   useEffect(() => {
     getAlarmList();
   }, []);
+
+  const filterGender = async (type, filter) => {
+    let data;
+    if (filter === "랜덤") {
+      data = await arrange_random(userInfo.user_location, userInfo.dong, type);
+    } else {
+      data = await arrange_distance(userInfo.user_location, type);
+    }
+
+    if (gender === "전체") {
+      type === "멘토" ? setBusinessList(data) : setCustomerList(data);
+    } else if (gender === "남자") {
+      const filteredData = data.filter((item) => item.user_gender === "남");
+      type === "멘토"
+        ? setBusinessList(filteredData)
+        : setCustomerList(filteredData);
+    } else if (gender === "여자") {
+      const filteredData = data.filter((item) => item.user_gender === "여");
+      type === "멘토"
+        ? setBusinessList(filteredData)
+        : setCustomerList(filteredData);
+    }
+  };
 
   const getAlarmList = async () => {
     const count = 0;
@@ -147,6 +172,7 @@ export const Home = () => {
   function handleChange(index) {
     setCurrentIndex(index);
     setTabIndex(index);
+    setGender("남자");
   }
 
   const renderSlides = imageData.map((image) => (
@@ -324,12 +350,31 @@ export const Home = () => {
                           <TextAddress user={userInfo} />
                         )}
                         <Button
+                          size="xs"
+                          variant="outline"
+                          colorScheme={getSatuation(theme_primary_color)}
+                          onClick={() => {
+                            if (gender === "남자") {
+                              setGender("여자");
+                            } else if (gender === "여자") {
+                              setGender("전체");
+                            } else if (gender === "전체") {
+                              setGender("남자");
+                            }
+
+                            filterGender("개인", tab);
+                          }}
+                        >
+                          {gender === "남자"
+                            ? "전체"
+                            : gender === "여자"
+                            ? "남자"
+                            : "여자"}
+                        </Button>
+                        <Button
                           onClick={async () => {
-                            let data = await arrange_distance(
-                              userInfo.user_location,
-                              "개인"
-                            );
-                            setCustomerList(data);
+                            setTab("거리");
+                            filterGender("개인", "거리");
                           }}
                           size="xs"
                           variant="outline"
@@ -339,12 +384,8 @@ export const Home = () => {
                         </Button>
                         <Button
                           onClick={async () => {
-                            let data = await arrange_random(
-                              userInfo.user_location,
-                              userInfo.dong,
-                              "개인"
-                            );
-                            setCustomerList(data);
+                            setTab("랜덤");
+                            filterGender("개인", "랜덤");
                           }}
                           size="xs"
                           variant="outline"
@@ -401,12 +442,31 @@ export const Home = () => {
                           <TextAddress user={userInfo} />
                         )}
                         <Button
+                          size="xs"
+                          variant="outline"
+                          colorScheme={getSatuation(theme_primary_color)}
+                          onClick={() => {
+                            if (gender === "남자") {
+                              setGender("여자");
+                            } else if (gender === "여자") {
+                              setGender("전체");
+                            } else if (gender === "전체") {
+                              setGender("남자");
+                            }
+
+                            filterGender("멘토", tab);
+                          }}
+                        >
+                          {gender === "남자"
+                            ? "전체"
+                            : gender === "여자"
+                            ? "남자"
+                            : "여자"}
+                        </Button>
+                        <Button
                           onClick={async () => {
-                            let data = await arrange_distance(
-                              userInfo.user_location,
-                              "멘토"
-                            );
-                            setBusinessList(data);
+                            setTab("거리");
+                            filterGender("멘토", "거리");
                           }}
                           size="xs"
                           variant="outline"
@@ -416,12 +476,8 @@ export const Home = () => {
                         </Button>
                         <Button
                           onClick={async () => {
-                            let data = await arrange_random(
-                              userInfo.user_location,
-                              userInfo.dong,
-                              "멘토"
-                            );
-                            setBusinessList(data);
+                            setTab("랜덤");
+                            filterGender("멘토", "랜덤");
                           }}
                           size="xs"
                           variant="outline"
