@@ -72,5 +72,5 @@
   "devDependencies": {
     "concurrently": "^8.2.2"
   },
-  "proxy": "https://port-0-nhn-kcp-17xco2nlszge3vt.sel5.cloudtype.app"
+  "proxy": "https://dinnermate-node-server-0d7d5dc74685.herokuapp.com"
 }

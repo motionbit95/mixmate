@@ -119,12 +119,25 @@ export const User = ({ data, ...props }) => {
               />
             </VStack>
           </Skeleton>
-          <Stack w="100%">
+          <Stack
+            w="100%"
+            border={"1px solid #d9d9d9"}
+            borderRadius={"8px"}
+            padding={"8px"}
+          >
             <HStack w="100%">
               <Text fontSize={"lg"} fontWeight={"bold"}>
                 {getDisplayName(value.user_name)}
               </Text>
-              <Stack
+              <Text fontSize={"lg"} fontWeight={"bold"}>
+                {"("}
+                {value.user_gender}
+                {")"}
+              </Text>
+              <Text fontSize={"lg"} fontWeight={"bold"}>
+                {getDisplayAge(value.user_birth)}
+              </Text>
+              {/* <Stack
                 direction="row"
                 justify="center"
                 align="center"
@@ -144,10 +157,14 @@ export const User = ({ data, ...props }) => {
                 <Text color={"#8c8c8c"} fontSize={"12px"}>
                   ({value.review_count ? value.review_count : 0})
                 </Text>
-              </Stack>
+              </Stack> */}
             </HStack>
-            <Text fontSize={"12px"} whiteSpace={"pre-wrap"}>
-              {value.user_type === "개인"
+            <Stack spacing={0}>
+              <Text fontSize={"12px"} whiteSpace={"pre-wrap"}>
+                {value.user_type === "개인"
+                  ? `매칭 가능 동네 : ${value.user_place}\n매칭권 금액 : ${value.user_price}만원\n`
+                  : `매칭 가능 동네 : ${value.user_place}\n매칭권 금액 : ${value.user_price}만원\n`}
+                {/* {value.user_type === "개인"
                 ? `성별 : ${value.user_gender},\t\t매칭 금액 : ${
                     value.user_price
                   }만원\n식사 가능 동네 : ${
@@ -161,11 +178,22 @@ export const User = ({ data, ...props }) => {
                     value.user_place
                   }\n나이: ${getDisplayAge(value.user_birth)}\n멘토 분야 : ${
                     value.user_category
-                  }`}
-              {/* {value.user_type === "개인"
+                  }`} */}
+                {/* {value.user_type === "개인"
                 ? ""
                 : `, 멘토 전문 분야 : ${value.user_category}`} */}
-            </Text>
+              </Text>
+              <Text
+                fontSize={"12px"}
+                whiteSpace={"pre-wrap"}
+                noOfLines={2}
+                display="-webkit-box"
+                boxOrient="vertical"
+                overflow="hidden"
+              >
+                소개글: {value.user_info}
+              </Text>
+            </Stack>
           </Stack>
           <VStack>
             {window.location.pathname === "/" && (

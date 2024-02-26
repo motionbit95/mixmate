@@ -52,6 +52,27 @@ export const MyPage = () => {
     auth.onAuthStateChanged(async (currentUser) => {
       const userInfo = await get_doc_data("user", currentUser?.uid);
       setUser(userInfo);
+
+      if (!userInfo.user_phone) {
+        window.confirm(
+          "본인 인증이 안된 회원입니다. 회원 가입 화면으로 이동합니다."
+        );
+        {
+          localStorage.setItem("ret_page", "/information");
+          navigate("/signup");
+          return;
+        }
+      }
+
+      if (!userInfo.user_food) {
+        window.confirm(
+          "회원 정보가 입력이 안된 회원입니다. 회원정보 입력 화면으로 이동합니다."
+        );
+        {
+          navigate("/modify", { state: { user: user } });
+          return;
+        }
+      }
     });
   }, []);
 
@@ -106,7 +127,7 @@ export const MyPage = () => {
                     }
                   />
                 </HStack>
-                <HorizonLine />
+                {/* <HorizonLine />
                 <Stack>
                   <Stack
                     direction="row"
@@ -169,7 +190,7 @@ export const MyPage = () => {
                       </Text>
                     </SkeletonText>
                   )}
-                </Stack>
+                </Stack> */}
               </Stack>
             ) : (
               <Button onClick={() => navigate("/login")}>로그인하기</Button>

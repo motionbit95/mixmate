@@ -14,7 +14,7 @@ dotenv.config();
 // 또는 특정 출처의 요청만 허용
 app.use(
   cors({
-    origin: "https://port-0-nhn-kcp-17xco2nlszge3vt.sel5.cloudtype.app",
+    origin: "https://dinnermate-node-server-0d7d5dc74685.herokuapp.com",
   })
 );
 

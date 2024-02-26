@@ -125,7 +125,7 @@ export const Information = () => {
 
   const profileRef = useRef();
 
-  function extractQueryParameters() {
+  async function extractQueryParameters() {
     if (!window.location.search.includes("?")) return;
     // 현재 URL에서 쿼리 문자열 추출
     var queryString = window.location.search.substring(1);
@@ -148,6 +148,13 @@ export const Information = () => {
       user_birth: user.birthdate,
       user_gender: user.gender,
       user_profile: "",
+    });
+
+    await db_update("user", auth.currentUser.uid, {
+      user_name: user.name,
+      user_phone: user.phoneNumber,
+      user_birth: user.birthdate,
+      user_gender: user.gender,
     });
 
     if (isAdult(user.birthdate)) {
@@ -906,25 +913,25 @@ export const Information = () => {
                   ))}
                 </Wrap>
               </FormControl>
-              {window.location.pathname.includes("info") && (
-                <FormControl isRequired>
-                  <FormLabel>프로필 소개말</FormLabel>
-                  <Textarea
-                    minLength={20}
-                    placeholder={
-                      formData?.user_type === "개인"
-                        ? "내 주변 밥 친구들에게 노출되는 문구이며 자신만의 소개로 어필해주세요!"
-                        : "본인의 커리어, 이력, 코칭 분야 등을 소개해주세요!"
-                    }
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        user_info: e.target.value,
-                      })
-                    }
-                  />
-                </FormControl>
-              )}
+              {/* {window.location.pathname.includes("info") && ( */}
+              <FormControl isRequired>
+                <FormLabel>프로필 소개말</FormLabel>
+                <Textarea
+                  minLength={20}
+                  placeholder={
+                    formData?.user_type === "개인"
+                      ? "내 주변 밥 친구들에게 노출되는 문구이며 자신만의 소개로 어필해주세요!"
+                      : "본인의 커리어, 이력, 코칭 분야 등을 소개해주세요!"
+                  }
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      user_info: e.target.value,
+                    })
+                  }
+                />
+              </FormControl>
+              {/* )} */}
               <Stack
                 justify="center"
                 align="flex-start"
