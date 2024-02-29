@@ -54,14 +54,14 @@ const EmailLogin = () => {
         >
           {/* <SymbolLogo w={"10vh"} /> */}
           <Text
-            fontSize={"x-large"}
+            fontSize={"large"}
             color={"gray.500"}
             fontFamily={"omyu_pretty"}
           >
             밥친구가 필요한 순간,
           </Text>
           <Text
-            fontSize={"xx-large"}
+            fontSize={"large"}
             color={"gray.800"}
             fontFamily={"omyu_pretty"}
             fontWeight={"bold"}

@@ -187,11 +187,13 @@ export function display_age_range(age) {
  * @memberof User
  * @param {string} doc_id 문서 id
  */
+
 export async function get_update_location(doc_id) {
   const pos = {
     latitude: null,
     longitude: null,
   };
+
   // 위치 정보를 지원하는지 확인
   if (navigator.geolocation) {
     // 위치 정보 요청 옵션 설정 (maximumAge: 캐시된 위치 정보의 유효 기간, 여기서는 5분)
@@ -207,15 +209,20 @@ export async function get_update_location(doc_id) {
         pos.longitude = position.coords.longitude;
 
         await db_update("user", doc_id, { user_location: pos });
+
+        console.log(pos.latitude, pos.longitude);
       },
       // 실패 시 호출되는 콜백 함수
       async function (error) {
-        console.log(error);
-      },
-      options // 위치 정보 요청 옵션 전달
+        console.log(
+          error.message
+          // await navigator.permissions.query({ name: "geolocation" })
+        );
+      }
+      // options // 위치 정보 요청 옵션 전달
     );
   } else {
-    console.error("현재 브라우저에서 위치 정보를 지원하지 않습니다.");
+    alert("현재 브라우저에서 위치 정보를 지원하지 않습니다.");
   }
 }
 

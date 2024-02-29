@@ -110,24 +110,24 @@ export const Login = () => {
                 justifyContent={"center"}
               >
                 {/** 로고 **/}
-                <Stack alignItems={"center"} direction={"row"} py={"4vh"}>
+                <HStack alignItems={"center"} py={"4vh"}>
                   {/* <SymbolLogo w={"10vh"} /> */}
                   <Text
-                    fontSize={"x-large"}
+                    fontSize={"md"}
                     color={"gray.500"}
                     fontFamily={"omyu_pretty"}
                   >
                     밥친구가 필요한 순간,
                   </Text>
                   <Text
-                    fontSize={"xx-large"}
+                    fontSize={"md"}
                     color={"gray.800"}
                     fontFamily={"omyu_pretty"}
                     fontWeight={"bold"}
                   >
                     디너메이트
                   </Text>
-                </Stack>
+                </HStack>
 
                 {/* 버튼 */}
                 <Stack w="100%" spacing={"1.5vh"}>

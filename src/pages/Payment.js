@@ -476,7 +476,7 @@ export const Payment = () => {
                     휴대폰결제
                   </Text>
                 </Center> */}
-                <Center
+                {/* <Center
                   borderRadius="10px"
                   borderColor={gray_500}
                   borderStartWidth="1.5px"
@@ -506,7 +506,7 @@ export const Payment = () => {
                   >
                     계좌이체
                   </Text>
-                </Center>
+                </Center> */}
               </HStack>
 
               <FullButton

@@ -53,7 +53,7 @@ export const MyPage = () => {
       const userInfo = await get_doc_data("user", currentUser?.uid);
       setUser(userInfo);
 
-      if (!userInfo.user_phone) {
+      if (!userInfo.user_phone && window.location.pathname.includes("mypage")) {
         window.confirm(
           "본인 인증이 안된 회원입니다. 회원 가입 화면으로 이동합니다."
         );
@@ -64,15 +64,15 @@ export const MyPage = () => {
         }
       }
 
-      if (!userInfo.user_food) {
-        window.confirm(
-          "회원 정보가 입력이 안된 회원입니다. 회원정보 입력 화면으로 이동합니다."
-        );
-        {
-          navigate("/modify", { state: { user: user } });
-          return;
-        }
-      }
+      // if (!userInfo.user_food) {
+      //   window.confirm(
+      //     "회원 정보가 입력이 안된 회원입니다. 회원정보 입력 화면으로 이동합니다."
+      //   );
+      //   {
+      //     navigate("/modify", { state: { user: user } });
+      //     return;
+      //   }
+      // }
     });
   }, []);
 

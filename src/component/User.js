@@ -93,7 +93,13 @@ export const User = ({ data, ...props }) => {
         </Box>
       ) : null}
       {value && (
-        <HStack spacing={"2vw"} w={"100%"}>
+        <HStack
+          spacing={"2vw"}
+          w={"100%"}
+          border={"1px solid #d9d9d9"}
+          borderRadius={"10px"}
+          padding={"10px"}
+        >
           <Skeleton isLoaded={value}>
             <VStack alignItems={"center"} justifyContent={"center"}>
               <Avatar
@@ -119,22 +125,17 @@ export const User = ({ data, ...props }) => {
               />
             </VStack>
           </Skeleton>
-          <Stack
-            w="100%"
-            border={"1px solid #d9d9d9"}
-            borderRadius={"8px"}
-            padding={"8px"}
-          >
-            <HStack w="100%">
-              <Text fontSize={"lg"} fontWeight={"bold"}>
+          <Stack w="100%" spacing={"2px"}>
+            <HStack w="100%" spacing={0}>
+              <Text fontSize={"14px"} fontWeight={"bold"}>
                 {getDisplayName(value.user_name)}
               </Text>
-              <Text fontSize={"lg"} fontWeight={"bold"}>
+              <Text fontSize={"14px"} fontWeight={"bold"}>
                 {"("}
                 {value.user_gender}
                 {")"}
               </Text>
-              <Text fontSize={"lg"} fontWeight={"bold"}>
+              <Text ml={"8px"} fontSize={"14px"} fontWeight={"bold"}>
                 {getDisplayAge(value.user_birth)}
               </Text>
               {/* <Stack
@@ -164,25 +165,15 @@ export const User = ({ data, ...props }) => {
                 {value.user_type === "개인"
                   ? `매칭 가능 동네 : ${value.user_place}\n매칭권 금액 : ${value.user_price}만원\n`
                   : `매칭 가능 동네 : ${value.user_place}\n매칭권 금액 : ${value.user_price}만원\n`}
-                {/* {value.user_type === "개인"
-                ? `성별 : ${value.user_gender},\t\t매칭 금액 : ${
-                    value.user_price
-                  }만원\n식사 가능 동네 : ${
-                    value.user_place
-                  }\n나이: ${getDisplayAge(
-                    value.user_birth
-                  )}\n좋아하는 음식 : ${value.user_food}`
-                : `성별 : ${value.user_gender},\t\t매칭 금액 : ${
-                    value.user_price
-                  }만원\n코칭 가능 동네 : ${
-                    value.user_place
-                  }\n나이: ${getDisplayAge(value.user_birth)}\n멘토 분야 : ${
-                    value.user_category
-                  }`} */}
-                {/* {value.user_type === "개인"
-                ? ""
-                : `, 멘토 전문 분야 : ${value.user_category}`} */}
               </Text>
+              {window.location.pathname.includes("/matching") && (
+                <Text fontSize={"12px"} whiteSpace={"pre-wrap"}>
+                  {`좋아하는 음식 : ${value.user_food}`}
+                  {value.user_type === "개인"
+                    ? ""
+                    : `\n멘토 전문 분야 : ${value.user_category}`}
+                </Text>
+              )}
               <Text
                 fontSize={"12px"}
                 whiteSpace={"pre-wrap"}
@@ -190,19 +181,25 @@ export const User = ({ data, ...props }) => {
                 display="-webkit-box"
                 boxOrient="vertical"
                 overflow="hidden"
+                fontWeight={"bold"}
               >
                 소개글: {value.user_info}
               </Text>
             </Stack>
           </Stack>
           <VStack>
-            {window.location.pathname === "/" && (
-              <Text color={theme_primary_color}>
-                {isNaN(parseFloat(value.distance).toFixed(1))
-                  ? ""
-                  : parseFloat(value.distance).toFixed(1) + "km"}
-              </Text>
-            )}
+            <VStack spacing={0}>
+              {window.location.pathname === "/" && (
+                <>
+                  <Text fontSize={"12px"}>나와의 거리</Text>
+                  <Text color={theme_primary_color}>
+                    {isNaN(parseFloat(value.distance).toFixed(1))
+                      ? ""
+                      : parseFloat(value.distance).toFixed(1) + "km"}
+                  </Text>
+                </>
+              )}
+            </VStack>
             {window.location.pathname === "/" && (
               <CustomButton
                 code={theme_bright_color}

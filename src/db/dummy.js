@@ -1,8 +1,8 @@
 export const defaultMale =
-  "https://firebasestorage.googleapis.com/v0/b/dinnermate-database.appspot.com/o/assets%2FMale.png?alt=media&token=b82a2957-545d-4b68-901f-7cbaadb0a42c";
+  "https://firebasestorage.googleapis.com/v0/b/dinnermate-8d37b.appspot.com/o/assets%2FFemale.png?alt=media&token=247bbd91-9ebf-4f5a-8911-b8d6b9c89e58";
 
 export const defaultFemale =
-  "https://firebasestorage.googleapis.com/v0/b/dinnermate-database.appspot.com/o/assets%2FFemale.png?alt=media&token=58e5f88b-0954-432b-bd69-6f774b5b3a61";
+  "https://firebasestorage.googleapis.com/v0/b/dinnermate-8d37b.appspot.com/o/assets%2FMale.png?alt=media&token=dfa379fe-607c-4ac5-8208-37f2745f5baa";
 
 export const defaultUser = [
   {

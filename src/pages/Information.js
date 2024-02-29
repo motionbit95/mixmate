@@ -946,7 +946,7 @@ export const Information = () => {
                   color={black}
                   width="100%"
                 >
-                  식사권 부수입 정산 받을 계좌
+                  매칭권 부수입 정산 받을 계좌
                 </Text>
                 <Stack
                   direction="row"

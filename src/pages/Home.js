@@ -346,9 +346,9 @@ export const Home = () => {
                         align="flex-start"
                         spacing="10px"
                       >
-                        {userInfo && userInfo.user_location && (
+                        {/* {userInfo && userInfo.user_location && (
                           <TextAddress user={userInfo} />
-                        )}
+                        )} */}
                         <Button
                           size="xs"
                           variant="outline"
@@ -438,9 +438,9 @@ export const Home = () => {
                         align="flex-start"
                         spacing="10px"
                       >
-                        {userInfo && userInfo.user_location && (
+                        {/* {userInfo && userInfo.user_location && (
                           <TextAddress user={userInfo} />
-                        )}
+                        )} */}
                         <Button
                           size="xs"
                           variant="outline"
