@@ -47,6 +47,8 @@ export const db_add = async (col, data) => {
  */
 export const db_set = async (col, doc_id, data) => {
   // 데이터 id 지정해서 추가
+
+  // console.log(col, doc_id, data);
   await setDoc(doc(db, col, doc_id), { ...data, doc_id: doc_id });
 };
 

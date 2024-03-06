@@ -208,9 +208,9 @@ export async function get_update_location(doc_id) {
         pos.latitude = position.coords.latitude;
         pos.longitude = position.coords.longitude;
 
-        await db_update("user", doc_id, { user_location: pos });
+        console.log("pos", pos);
 
-        console.log(pos.latitude, pos.longitude);
+        await db_update("user", doc_id, { user_location: pos });
       },
       // 실패 시 호출되는 콜백 함수
       async function (error) {

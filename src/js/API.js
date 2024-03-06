@@ -194,6 +194,8 @@ export function isAdult(birthdate) {
   // 만 나이 계산 (한국 나이)
   const age = currentYear - year;
 
+  // console.log(age);
+
   // 만 19세 이상이면 성인으로 판단
   return age >= 19;
 }

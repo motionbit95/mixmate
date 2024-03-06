@@ -39,7 +39,7 @@ import { Navbar } from "../component/Navbar";
 import { TextLogo } from "../component/Logo";
 import { Footer } from "../component/Footer";
 import { User } from "../component/User";
-import { getSatuation } from "../js/API";
+import { getSatuation, isAdult } from "../js/API";
 import { CustomButton } from "../component/Buttons";
 import {
   arrange_distance,
@@ -63,11 +63,21 @@ export const Home = () => {
   }, []);
 
   const filterGender = async (type, filter) => {
+    let location = userInfo.user_location
+      ? userInfo.user_location
+      : {
+          latitude: 37.5664056,
+          longitude: 126.9778222,
+        };
     let data;
     if (filter === "랜덤") {
-      data = await arrange_random(userInfo.user_location, userInfo.dong, type);
+      data = await arrange_random(location, userInfo.dong, type);
     } else {
-      data = await arrange_distance(userInfo.user_location, type);
+      if (userInfo?.user_location) {
+        data = await arrange_distance(location, type);
+      } else {
+        data = await get_doc_list("user", "user_type", type);
+      }
     }
 
     if (gender === "전체") {
@@ -201,9 +211,12 @@ export const Home = () => {
     return (
       <Stack spacing={"4vh"} alignItems={"center"} w={"100%"}>
         <Stack alignItems={"center"} w={"100%"}>
-          {items.slice(0, visibleItems).map((item, index) => (
-            <User key={index} data={item} />
-          ))}
+          {items
+            .slice(0, visibleItems)
+            .map(
+              (item, index) =>
+                isAdult(item.user_birth) && <User key={index} data={item} />
+            )}
         </Stack>
         {visibleItems < items.length && (
           <CustomButton

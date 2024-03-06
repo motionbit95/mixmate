@@ -6,7 +6,6 @@ import {
   TagLabel,
   TagCloseButton,
   Input,
-  Button,
   Checkbox,
   IconButton,
   Container,
@@ -48,7 +47,13 @@ import {
   del_tag,
   step2_confirm_blank,
 } from "../js/UserAPI";
-import { db_add, db_delete, db_update, get_doc_list } from "../js/Database";
+import {
+  db_add,
+  db_delete,
+  db_set,
+  db_update,
+  get_doc_list,
+} from "../js/Database";
 import { terms } from "../assets/terms";
 import {
   black,
@@ -150,19 +155,43 @@ export const Information = () => {
       user_profile: "",
     });
 
-    await db_update("user", auth.currentUser.uid, {
-      user_name: user.name,
-      user_phone: user.phoneNumber,
-      user_birth: user.birthdate,
-      user_gender: user.gender,
-    });
-
-    if (isAdult(user.birthdate)) {
-      return true;
-    } else {
-      return false;
-    }
+    // console.log({
+    //   ...formData,
+    //   user_name: user.name,
+    //   user_phone: user.phoneNumber,
+    //   user_birth: user.birthdate,
+    //   user_gender: user.gender,
+    // });
   }
+
+  useEffect(() => {
+    if (window.location.pathname.includes("information")) {
+      if (formData.user_name) {
+        auth.onAuthStateChanged(async (currentUser) => {
+          await db_set("user", currentUser.uid, {
+            ...formData,
+            user_name: formData.user_name,
+            user_phone: formData.user_phone,
+            user_birth: formData.user_birth,
+            user_gender: formData.user_gender,
+          });
+
+          // console.log(formData.user_birth);
+          if (isAdult(formData.user_birth)) {
+            return true;
+          } else {
+            alert("미성년자는 가입할 수 없습니다. 로그인 화면으로 돌아갑니다.");
+            // 회원 탈퇴 처리
+            db_delete("user", auth.currentUser.uid);
+            deleteUser(auth.currentUser);
+            navigate("/login");
+            return false;
+          }
+        });
+        // console.log(formData);
+      }
+    }
+  }, [formData]);
 
   // 프로필 업로드 버튼 클릭 시 ref 클릭 이벤트 발생
   const onClickProfileButton = () => {
@@ -202,13 +231,6 @@ export const Information = () => {
     if (window.location.pathname.includes("info")) {
       // 미성년자 여부 확인
       if (!extractQueryParameters()) {
-        alert("미성년자는 가입할 수 없습니다. 로그인 화면으로 돌아갑니다.");
-
-        // 회원 탈퇴 처리
-        db_delete("user", auth.currentUser.uid);
-        deleteUser(auth.currentUser);
-        navigate("/login");
-        return;
       }
     }
   }, []);
@@ -919,9 +941,7 @@ export const Information = () => {
                 <Textarea
                   minLength={20}
                   placeholder={
-                    formData?.user_type === "개인"
-                      ? "내 주변 밥 친구들에게 노출되는 문구이며 자신만의 소개로 어필해주세요!"
-                      : "본인의 커리어, 이력, 코칭 분야 등을 소개해주세요!"
+                    "원하시는 매칭 방법(식사매칭 또는 커피매칭)과 간단한 소개를 작성해주세요!"
                   }
                   onChange={(e) =>
                     setFormData({
