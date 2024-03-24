@@ -17,9 +17,11 @@ function AdminDashboard(props) {
   const [page, setPage] = useState(<AdminUser data={userList} />);
   useEffect(() => {
     console.log(localStorage.getItem("muggle-admin"));
-
     if (localStorage.getItem("muggle-admin")) {
       localStorage.getItem("muggle-admin");
+      handleMenu(
+        localStorage.getItem("menu") ? localStorage.getItem("menu") : "user"
+      );
     } else {
       navigate("/login");
     }

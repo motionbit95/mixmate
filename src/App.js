@@ -51,6 +51,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/*" element={<AdminDashboard />} />
         <Route path="/login" element={<AdminLogin />} />
         <Route path="/dashboard/*" element={<AdminDashboard />} />
       </Routes>
