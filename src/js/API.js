@@ -102,6 +102,31 @@ export function getDisplayAge(birthdate) {
   return `${lowerRange}~${upperRange}세`;
 }
 
+export function getDisplayAge2(birthdate) {
+  if (!birthdate) return "";
+  // 입력된 8자리 문자열을 연, 월, 일로 분리
+  const year = birthdate.slice(0, 4);
+  const month = birthdate.slice(4, 6);
+  const day = birthdate.slice(6, 8);
+
+  // 날짜 객체 생성
+  const birthdateObj = new Date(year, month - 1, day); // 월은 0부터 시작하므로 -1 해줍니다.
+  var currentDate = new Date();
+  var age = currentDate.getFullYear() - birthdateObj.getFullYear();
+
+  if (
+    currentDate.getMonth() < birthdateObj.getMonth() ||
+    (currentDate.getMonth() === birthdateObj.getMonth() &&
+      currentDate.getDate() < birthdateObj.getDate())
+  ) {
+    age--;
+  }
+
+  var lowerRange = Math.floor(age / 5) * 5;
+  var upperRange = lowerRange + 4;
+  return `${age}세`;
+}
+
 /** 실명 가리기 함수
  * @function deg2rad
  * @memberof API

@@ -23,6 +23,8 @@ import CertSuccess from "./pages/CertSuccess";
 import EmailLogin from "./pages/EmailLogin";
 import OrderConfirm from "./pages/OrderConfirm";
 import OrderResult from "./pages/OrderResult";
+import AdminLogin from "./pages/AD/AdminLogin";
+import AdminDashboard from "./pages/AD/AdminDashboard";
 
 export const theme_primary_color = "gray.500";
 export const theme_bright_color = "gray.200";
@@ -47,31 +49,12 @@ export const homepage =
 
 function App() {
   return (
-    // 모바일 뷰 호환 문제로 패딩을 없애줌
-    <Container p={0} border={"1px solid #d9d9d9"} bgColor={bg}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          {/*<Route path="/login" element={<Login />} />*/}
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/information" element={<Information />} />
-          <Route path="/modify" element={<Information />} />
-          <Route path="/notice" element={<Notice />} />
-          <Route path="/matching" element={<Matching />} />
-          <Route path="/details" element={<Details />} />
-          <Route path="/payment" element={<Payment />} />
-          <Route path="/chat" element={<ChatList />} />
-          <Route path="/chat/*" element={<Chat />} />
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/loading" element={<Loading />} />
-          <Route path="/find" element={<Find />} />
-          <Route path="/info" element={<CertSuccess />} />
-          <Route path="/login" element={<EmailLogin />} />
-          <Route path="/order_confirm" element={<OrderConfirm />} />
-          <Route path="/order_result" element={<OrderResult />} />
-        </Routes>
-      </BrowserRouter>
-    </Container>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<AdminLogin />} />
+        <Route path="/dashboard/*" element={<AdminDashboard />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
