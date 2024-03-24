@@ -44,7 +44,10 @@ function PopupBase({ visibleButton = true, ...props }) {
         size={"3xl"}
         finalFocusRef={finalRef}
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={() => {
+          props.onClose();
+          onClose();
+        }}
       >
         <ModalOverlay />
         <ModalContent>
@@ -58,7 +61,14 @@ function PopupBase({ visibleButton = true, ...props }) {
 
               {visibleButton && (
                 <ModalFooter p={"20px 0px"}>
-                  <Button variant={"outline"} mr={3} onClick={onClose}>
+                  <Button
+                    variant={"outline"}
+                    mr={3}
+                    onClick={() => {
+                      props.onClose();
+                      onClose();
+                    }}
+                  >
                     취소
                   </Button>
                   <Button variant="solid" type="submit">
