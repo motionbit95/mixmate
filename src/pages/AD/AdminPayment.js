@@ -38,9 +38,16 @@ import {
   db_delete,
   db_update,
   get_doc_all,
+  get_doc_all2,
   get_doc_data,
 } from "../../js/Database";
-import { DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  DeleteIcon,
+  EditIcon,
+  SearchIcon,
+} from "@chakra-ui/icons";
 import { defaultFemale, defaultMale } from "../../db/dummy";
 import { useNavigate } from "react-router-dom";
 import PopupBase from "../../modals/PopupBase";
@@ -350,6 +357,22 @@ function AdminPayment({ data, ...props }) {
     });
   };
 
+  const handleOrder = async (type) => {
+    setSearch({
+      ...search,
+      order: type,
+      sort: search.sort === "desc" ? "asc" : "desc",
+    });
+    await get_doc_all2(
+      "payment",
+      type,
+      search.sort === "desc" ? "asc" : "desc"
+    ).then((data) => {
+      setPayments(data);
+      setSearchPayments(data);
+    });
+  };
+
   return (
     <Stack w={"100%"} h={"100%"}>
       <HStack bgColor={"white"} p={"10px"} gap={"10px"} borderRadius={"10px"}>
@@ -379,12 +402,67 @@ function AdminPayment({ data, ...props }) {
             <Thead h={"40px"}>
               <Tr>
                 <Th textAlign={"center"}>oid</Th>
-                <Th textAlign={"center"}>신청자</Th>
-                <Th textAlign={"center"}>수락자</Th>
-                <Th textAlign={"center"}>결제날짜</Th>
-                <Th textAlign={"center"}>결제금액</Th>
-                <Th textAlign={"center"}>결제수단</Th>
-                <Th textAlign={"center"}>결제결과</Th>
+                <Th textAlign={"center"}>결제자</Th>
+                <Th
+                  cursor={"pointer"}
+                  onClick={() => handleOrder("PCD_PAY_TIME")}
+                  textAlign={"center"}
+                >
+                  <HStack justifyContent={"center"} gap={"10px"}>
+                    <Text color={"blue.500"}>결제날짜</Text>
+                    {search.order === "PCD_PAY_TIME" &&
+                      (search.sort === "asc" ? (
+                        <ArrowDownIcon />
+                      ) : (
+                        <ArrowUpIcon />
+                      ))}
+                  </HStack>
+                </Th>
+                <Th
+                  cursor={"pointer"}
+                  onClick={() => handleOrder("PCD_PAY_AMOUNT")}
+                  textAlign={"center"}
+                >
+                  <HStack justifyContent={"center"} gap={"10px"}>
+                    <Text color={"blue.500"}>결제금액</Text>
+                    {search.order === "PCD_PAY_AMOUNT" &&
+                      (search.sort === "asc" ? (
+                        <ArrowDownIcon />
+                      ) : (
+                        <ArrowUpIcon />
+                      ))}
+                  </HStack>
+                </Th>
+                <Th
+                  cursor={"pointer"}
+                  onClick={() => handleOrder("PCD_PAY_CARDNAME")}
+                  textAlign={"center"}
+                >
+                  <HStack justifyContent={"center"} gap={"10px"}>
+                    <Text color={"blue.500"}>결제수단</Text>
+                    {search.order === "PCD_PAY_CARDNAME" &&
+                      (search.sort === "asc" ? (
+                        <ArrowDownIcon />
+                      ) : (
+                        <ArrowUpIcon />
+                      ))}
+                  </HStack>
+                </Th>
+                <Th
+                  cursor={"pointer"}
+                  onClick={() => handleOrder("PCD_PAY_MSG")}
+                  textAlign={"center"}
+                >
+                  <HStack justifyContent={"center"} gap={"10px"}>
+                    <Text color={"blue.500"}>결제결과</Text>
+                    {search.order === "PCD_PAY_MSG" &&
+                      (search.sort === "asc" ? (
+                        <ArrowDownIcon />
+                      ) : (
+                        <ArrowUpIcon />
+                      ))}
+                  </HStack>
+                </Th>
                 <Th textAlign={"center"} w={"30px"}>
                   결제취소
                 </Th>
@@ -398,9 +476,6 @@ function AdminPayment({ data, ...props }) {
                 return (
                   <Tr key={value.doc_id}>
                     <Td textAlign={"center"}>{value.doc_id}</Td>
-                    <Td textAlign={"center"}>
-                      {<UserInfo uid={value.receiver} />}
-                    </Td>
                     <Td textAlign={"center"}>
                       {<UserInfo uid={value.sender} />}
                     </Td>

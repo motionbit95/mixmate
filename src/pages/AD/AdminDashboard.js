@@ -6,7 +6,6 @@ import AdminUser from "./AdminUser";
 import AdminPayment from "./AdminPayment";
 import AdminGroup from "./AdminGroup";
 import AdminMatching from "./AdminMatching";
-import AdminReview from "./AdminReview";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../db/firebase_config";
 
@@ -74,9 +73,6 @@ function AdminDashboard(props) {
         break;
       case "matching":
         setPage(<AdminMatching />);
-        break;
-      case "review":
-        setPage(<AdminReview />);
         break;
       default:
         setPage(<AdminUser data={userList} />);

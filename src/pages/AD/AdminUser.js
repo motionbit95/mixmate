@@ -33,8 +33,9 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
-import { getDisplayAge2 } from "../../js/API";
+import { convertFirestoreTimestampToDate, getDisplayAge2 } from "../../js/API";
 import {
+  db_add,
   db_delete,
   db_update,
   get_doc_all,
@@ -528,6 +529,58 @@ function AdminUser({ data, ...props }) {
     }
   };
 
+  const addUser = async (e) => {
+    if (!e) return;
+    e.preventDefault();
+
+    const updateData = {
+      user_profile: "",
+      user_name: "",
+      user_gender: "",
+      user_birth: "",
+      user_phone: "",
+      user_place: [],
+      user_interest: [],
+      user_bank: {
+        bank_name: "",
+        accout_number: "",
+      },
+    };
+
+    let place = "";
+    let interest = "";
+
+    for (var i = 0; i < e.target.length; i++) {
+      if (e.target[i].name) {
+        if (e.target[i].name == "city") {
+          place += e.target[i].value;
+        } else if (e.target[i].name == "district") {
+          place += " " + e.target[i].value;
+          updateData.user_place.push(place.trim());
+        } else if (e.target[i].name == "category1") {
+          interest += e.target[i].value;
+        } else if (e.target[i].name == "category2") {
+          interest += " " + e.target[i].value;
+          updateData.user_interest.push(interest.trim());
+        } else if (e.target[i].name == "bank_name") {
+          updateData.user_bank.bank_name = e.target[i].value;
+        } else if (e.target[i].name == "accout_number") {
+          updateData.user_bank.accout_number = e.target[i].value;
+        } else {
+          updateData[e.target[i].name] = e.target[i].value;
+        }
+      }
+    }
+
+    console.log(updateData);
+
+    await db_add("user", updateData);
+
+    if (e) {
+      getUsers();
+    }
+  };
+
   const updateUser = async (id, e) => {
     if (!e) return;
     e.preventDefault();
@@ -628,12 +681,183 @@ function AdminUser({ data, ...props }) {
     <Stack w={"100%"} h={"100%"}>
       <HStack bgColor={"white"} p={"10px"} gap={"10px"} borderRadius={"10px"}>
         <PopupBase
+          width={"120px"}
           colorScheme={"gray"}
           visibleButton={true}
           action={"추가"}
-          title={<AddIcon />}
-          onClose={(e) => console.log(e)}
-        ></PopupBase>
+          title={"유저"}
+          icon={<AddIcon />}
+          onClose={(e) => addUser(e)}
+        >
+          <Text color={"gray.500"}>
+            로그인이 불가능한 테스트 유저 데이터를 생성합니다.
+          </Text>
+          <Stack
+            justify="flex-start"
+            align="center"
+            spacing="0px"
+            overflow="hidden"
+            width="100%"
+          >
+            <Stack
+              direction="row"
+              justify="center"
+              align="flex-start"
+              spacing="10px"
+              overflow="hidden"
+              flex="1"
+              alignSelf="stretch"
+              w={"100%"}
+            >
+              <Stack
+                justify="flex-start"
+                align="flex-start"
+                spacing="4vh"
+                flex="1"
+                w={"100%"}
+              >
+                <Stack
+                  justify="flex-start"
+                  align="flex-start"
+                  spacing="2vh"
+                  alignSelf="stretch"
+                  w={"100%"}
+                >
+                  <Center w={"100%"}>
+                    <VStack>
+                      <Avatar size="2xl" src={userData.user_profile} />
+                      <Button onClick={onClickProfileButton}>
+                        프로필 업로드
+                      </Button>
+                      <Input
+                        display={"none"}
+                        value={
+                          userData?.user_profile ? userData?.user_profile : ""
+                        }
+                        name="user_profile"
+                        ref={profileRef}
+                        type="file"
+                        onChange={(e) => {
+                          upload_profile(e);
+                        }}
+                      />
+                    </VStack>
+                  </Center>
+                  <HStack
+                    divider={<StackDivider />}
+                    spacing={"10px"}
+                    w={"100%"}
+                    h={"100%"}
+                    alignItems={"flex-start"}
+                  >
+                    <Stack
+                      bgColor={"white"}
+                      h={"100%"}
+                      w={"100%"}
+                      display={"flex"}
+                    >
+                      <FormControl isRequired>
+                        <FormLabel>이름</FormLabel>
+                        <Input
+                          name="user_name"
+                          type="text"
+                          placeholder="실명"
+                          height="40px"
+                          alignSelf="stretch"
+                        />
+                      </FormControl>
+                      <FormControl isRequired>
+                        <FormLabel>휴대번호</FormLabel>
+                        <Input
+                          name="user_phone"
+                          type="text"
+                          placeholder="휴대폰번호"
+                          height="40px"
+                          alignSelf="stretch"
+                        />
+                      </FormControl>
+                      <FormControl isRequired>
+                        <FormLabel>생년월일</FormLabel>
+                        <Input
+                          name="user_birth"
+                          type="text"
+                          placeholder="생년월일"
+                          height="40px"
+                          alignSelf="stretch"
+                        />
+                      </FormControl>
+                      <FormControl isRequired>
+                        <FormLabel>성별</FormLabel>
+                        <Input
+                          name="user_gender"
+                          type="text"
+                          placeholder="성별"
+                          height="40px"
+                          alignSelf="stretch"
+                        />
+                      </FormControl>
+                      <FormControl isRequired>
+                        <FormLabel>
+                          나와 식사하려면 상대방이 지불해야하는 금액은?
+                        </FormLabel>
+                        <Text fontSize={"sm"} color={"gray.400"} mt={"-10px"}>
+                          (본인의 부수입으로 입금됩니다)
+                        </Text>
+                        <InputGroup mt={"1vh"}>
+                          <Input
+                            name="user_price"
+                            // w={"70px"}
+                            type="number"
+                            defaultValue={2}
+                            textAlign={"right"}
+                          />
+                          <InputRightAddon>만원</InputRightAddon>
+                        </InputGroup>
+                      </FormControl>
+                    </Stack>
+                    <Stack bgColor={"white"} h={"100%"} w={"100%"}>
+                      <FormControl isRequired>
+                        <FormLabel>식사 가능 동네</FormLabel>
+                        <LocationSelector onChange={(city, district) => {}} />
+                      </FormControl>
+                      <FormControl>
+                        <FormLabel>관심사(선택)</FormLabel>
+                        <InterestSelector />
+                      </FormControl>
+                      <FormControl isRequired>
+                        <FormLabel>프로필 소개말</FormLabel>
+                        <Textarea
+                          name="user_info"
+                          minLength={20}
+                          placeholder={
+                            "원하시는 매칭 방법(식사매칭 또는 커피매칭)과 간단한 소개를 작성해주세요!"
+                          }
+                        />
+                      </FormControl>
+                      <FormControl>
+                        <FormLabel>매칭권 부수입 정산받을 계좌(선택)</FormLabel>
+                        <HStack w={"100%"}>
+                          <Select name="bank_name" w={"100%"}>
+                            <option value={""}>선택</option>
+                            {bank.map((value) => (
+                              <option value={value}>{value}</option>
+                            ))}
+                          </Select>
+                          <Input
+                            name="accout_number"
+                            placeholder="계좌번호"
+                            size="md"
+                            w={"100%"}
+                          />
+                        </HStack>
+                      </FormControl>
+                    </Stack>
+                  </HStack>
+                </Stack>
+              </Stack>
+            </Stack>
+          </Stack>
+        </PopupBase>
         <Select
           onChange={(e) => {
             setSearch({ ...search, filter: e.target.value });
@@ -660,7 +884,36 @@ function AdminUser({ data, ...props }) {
           <Table variant="simple" size={"sm"}>
             <Thead h={"40px"}>
               <Tr>
-                <Th textAlign={"center"}>uid</Th>
+                <Th
+                  textAlign={"center"}
+                  cursor={"pointer"}
+                  onClick={() => handleOrder("doc_id")}
+                >
+                  <HStack justifyContent={"center"} gap={"10px"}>
+                    <Text color={"blue.500"}>uid</Text>
+                    {search.order === "doc_id" &&
+                      (search.sort === "asc" ? (
+                        <ArrowDownIcon />
+                      ) : (
+                        <ArrowUpIcon />
+                      ))}
+                  </HStack>
+                </Th>
+                <Th
+                  textAlign={"center"}
+                  cursor={"pointer"}
+                  onClick={() => handleOrder("timestamp")}
+                >
+                  <HStack justifyContent={"center"} gap={"10px"}>
+                    <Text color={"blue.500"}>가입일</Text>
+                    {search.order === "timestamp" &&
+                      (search.sort === "asc" ? (
+                        <ArrowDownIcon />
+                      ) : (
+                        <ArrowUpIcon />
+                      ))}
+                  </HStack>
+                </Th>
                 <Th>프로필</Th>
                 <Th
                   cursor={"pointer"}
@@ -725,7 +978,21 @@ function AdminUser({ data, ...props }) {
                       ))}
                   </HStack>
                 </Th>
-                <Th>휴대번호</Th>
+                <Th
+                  cursor={"pointer"}
+                  onClick={() => handleOrder("user_phone")}
+                  textAlign={"center"}
+                >
+                  <HStack gap={"10px"}>
+                    <Text color={"blue.500"}>휴대번호</Text>
+                    {search.order === "user_phone" &&
+                      (search.sort === "asc" ? (
+                        <ArrowDownIcon />
+                      ) : (
+                        <ArrowUpIcon />
+                      ))}
+                  </HStack>
+                </Th>
                 <Th textAlign={"center"} w={"30px"}>
                   수정
                 </Th>
@@ -740,6 +1007,11 @@ function AdminUser({ data, ...props }) {
                   <Tr key={value.doc_id}>
                     <Td textAlign={"center"}>
                       {value.doc_id?.substring(0, 8)}
+                    </Td>
+                    <Td textAlign={"center"}>
+                      {convertFirestoreTimestampToDate(
+                        value.timestamp
+                      ).toLocaleDateString()}
                     </Td>
                     <Td textAlign={"center"}>
                       <Image
@@ -932,7 +1204,7 @@ function AdminUser({ data, ...props }) {
                                           name="user_price"
                                           // w={"70px"}
                                           type="number"
-                                          defaultValue={2}
+                                          defaultValue={value?.user_price}
                                           textAlign={"right"}
                                         />
                                         <InputRightAddon>만원</InputRightAddon>

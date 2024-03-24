@@ -8,6 +8,13 @@ import {
 } from "@chakra-ui/icons";
 import { Box, Button, Stack } from "@chakra-ui/react";
 import React, { useState } from "react";
+import {
+  MdCoffee,
+  MdGroup,
+  MdLogout,
+  MdPayment,
+  MdPerson,
+} from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 function Sidebar(props) {
@@ -40,7 +47,7 @@ function Sidebar(props) {
         {/* 네비게이션 아이템 추가 */}
         <Stack>
           <Button
-            leftIcon={<DragHandleIcon />}
+            leftIcon={<MdPerson />}
             onClick={() => handleClick("user")}
             variant={currentMenu === "user" ? "solid" : "ghost"}
             justifyContent={"flex-start"}
@@ -49,16 +56,7 @@ function Sidebar(props) {
             유저관리
           </Button>
           <Button
-            leftIcon={<EditIcon />}
-            onClick={() => handleClick("payment")}
-            variant={currentMenu === "payment" ? "solid" : "ghost"}
-            justifyContent={"flex-start"}
-            w={"100%"}
-          >
-            결제관리
-          </Button>
-          <Button
-            leftIcon={<AttachmentIcon />}
+            leftIcon={<MdGroup />}
             onClick={() => handleClick("group")}
             variant={currentMenu === "group" ? "solid" : "ghost"}
             justifyContent={"flex-start"}
@@ -67,7 +65,16 @@ function Sidebar(props) {
             모임관리
           </Button>
           <Button
-            leftIcon={<DownloadIcon />}
+            leftIcon={<MdPayment />}
+            onClick={() => handleClick("payment")}
+            variant={currentMenu === "payment" ? "solid" : "ghost"}
+            justifyContent={"flex-start"}
+            w={"100%"}
+          >
+            결제관리
+          </Button>
+          <Button
+            leftIcon={<MdCoffee />}
             onClick={() => handleClick("matching")}
             variant={currentMenu === "matching" ? "solid" : "ghost"}
             justifyContent={"flex-start"}
@@ -75,18 +82,9 @@ function Sidebar(props) {
           >
             매칭관리
           </Button>
-          <Button
-            leftIcon={<SearchIcon />}
-            onClick={() => handleClick("review")}
-            variant={currentMenu === "review" ? "solid" : "ghost"}
-            justifyContent={"flex-start"}
-            w={"100%"}
-          >
-            리뷰관리
-          </Button>
         </Stack>
         <Button
-          leftIcon={<CheckCircleIcon />}
+          leftIcon={<MdLogout />}
           onClick={handleLogout}
           variant={currentMenu === "account" ? "solid" : "ghost"}
           justifyContent={"flex-start"}
