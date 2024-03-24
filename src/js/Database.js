@@ -5,6 +5,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  orderBy,
   query,
   serverTimestamp,
   setDoc,
@@ -83,6 +84,19 @@ export const db_delete = async (col, doc_id) => {
  */
 export const get_doc_all = async (col) => {
   const q = query(collection(db, col));
+  const querySnapshot = await getDocs(q);
+
+  const doc_list = [];
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    doc_list.push({ ...doc.data(), doc_id: doc.id });
+  });
+  return doc_list;
+};
+
+export const get_doc_all2 = async (col, order, sort) => {
+  console.log(col, order, sort);
+  const q = query(collection(db, col), orderBy(order, sort));
   const querySnapshot = await getDocs(q);
 
   const doc_list = [];

@@ -14,6 +14,7 @@ function AdminDashboard(props) {
   const navigate = useNavigate();
   const [menu, setMenu] = useState("user");
   const [userList, setUserList] = useState(null);
+  const [paymentList, setPaymentList] = useState(null);
   const [page, setPage] = useState(<AdminUser data={userList} />);
   useEffect(() => {
     console.log(localStorage.getItem("muggle-admin"));
@@ -25,6 +26,7 @@ function AdminDashboard(props) {
     }
 
     let userList = [];
+    let paymentList = [];
     onSnapshot(collection(db, "user"), (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
@@ -38,19 +40,34 @@ function AdminDashboard(props) {
       });
     });
 
+    onSnapshot(collection(db, "payment"), (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          // 첫 추가 시 added로 들어옵니다.
+          paymentList.push({ ...change.doc.data(), doc_id: change.doc.id });
+        }
+        if (change.type === "modified") {
+        }
+        if (change.type === "removed") {
+        }
+      });
+    });
+
     setUserList(userList);
+    setPaymentList(paymentList);
   }, []);
 
   useEffect(() => {
-    console.log(menu);
-    console.log(userList);
+    console.log(localStorage.getItem("menu"));
+    // console.log(userList);
+    console.log(paymentList);
 
-    switch (menu) {
+    switch (localStorage.getItem("menu")) {
       case "user":
         setPage(<AdminUser data={userList} />);
         break;
       case "payment":
-        setPage(<AdminPayment />);
+        setPage(<AdminPayment data={paymentList} />);
         break;
       case "group":
         setPage(<AdminGroup />);
@@ -68,6 +85,7 @@ function AdminDashboard(props) {
 
   const handleMenu = (menu) => {
     setMenu(menu);
+    localStorage.setItem("menu", menu);
     navigate("/dashboard/" + menu);
   };
 
@@ -78,7 +96,7 @@ function AdminDashboard(props) {
         w={"100%"}
         h={"100vh"}
         bgColor={"gray.50"}
-        justifyContent={"center"}
+        justifyContent={"flex-start"}
         p={4}
       >
         {page}

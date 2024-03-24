@@ -34,11 +34,24 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { getDisplayAge2 } from "../../js/API";
-import { db_delete, get_doc_all } from "../../js/Database";
-import { DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
+import {
+  db_delete,
+  db_update,
+  get_doc_all,
+  get_doc_all2,
+} from "../../js/Database";
+import {
+  AddIcon,
+  ArrowDownIcon,
+  ArrowUpIcon,
+  DeleteIcon,
+  EditIcon,
+  SearchIcon,
+} from "@chakra-ui/icons";
 import { defaultFemale, defaultMale } from "../../db/dummy";
 import { useNavigate } from "react-router-dom";
 import PopupBase from "../../modals/PopupBase";
+import { upload_image } from "../../js/Storage";
 
 export const LocationSelector = (props) => {
   const [selectedCity, setSelectedCity] = useState(props.defaultCity);
@@ -339,13 +352,15 @@ export const LocationSelector = (props) => {
   const handleDistrictChange = (e) => {
     const selectedDistrict = e.target.value;
     setSelectedDistrict(selectedDistrict);
+
+    props.onChange(selectedCity, selectedDistrict);
   };
 
   return (
     <Stack w="100%">
       <HStack w="100%">
         {/* <label>시/도:</label> */}
-        <Select value={selectedCity} onChange={handleCityChange}>
+        <Select value={selectedCity} onChange={handleCityChange} name="city">
           <option value="">시/도</option>
           {cities?.map((city) => (
             <option key={city} value={city}>
@@ -359,6 +374,7 @@ export const LocationSelector = (props) => {
           value={selectedDistrict}
           onChange={handleDistrictChange}
           disabled={!selectedCity}
+          name="district"
         >
           <option value="">군/구</option>
           {selectedCity &&
@@ -413,8 +429,12 @@ export const InterestSelector = () => {
     <Stack w="100%">
       <HStack w="100%">
         {/* <label>시/도:</label> */}
-        <Select value={selectedCity} onChange={handleCityChange}>
-          <option value="">시/도</option>
+        <Select
+          value={selectedCity}
+          onChange={handleCityChange}
+          name="category1"
+        >
+          <option value="">관심사</option>
           {cities?.map((city) => (
             <option key={city} value={city}>
               {city}
@@ -427,8 +447,9 @@ export const InterestSelector = () => {
           value={selectedDistrict}
           onChange={handleDistrictChange}
           disabled={!selectedCity}
+          name="category2"
         >
-          <option value="">군/구</option>
+          <option value="">상세관심사</option>
           {selectedCity &&
             districts[selectedCity]?.map((district) => (
               <option key={district} value={district}>
@@ -450,7 +471,23 @@ function AdminUser({ data, ...props }) {
   const [search, setSearch] = useState({
     filter: "uid",
     keyword: "",
+    order: "user_name",
+    sort: "asc",
   });
+
+  const [userData, setUserData] = useState({
+    user_profile: "",
+    user_name: "",
+    user_gender: "",
+    user_birth: "",
+    user_phone: "",
+  });
+
+  const upload_profile = async (e) => {
+    // firestore에 이미지 업로드
+    let url = await upload_image(e);
+    setUserData({ ...userData, user_profile: url });
+  };
 
   const bank = [
     "우리",
@@ -477,7 +514,8 @@ function AdminUser({ data, ...props }) {
   }, []);
 
   const getUsers = async () => {
-    await get_doc_all("user").then((data) => {
+    setUserData({});
+    await get_doc_all2("user", search.order, search.sort).then((data) => {
       setUsers(data);
       setSearchedUsers(data);
     });
@@ -490,7 +528,61 @@ function AdminUser({ data, ...props }) {
     }
   };
 
-  const updateUser = async (uid) => {};
+  const updateUser = async (id, e) => {
+    if (!e) return;
+    e.preventDefault();
+
+    const updateData = {
+      user_profile: "",
+      user_name: "",
+      user_gender: "",
+      user_birth: "",
+      user_phone: "",
+      user_place: [],
+      user_interest: [],
+      user_bank: {
+        bank_name: "",
+        accout_number: "",
+      },
+    };
+
+    // let user_place = [];
+    // let user_interest = [];
+    // let user_bank = {
+    //   bank_name: "",
+    //   accout_number: "",
+    // };
+    let place = "";
+    let interest = "";
+
+    for (var i = 0; i < e.target.length; i++) {
+      if (e.target[i].name) {
+        if (e.target[i].name == "city") {
+          place += e.target[i].value;
+        } else if (e.target[i].name == "district") {
+          place += " " + e.target[i].value;
+          updateData.user_place.push(place.trim());
+        } else if (e.target[i].name == "category1") {
+          interest += e.target[i].value;
+        } else if (e.target[i].name == "category2") {
+          interest += " " + e.target[i].value;
+          updateData.user_interest.push(interest.trim());
+        } else if (e.target[i].name == "bank_name") {
+          updateData.user_bank.bank_name = e.target[i].value;
+        } else if (e.target[i].name == "accout_number") {
+          updateData.user_bank.accout_number = e.target[i].value;
+        } else {
+          updateData[e.target[i].name] = e.target[i].value;
+        }
+      }
+    }
+
+    db_update("user", id, updateData);
+
+    if (e) {
+      getUsers();
+    }
+  };
 
   const profileRef = useRef();
   const onClickProfileButton = () => {
@@ -516,9 +608,32 @@ function AdminUser({ data, ...props }) {
     setSearchedUsers(searchedUsers);
   };
 
+  const handleOrder = async (type) => {
+    setSearch({
+      ...search,
+      order: type,
+      sort: search.sort === "desc" ? "asc" : "desc",
+    });
+    await get_doc_all2(
+      "user",
+      type,
+      search.sort === "desc" ? "asc" : "desc"
+    ).then((data) => {
+      setUsers(data);
+      setSearchedUsers(data);
+    });
+  };
+
   return (
-    <Stack>
+    <Stack w={"100%"} h={"100%"}>
       <HStack bgColor={"white"} p={"10px"} gap={"10px"} borderRadius={"10px"}>
+        <PopupBase
+          colorScheme={"gray"}
+          visibleButton={true}
+          action={"추가"}
+          title={<AddIcon />}
+          onClose={(e) => console.log(e)}
+        ></PopupBase>
         <Select
           onChange={(e) => {
             setSearch({ ...search, filter: e.target.value });
@@ -546,11 +661,70 @@ function AdminUser({ data, ...props }) {
             <Thead h={"40px"}>
               <Tr>
                 <Th textAlign={"center"}>uid</Th>
-                <Th textAlign={"center"}>프로필</Th>
-                <Th textAlign={"center"}>이름</Th>
-                <Th textAlign={"center"}>성별</Th>
-                <Th textAlign={"center"}>나이</Th>
-                <Th>지역</Th>
+                <Th>프로필</Th>
+                <Th
+                  cursor={"pointer"}
+                  onClick={() => handleOrder("user_name")}
+                  textAlign={"center"}
+                >
+                  <HStack justifyContent={"center"} gap={"10px"}>
+                    <Text color={"blue.500"}>이름</Text>
+                    {search.order === "user_name" &&
+                      (search.sort === "asc" ? (
+                        <ArrowDownIcon />
+                      ) : (
+                        <ArrowUpIcon />
+                      ))}
+                  </HStack>
+                </Th>
+                <Th
+                  textAlign={"center"}
+                  cursor={"pointer"}
+                  onClick={() => handleOrder("user_gender")}
+                >
+                  {" "}
+                  <HStack justifyContent={"center"} gap={"10px"}>
+                    <Text color={"blue.500"}>성별</Text>
+                    {search.order === "user_gender" &&
+                      (search.sort === "asc" ? (
+                        <ArrowDownIcon />
+                      ) : (
+                        <ArrowUpIcon />
+                      ))}
+                  </HStack>
+                </Th>
+                <Th
+                  textAlign={"center"}
+                  cursor={"pointer"}
+                  onClick={() => handleOrder("user_birth")}
+                >
+                  {" "}
+                  <HStack justifyContent={"center"} gap={"10px"}>
+                    <Text color={"blue.500"}>나이</Text>
+                    {search.order === "user_birth" &&
+                      (search.sort === "desc" ? (
+                        <ArrowDownIcon />
+                      ) : (
+                        <ArrowUpIcon />
+                      ))}
+                  </HStack>
+                </Th>
+                <Th
+                  textAlign={"center"}
+                  cursor={"pointer"}
+                  onClick={() => handleOrder("user_place")}
+                >
+                  {" "}
+                  <HStack gap={"10px"}>
+                    <Text color={"blue.500"}>지역</Text>
+                    {search.order === "user_place" &&
+                      (search.sort === "asc" ? (
+                        <ArrowDownIcon />
+                      ) : (
+                        <ArrowUpIcon />
+                      ))}
+                  </HStack>
+                </Th>
                 <Th>휴대번호</Th>
                 <Th textAlign={"center"} w={"30px"}>
                   수정
@@ -565,7 +739,7 @@ function AdminUser({ data, ...props }) {
                 return (
                   <Tr key={value.doc_id}>
                     <Td textAlign={"center"}>
-                      {value.doc_id?.substring(0, 6)}
+                      {value.doc_id?.substring(0, 8)}
                     </Td>
                     <Td textAlign={"center"}>
                       <Image
@@ -611,7 +785,7 @@ function AdminUser({ data, ...props }) {
                         visibleButton={true}
                         action={"수정"}
                         title={<EditIcon />}
-                        onClose={(e) => getUsers()}
+                        onClose={(e) => updateUser(value.doc_id, e)}
                       >
                         <Stack
                           justify="flex-start"
@@ -648,7 +822,9 @@ function AdminUser({ data, ...props }) {
                                   <VStack>
                                     <Avatar
                                       src={
-                                        value.user_profile === ""
+                                        userData?.user_profile
+                                          ? userData?.user_profile
+                                          : value.user_profile === ""
                                           ? value.user_gender === "남"
                                             ? defaultMale
                                             : defaultFemale
@@ -664,8 +840,21 @@ function AdminUser({ data, ...props }) {
                                       ref={profileRef}
                                       type="file"
                                       onChange={(e) => {
-                                        console.log(e.target.files[0]);
+                                        upload_profile(e);
                                       }}
+                                    />
+                                    <Input
+                                      display={"none"}
+                                      value={
+                                        userData?.user_profile
+                                          ? userData?.user_profile
+                                          : value.user_profile === ""
+                                          ? value.user_gender === "남"
+                                            ? defaultMale
+                                            : defaultFemale
+                                          : value.user_profile
+                                      }
+                                      name="user_profile"
                                     />
                                   </VStack>
                                 </Center>
@@ -683,43 +872,47 @@ function AdminUser({ data, ...props }) {
                                     display={"flex"}
                                   >
                                     <FormControl isRequired>
-                                      <FormLabel>실명</FormLabel>
+                                      <FormLabel>이름</FormLabel>
                                       <Input
+                                        name="user_name"
                                         type="text"
                                         placeholder="실명"
                                         height="40px"
                                         alignSelf="stretch"
-                                        value={value?.user_name}
+                                        defaultValue={value?.user_name}
                                       />
                                     </FormControl>
                                     <FormControl isRequired>
                                       <FormLabel>휴대번호</FormLabel>
                                       <Input
+                                        name="user_phone"
                                         type="text"
                                         placeholder="휴대폰번호"
                                         height="40px"
                                         alignSelf="stretch"
-                                        value={value.user_phone}
+                                        defaultValue={value.user_phone}
                                       />
                                     </FormControl>
                                     <FormControl isRequired>
                                       <FormLabel>생년월일</FormLabel>
                                       <Input
+                                        name="user_birth"
                                         type="text"
                                         placeholder="생년월일"
                                         height="40px"
                                         alignSelf="stretch"
-                                        value={value?.user_birth}
+                                        defaultValue={value?.user_birth}
                                       />
                                     </FormControl>
                                     <FormControl isRequired>
                                       <FormLabel>성별</FormLabel>
                                       <Input
+                                        name="user_gender"
                                         type="text"
                                         placeholder="성별"
                                         height="40px"
                                         alignSelf="stretch"
-                                        value={value?.user_gender}
+                                        defaultValue={value?.user_gender}
                                       />
                                     </FormControl>
                                     <FormControl isRequired>
@@ -736,6 +929,7 @@ function AdminUser({ data, ...props }) {
                                       </Text>
                                       <InputGroup mt={"1vh"}>
                                         <Input
+                                          name="user_price"
                                           // w={"70px"}
                                           type="number"
                                           defaultValue={2}
@@ -761,13 +955,14 @@ function AdminUser({ data, ...props }) {
                                         }
                                       />
                                     </FormControl>
-                                    <FormControl isRequired>
-                                      <FormLabel>관심사</FormLabel>
+                                    <FormControl>
+                                      <FormLabel>관심사(선택)</FormLabel>
                                       <InterestSelector />
                                     </FormControl>
                                     <FormControl isRequired>
                                       <FormLabel>프로필 소개말</FormLabel>
                                       <Textarea
+                                        name="user_info"
                                         defaultValue={value?.user_info}
                                         minLength={20}
                                         placeholder={
@@ -775,17 +970,19 @@ function AdminUser({ data, ...props }) {
                                         }
                                       />
                                     </FormControl>
-                                    <FormControl isRequired>
+                                    <FormControl>
                                       <FormLabel>
-                                        매칭권 부수입 정산받을 계좌
+                                        매칭권 부수입 정산받을 계좌(선택)
                                       </FormLabel>
                                       <HStack w={"100%"}>
                                         <Select
+                                          name="bank_name"
                                           w={"100%"}
                                           defaultValue={
                                             value.user_bank?.bank_name
                                           }
                                         >
+                                          <option value={""}>선택</option>
                                           {bank.map((value) => (
                                             <option value={value}>
                                               {value}
@@ -793,6 +990,7 @@ function AdminUser({ data, ...props }) {
                                           ))}
                                         </Select>
                                         <Input
+                                          name="accout_number"
                                           defaultValue={
                                             value.user_bank?.accout_number
                                           }
