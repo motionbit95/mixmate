@@ -283,8 +283,8 @@ function AdminPayment({ data, ...props }) {
     }
   };
 
-  const handleSearch = () => {
-    console.log(search);
+  const handleSearch = (payments) => {
+    console.log(payments);
 
     let searchPayments = [];
     payments.map((value, index) => {
@@ -370,6 +370,7 @@ function AdminPayment({ data, ...props }) {
     ).then((data) => {
       setPayments(data);
       setSearchPayments(data);
+      handleSearch(data);
     });
   };
 
@@ -389,7 +390,10 @@ function AdminPayment({ data, ...props }) {
         <Input
           onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
         />
-        <IconButton onClick={handleSearch} icon={<SearchIcon />} />
+        <IconButton
+          onClick={() => handleSearch(payments)}
+          icon={<SearchIcon />}
+        />
       </HStack>
       <TableContainer
         border={"1px solid #d9d9d9"}

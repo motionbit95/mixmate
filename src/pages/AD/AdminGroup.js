@@ -277,7 +277,7 @@ function AdminGroup({ data, ...props }) {
     }
   };
 
-  const handleSearch = () => {
+  const handleSearch = (groups) => {
     console.log(groups);
 
     let searchGroups = [];
@@ -305,6 +305,7 @@ function AdminGroup({ data, ...props }) {
     ).then((data) => {
       setGroups(data);
       setSearchGroups(data);
+      handleSearch(data);
     });
   };
 
@@ -422,7 +423,10 @@ function AdminGroup({ data, ...props }) {
         <Input
           onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
         />
-        <IconButton onClick={handleSearch} icon={<SearchIcon />} />
+        <IconButton
+          onClick={() => handleSearch(groups)}
+          icon={<SearchIcon />}
+        />
       </HStack>
       <TableContainer
         border={"1px solid #d9d9d9"}

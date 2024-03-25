@@ -642,7 +642,7 @@ function AdminUser({ data, ...props }) {
     profileRef.current.click();
   };
 
-  const handleSearch = () => {
+  const handleSearch = (users) => {
     console.log(search);
 
     let searchedUsers = [];
@@ -674,6 +674,7 @@ function AdminUser({ data, ...props }) {
     ).then((data) => {
       setUsers(data);
       setSearchedUsers(data);
+      handleSearch(data);
     });
   };
 
@@ -872,7 +873,7 @@ function AdminUser({ data, ...props }) {
         <Input
           onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
         />
-        <IconButton onClick={handleSearch} icon={<SearchIcon />} />
+        <IconButton onClick={() => handleSearch(users)} icon={<SearchIcon />} />
       </HStack>
       <TableContainer
         border={"1px solid #d9d9d9"}

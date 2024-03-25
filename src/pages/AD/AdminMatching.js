@@ -292,7 +292,7 @@ function AdminMatching({ data, ...props }) {
     }
   };
 
-  const handleSearch = () => {
+  const handleSearch = (matchings) => {
     console.log(matchings);
 
     let searchMatchings = [];
@@ -320,6 +320,7 @@ function AdminMatching({ data, ...props }) {
     ).then((data) => {
       setMatchings(data);
       setSearchMatchings(data);
+      handleSearch(data);
     });
   };
 
@@ -336,7 +337,10 @@ function AdminMatching({ data, ...props }) {
         <Input
           onChange={(e) => setSearch({ ...search, keyword: e.target.value })}
         />
-        <IconButton onClick={handleSearch} icon={<SearchIcon />} />
+        <IconButton
+          onClick={() => handleSearch(matchings)}
+          icon={<SearchIcon />}
+        />
       </HStack>
       <TableContainer
         border={"1px solid #d9d9d9"}
