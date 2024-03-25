@@ -457,7 +457,7 @@ function AdminPayment({ data, ...props }) {
                   onClick={() => handleOrder("PCD_PAY_MSG")}
                   textAlign={"center"}
                 >
-                  <HStack justifyContent={"center"} gap={"10px"}>
+                  <HStack gap={"10px"}>
                     <Text color={"blue.500"}>결제결과</Text>
                     {search.order === "PCD_PAY_MSG" &&
                       (search.sort === "asc" ? (
