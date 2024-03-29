@@ -25,6 +25,7 @@ import OrderConfirm from "./pages/OrderConfirm";
 import OrderResult from "./pages/OrderResult";
 import AdminLogin from "./pages/AD/AdminLogin";
 import AdminDashboard from "./pages/AD/AdminDashboard";
+import OrderConfirmView from "./pages/OrderConfirmView";
 
 export const theme_primary_color = "gray.500";
 export const theme_bright_color = "gray.200";
@@ -54,6 +55,7 @@ function App() {
         <Route path="/*" element={<AdminDashboard />} />
         <Route path="/login" element={<AdminLogin />} />
         <Route path="/dashboard/*" element={<AdminDashboard />} />
+        <Route path="/order_confirm_view" element={<OrderConfirmView />} />
       </Routes>
     </BrowserRouter>
   );
