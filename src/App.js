@@ -25,7 +25,9 @@ import OrderConfirm from "./pages/OrderConfirm";
 import OrderResult from "./pages/OrderResult";
 import AdminLogin from "./pages/AD/AdminLogin";
 import AdminDashboard from "./pages/AD/AdminDashboard";
-import OrderConfirmView from "./pages/OrderConfirmView";
+import OrderConfirmView from "./pages/MugglePayment";
+import MugglePaymentResult from "./pages/MugglePaymentResult";
+import MugglePayment from "./pages/MugglePayment";
 
 export const theme_primary_color = "gray.500";
 export const theme_bright_color = "gray.200";
@@ -52,10 +54,17 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/*" element={<AdminDashboard />} />
+        {/* <Route path="/*" element={<AdminDashboard />} /> */}
         <Route path="/login" element={<AdminLogin />} />
         <Route path="/dashboard/*" element={<AdminDashboard />} />
-        <Route path="/order_confirm_view" element={<OrderConfirmView />} />
+        <Route path="/muggle_payment" element={<MugglePayment />} />
+        <Route
+          path="/muggle_payment_result"
+          element={<MugglePaymentResult />}
+        />
+        <Route path="/order_result" element={<OrderResult />} />
+        {/* <Route path="/order_result" element={<OrderResult />} />
+        <Route path="/order_confirm" element={<OrderConfirm />} /> */}
       </Routes>
     </BrowserRouter>
   );

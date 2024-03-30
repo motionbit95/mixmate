@@ -1,7 +1,9 @@
+import { addDoc, setDoc } from "firebase/firestore";
 import { parse } from "querystring";
 import React, { useEffect, useState } from "react";
+import { db_set } from "../js/Database";
 
-function OrderConfirmView(props) {
+function MugglePayment(props) {
   const [content, setContent] = useState({});
   const [payResult, setPayResult] = useState({});
   const [orderInfo, setOrderInfo] = useState(null);
@@ -48,6 +50,9 @@ function OrderConfirmView(props) {
     if (res.PCD_PAY_RST === "success") {
       payResult = res;
 
+      db_set("payment", res.PCD_PAY_OID, res);
+      // 여기에서 파이어베이스 처리를 한다 -> 앱에서는 이걸 스냅샷으로 이벤트를 받는다.
+
       // 전달받은 결제 파라미터값을 state에 저장 후  '/react/order_result'로 이동
       //   navigate("/order_result", { state: { payResult: payResult } });
     } else {
@@ -74,8 +79,8 @@ function OrderConfirmView(props) {
 
     if (
       content.is_direct === "Y"
-        ? (obj.PCD_RST_URL = process.env.REACT_APP_REMOTE_HOSTNAME + "/api")
-        : (obj.PCD_RST_URL = "/react/order_result")
+        ? (obj.PCD_RST_URL = process.env.REACT_APP_REMOTE_HOSTNAME + "/pg")
+        : (obj.PCD_RST_URL = "/order_result")
     );
     // obj.PCD_RST_URL = pcd_rst_url;							 // (필수) 결제(요청)결과 RETURN URL
 
@@ -142,4 +147,4 @@ function OrderConfirmView(props) {
   return;
 }
 
-export default OrderConfirmView;
+export default MugglePayment;
