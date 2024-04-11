@@ -539,13 +539,15 @@ function AdminGroup({ data, ...props }) {
                       <Text>{value.group_price}</Text>
                     </Td>
                     <Td>
-                      <HStack justifyContent={"center"}>
-                        <Text color={"red.500"} fontWeight={"bold"}>
-                          {value.group_users?.length}
-                        </Text>
-                        <Text>/</Text>
-                        <Text>{value.group_personnel}</Text>
-                      </HStack>
+                      {value.group_type !== "일상 모임" && (
+                        <HStack justifyContent={"center"}>
+                          <Text color={"red.500"} fontWeight={"bold"}>
+                            {value.group_users?.length}
+                          </Text>
+                          <Text>/</Text>
+                          <Text>{value.group_personnel}</Text>
+                        </HStack>
+                      )}
                     </Td>
                     <Td textAlign={"center"}>
                       <Text>
