@@ -65,9 +65,6 @@ export async function signUpPassword(email, password) {
       if (errorCode == "auth/too-many-requests") {
         err_msg = "잠시 후 다시 시도해 주세요";
       }
-      if (errorCode == "auth/too-many-requests") {
-        err_msg = "잠시 후 다시 시도해 주세요";
-      }
       if (errorCode == "auth/email-already-in-use") {
         err_msg = "이미 존재하는 아이디입니다.";
       }

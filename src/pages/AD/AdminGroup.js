@@ -34,6 +34,7 @@ import {
   get_doc_all,
   get_doc_all2,
   get_doc_data,
+  get_user,
 } from "../../js/Database";
 import {
   AddIcon,
@@ -62,10 +63,14 @@ export const UserInfo = ({ uid, ...props }) => {
   });
   useEffect(() => {
     console.log(uid);
-    get_doc_data("user", uid).then((data) => {
-      setValue(data);
-    });
-  }, [uid]);
+    const getUser = async (uid) => {
+      get_user(uid).then(async (data) => {
+        setValue(data);
+        console.log(data);
+      });
+    };
+    getUser(uid);
+  }, []);
   return (
     <PopupBase
       variant={"ghost"}

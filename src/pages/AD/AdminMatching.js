@@ -36,6 +36,7 @@ import {
   get_doc_all,
   get_doc_all2,
   get_doc_data,
+  get_user,
 } from "../../js/Database";
 import {
   ArrowDownIcon,
@@ -76,10 +77,14 @@ export const UserInfo = ({ uid, ...props }) => {
   });
   useEffect(() => {
     console.log(uid);
-    get_doc_data("user", uid).then((data) => {
-      setValue(data);
-    });
-  }, [uid]);
+    const getUser = async (uid) => {
+      get_user(uid).then(async (data) => {
+        setValue(data);
+        console.log(data);
+      });
+    };
+    getUser(uid);
+  }, []);
   return (
     <PopupBase
       variant={"ghost"}
@@ -390,13 +395,13 @@ function AdminMatching({ data, ...props }) {
                             value.matching_state < 400 ? "green" : "red"
                           }
                         >
-                          {value.matching_state === 0
+                          {value.matching_state === "0"
                             ? "결제완료"
-                            : value.matching_state === 1
+                            : value.matching_state === "1"
                             ? "매칭완료"
-                            : value.matching_state === 2
+                            : value.matching_state === "2"
                             ? "후기작성"
-                            : value.matching_state === 400
+                            : value.matching_state === "400"
                             ? "매칭거절"
                             : ""}
                         </Tag>

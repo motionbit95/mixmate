@@ -33,8 +33,8 @@ function MugglePayment(props) {
         pay_month: queryParams.get("pay_month"),
         pay_type: queryParams.get("pay_type"),
         pay_year: queryParams.get("pay_year"),
-        payple_payer_id: queryParams.get("payple_payer_id"),
-        simple_flag: queryParams.get("simple_flag"),
+        // payple_payer_id: queryParams.get("payple_payer_id"),
+        // simple_flag: queryParams.get("simple_flag"),
         work_type: queryParams.get("work_type"),
       };
 

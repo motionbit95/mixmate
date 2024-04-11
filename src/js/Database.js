@@ -270,3 +270,15 @@ export const findUser = async (user_name, user_phone) => {
 
   return findUser;
 };
+
+export const get_user = async (uid) => {
+  console.log("uid", uid);
+  const q = query(collection(db, "user"), where("uid", "==", uid));
+  const querySnapshot = await getDocs(q);
+  let user = null;
+  querySnapshot.forEach((doc) => {
+    console.log("doc.data()", doc.data());
+    user = doc.data();
+  });
+  return user;
+};
