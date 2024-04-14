@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Button,
   FormControl,
   FormLabel,
   HStack,
@@ -26,7 +27,7 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { convertFirestoreTimestampToDate } from "../../js/API";
 import {
   db_add,
@@ -46,6 +47,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import PopupBase from "../../modals/PopupBase";
 import { LocationSelector } from "./AdminUser";
+import { upload_image } from "../../js/Storage";
 
 export const UserInfo = ({ uid, ...props }) => {
   const [value, setValue] = useState({
@@ -358,6 +360,18 @@ function AdminGroup({ data, ...props }) {
     getGroups();
   };
 
+  const groupImageRef = useRef();
+
+  const upload_profile = async (e) => {
+    // firestore에 이미지 업로드
+    // let url = await upload_image(e);
+    // console.log(url);
+    upload_image(e).then((url) => {
+      if (url) setGroups({ ...groups, group_image: url });
+    });
+    // setUserData({ ...userData, user_profile: url });
+  };
+
   return (
     <Stack w={"100%"} h={"100%"}>
       <HStack bgColor={"white"} p={"10px"} gap={"10px"} borderRadius={"10px"}>
@@ -369,21 +383,42 @@ function AdminGroup({ data, ...props }) {
           title="모임"
           icon={<AddIcon />}
           onClose={(e) => handleAddGroup(e)}
+          onClick={() => {
+            setGroups({});
+          }}
         >
           <FormControl isRequired>
-            <FormLabel>모임장소</FormLabel>
-            <LocationSelector
-              onChange={(city, district) => {
-                console.log(city, district);
+            <HStack>
+              <Image
+                w={"50%"}
+                height={"200px"}
+                style={{ objectFit: "cover" }}
+                src={groups?.group_image}
+              />
+              <Button onClick={() => groupImageRef.current.click()}>
+                사진 업로드
+              </Button>
+            </HStack>
+            <Input
+              display={"none"}
+              ref={groupImageRef}
+              type="file"
+              onChange={(e) => {
+                upload_profile(e);
               }}
             />
           </FormControl>
           <FormControl isRequired>
             <FormLabel>모임종류</FormLabel>
-            <Select name="group_type">
-              <option value={"머글 모임"}>머글 모임</option>
-              <option value={"클래스 모임"}>클래스 모임</option>
-              <option value={"비지니스 모임"}>비지니스 모임</option>
+            <Select
+              name="group_type"
+              onChange={(e) =>
+                setGroups({ ...groups, group_type: e.target.value })
+              }
+            >
+              <option value={"일상 모임"}>일상</option>
+              <option value={"원데이 클래스"}>클래스</option>
+              {/* <option value={"비지니스 모임"}>비지니스 모임</option> */}
             </Select>
           </FormControl>
           <FormControl isRequired>
@@ -397,22 +432,36 @@ function AdminGroup({ data, ...props }) {
               placeholder="모임목표를 입력하세요."
             />
           </FormControl>
-          <FormControl isRequired>
-            <FormLabel>모임인원</FormLabel>
-            <Input
-              type="number"
-              name="group_personnel"
-              placeholder="모임 최대 인원을 입력하세요."
-            />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>모임시간</FormLabel>
-            <Input type="datetime-local" name="group_time" />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>모임금액</FormLabel>
-            <Input placeholder="나누기" name="group_price" />
-          </FormControl>
+          <>
+            {groups?.group_type !== "일상 모임" && (
+              <>
+                <FormControl isRequired>
+                  <FormLabel>모임장소</FormLabel>
+                  <LocationSelector
+                    onChange={(city, district) => {
+                      console.log(city, district);
+                    }}
+                  />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>모임인원</FormLabel>
+                  <Input
+                    type="number"
+                    name="group_personnel"
+                    placeholder="모임 최대 인원을 입력하세요."
+                  />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>모임시간</FormLabel>
+                  <Input type="datetime-local" name="group_time" />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>모임금액</FormLabel>
+                  <Input placeholder="나누기" name="group_price" />
+                </FormControl>
+              </>
+            )}
+          </>
         </PopupBase>
         <Select
           onChange={(e) => {
