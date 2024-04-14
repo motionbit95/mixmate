@@ -34,7 +34,10 @@ function PopupBase({ visibleButton = true, ...props }) {
         size={props.size ? props.size : "md"}
         leftIcon={props.icon ? props.icon : null}
         variant={props.variant ? props.variant : "solid"}
-        onClick={onOpen}
+        onClick={() => {
+          onOpen();
+          props.onClick();
+        }}
       >
         {props.text ? props.text : props.title}
       </Button>

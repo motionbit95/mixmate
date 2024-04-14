@@ -31,6 +31,9 @@ import {
   Tr,
   VStack,
   useDisclosure,
+  SimpleGrid,
+  Wrap,
+  WrapItem,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { convertFirestoreTimestampToDate, getDisplayAge2 } from "../../js/API";
@@ -390,79 +393,6 @@ export const LocationSelector = (props) => {
   );
 };
 
-export const InterestSelector = () => {
-  const [selectedCity, setSelectedCity] = useState("");
-  const [selectedDistrict, setSelectedDistrict] = useState("");
-
-  const cities = ["아웃도어/여행", "운동/스포츠"];
-  const districts = {
-    "아웃도어/여행": [
-      "등산",
-      "산책/트래킹",
-      "캠핑/백팩킹",
-      "국내여행",
-      "해외여행",
-      "낚시",
-      "패러글라이딩",
-    ],
-    "운동/스포츠": [
-      "자전거",
-      "배드민턴",
-      "볼링",
-      "테니스/스쿼시",
-      "스키/보드",
-      "골프",
-    ],
-  };
-
-  const handleCityChange = (e) => {
-    const selectedCity = e.target.value;
-    setSelectedCity(selectedCity);
-    setSelectedDistrict("");
-  };
-
-  const handleDistrictChange = (e) => {
-    const selectedDistrict = e.target.value;
-    setSelectedDistrict(selectedDistrict);
-  };
-
-  return (
-    <Stack w="100%">
-      <HStack w="100%">
-        {/* <label>시/도:</label> */}
-        <Select
-          value={selectedCity}
-          onChange={handleCityChange}
-          name="category1"
-        >
-          <option value="">관심사</option>
-          {cities?.map((city) => (
-            <option key={city} value={city}>
-              {city}
-            </option>
-          ))}
-        </Select>
-
-        {/* <label>군/구:</label> */}
-        <Select
-          value={selectedDistrict}
-          onChange={handleDistrictChange}
-          disabled={!selectedCity}
-          name="category2"
-        >
-          <option value="">상세관심사</option>
-          {selectedCity &&
-            districts[selectedCity]?.map((district) => (
-              <option key={district} value={district}>
-                {district}
-              </option>
-            ))}
-        </Select>
-      </HStack>
-    </Stack>
-  );
-};
-
 function AdminUser({ data, ...props }) {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -484,10 +414,31 @@ function AdminUser({ data, ...props }) {
     user_phone: "",
   });
 
+  const [interest, setInterest] = useState([]);
+
+  const handleUserInterest = (value) => {
+    if (interest?.length >= 3) {
+      alert("관심사는 3개까지 선택 가능합니다.");
+      return;
+    }
+
+    if (!interest.includes(value)) {
+      console.log([...interest, value]);
+      setInterest([...interest, value]);
+    } else {
+      console.log(interest.filter((x) => x !== value));
+      setInterest(interest.filter((x) => x !== value));
+    }
+  };
+
   const upload_profile = async (e) => {
     // firestore에 이미지 업로드
-    let url = await upload_image(e);
-    setUserData({ ...userData, user_profile: url });
+    // let url = await upload_image(e);
+    // console.log(url);
+    upload_image(e).then((url) => {
+      if (url) setUserData({ ...userData, user_profile: url });
+    });
+    // setUserData({ ...userData, user_profile: url });
   };
 
   const bank = [
@@ -517,6 +468,7 @@ function AdminUser({ data, ...props }) {
   const getUsers = async () => {
     setUserData({});
     await get_doc_all2("user", search.order, search.sort).then((data) => {
+      console.log(data);
       setUsers(data);
       setSearchedUsers(data);
     });
@@ -540,7 +492,7 @@ function AdminUser({ data, ...props }) {
       user_birth: "",
       user_phone: "",
       user_place: [],
-      user_interest: [],
+      user_interest: interest ? interest : [],
       user_bank: {
         bank_name: "",
         accout_number: "",
@@ -548,7 +500,6 @@ function AdminUser({ data, ...props }) {
     };
 
     let place = "";
-    let interest = "";
 
     for (var i = 0; i < e.target.length; i++) {
       if (e.target[i].name) {
@@ -557,11 +508,6 @@ function AdminUser({ data, ...props }) {
         } else if (e.target[i].name == "district") {
           place += " " + e.target[i].value;
           updateData.user_place.push(place.trim());
-        } else if (e.target[i].name == "category1") {
-          interest += e.target[i].value;
-        } else if (e.target[i].name == "category2") {
-          interest += " " + e.target[i].value;
-          updateData.user_interest.push(interest.trim());
         } else if (e.target[i].name == "bank_name") {
           updateData.user_bank.bank_name = e.target[i].value;
         } else if (e.target[i].name == "accout_number") {
@@ -592,7 +538,7 @@ function AdminUser({ data, ...props }) {
       user_birth: "",
       user_phone: "",
       user_place: [],
-      user_interest: [],
+      user_interest: interest ? interest : [],
       user_bank: {
         bank_name: "",
         accout_number: "",
@@ -606,7 +552,6 @@ function AdminUser({ data, ...props }) {
     //   accout_number: "",
     // };
     let place = "";
-    let interest = "";
 
     for (var i = 0; i < e.target.length; i++) {
       if (e.target[i].name) {
@@ -615,11 +560,6 @@ function AdminUser({ data, ...props }) {
         } else if (e.target[i].name == "district") {
           place += " " + e.target[i].value;
           updateData.user_place.push(place.trim());
-        } else if (e.target[i].name == "category1") {
-          interest += e.target[i].value;
-        } else if (e.target[i].name == "category2") {
-          interest += " " + e.target[i].value;
-          updateData.user_interest.push(interest.trim());
         } else if (e.target[i].name == "bank_name") {
           updateData.user_bank.bank_name = e.target[i].value;
         } else if (e.target[i].name == "accout_number") {
@@ -689,6 +629,7 @@ function AdminUser({ data, ...props }) {
           title={"유저"}
           icon={<AddIcon />}
           onClose={(e) => addUser(e)}
+          onClick={() => setInterest([])}
         >
           <Text color={"gray.500"}>
             로그인이 불가능한 테스트 유저 데이터를 생성합니다.
@@ -726,15 +667,15 @@ function AdminUser({ data, ...props }) {
                 >
                   <Center w={"100%"}>
                     <VStack>
-                      <Avatar size="2xl" src={userData.user_profile} />
+                      <Avatar size="2xl" src={userData?.user_profile} />
                       <Button onClick={onClickProfileButton}>
                         프로필 업로드
                       </Button>
                       <Input
                         display={"none"}
-                        value={
-                          userData?.user_profile ? userData?.user_profile : ""
-                        }
+                        // value={
+                        //   userData?.user_profile ? userData?.user_profile : ""
+                        // }
                         name="user_profile"
                         ref={profileRef}
                         type="file"
@@ -758,11 +699,21 @@ function AdminUser({ data, ...props }) {
                       display={"flex"}
                     >
                       <FormControl isRequired>
-                        <FormLabel>이름</FormLabel>
+                        <FormLabel>실명</FormLabel>
+                        <Input
+                          name="user_real_name"
+                          type="text"
+                          placeholder="실명"
+                          height="40px"
+                          alignSelf="stretch"
+                        />
+                      </FormControl>
+                      <FormControl isRequired>
+                        <FormLabel>닉네임</FormLabel>
                         <Input
                           name="user_name"
                           type="text"
-                          placeholder="실명"
+                          placeholder="닉네임"
                           height="40px"
                           alignSelf="stretch"
                         />
@@ -818,12 +769,48 @@ function AdminUser({ data, ...props }) {
                     </Stack>
                     <Stack bgColor={"white"} h={"100%"} w={"100%"}>
                       <FormControl isRequired>
-                        <FormLabel>식사 가능 동네</FormLabel>
+                        <FormLabel>지역</FormLabel>
                         <LocationSelector onChange={(city, district) => {}} />
                       </FormControl>
                       <FormControl>
-                        <FormLabel>관심사(선택)</FormLabel>
-                        <InterestSelector />
+                        <FormLabel>관심사(최대 3개 선택)</FormLabel>
+                        {/* <InterestSelector /> */}
+                        <Wrap>
+                          {[
+                            "아웃도어/여행",
+                            "운동/스포츠",
+                            "인문학/책/글",
+                            "외국/언어",
+                            "문화/공연/축제",
+                            "음악/악기",
+                            "공예/만들기",
+                            "댄스/무용",
+                            "봉사활동",
+                            "사교/인맥",
+                            "차/오토바이",
+                            "사진/영상",
+                            "스포츠관람",
+                            "게임/오락",
+                            "요리/제조",
+                            "반려동물",
+                            "자기계발",
+                          ].map((item, index) => (
+                            <WrapItem
+                              key={index}
+                              onClick={() => {
+                                handleUserInterest(item);
+                              }}
+                            >
+                              <Tag
+                                colorScheme={
+                                  interest?.includes(item) ? "blue" : "gray"
+                                }
+                              >
+                                {item}
+                              </Tag>
+                            </WrapItem>
+                          ))}
+                        </Wrap>
                       </FormControl>
                       <FormControl isRequired>
                         <FormLabel>프로필 소개말</FormLabel>
@@ -865,7 +852,8 @@ function AdminUser({ data, ...props }) {
           }}
         >
           <option value={"doc_id"}>UID</option>
-          <option value={"user_name"}>이름</option>
+          <option value={"user_real_name"}>실명</option>
+          <option value={"user_name"}>닉네임</option>
           <option value={"user_gender"}>성별</option>
           <option value={"user_place"}>지역</option>
           <option value={"user_phone"}>휴대번호</option>
@@ -1059,6 +1047,12 @@ function AdminUser({ data, ...props }) {
                         action={"수정"}
                         title={<EditIcon />}
                         onClose={(e) => updateUser(value.doc_id, e)}
+                        onClick={() => {
+                          setUserData(value);
+                          setInterest(
+                            value.user_interest ? value.user_interest : []
+                          );
+                        }}
                       >
                         <Stack
                           justify="flex-start"
@@ -1145,11 +1139,22 @@ function AdminUser({ data, ...props }) {
                                     display={"flex"}
                                   >
                                     <FormControl isRequired>
-                                      <FormLabel>이름</FormLabel>
+                                      <FormLabel>실명</FormLabel>
+                                      <Input
+                                        name="user_real_name"
+                                        type="text"
+                                        placeholder="실명"
+                                        height="40px"
+                                        alignSelf="stretch"
+                                        defaultValue={value?.user_real_name}
+                                      />
+                                    </FormControl>
+                                    <FormControl isRequired>
+                                      <FormLabel>닉네임</FormLabel>
                                       <Input
                                         name="user_name"
                                         type="text"
-                                        placeholder="실명"
+                                        placeholder="닉네임"
                                         height="40px"
                                         alignSelf="stretch"
                                         defaultValue={value?.user_name}
@@ -1218,7 +1223,7 @@ function AdminUser({ data, ...props }) {
                                     w={"100%"}
                                   >
                                     <FormControl isRequired>
-                                      <FormLabel>식사 가능 동네</FormLabel>
+                                      <FormLabel>지역</FormLabel>
                                       <LocationSelector
                                         defaultCity={
                                           value.user_place[0].split(" ")[0]
@@ -1229,8 +1234,48 @@ function AdminUser({ data, ...props }) {
                                       />
                                     </FormControl>
                                     <FormControl>
-                                      <FormLabel>관심사(선택)</FormLabel>
-                                      <InterestSelector />
+                                      <FormLabel>
+                                        관심사(최대 3개 선택)
+                                      </FormLabel>
+                                      {/* <InterestSelector /> */}
+                                      <Wrap>
+                                        {[
+                                          "아웃도어/여행",
+                                          "운동/스포츠",
+                                          "인문학/책/글",
+                                          "외국/언어",
+                                          "문화/공연/축제",
+                                          "음악/악기",
+                                          "공예/만들기",
+                                          "댄스/무용",
+                                          "봉사활동",
+                                          "사교/인맥",
+                                          "차/오토바이",
+                                          "사진/영상",
+                                          "스포츠관람",
+                                          "게임/오락",
+                                          "요리/제조",
+                                          "반려동물",
+                                          "자기계발",
+                                        ].map((item, index) => (
+                                          <WrapItem
+                                            key={index}
+                                            onClick={() => {
+                                              handleUserInterest(item);
+                                            }}
+                                          >
+                                            <Tag
+                                              colorScheme={
+                                                interest?.includes(item)
+                                                  ? "blue"
+                                                  : "gray"
+                                              }
+                                            >
+                                              {item}
+                                            </Tag>
+                                          </WrapItem>
+                                        ))}
+                                      </Wrap>
                                     </FormControl>
                                     <FormControl isRequired>
                                       <FormLabel>프로필 소개말</FormLabel>
