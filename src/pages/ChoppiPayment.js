@@ -3,7 +3,7 @@ import { parse } from "querystring";
 import React, { useEffect, useState } from "react";
 import { db_set } from "../js/Database";
 
-function MugglePayment(props) {
+function ChoppiPayment(props) {
   const [content, setContent] = useState({});
   const [payResult, setPayResult] = useState({});
   const [orderInfo, setOrderInfo] = useState(null);
@@ -147,4 +147,4 @@ function MugglePayment(props) {
   return;
 }
 
-export default MugglePayment;
+export default ChoppiPayment;

@@ -1,20 +1,20 @@
+// Import mock database instead of Firebase
 import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  orderBy,
-  query,
-  serverTimestamp,
-  setDoc,
-  updateDoc,
-  where,
-} from "firebase/firestore";
-import { auth, db } from "../db/firebase_config";
-import { calculateDistance } from "./UserAPI";
-import { checkNull } from "./API";
+  db_add,
+  db_set,
+  db_update,
+  db_delete,
+  get_doc_all,
+  get_doc_all2,
+  get_doc_data,
+  get_doc_list,
+  get_doc_list_2,
+  arrange_distance,
+  arrange_random,
+  findUser,
+  get_user,
+  mockAuth as auth
+} from "./MockDatabase";
 
 /**
  * @namespace DB
@@ -27,17 +27,7 @@ import { checkNull } from "./API";
  * @param {object} data 추가할 데이터
  * @returns {string} 추가된 document의 id
  */
-export const db_add = async (col, data) => {
-  // Add a new document with a generated id.
-  const docRef = await addDoc(collection(db, col), {
-    ...data,
-    timestamp: serverTimestamp(),
-  });
-
-  // await setDoc(col, docRef.id, { doc_id: docRef.id });
-
-  return docRef.id;
-};
+export { db_add };
 
 /** firebase에 문서 이름을 지정하여 data field를 저장합니다.
  * @function db_set
@@ -46,16 +36,7 @@ export const db_add = async (col, data) => {
  * @param {string} doc_id doc_id
  * @param {object} data 추가할 데이터
  */
-export const db_set = async (col, doc_id, data) => {
-  // 데이터 id 지정해서 추가
-
-  // console.log(col, doc_id, data);
-  await setDoc(doc(db, col, doc_id), {
-    ...data,
-    doc_id: doc_id,
-    timestamp: serverTimestamp(),
-  });
-};
+export { db_set };
 
 /** collection에 이미 생성된 문서에 data field를 추가합니다.
  * @function db_update
@@ -64,10 +45,7 @@ export const db_set = async (col, doc_id, data) => {
  * @param {string} doc_id 추가할 문서의 id
  * @param {object} data 추가할 데이터
  */
-export const db_update = async (col, doc_id, data) => {
-  // Add a new document in collection
-  await updateDoc(doc(db, col, doc_id), data);
-};
+export { db_update };
 
 /** collection 내 특정 문서 삭제
  * @function db_delete
@@ -76,9 +54,7 @@ export const db_update = async (col, doc_id, data) => {
  * @param {string} doc_id 문서 id
  */
 
-export const db_delete = async (col, doc_id) => {
-  await deleteDoc(doc(db, col, doc_id));
-};
+export { db_delete };
 
 /** 컬렉션에서 여러 문서 가져오기(특정 속성으로 검색해서 리스트를 가지고 올 때 사용)
  * @function get_doc_all
@@ -86,30 +62,9 @@ export const db_delete = async (col, doc_id) => {
  * @param {string} col collection 이름
  * @return {object} property 값이 value 와 일치하는 데이터 반환
  */
-export const get_doc_all = async (col) => {
-  const q = query(collection(db, col));
-  const querySnapshot = await getDocs(q);
+export { get_doc_all };
 
-  const doc_list = [];
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    doc_list.push({ ...doc.data(), doc_id: doc.id });
-  });
-  return doc_list;
-};
-
-export const get_doc_all2 = async (col, order, sort) => {
-  console.log(col, order, sort);
-  const q = query(collection(db, col), orderBy(order, sort));
-  const querySnapshot = await getDocs(q);
-
-  const doc_list = [];
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    doc_list.push({ ...doc.data(), doc_id: doc.id });
-  });
-  return doc_list;
-};
+export { get_doc_all2 };
 
 /** 문서 id로 데이터 가지고 오기
  * @function get_doc_data
@@ -118,11 +73,7 @@ export const get_doc_all2 = async (col, order, sort) => {
  * @param {string} doc_id 문서 id
  * @return {object} 단일 문서의 내용
  */
-export const get_doc_data = async (col, doc_id) => {
-  const docRef = doc(db, col, doc_id);
-  const docSnap = await getDoc(docRef);
-  return docSnap.data();
-};
+export { get_doc_data };
 
 /** 조건에 일치하는 모든 문서를 가지고 오기
  * @function get_doc_list
@@ -132,34 +83,9 @@ export const get_doc_data = async (col, doc_id) => {
  * @param {string} value 검색 값
  * @return {object} property 값이 value 와 일치하는 데이터 반환
  */
-export const get_doc_list = async (col, property, value) => {
-  const q = query(collection(db, col), where(property, "==", value));
-  const querySnapshot = await getDocs(q);
+export { get_doc_list };
 
-  const doc_list = [];
-  querySnapshot.forEach((doc) => {
-    if (doc.data().user_phone) {
-      // 휴대폰 번호가 인증된 사람만 나타남
-      // doc.data() is never undefined for query doc snapshots
-      doc_list.push({ ...doc.data(), doc_id: doc.id });
-    }
-  });
-
-  return doc_list;
-};
-
-export const get_doc_list_2 = async (col, property, value) => {
-  const q = query(collection(db, col), where(property, "==", value));
-  const querySnapshot = await getDocs(q);
-
-  const doc_list = [];
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    doc_list.push({ ...doc.data(), doc_id: doc.id });
-  });
-
-  return doc_list;
-};
+export { get_doc_list_2 };
 
 /** 거리순 정렬
  * @function arrange_distance
@@ -168,117 +94,19 @@ export const get_doc_list_2 = async (col, property, value) => {
  * @param {string} user_type 유저 타입
  * @return {Array} 거리순 정렬을 한 목록 반환
  */
-export async function arrange_distance(user_location, user_type) {
-  // 현재 위치 좌표 (예시)
-  const currentLocation = user_location;
-
-  const q = query(collection(db, "user"));
-
-  const _q = query(collection(db, "user"), where("user_type", "==", user_type));
-  const querySnapshot = await getDocs(user_type === "all" ? q : _q);
-  const places = [];
-  // Firestore에서 데이터 가져오기 및 거리순 정렬
-  querySnapshot.forEach((doc) => {
-    if (doc.data().user_phone) {
-      // 휴대폰 번호가 인증된 사람만 나타남
-      if (auth.currentUser.uid !== doc.id) {
-        const place = checkNull(doc.data().user_location, {
-          latitude: 37.5664056,
-          longitude: 126.9778222,
-        });
-        // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산
-        place.distance = calculateDistance(currentLocation, {
-          latitude: place.latitude,
-          longitude: place.longitude,
-        });
-        places.push({ ...doc.data(), ...place });
-      }
-    }
-  });
-
-  // 거리순으로 정렬
-  places.sort((a, b) => a.distance - b.distance);
-
-  return places;
-}
+export { arrange_distance };
 
 /** 랜덤 정렬
- * @function arrange_distance
+ * @function arrange_random
  * @memberof DB
  * @param {string} user_location 유저 위치
- * @param {string} user_location 유저의 행정동
+ * @param {string} user_dong 유저의 행정동
  * @param {string} user_type 유저 타입
  * @return {Array} 거리순 정렬을 한 목록 반환
  */
-export async function arrange_random(user_location, user_dong, user_type) {
-  // 현재 위치 좌표 (예시)
-  const currentLocation = user_location;
-  const dong = user_dong;
-
-  const q = query(
-    collection(db, "user"),
-    // where("dong", "==", dong),
-    where("user_type", "==", user_type)
-  );
-  const querySnapshot = await getDocs(q);
-  const places = [];
-  // Firestore에서 데이터 가져오기 및 거리순 정렬
-  querySnapshot.forEach((doc) => {
-    if (doc.data().user_phone) {
-      // 휴대폰 번호가 인증된 사람만 나타남
-      if (auth.currentUser.uid !== doc.id) {
-        const place = doc.data().user_location;
-        if (!place) return;
-        // 각 문서의 위치 정보와 현재 위치를 기반으로 거리 계산
-        place.distance = calculateDistance(currentLocation, {
-          latitude: place.latitude,
-          longitude: place.longitude,
-        });
-        places.push({ ...doc.data(), ...place });
-      }
-    }
-  });
-
-  // Fisher-Yates 알고리즘 사용
-  for (let i = places.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    // 배열의 요소를 서로 교환
-    [places[i], places[j]] = [places[j], places[i]];
-  }
-
-  return places;
-}
+export { arrange_random };
 
 // 데이터 검색
-export const findUser = async (user_name, user_phone) => {
-  const nameToSearch = user_name;
-  const phoneNumberToSearch = user_phone;
+export { findUser };
 
-  const q = query(
-    collection(db, "user"),
-    where("user_name", "==", nameToSearch)
-  );
-
-  const querySnapshot = await getDocs(q);
-
-  var findUser = null;
-  querySnapshot.forEach((doc) => {
-    if (doc.data().user_phone === phoneNumberToSearch) {
-      findUser = doc.data();
-    }
-  });
-
-  return findUser;
-};
-
-export const get_user = async (uid) => {
-  console.log("uid", uid);
-  const q = query(collection(db, "user"), where("uid", "==", uid));
-  const querySnapshot = await getDocs(q);
-  let user = null;
-  querySnapshot.forEach((doc) => {
-    console.log("doc.data()", doc.data());
-    user = doc.data();
-  });
-  return user;
-};
+export { get_user };

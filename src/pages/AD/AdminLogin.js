@@ -17,7 +17,7 @@ function AdminLogin(props) {
     ) {
       // 로컬 저장
       localStorage.setItem(
-        "muggle-admin",
+        "choppi-admin",
         JSON.stringify({
           id: "admin",
           password: "1q2w3e4r!",
@@ -31,7 +31,7 @@ function AdminLogin(props) {
       <form onSubmit={handleLogin}>
         <VStack w={"100%"} spacing={4}>
           <Text fontSize={"2xl"} fontWeight={"bold"}>
-            MUGGLE 관리자
+            CHOPPI 관리자
           </Text>
           <Input isRequired placeholder="아이디를 입력하세요." />
           <Input

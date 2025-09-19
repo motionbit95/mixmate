@@ -16,9 +16,9 @@ function AdminDashboard(props) {
   const [paymentList, setPaymentList] = useState(null);
   const [page, setPage] = useState(<AdminUser data={userList} />);
   useEffect(() => {
-    console.log(localStorage.getItem("muggle-admin"));
-    if (localStorage.getItem("muggle-admin")) {
-      localStorage.getItem("muggle-admin");
+    console.log(localStorage.getItem("choppi-admin"));
+    if (localStorage.getItem("choppi-admin")) {
+      localStorage.getItem("choppi-admin");
       handleMenu(
         localStorage.getItem("menu") ? localStorage.getItem("menu") : "user"
       );

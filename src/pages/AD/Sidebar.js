@@ -29,7 +29,7 @@ function Sidebar(props) {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("muggle-admin");
+    localStorage.removeItem("choppi-admin");
     navigate("/login");
   };
   return (

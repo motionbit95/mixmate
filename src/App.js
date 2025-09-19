@@ -25,9 +25,9 @@ import OrderConfirm from "./pages/OrderConfirm";
 import OrderResult from "./pages/OrderResult";
 import AdminLogin from "./pages/AD/AdminLogin";
 import AdminDashboard from "./pages/AD/AdminDashboard";
-import OrderConfirmView from "./pages/MugglePayment";
-import MugglePaymentResult from "./pages/MugglePaymentResult";
-import MugglePayment from "./pages/MugglePayment";
+import OrderConfirmView from "./pages/ChoppiPayment";
+import ChoppiPaymentResult from "./pages/ChoppiPaymentResult";
+import ChoppiPayment from "./pages/ChoppiPayment";
 
 export const theme_primary_color = "gray.500";
 export const theme_bright_color = "gray.200";
@@ -48,7 +48,7 @@ export const gray_900 = "#111111";
 
 export const product_mode = "dev"; //product
 export const homepage =
-  product_mode == "dev" ? "https://localhost:3000" : "https://dinnermate.kr";
+  product_mode == "dev" ? "https://localhost:3000" : "https://choppi.kr";
 
 function App() {
   return (
@@ -57,10 +57,10 @@ function App() {
         <Route path="/*" element={<AdminDashboard />} />
         <Route path="/login" element={<AdminLogin />} />
         <Route path="/dashboard/*" element={<AdminDashboard />} />
-        <Route path="/muggle_payment" element={<MugglePayment />} />
+        <Route path="/choppi_payment" element={<ChoppiPayment />} />
         <Route
-          path="/muggle_payment_result"
-          element={<MugglePaymentResult />}
+          path="/choppi_payment_result"
+          element={<ChoppiPaymentResult />}
         />
         <Route path="/order_result" element={<OrderResult />} />
         {/* <Route path="/order_result" element={<OrderResult />} />

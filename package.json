@@ -1,5 +1,5 @@
 {
-  "name": "mixmate",
+  "name": "choppi",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -72,5 +72,5 @@
   "devDependencies": {
     "concurrently": "^8.2.2"
   },
-  "proxy": "https://dinnermate-node-server-0d7d5dc74685.herokuapp.com"
+  "homepage": "https://choppi.kr"
 }
