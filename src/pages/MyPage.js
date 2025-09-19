@@ -39,7 +39,6 @@ import { importDefaultUser, logout } from "../js/Auth";
 import { User } from "../component/User";
 import { Navbar } from "../component/Navbar";
 import { CustomButton } from "../component/Buttons";
-import { deleteUser } from "firebase/auth";
 
 export const MyPage = () => {
   const navigate = useNavigate();
@@ -53,16 +52,6 @@ export const MyPage = () => {
       const userInfo = await get_doc_data("user", currentUser?.uid);
       setUser(userInfo);
 
-      if (!userInfo.user_phone && window.location.pathname.includes("mypage")) {
-        window.confirm(
-          "본인 인증이 안된 회원입니다. 회원 가입 화면으로 이동합니다."
-        );
-        {
-          localStorage.setItem("ret_page", "/information");
-          navigate("/signup");
-          return;
-        }
-      }
 
       // if (!userInfo.user_food) {
       //   window.confirm(
@@ -81,14 +70,9 @@ export const MyPage = () => {
       auth.onAuthStateChanged(async (currentUser) => {
         if (currentUser) {
           await db_delete("user", currentUser?.uid);
-          deleteUser(currentUser)
-            .then(() => {
-              navigate("/login");
-            })
-            .catch((error) => {
-              // An error ocurred
-              // ...
-            });
+          // Mock user deletion
+          console.log("[MockAuth] User deleted:", currentUser?.uid);
+          navigate("/login");
         }
       });
     }
@@ -238,18 +222,6 @@ export const MyPage = () => {
             onClick={onDeleteUser}
           >
             탈퇴하기
-          </Text>
-          <HorizonLine />
-          <Text
-            fontWeight="semibold"
-            fontSize="18px"
-            color={black}
-            textAlign="center"
-            onClick={() =>
-              window.location.replace("http://pf.kakao.com/_pRxoBG")
-            }
-          >
-            문의 및 신고하기
           </Text>
           <HorizonLine />
           {/* <Button onClick={importDefaultUser}>디폴트데이터삽입</Button> */}

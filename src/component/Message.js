@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { format } from "date-fns";
 import { useAuthState } from "../js/Hooks";
-import firebase from "firebase/compat/app";
+import { auth } from "../db/firebase_config";
 
 export const formatDate = (date) => {
   let formattedDate = "";
@@ -20,7 +20,7 @@ const Message = ({
   displayName = "",
   photoURL = "",
 }) => {
-  const { user } = useAuthState(firebase.auth());
+  const { user } = useAuthState(auth);
 
   const isSender = user?.uid === uid;
 

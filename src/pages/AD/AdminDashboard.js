@@ -6,8 +6,7 @@ import AdminUser from "./AdminUser";
 import AdminPayment from "./AdminPayment";
 import AdminGroup from "./AdminGroup";
 import AdminMatching from "./AdminMatching";
-import { collection, onSnapshot } from "firebase/firestore";
-import { db } from "../../db/firebase_config";
+import { get_doc_all } from "../../js/Database";
 
 function AdminDashboard(props) {
   const navigate = useNavigate();
@@ -26,36 +25,21 @@ function AdminDashboard(props) {
       navigate("/login");
     }
 
-    let userList = [];
-    let paymentList = [];
-    onSnapshot(collection(db, "user"), (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          // 첫 추가 시 added로 들어옵니다.
-          userList.push({ ...change.doc.data(), doc_id: change.doc.id });
-        }
-        if (change.type === "modified") {
-        }
-        if (change.type === "removed") {
-        }
-      });
-    });
+    // Load mock data instead of Firebase
+    const loadMockData = async () => {
+      try {
+        const users = await get_doc_all("user");
+        const payments = await get_doc_all("payment");
+        setUserList(users);
+        setPaymentList(payments);
+      } catch (error) {
+        console.log("[AdminDashboard] Error loading mock data:", error);
+        setUserList([]);
+        setPaymentList([]);
+      }
+    };
 
-    onSnapshot(collection(db, "payment"), (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          // 첫 추가 시 added로 들어옵니다.
-          paymentList.push({ ...change.doc.data(), doc_id: change.doc.id });
-        }
-        if (change.type === "modified") {
-        }
-        if (change.type === "removed") {
-        }
-      });
-    });
-
-    setUserList(userList);
-    setPaymentList(paymentList);
+    loadMockData();
   }, []);
 
   useEffect(() => {

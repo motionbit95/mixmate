@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
-import firebase from "firebase/compat/app";
-import { useFirestoreQuery } from "../js/Hooks";
 
 // components
 import Message from "./Message";
@@ -11,8 +9,7 @@ import { Box, Button, Container, Input } from "@chakra-ui/react";
 // hook
 import { useLocation } from "react-router-dom";
 import { auth } from "../db/firebase_config";
-import { db_set, db_update, get_doc_data } from "../js/Database";
-import { serverTimestamp } from "firebase/firestore";
+import { db_update, get_doc_data } from "../js/Database";
 
 // choppi - 이름 끝 부분 숨김 처리
 import { getDisplayName } from "../js/API";
@@ -25,31 +22,56 @@ const Channel = ({ user = null }) => {
 
   const getUser = async () => {
     console.log(location.state?.data, auth.currentUser?.uid);
-    if (auth.currentUser?.uid === location.state?.data.receiver) {
-      const user = await get_doc_data("user", location.state?.data.sender);
-      setTitleName(getDisplayName(user.user_name));
+    if (auth.currentUser?.uid === location.state?.data?.receiver) {
+      const user = await get_doc_data("user", location.state?.data?.sender);
+      if (user && user.user_name) {
+        setTitleName(getDisplayName(user.user_name));
+      } else {
+        setTitleName("사용자");
+      }
     } else {
-      const user = await get_doc_data("user", location.state?.data.receiver);
-      setTitleName(getDisplayName(user.user_name));
+      const user = await get_doc_data("user", location.state?.data?.receiver);
+      if (user && user.user_name) {
+        setTitleName(getDisplayName(user.user_name));
+      } else {
+        setTitleName("사용자");
+      }
     }
   };
   useEffect(() => {
     getUser();
   }, []);
 
-  const db = firebase.firestore();
-
-  const messagesRef = db.collection(`message-${chat_id}`);
-  const messages = useFirestoreQuery(
-    messagesRef.orderBy("createdAt", "desc").limit(100)
-  );
+  // Mock messages for demo
+  const [messages, setMessages] = useState([
+    {
+      id: "msg_1",
+      text: "안녕하세요! 함께 식사하실래요?",
+      createdAt: { seconds: Date.now() / 1000 },
+      uid: "user_1",
+      displayName: "박수정",
+      read: true
+    },
+    {
+      id: "msg_2",
+      text: "네, 좋아요! 언제 만날까요?",
+      createdAt: { seconds: Date.now() / 1000 + 60 },
+      uid: auth.currentUser?.uid || "user_0",
+      displayName: auth.currentUser?.displayName || "테스트 유저",
+      read: true
+    }
+  ]);
 
   const [newMessage, setNewMessage] = useState("");
 
   const inputRef = useRef();
   const bottomListRef = useRef();
 
-  const { uid, displayName, photoURL } = user;
+  const { uid, displayName, photoURL } = user || {
+    uid: auth.currentUser?.uid || "user_0",
+    displayName: auth.currentUser?.displayName || "테스트 유저",
+    photoURL: null
+  };
 
   function scrollToBottom(componentId) {
     var component = document.getElementById(componentId);
@@ -83,46 +105,36 @@ const Channel = ({ user = null }) => {
 
     const trimmedMessage = newMessage.trim();
     if (trimmedMessage) {
-      // Add new message in Firestore
-      messagesRef.add({
+      // Add new message to mock messages
+      const newMsg = {
+        id: `msg_${Date.now()}`,
         text: trimmedMessage,
-        createdAt: serverTimestamp(),
-        uid,
-        displayName,
-        photoURL,
+        createdAt: { seconds: Date.now() / 1000 },
+        uid: auth.currentUser?.uid || "user_0",
+        displayName: auth.currentUser?.displayName || "테스트 유저",
         read: false,
-      });
+      };
+
+      setMessages(prev => [...prev, newMsg]);
+
       // Clear input field
       setNewMessage("");
 
-      let docRef = await get_doc_data(`message-${chat_id}`, "chat_info");
+      // Mock chat info update
+      console.log("[MockChat] Message sent:", trimmedMessage);
 
-      await db_update(
-        `message-${chat_id}`,
-        "chat_info",
-        auth.currentUser?.uid === location.state?.data.receiver
-          ? {
-              sender_isRead: docRef.sender_isRead + 1,
-            }
-          : { receiver_isRead: docRef.receiver_isRead + 1 }
-      );
       // Scroll down to the bottom of the list
-      bottomListRef.current.scrollIntoView({ behavior: "smooth" });
+      if (bottomListRef.current) {
+        bottomListRef.current.scrollIntoView({ behavior: "smooth" });
+      }
     }
 
-    //# 채팅 정보 업데이트
-    await db_update(`message-${chat_id}`, "chat_info", {
-      timestamp: new Date(),
-      lastmessage: trimmedMessage,
-    });
     scrollToBottom("chat-container");
   };
 
   function readAllMessage() {
-    db_update(`message-${chat_id}`, "chat_info", {
-      sender_isRead: 0,
-      receiver_isRead: 0,
-    });
+    // Mock function - just log for demo
+    console.log("[MockChat] All messages marked as read");
   }
 
   return (

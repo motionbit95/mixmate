@@ -200,9 +200,6 @@ export const get_doc_data = async (col, doc_id) => {
 export const get_doc_list = async (col, property, value) => {
   const collection = mockData[col] || [];
   const result = collection.filter(item => {
-    if (col === 'user' && !item.user_phone) {
-      return false; // Mock phone verification check
-    }
     return item[property] === value;
   });
 
@@ -238,7 +235,6 @@ export async function arrange_distance(user_location, user_type) {
   const currentUserId = mockAuth.currentUser?.uid;
 
   const filteredUsers = users.filter(user => {
-    if (!user.user_phone) return false;
     if (user.doc_id === currentUserId) return false;
     if (user_type !== "all" && user.user_type !== user_type) return false;
     return true;
@@ -269,7 +265,6 @@ export async function arrange_random(user_location, user_dong, user_type) {
   const currentUserId = mockAuth.currentUser?.uid;
 
   const filteredUsers = users.filter(user => {
-    if (!user.user_phone) return false;
     if (user.doc_id === currentUserId) return false;
     if (user.user_type !== user_type) return false;
     return true;

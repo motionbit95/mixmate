@@ -120,7 +120,6 @@ export const Details = () => {
           2
         )}.${payment.PCD_PAY_TIME?.substr(6, 2)}
 취소된 금액은 최대 3 영업일 이내에 원래 결제 수단으로 환불될 예정입니다.
-추가적인 궁금한 사항이나 도움이 필요하신 경우, 언제든지 고객센터로 문의해 주세요.
 감사합니다. 디너메이트 드림`}
         {/* {get_refund_message(value.matching_payment)} */}
       </Text>

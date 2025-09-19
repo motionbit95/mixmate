@@ -397,8 +397,8 @@ function AdminUser({ data, ...props }) {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selImage, setSelImage] = useState("");
-  const [users, setUsers] = useState(data ? data : null);
-  const [searchedUsers, setSearchedUsers] = useState(data ? data : null);
+  const [users, setUsers] = useState(data ? data : []);
+  const [searchedUsers, setSearchedUsers] = useState(data ? data : []);
   const [search, setSearch] = useState({
     filter: "uid",
     keyword: "",
@@ -460,17 +460,25 @@ function AdminUser({ data, ...props }) {
   ];
 
   useEffect(() => {
-    if (!users) {
+    if (!users || users.length === 0) {
       getUsers();
     }
   }, []);
+
+  useEffect(() => {
+    if (data && Array.isArray(data)) {
+      setUsers(data);
+      setSearchedUsers(data);
+    }
+  }, [data]);
 
   const getUsers = async () => {
     setUserData({});
     await get_doc_all2("user", search.order, search.sort).then((data) => {
       console.log(data);
-      setUsers(data);
-      setSearchedUsers(data);
+      const safeData = data || [];
+      setUsers(safeData);
+      setSearchedUsers(safeData);
     });
   };
 
@@ -586,6 +594,11 @@ function AdminUser({ data, ...props }) {
     console.log(search);
 
     let searchedUsers = [];
+    if (!users || !Array.isArray(users)) {
+      setSearchedUsers([]);
+      return;
+    }
+
     users.map((value, index) => {
       if (search.filter === "user_place") {
         if (value[search.filter].join("").includes(search.keyword)) {
@@ -992,6 +1005,7 @@ function AdminUser({ data, ...props }) {
             </Thead>
             <Tbody>
               {searchedUsers?.map((value, index) => {
+                if (!value) return null;
                 return (
                   <Tr key={value.doc_id}>
                     <Td textAlign={"center"}>
@@ -1026,19 +1040,19 @@ function AdminUser({ data, ...props }) {
                         }}
                       />
                     </Td>
-                    <Td textAlign={"center"}>{value.user_name}</Td>
+                    <Td textAlign={"center"}>{value.user_name || "-"}</Td>
                     <Td textAlign={"center"}>
                       <Tag
                         colorScheme={
                           value.user_gender === "남" ? "blue" : "red"
                         }
                       >
-                        {value.user_gender}
+                        {value.user_gender || "-"}
                       </Tag>
                     </Td>
-                    <Td>{getDisplayAge2(value.user_birth)}</Td>
-                    <Td>{value.user_place?.[0]}</Td>
-                    <Td>{value.user_phone?.replace("+82", "0")}</Td>
+                    <Td>{value.user_birth ? getDisplayAge2(value.user_birth) : "-"}</Td>
+                    <Td>{value.user_place?.[0] || "-"}</Td>
+                    <Td>{value.user_phone?.replace("+82", "0") || "-"}</Td>
                     <Td>
                       <PopupBase
                         size={"sm"}
@@ -1226,10 +1240,14 @@ function AdminUser({ data, ...props }) {
                                       <FormLabel>지역</FormLabel>
                                       <LocationSelector
                                         defaultCity={
-                                          value.user_place[0].split(" ")[0]
+                                          value.user_place && value.user_place[0]
+                                            ? value.user_place[0].split(" ")[0]
+                                            : ""
                                         }
                                         defaultDistrict={
-                                          value.user_place[0].split(" ")[1]
+                                          value.user_place && value.user_place[0]
+                                            ? value.user_place[0].split(" ")[1]
+                                            : ""
                                         }
                                       />
                                     </FormControl>

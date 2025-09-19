@@ -45,99 +45,8 @@ import { CustomButton, FullButton } from "../component/Buttons";
 import { TopHeader } from "../component/TopHeader";
 import axios from "axios";
 import { format } from "date-fns";
-import firebase from "firebase/compat/app";
-import { CheckCircleIcon } from "@chakra-ui/icons";
 import { isAdult } from "../js/API";
-import { deleteUser } from "firebase/auth";
 
-export const PhoneCert = ({ ...props }) => {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [verificationCode, setVerificationCode] = useState("");
-  const [confirmationResult, setConfirmationResult] = useState(null);
-  const [verificationResult, setVerificationResult] = useState("");
-  const [confirm, setConfirm] = useState(false);
-
-  const sendOTP = async () => {
-    const req_number = "+82" + phoneNumber.substring(1).replace("-", "");
-
-    try {
-      const appVerifier = new firebase.auth.RecaptchaVerifier(
-        "recaptcha-container",
-        {
-          size: "invisible",
-        }
-      );
-
-      const confirmation = await firebase
-        .auth()
-        .signInWithPhoneNumber(req_number, appVerifier);
-      setConfirmationResult(confirmation);
-      setVerificationResult("인증 코드가 전송되었습니다.");
-    } catch (error) {
-      console.error("인증 코드 전송 실패:", error.message);
-    }
-  };
-
-  const verifyOTP = async () => {
-    try {
-      const result = await confirmationResult.confirm(verificationCode);
-      console.log("휴대폰 번호 인증 성공", result.user);
-      setVerificationResult("휴대폰 번호가 인증되었습니다.");
-      setConfirm(true);
-      props.onConfirm(phoneNumber);
-    } catch (error) {
-      console.error("휴대폰 번호 인증 실패:", error.message);
-      setVerificationResult("휴대폰 번호 인증 실패");
-      setConfirm(false);
-    }
-  };
-
-  return (
-    <Stack w={"100%"}>
-      <FormControl>
-        {/* <FormLabel>휴대폰 번호:</FormLabel> */}
-        <HStack>
-          <Input
-            isDisabled={confirm}
-            type="tel"
-            id="phoneNumber"
-            value={phoneNumber.replace("-", "")}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            placeholder="휴대폰번호"
-            maxLength={11}
-            _disabled={{ bgColor: gray_100 }}
-          />
-          <Button
-            w="50%"
-            onClick={sendOTP}
-            rightIcon={confirm ? <CheckCircleIcon color={"green.500"} /> : null}
-          >
-            {confirm ? "인증 완료" : "인증 코드 전송"}
-          </Button>
-        </HStack>
-      </FormControl>
-      {verificationResult === "인증 코드가 전송되었습니다." && (
-        <FormControl>
-          {/* <FormLabel>인증코드 :</FormLabel> */}
-          <HStack>
-            <Input
-              type="text"
-              id="verificationCode"
-              value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value)}
-              placeholder="인증코드 입력"
-            />
-            <Button w="50%" onClick={verifyOTP}>
-              인증 코드 확인
-            </Button>
-          </HStack>
-        </FormControl>
-      )}
-      <div id="recaptcha-container"></div>
-      {/* <p>{verificationResult}</p> */}
-    </Stack>
-  );
-};
 
 export const SignUp = () => {
   useEffect(() => {
@@ -195,16 +104,13 @@ export const SignUp = () => {
   };
 
   const onApproveButton = async () => {
-    window.location.replace(
-      //"http://localhost:3001/sample/make_hash"
-      "https://dinnermate-node-server-0d7d5dc74685.herokuapp.com/sample/make_hash"
-    );
+    // 회원가입 완료 후 정보 입력 페이지로 이동
+    navigate("/information");
   };
 
-  // 본인인증 버튼 눌렀을 때 수행
+  // 회원가입 버튼 눌렀을 때 수행
   const onClickApprove = async () => {
-    //# 여기에 휴대폰 인증(API) 추가
-
+  
     // 이미 있는 이메일의 경우
 
     if (!isValid.state) return;
@@ -235,7 +141,7 @@ export const SignUp = () => {
           );
           const userInfo = currentUser[0];
 
-          if (userInfo.user_phone) {
+          if (userInfo) {
             alert("이미 존재하는 아이디입니다.");
             return;
           }
@@ -249,7 +155,8 @@ export const SignUp = () => {
 
           // console.log("회원 탈퇴", userInfo);
           db_delete("user", userInfo.doc_id);
-          deleteUser(loginUser);
+          // Mock user deletion for error handling
+          console.log("[MockAuth] User account deleted due to error:", loginUser?.uid);
           setLoading(false);
 
           alert("일시적인 오류가 발생하였습니다. 다시 시도해주세요.");
@@ -402,8 +309,6 @@ export const SignUp = () => {
                     formData.user_email,
                     formData.user_password,
                     confirmPassword
-                    // formData.user_phone,
-                    // formData.user_birth
                   );
 
                   setValid({ isValid: ret === "", message: ret });
@@ -413,7 +318,7 @@ export const SignUp = () => {
                   }
                 }}
               >
-                본인인증하기
+                회원가입
               </Button>
             </Stack>
           </Stack>

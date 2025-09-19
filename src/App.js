@@ -54,17 +54,33 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/*" element={<AdminDashboard />} />
-        <Route path="/login" element={<AdminLogin />} />
-        <Route path="/dashboard/*" element={<AdminDashboard />} />
-        <Route path="/choppi_payment" element={<ChoppiPayment />} />
-        <Route
-          path="/choppi_payment_result"
-          element={<ChoppiPaymentResult />}
-        />
+        {/* 일반 사용자 페이지들 */}
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/user-login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/matching" element={<Matching />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/information" element={<Information />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/details" element={<Details />} />
+        <Route path="/chatlist" element={<ChatList />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/find" element={<Find />} />
+        <Route path="/cert-success" element={<CertSuccess />} />
+        <Route path="/email-login" element={<EmailLogin />} />
+        <Route path="/order-confirm" element={<OrderConfirm />} />
         <Route path="/order_result" element={<OrderResult />} />
-        {/* <Route path="/order_result" element={<OrderResult />} />
-        <Route path="/order_confirm" element={<OrderConfirm />} /> */}
+        <Route path="/choppi_payment" element={<ChoppiPayment />} />
+        <Route path="/choppi_payment_result" element={<ChoppiPaymentResult />} />
+
+        {/* 관리자 페이지들 */}
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/dashboard/*" element={<AdminDashboard />} />
+
+        {/* 기본 경로를 홈으로 리다이렉트 */}
+        <Route path="*" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );

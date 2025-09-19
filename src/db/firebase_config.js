@@ -2,6 +2,7 @@
 // This replaces Firebase with local mock implementations
 
 import { mockAuth } from "../js/MockDatabase";
+import { onAuthStateChanged as mockOnAuthStateChanged } from "../js/MockAuth";
 
 // Mock Firebase app
 export const firebaseApp = {
@@ -12,8 +13,16 @@ export const firebaseApp = {
   }
 };
 
-// Export mock auth
-export const auth = mockAuth;
+// Export mock auth with additional methods
+export const auth = {
+  ...mockAuth,
+  onAuthStateChanged: mockOnAuthStateChanged,
+  signOut: () => {
+    console.log("[MockAuth] User signed out");
+    mockAuth.currentUser = null;
+    return Promise.resolve();
+  }
+};
 
 // Mock Firestore
 export const db = {

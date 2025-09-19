@@ -93,12 +93,6 @@ function Find(props) {
     }
   }
 
-  const onCertButton = async () => {
-    window.location.replace(
-      //"http://localhost:3001/sample/make_hash"
-      "https://dinnermate-node-server-0d7d5dc74685.herokuapp.com/sample/make_hash"
-    );
-  };
   return (
     <Container minH={"100vh"} p={"4vh"}>
       <Flex justifyContent={"flex-end"}>
@@ -122,7 +116,7 @@ function Find(props) {
                 <Input placeholder="이름" />
                 <Input placeholder="전화번호" />
                 {user_email === "" ? (
-                  <Button onClick={onCertButton}>휴대폰 본인인증</Button>
+                  <Button>아이디 찾기</Button>
                 ) : (
                   <Stack
                     backgroundColor={"gray.100"}
@@ -155,7 +149,7 @@ function Find(props) {
                   <Input placeholder="이름" />
                   <Input placeholder="전화번호" />
                   <Input placeholder="이메일(아이디)" />
-                  <Button onClick={onCertButton}>휴대폰 본인인증</Button>
+                  <Button>비밀번호 찾기</Button>
                 </Stack>
               ) : (
                 <Stack>

@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const dotenv = require("dotenv");
 
@@ -11,10 +12,10 @@ const indexRouter = require("./routes/index");
 
 dotenv.config();
 
-// 또는 특정 출처의 요청만 허용
+// 로컬 개발 환경을 위한 CORS 설정
 app.use(
   cors({
-    origin: "https://dinnermate-node-server-0d7d5dc74685.herokuapp.com",
+    origin: ["http://localhost:3000", "http://localhost:3001"],
   })
 );
 

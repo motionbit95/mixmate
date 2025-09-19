@@ -69,7 +69,6 @@ import { getSatuation, isAdult, removeSpecialCharacters } from "../js/API";
 import { TopHeader } from "../component/TopHeader";
 import { CustomButton } from "../component/Buttons";
 import { auth } from "../db/firebase_config";
-import { deleteUser } from "firebase/auth";
 import { upload_image } from "../js/Storage";
 import { defaultFemale, defaultMale } from "../db/dummy";
 import { BsQuestionCircle } from "react-icons/bs";
@@ -183,7 +182,8 @@ export const Information = () => {
             alert("미성년자는 가입할 수 없습니다. 로그인 화면으로 돌아갑니다.");
             // 회원 탈퇴 처리
             db_delete("user", auth.currentUser.uid);
-            deleteUser(auth.currentUser);
+            // Mock user deletion for underage users
+            console.log("[MockAuth] Underage user deleted:", auth.currentUser?.uid);
             navigate("/login");
             return false;
           }
