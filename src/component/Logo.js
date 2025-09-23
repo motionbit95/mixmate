@@ -8,7 +8,7 @@ import { checkNull } from "../js/API";
 export const SymbolLogo = ({ ...props }) => {
   return (
     <Text fontSize={"48px"} fontWeight={"900"} fontFamily={"omyu_pretty"}>
-      디너메이트
+      Choppi
     </Text>
     // <Image
     //   w={checkNull(props.w, "auto")}
@@ -27,7 +27,7 @@ export const TextLogo = ({ ...props }) => {
       whiteSpace={"nowrap"}
       px={"20px"}
     >
-      {"디너메이트"}
+      {"Choppi"}
     </Text>
     // <Image
     //   w={checkNull(props.w, "auto")}
@@ -41,7 +41,7 @@ export const Logo = ({ ...props }) => {
   return (
     <Stack direction={props.direction} spacing={props.spacing}>
       {/* <Text fontSize={"xxx-large"} fontWeight={"black"} my={"4vh"}>
-        {"디너메이트"}
+        {"Choppi"}
       </Text> */}
       {/* <Image
         w={checkNull(props.w, "auto")}

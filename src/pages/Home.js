@@ -14,6 +14,11 @@ import {
   IconButton,
   Tooltip,
   Center,
+  VStack,
+  Badge,
+  Flex,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import { createContext, useEffect, useRef, useState } from "react";
 import {
@@ -21,6 +26,7 @@ import {
   BsPeopleFill,
   BsPersonFill,
   BsQuestionCircle,
+  BsFilter,
 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { get_update_location } from "../js/UserAPI";
@@ -31,16 +37,28 @@ import {
   black,
   gray_100,
   gray_200,
+  gray_300,
+  gray_400,
+  gray_500,
   gray_600,
+  gray_700,
+  gray_900,
+  white,
+  bg,
+  surface,
   theme_bright_color,
   theme_primary_color,
+  brand_primary,
+  brand_secondary,
 } from "../App";
 import { Navbar } from "../component/Navbar";
 import { TextLogo } from "../component/Logo";
 import { Footer } from "../component/Footer";
 import { User } from "../component/User";
 import { getSatuation, isAdult } from "../js/API";
-import { CustomButton } from "../component/Buttons";
+import { EnterpriseButton, CustomButton } from "../component/Buttons";
+import { EnterpriseCard, UserCard } from "../component/EnterpriseCard";
+import { SkeletonList, LoadingOverlay } from "../component/EnterpriseLoading";
 import {
   arrange_distance,
   arrange_random,
@@ -164,15 +182,19 @@ export const Home = () => {
 
   const imageData = [
     {
-      label: "Image 1",
-      alt: "image1",
-      url: require("../assets/banner1.jpg"),
+      label: "Food Partnership",
+      alt: "food_partnership",
+      url: "https://picsum.photos/800/400?random=1",
     },
-
     {
-      label: "Image 2",
-      alt: "image2",
-      url: require("../assets/banner2.png"),
+      label: "Business Networking",
+      alt: "business_networking",
+      url: "https://picsum.photos/800/400?random=2",
+    },
+    {
+      label: "Team Building",
+      alt: "team_building",
+      url: "https://picsum.photos/800/400?random=3",
     },
   ];
 
@@ -208,164 +230,288 @@ export const Home = () => {
       setVisibleItems((prevVisibleItems) => prevVisibleItems + 6);
     };
 
+    const adultItems = items?.filter(item => isAdult(item.user_birth)) || [];
+
     return (
-      <Stack spacing={"4vh"} alignItems={"center"} w={"100%"}>
-        <Stack alignItems={"center"} w={"100%"}>
-          {items
-            .slice(0, visibleItems)
-            .map(
-              (item, index) =>
-                isAdult(item.user_birth) && <User key={index} data={item} />
-            )}
-        </Stack>
-        {visibleItems < items.length && (
-          <CustomButton
-            w="90px"
-            text={"더보기"}
-            code={theme_bright_color}
+      <VStack spacing="6" w="100%">
+        {/* User Grid */}
+        <Grid
+          templateColumns={{
+            base: "1fr",
+            sm: "repeat(2, 1fr)",
+            lg: "repeat(3, 1fr)"
+          }}
+          gap={{ base: "4", md: "6" }}
+          w="100%"
+        >
+          {adultItems.slice(0, visibleItems).map((item, index) => (
+            <GridItem key={index}>
+              <UserCard
+                user={item}
+                actions={
+                  <VStack spacing="2" w="100%">
+                    <HStack spacing="2" w="100%">
+                      <EnterpriseButton
+                        size={{ base: "sm", md: "md" }}
+                        variant="secondary"
+                        flex="1"
+                        onClick={() => navigate("/matching", { state: { data: item } })}
+                      >
+                        <Text fontSize={{ base: "xs", md: "sm" }}>프로필</Text>
+                      </EnterpriseButton>
+                      <EnterpriseButton
+                        size={{ base: "sm", md: "md" }}
+                        variant="primary"
+                        flex="1"
+                        onClick={() => navigate("/matching", { state: { data: item } })}
+                      >
+                        <Text fontSize={{ base: "xs", md: "sm" }}>매칭</Text>
+                      </EnterpriseButton>
+                    </HStack>
+                  </VStack>
+                }
+                transition="all 0.2s cubic-bezier(0.4, 0, 0.2, 1)"
+                _hover={{
+                  transform: "translateY(-4px)",
+                  boxShadow: "var(--shadow-lg)"
+                }}
+              />
+            </GridItem>
+          ))}
+        </Grid>
+
+        {/* Load More Button */}
+        {visibleItems < adultItems.length && (
+          <EnterpriseButton
+            variant="secondary"
+            size="md"
             onClick={handleLoadMore}
-          />
+            leftIcon={<Icon as={BsPeopleFill} />}
+          >
+            더 많은 친구 보기 ({adultItems.length - visibleItems}명 남음)
+          </EnterpriseButton>
         )}
-      </Stack>
+
+        {/* Empty State */}
+        {adultItems.length === 0 && (
+          <Center py="16">
+            <VStack spacing="4">
+              <Icon as={BsPeopleFill} boxSize="12" color={gray_400} />
+              <Text color={gray_500} fontSize="lg" fontWeight="500">
+                등록된 사용자가 없습니다
+              </Text>
+              <Text color={gray_400} fontSize="sm" textAlign="center">
+                새로운 친구들이 곧 등록될 예정입니다
+              </Text>
+            </VStack>
+          </Center>
+        )}
+      </VStack>
     );
   };
 
   return (
-    <Container px={0} pt={"50px"} pb={"55px"} minH={"100vh"}>
-      <Box className="header">
-        <Container border={"1px solid #d9d9d9"} p={0} bgColor={"white"}>
-          <Stack>
-            <HStack
-              p="1vw 2vw"
-              alignItems={"center"}
-              justifyContent={"space-between"}
-            >
-              <HStack w={"100%"}>
-                <TextLogo h={"4vh"} />
-              </HStack>
+    <Box bg={bg} minH="100vh">
+      {/* Enterprise Header */}
+      <Box
+        position="fixed"
+        top="0"
+        left="0"
+        right="0"
+        zIndex="sticky"
+        bg={white}
+        borderBottom="1px solid"
+        borderColor={gray_200}
+        backdropFilter="blur(8px)"
+        boxShadow="var(--shadow-sm)"
+      >
+        <Container maxW="container.xl" px="4">
+          <Flex
+            h="64px"
+            align="center"
+            justify="space-between"
+          >
+            {/* Logo Section */}
+            <HStack spacing="4">
+              <TextLogo h="32px" />
+              <Badge
+                colorScheme="blue"
+                variant="subtle"
+                borderRadius="full"
+                px="2"
+                fontSize="xs"
+                fontWeight="600"
+              >
+                Enterprise
+              </Badge>
+            </HStack>
 
-              <HStack alignItems={"flex-end"}>
+            {/* User Actions */}
+            <HStack spacing="2">
+              <Box position="relative">
                 <IconButton
                   onClick={() => navigate("/notice")}
-                  variant={"unstyled"}
-                  icon={<BsBell size={"24px"} />}
+                  variant="ghost"
+                  size="md"
+                  icon={<BsBell size="20px" />}
+                  aria-label="알림"
+                  borderRadius="8px"
+                  color={gray_600}
+                  _hover={{
+                    bg: gray_100,
+                    color: gray_900,
+                    transform: "translateY(-1px)"
+                  }}
+                  transition="all 0.2s cubic-bezier(0.4, 0, 0.2, 1)"
                 />
                 {alarmCnt > 0 && (
                   <Center
-                    zIndex={999}
-                    ml={"-32px"}
-                    h={"20px"}
-                    w={"20px"}
-                    bgColor={"red"}
-                    rounded={"full"}
+                    position="absolute"
+                    top="-2px"
+                    right="-2px"
+                    w="20px"
+                    h="20px"
+                    bg="red.500"
+                    color={white}
+                    borderRadius="full"
+                    fontSize="xs"
+                    fontWeight="600"
+                    boxShadow="0 2px 4px rgba(0,0,0,0.1)"
                   >
-                    <Text color={"white"}>{alarmCnt}</Text>
+                    {alarmCnt > 9 ? "9+" : alarmCnt}
                   </Center>
                 )}
-              </HStack>
+              </Box>
             </HStack>
-          </Stack>
+          </Flex>
         </Container>
       </Box>
-      <Stack
-        justify="flex-start"
-        align="flex-start"
-        spacing="0px"
-        overflow="hidden"
-        maxWidth="100%"
-        d
-        minH={"100vh"}
-      >
-        <Stack
-          pt={"10px"}
-          justify="flex-start"
-          align="flex-start"
-          spacing="20px"
-          overflow="hidden"
-          alignSelf="stretch"
-          m={"2vh"}
-        >
-          <Carousel
-            showArrows={false}
-            autoPlay={false}
-            infiniteLoop={true}
-            showThumbs={false}
-            selectedItem={currentIndex}
-            onChange={handleChange}
-            showStatus={false}
-          >
-            {renderSlides}
-          </Carousel>
-          <Stack
-            direction="row"
-            justify="space-between"
-            align="flex-start"
-            spacing="10px"
-            alignSelf="stretch"
-          >
-            <Stack
-              w="100%"
-              direction="row"
-              justify="flex-start"
-              align="center"
-              spacing="10px"
-            >
-              <Tabs
-                w="100%"
-                colorScheme={getSatuation(theme_primary_color)}
-                onChange={handleChange}
-                index={currentIndex}
-              >
-                <TabList>
-                  <Tab w="100%">
-                    <HStack>
-                      <Icon as={BsPeopleFill} />
-                      <Text
-                        lineHeight="1.31"
-                        fontWeight="semibold"
-                        fontSize="16px"
-                        letterSpacing="-0.32px"
-                        // color={black}
-                        textAlign="left"
-                      >
-                        내 주변 밥친구
-                      </Text>
-                    </HStack>
-                  </Tab>
-                  <Tab w="100%">
-                    <HStack>
-                      <Icon as={BsPersonFill} />
-                      <Text
-                        lineHeight="1.31"
-                        fontWeight="semibold"
-                        fontSize="16px"
-                        letterSpacing="-0.32px"
-                        // color={black}
-                        textAlign="center"
-                      >
-                        내 주변 밥멘토
-                      </Text>
-                    </HStack>
-                  </Tab>
-                </TabList>
+      {/* Main Content */}
+      <Container maxW="container.xl" px={{ base: "4", md: "6" }} pt="80px" pb="100px">
+        <VStack spacing={{ base: "6", md: "8" }} align="stretch">
+          {/* Hero Section */}
+          <EnterpriseCard variant="elevated" padding={{ base: "6", md: "8" }}>
+            <VStack spacing={{ base: "4", md: "6" }} align="stretch">
+              <VStack spacing={{ base: "2", md: "3" }} align="center">
+                <Text
+                  fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
+                  fontWeight="700"
+                  color={gray_900}
+                  textAlign="center"
+                  className="text-display-md"
+                  lineHeight="1.2"
+                >
+                  새로운 식사 친구를 찾아보세요
+                </Text>
+                <Text
+                  fontSize={{ base: "md", md: "lg" }}
+                  color={gray_600}
+                  textAlign="center"
+                  maxW={{ base: "100%", md: "600px" }}
+                  className="text-body-lg"
+                  px={{ base: "2", md: "0" }}
+                >
+                  AI 기반 매칭 시스템으로 당신과 취향이 맞는 식사 파트너를 만나보세요
+                </Text>
+              </VStack>
 
-                <TabPanels width={"100%"}>
-                  <TabPanel px={0} width={"100%"}>
-                    <Stack>
-                      <Stack
-                        w="100%"
-                        direction="row"
-                        justify="flex-end"
-                        align="flex-start"
-                        spacing="10px"
+              {/* Carousel with modern styling */}
+              <Box
+                borderRadius={{ base: "lg", md: "xl" }}
+                overflow="hidden"
+                boxShadow="var(--shadow-md)"
+                h={{ base: "200px", md: "300px", lg: "400px" }}
+              >
+                <Carousel
+                  showArrows={false}
+                  autoPlay={true}
+                  infiniteLoop={true}
+                  showThumbs={false}
+                  selectedItem={currentIndex}
+                  onChange={handleChange}
+                  showStatus={false}
+                  interval={5000}
+                  transitionTime={600}
+                >
+                  {renderSlides}
+                </Carousel>
+              </Box>
+            </VStack>
+          </EnterpriseCard>
+          {/* Navigation Tabs */}
+          <EnterpriseCard variant="default" padding={{ base: "4", md: "6" }}>
+            <Tabs
+              variant="soft-rounded"
+              colorScheme="blue"
+              index={currentIndex}
+              onChange={handleChange}
+            >
+              <TabList bg={gray_100} p="1" borderRadius="lg">
+                <Tab
+                  w="50%"
+                  borderRadius="md"
+                  fontWeight="600"
+                  fontSize={{ base: "xs", md: "sm" }}
+                  color={gray_600}
+                  py={{ base: "2", md: "3" }}
+                  _selected={{
+                    bg: white,
+                    color: brand_primary,
+                    boxShadow: "var(--shadow-sm)"
+                  }}
+                  transition="all 0.2s cubic-bezier(0.4, 0, 0.2, 1)"
+                >
+                  <HStack spacing={{ base: "1", md: "2" }}>
+                    <Icon as={BsPeopleFill} boxSize={{ base: "3", md: "4" }} />
+                    <Text display={{ base: "none", sm: "block" }}>내 주변 밥친구</Text>
+                    <Text display={{ base: "block", sm: "none" }}>밥친구</Text>
+                  </HStack>
+                </Tab>
+                <Tab
+                  w="50%"
+                  borderRadius="md"
+                  fontWeight="600"
+                  fontSize={{ base: "xs", md: "sm" }}
+                  color={gray_600}
+                  py={{ base: "2", md: "3" }}
+                  _selected={{
+                    bg: white,
+                    color: brand_primary,
+                    boxShadow: "var(--shadow-sm)"
+                  }}
+                  transition="all 0.2s cubic-bezier(0.4, 0, 0.2, 1)"
+                >
+                  <HStack spacing={{ base: "1", md: "2" }}>
+                    <Icon as={BsPersonFill} boxSize={{ base: "3", md: "4" }} />
+                    <Text display={{ base: "none", sm: "block" }}>내 주변 밥멘토</Text>
+                    <Text display={{ base: "block", sm: "none" }}>멘토</Text>
+                  </HStack>
+                </Tab>
+              </TabList>
+
+              <TabPanels mt="6">
+                <TabPanel px="0">
+                  <VStack spacing="6" align="stretch">
+                    {/* Filter Controls */}
+                    <VStack spacing="3" align="stretch">
+                      <HStack spacing="2" justify={{ base: "center", md: "flex-start" }}>
+                        <Icon as={BsFilter} color={gray_500} boxSize="4" />
+                        <Text fontSize={{ base: "xs", md: "sm" }} fontWeight="500" color={gray_600}>
+                          필터:
+                        </Text>
+                      </HStack>
+
+                      <Flex
+                        direction={{ base: "column", sm: "row" }}
+                        gap="2"
+                        align="stretch"
+                        wrap="wrap"
+                        justify="center"
                       >
-                        {/* {userInfo && userInfo.user_location && (
-                          <TextAddress user={userInfo} />
-                        )} */}
-                        <Button
-                          size="xs"
-                          variant="outline"
-                          colorScheme={getSatuation(theme_primary_color)}
+                        <EnterpriseButton
+                          variant="secondary"
+                          size={{ base: "sm", md: "md" }}
+                          width={{ base: "100%", sm: "auto" }}
                           onClick={() => {
                             if (gender === "남자") {
                               setGender("여자");
@@ -374,90 +520,105 @@ export const Home = () => {
                             } else if (gender === "전체") {
                               setGender("남자");
                             }
-
                             filterGender("개인", tab);
                           }}
                         >
-                          {gender === "남자"
-                            ? "전체"
-                            : gender === "여자"
-                            ? "남자"
-                            : "여자"}
-                        </Button>
-                        <Button
+                          {gender === "남자" ? "전체" : gender === "여자" ? "남자" : "여자"}
+                        </EnterpriseButton>
+
+                        <EnterpriseButton
+                          variant={tab === "거리" ? "primary" : "ghost"}
+                          size={{ base: "sm", md: "md" }}
+                          width={{ base: "100%", sm: "auto" }}
                           onClick={async () => {
                             setTab("거리");
                             filterGender("개인", "거리");
                           }}
-                          size="xs"
-                          variant="outline"
-                          colorScheme={getSatuation(theme_primary_color)}
                         >
                           가까운순
-                        </Button>
-                        <Button
+                        </EnterpriseButton>
+
+                        <EnterpriseButton
+                          variant={tab === "랜덤" ? "primary" : "ghost"}
+                          size={{ base: "sm", md: "md" }}
+                          width={{ base: "100%", sm: "auto" }}
                           onClick={async () => {
                             setTab("랜덤");
                             filterGender("개인", "랜덤");
                           }}
-                          size="xs"
-                          variant="outline"
-                          colorScheme={getSatuation(theme_primary_color)}
                         >
                           랜덤찾기
-                        </Button>
+                        </EnterpriseButton>
+
                         <Tooltip
-                          hasArrow
-                          whiteSpace={"pre-wrap"}
-                          placement="bottom-end"
                           label={
-                            <Stack>
-                              <Text fontWeight={"bold"}>가까운순</Text>
-                              <Text color={gray_600} fontSize={"small"}>
-                                {`현재 사용자의 위치에서 가까운 순서대로 밥친구를 정렬합니다.`}
-                              </Text>
-                              <Text fontWeight={"bold"}>랜덤찾기</Text>
-                              <Text color={gray_600} fontSize={"small"}>
-                                {`현재 사용자의 동내에서 랜덤으로 밥친구를 정렬합니다.`}
-                              </Text>
-                            </Stack>
+                            <VStack align="start" spacing="2" p="2">
+                              <Box>
+                                <Text fontWeight="600" fontSize="sm">가까운순</Text>
+                                <Text color="gray.300" fontSize="xs">
+                                  현재 위치에서 가까운 순서대로 정렬
+                                </Text>
+                              </Box>
+                              <Box>
+                                <Text fontWeight="600" fontSize="sm">랜덤찾기</Text>
+                                <Text color="gray.300" fontSize="xs">
+                                  같은 지역에서 랜덤으로 정렬
+                                </Text>
+                              </Box>
+                            </VStack>
                           }
-                          bg={gray_100}
-                          color={black}
+                          bg={gray_900}
+                          color={white}
+                          borderRadius="lg"
+                          hasArrow
+                          placement="bottom-end"
                         >
                           <IconButton
-                            variant={"ghost"}
-                            size={"xs"}
+                            variant="ghost"
+                            size={{ base: "sm", md: "md" }}
                             icon={<BsQuestionCircle />}
+                            aria-label="도움말"
+                            color={gray_500}
+                            _hover={{ color: gray_700 }}
+                            alignSelf={{ base: "center", sm: "flex-start" }}
                           />
                         </Tooltip>
-                      </Stack>
-                      <Stack
-                        justify="flex-start"
-                        align="center"
-                        spacing="2vh"
-                        alignSelf="stretch"
-                      >
+                      </Flex>
+                    </VStack>
+
+                    {/* User List */}
+                    <LoadingOverlay isLoading={!customerList}>
+                      {customerList && customerList.length > 0 ? (
                         <ItemList items={customerList} />
-                      </Stack>
-                    </Stack>
-                  </TabPanel>
-                  <TabPanel px={0} width={"100%"}>
-                    <Stack>
-                      <Stack
-                        w="100%"
-                        direction="row"
-                        justify="flex-end"
-                        align="flex-start"
-                        spacing="10px"
-                      >
-                        {/* {userInfo && userInfo.user_location && (
-                          <TextAddress user={userInfo} />
-                        )} */}
-                        <Button
-                          size="xs"
-                          variant="outline"
-                          colorScheme={getSatuation(theme_primary_color)}
+                      ) : (
+                        <Center py="12">
+                          <VStack spacing="4">
+                            <Text color={gray_500} fontSize="lg">
+                              아직 등록된 밥친구가 없습니다
+                            </Text>
+                            <Text color={gray_400} fontSize="sm">
+                              조금 더 기다려주세요!
+                            </Text>
+                          </VStack>
+                        </Center>
+                      )}
+                    </LoadingOverlay>
+                  </VStack>
+                </TabPanel>
+                <TabPanel px="0">
+                  <VStack spacing="6" align="stretch">
+                    {/* Filter Controls */}
+                    <Flex justify="space-between" align="center" wrap="wrap" gap="3">
+                      <HStack spacing="2">
+                        <Icon as={BsFilter} color={gray_500} boxSize="4" />
+                        <Text fontSize="sm" fontWeight="500" color={gray_600}>
+                          필터:
+                        </Text>
+                      </HStack>
+                      <HStack spacing="2" wrap="wrap">
+                        <EnterpriseButton
+                          variant="secondary"
+                          size="sm"
                           onClick={() => {
                             if (gender === "남자") {
                               setGender("여자");
@@ -466,92 +627,106 @@ export const Home = () => {
                             } else if (gender === "전체") {
                               setGender("남자");
                             }
-
                             filterGender("멘토", tab);
                           }}
                         >
-                          {gender === "남자"
-                            ? "전체"
-                            : gender === "여자"
-                            ? "남자"
-                            : "여자"}
-                        </Button>
-                        <Button
+                          {gender === "남자" ? "전체" : gender === "여자" ? "남자" : "여자"}
+                        </EnterpriseButton>
+                        <EnterpriseButton
+                          variant={tab === "거리" ? "primary" : "ghost"}
+                          size="sm"
                           onClick={async () => {
                             setTab("거리");
                             filterGender("멘토", "거리");
                           }}
-                          size="xs"
-                          variant="outline"
-                          colorScheme={getSatuation(theme_primary_color)}
                         >
                           가까운순
-                        </Button>
-                        <Button
+                        </EnterpriseButton>
+                        <EnterpriseButton
+                          variant={tab === "랜덤" ? "primary" : "ghost"}
+                          size="sm"
                           onClick={async () => {
                             setTab("랜덤");
                             filterGender("멘토", "랜덤");
                           }}
-                          size="xs"
-                          variant="outline"
-                          colorScheme={getSatuation(theme_primary_color)}
                         >
                           랜덤찾기
-                        </Button>
+                        </EnterpriseButton>
                         <Tooltip
-                          hasArrow
-                          whiteSpace={"pre-wrap"}
-                          placement="bottom-end"
                           label={
-                            <Stack>
-                              <Text fontWeight={"bold"}>가까운순</Text>
-                              <Text color={gray_600} fontSize={"small"}>
-                                {`현재 사용자의 위치에서 가까운 순서대로 밥친구를 정렬합니다.`}
-                              </Text>
-                              <Text fontWeight={"bold"}>랜덤찾기</Text>
-                              <Text color={gray_600} fontSize={"small"}>
-                                {`현재 사용자의 동내에서 랜덤으로 밥친구를 정렬합니다.`}
-                              </Text>
-                            </Stack>
+                            <VStack align="start" spacing="2" p="2">
+                              <Box>
+                                <Text fontWeight="600" fontSize="sm">가까운순</Text>
+                                <Text color="gray.300" fontSize="xs">
+                                  현재 위치에서 가까운 순서대로 정렬
+                                </Text>
+                              </Box>
+                              <Box>
+                                <Text fontWeight="600" fontSize="sm">랜덤찾기</Text>
+                                <Text color="gray.300" fontSize="xs">
+                                  같은 지역에서 랜덤으로 정렬
+                                </Text>
+                              </Box>
+                            </VStack>
                           }
-                          bg={gray_100}
-                          color={black}
+                          bg={gray_900}
+                          color={white}
+                          borderRadius="lg"
+                          hasArrow
+                          placement="bottom-end"
                         >
                           <IconButton
-                            variant={"ghost"}
-                            size={"xs"}
+                            variant="ghost"
+                            size="sm"
                             icon={<BsQuestionCircle />}
+                            aria-label="도움말"
+                            color={gray_500}
+                            _hover={{ color: gray_700 }}
                           />
                         </Tooltip>
-                      </Stack>
-                      <Stack
-                        justify="flex-start"
-                        align="center"
-                        spacing="2vh"
-                        alignSelf="stretch"
-                      >
-                        <ItemList items={businessList} />
-                      </Stack>
-                    </Stack>
-                  </TabPanel>
-                </TabPanels>
-              </Tabs>
-            </Stack>
-          </Stack>
-        </Stack>
-        <Stack display={"flex"} flex={1}></Stack>
+                      </HStack>
+                    </Flex>
 
-        <Footer
-          companyName="(주)세이프바운더리"
-          ceoName="김지훈"
-          businessNumber="817-88-02796"
-          address="서울특별시 서초구 서초동 1337-6 강남효성해링턴타워 103"
-          commNumber="2023-서울서초-1772"
-          tel="02-3471-8197"
-          mail="safeboundary@naver.com"
-        />
-      </Stack>
+                    {/* Business User List */}
+                    <LoadingOverlay isLoading={!businessList}>
+                      {businessList && businessList.length > 0 ? (
+                        <ItemList items={businessList} />
+                      ) : (
+                        <Center py="12">
+                          <VStack spacing="4">
+                            <Text color={gray_500} fontSize="lg">
+                              아직 등록된 밥멘토가 없습니다
+                            </Text>
+                            <Text color={gray_400} fontSize="sm">
+                              조금 더 기다려주세요!
+                            </Text>
+                          </VStack>
+                        </Center>
+                      )}
+                    </LoadingOverlay>
+                  </VStack>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </EnterpriseCard>
+        </VStack>
+
+        {/* Footer */}
+        <Box mt="16">
+          <Footer
+            companyName="(주)세이프바운더리"
+            ceoName="김지훈"
+            businessNumber="817-88-02796"
+            address="서울특별시 서초구 서초동 1337-6 강남효성해링턴타워 103"
+            commNumber="2023-서울서초-1772"
+            tel="02-3471-8197"
+            mail="safeboundary@naver.com"
+          />
+        </Box>
+      </Container>
+
+      {/* Navigation Bar */}
       <Navbar />
-    </Container>
+    </Box>
   );
 };

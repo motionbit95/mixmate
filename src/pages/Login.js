@@ -157,13 +157,6 @@ export const Login = () => {
                     ></KakaoLogin>
                   </Flex> */}
                   <Flex w={"100%"} align={"center"}>
-                    <Image
-                      position={"absolute"}
-                      mx={"4vw"}
-                      w="auto"
-                      h="24px"
-                      src={require("../assets/google_icon.png")}
-                    />
                     <FullButton
                       height={"50px"}
                       onClick={async () => {

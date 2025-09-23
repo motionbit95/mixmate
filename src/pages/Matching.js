@@ -33,7 +33,7 @@ import { getSatuation } from "../js/API";
 import { Navbar } from "../component/Navbar";
 import { CustomButton } from "../component/Buttons";
 import { useEffect, useState } from "react";
-import { get_doc_list } from "../js/Database";
+import { get_doc_all } from "../js/MockDatabase";
 
 export const Matching = () => {
   const navigate = useNavigate();
@@ -46,19 +46,57 @@ export const Matching = () => {
   }, []);
 
   const getReviewList = async () => {
-    let reviewList = await get_doc_list(
-      "review",
-      "review_receiver",
-      data?.doc_id
-    );
+    try {
+      // Mock review data for demo
+      const mockReviews = [
+        {
+          review_sender: "user1@example.com",
+          review_receiver: data?.doc_id,
+          review_rating: 5,
+          review_score: 4.8,
+          review_content: "정말 좋은 시간이었습니다!",
+          review_date: "2024-01-15"
+        },
+        {
+          review_sender: "user2@example.com",
+          review_receiver: data?.doc_id,
+          review_rating: 4,
+          review_score: 4.2,
+          review_content: "대화가 즐거웠어요.",
+          review_date: "2024-01-10"
+        },
+        {
+          review_sender: "user3@example.com",
+          review_receiver: data?.doc_id,
+          review_rating: 5,
+          review_score: 4.9,
+          review_content: "매우 유익한 시간이었습니다.",
+          review_date: "2024-01-08"
+        }
+      ];
+      setReviewList(mockReviews);
+    } catch (error) {
+      console.error("리뷰 로드 오류:", error);
+      setReviewList([]);
+    }
+  };
 
-    // console.log(reviewList);
-    setReviewList(reviewList);
+  // If no data is provided, redirect to home or show default user
+  const displayData = data || {
+    user_name: "데모 사용자",
+    user_email: "demo@example.com",
+    user_profile: "https://picsum.photos/200/200?random=10",
+    user_info: "매칭 페이지 데모입니다. 홈에서 사용자를 선택해주세요.",
+    user_type: "개인",
+    user_place: ["서울특별시"],
+    user_food: ["한식", "양식"],
+    doc_id: "demo_user"
   };
 
   return (
     <Container py="50px" minH={"100vh"}>
-      {data && (
+      {/* Always show content, but use demo data if no user data */}
+      {(
         <Stack
           justify="flex-start"
           align="center"
@@ -77,7 +115,7 @@ export const Matching = () => {
             overflow="hidden"
             alignSelf="stretch"
           >
-            <User data={data} />
+            <User data={displayData} />
             <Tabs w="100%" colorScheme={getSatuation(theme_primary_color)}>
               <TabList>
                 <Tab height="54px" flex="1">
@@ -111,7 +149,7 @@ export const Matching = () => {
                       color={gray_800}
                       alignSelf="stretch"
                     >
-                      {data.user_info}
+                      {displayData.user_info}
                     </Text>
                     <Stack
                       padding="10px"
@@ -157,8 +195,8 @@ export const Matching = () => {
                           localStorage.setItem("matching_type", "식사");
                           navigate("/payment", {
                             state: {
-                              price: data.user_price,
-                              receiver: data,
+                              price: displayData.user_price,
+                              receiver: displayData,
                             },
                           });
                         }}
@@ -172,8 +210,8 @@ export const Matching = () => {
                           localStorage.setItem("matching_type", "커피");
                           navigate("/payment", {
                             state: {
-                              price: data.user_price,
-                              receiver: data,
+                              price: displayData.user_price,
+                              receiver: displayData,
                             },
                           });
                         }}
@@ -214,7 +252,7 @@ export const Matching = () => {
                               color={black}
                               textAlign="center"
                             >
-                              {value.review_score.toFixed(1)}
+                              {value.review_score ? value.review_score.toFixed(1) : "4.0"}
                             </Text>
                           </Stack>
                           <Text
@@ -239,8 +277,8 @@ export const Matching = () => {
                           localStorage.setItem("matching_type", "식사");
                           navigate("/payment", {
                             state: {
-                              price: data.user_price,
-                              receiver: data,
+                              price: displayData.user_price,
+                              receiver: displayData,
                             },
                           });
                         }}
@@ -254,8 +292,8 @@ export const Matching = () => {
                           localStorage.setItem("matching_type", "커피");
                           navigate("/payment", {
                             state: {
-                              price: data.user_price,
-                              receiver: data,
+                              price: displayData.user_price,
+                              receiver: displayData,
                             },
                           });
                         }}

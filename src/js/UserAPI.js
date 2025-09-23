@@ -254,7 +254,7 @@ export const get_default_avartar = (gender, profile) => {
   }
 
   if (gender === "남")
-    return "https://firebasestorage.googleapis.com/v0/b/dinnermate-database.appspot.com/o/assets%2FMale.png?alt=media&token=b82a2957-545d-4b68-901f-7cbaadb0a42c";
+    return "https://picsum.photos/200/200?random=101";
   else
-    return "https://firebasestorage.googleapis.com/v0/b/dinnermate-database.appspot.com/o/assets%2FFemale.png?alt=media&token=58e5f88b-0954-432b-bd69-6f774b5b3a61";
+    return "https://picsum.photos/200/200?random=100";
 };

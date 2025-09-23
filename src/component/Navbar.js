@@ -2,7 +2,7 @@ import { Box, Container, Stack, Text } from "@chakra-ui/layout";
 import HorizonLine from "./HorizontalLine";
 import { Icon } from "@chakra-ui/icon";
 import { AiFillHome, AiOutlineHome } from "react-icons/ai";
-import { BsList, BsPerson, BsPersonFill } from "react-icons/bs";
+import { BsList, BsPerson, BsPersonFill, BsHeart, BsHeartFill } from "react-icons/bs";
 import { MdChatBubble, MdChatBubbleOutline } from "react-icons/md";
 import { useNavigate } from "react-router";
 import { useState } from "react";
@@ -78,17 +78,40 @@ export const Navbar = () => {
               overflow="hidden"
               flex="1"
               onClick={() => {
-                navigate("/chat");
+                navigate("/favorites");
               }}
             >
               <Icon
-                as={page === 2 ? MdChatBubble : MdChatBubbleOutline}
+                as={page === 2 ? BsHeartFill : BsHeart}
                 color={page === 2 ? theme_primary_color : "black"}
               />
               <Text
                 fontWeight="medium"
                 fontSize="12px"
                 color={page === 2 ? theme_primary_color : "black"}
+                textAlign="center"
+              >
+                찜
+              </Text>
+            </Stack>
+            <Stack
+              justify="center"
+              align="center"
+              spacing="0px"
+              overflow="hidden"
+              flex="1"
+              onClick={() => {
+                navigate("/chat");
+              }}
+            >
+              <Icon
+                as={page === 3 ? MdChatBubble : MdChatBubbleOutline}
+                color={page === 3 ? theme_primary_color : "black"}
+              />
+              <Text
+                fontWeight="medium"
+                fontSize="12px"
+                color={page === 3 ? theme_primary_color : "black"}
                 textAlign="center"
               >
                 채팅
@@ -105,13 +128,13 @@ export const Navbar = () => {
               }}
             >
               <Icon
-                as={page === 3 ? BsPersonFill : BsPerson}
-                color={page === 3 ? theme_primary_color : "black"}
+                as={page === 4 ? BsPersonFill : BsPerson}
+                color={page === 4 ? theme_primary_color : "black"}
               />
               <Text
                 fontWeight="medium"
                 fontSize="12px"
-                color={page === 3 ? theme_primary_color : "black"}
+                color={page === 4 ? theme_primary_color : "black"}
                 textAlign="center"
               >
                 마이페이지
